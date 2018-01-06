@@ -1,5 +1,10 @@
 # Compiled class file
+build
 *.class
+
+# Gradle Stuff
+.gradle
+build/
 
 # Log file
 *.log
@@ -20,3 +25,25 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# tmp files
+*~
+
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
+.DS_Store
+
+# IntelliJ
+*.iml
+.idea
+.navigation
+captures/
+output.json 
+*.iws
+
+# Eclipse
+bin
+
+
