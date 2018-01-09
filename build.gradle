@@ -23,12 +23,19 @@ deploy {
     }
 }
 
+configurations {
+    // Define a custom config for RobotBuilder so it can have its own dependencies independent from compile
+    robotBuilder
+}
+
 // Defining my dependencies. In this case, WPILib (+ friends), CTRE Toolsuite (Talon SRX)
 // and NavX.
 dependencies {
     compile wpilib()
     compile ctre()
     compile navx()
+
+    robotBuilder "edu.wpi.first.wpilib:RobotBuilder:3.0.+"
 }
 
 sourceSets {
@@ -49,4 +56,10 @@ jar {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.4'
+}
+
+// Task to allow launching robot builder from CLI
+task robotBuilder(type: JavaExec) {
+    main = "robotbuilder.RobotBuilder"
+    classpath configurations.robotBuilder
 }
