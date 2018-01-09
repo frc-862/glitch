@@ -35,6 +35,10 @@ dependencies {
     compile ctre()
     compile navx()
 
+    // Add everything in the libs folder so that we can add our own libraries
+    compile fileTree(dir: "libs", include: "**/*.jar")  // Java libs
+    nativeLib fileTree(dir: "libs", include: "**/*.so") // Native libs
+
     robotBuilder "edu.wpi.first.wpilib:RobotBuilder:3.0.+"
 }
 
