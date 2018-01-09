@@ -42,6 +42,7 @@ Thumbs.db
 captures/
 output.json 
 *.iws
+*.ipr
 
 # Eclipse
 bin
