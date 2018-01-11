@@ -46,7 +46,6 @@ public class TankDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        // Forward/back
         double leftY = Robot.oi.getJoystick1().getRawAxis(JOYSTICK_LEFT_Y_AXIS);
         double rightY = Robot.oi.getJoystick1().getRawAxis(JOYSTICK_RIGHT_Y_AXIS);
 
