@@ -10,6 +10,7 @@
 
 
 package org.usfirst.frc862.glitch.commands;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.RobotMap;
@@ -49,11 +50,11 @@ public class TankDrive extends Command {
         double leftY = Robot.oi.getJoystick1().getRawAxis(JOYSTICK_LEFT_Y_AXIS);
         double rightY = Robot.oi.getJoystick1().getRawAxis(JOYSTICK_RIGHT_Y_AXIS);
 
-        RobotMap.driveTrainBackLeft.set(leftY);
-        RobotMap.driveTrainFrontLeft.set(leftY);
+        RobotMap.driveTrainBackLeft.set(ControlMode.PercentOutput, leftY);
+        RobotMap.driveTrainFrontLeft.set(ControlMode.PercentOutput, leftY);
 
-        RobotMap.driveTrainBackRight.set(rightY);
-        RobotMap.driveTrainFrontRight.set(rightY);
+        RobotMap.driveTrainBackRight.set(ControlMode.PercentOutput, rightY);
+        RobotMap.driveTrainFrontRight.set(ControlMode.PercentOutput, rightY);
     }
 
     // Make this return true when this Command no longer needs to run execute()
