@@ -28,12 +28,18 @@ configurations {
     robotBuilder
 }
 
+repositories {
+    mavenCentral()
+}
+
 // Defining my dependencies. In this case, WPILib (+ friends), CTRE Toolsuite (Talon SRX)
 // and NavX.
 dependencies {
     compile wpilib()
     compile ctre()
     compile navx()
+
+    compile 'org.yaml:snakeyaml:1.19'
 
     // Add everything in the libs folder so that we can add our own libraries
     compile fileTree(dir: "libs", include: "**/*.jar")  // Java libs
@@ -67,3 +73,4 @@ task robotBuilder(type: JavaExec) {
     main = "robotbuilder.RobotBuilder"
     classpath configurations.robotBuilder
 }
+
