@@ -88,10 +88,14 @@ public class LightningMath {
         return fps * 60 / Constants.WheelCircumference;
     }
 
+    public static double in2ft(double in) {
+        return in / 12;
+    }
+    
     public static double mm2ft(double dist) {
         return dist / 304.8;
     }
-    
+
     public static boolean isZero(double val) {
         return Math.abs(val) < 0.0000001;
     }
