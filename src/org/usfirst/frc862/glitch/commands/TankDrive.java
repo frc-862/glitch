@@ -12,6 +12,7 @@
 package org.usfirst.frc862.glitch.commands;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.RobotMap;
 import static org.usfirst.frc862.glitch.JoystickConstants.*;
@@ -41,7 +42,7 @@ public class TankDrive extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.driveTrain.setVoltageMode();
+        Robot.driveTrain.setVelocityMode();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -52,7 +53,7 @@ public class TankDrive extends Command {
         double rightY = -Robot.oi.getJoystick1()
                 .getRawAxis(JOYSTICK_RIGHT_Y_AXIS);
 
-        Robot.driveTrain.setPower(leftY, rightY);
+        Robot.driveTrain.setPower(leftY * Constants.MAX_SPEED_TICKS, rightY * Constants.MAX_SPEED_TICKS);
     }
 
     // Make this return true when this Command no longer needs to run execute()

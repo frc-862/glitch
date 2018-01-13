@@ -24,8 +24,9 @@ public class Constants extends ConstantsBase {
   public static double DRIVE_I = 0;
   public static double DRIVE_D = 0;
   public static double DRIVE_F = 0;
+    public static double MAX_SPEED_TICKS = 600;
 
-  public String getFileName() {
+    public String getFileName() {
         return "~/glitch.yaml";
     }
 
