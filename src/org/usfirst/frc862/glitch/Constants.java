@@ -16,6 +16,7 @@ public class Constants extends ConstantsBase {
     public static int logDepth = 1000;
 
     public static double WheelCircumference = LightningMath.in2ft(6) * Math.PI;
+    public static double dead_band = 0.05;
 
     public String getFileName() {
         return "~/glitch.yaml";
