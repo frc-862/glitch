@@ -15,7 +15,7 @@ public class Constants extends ConstantsBase {
 	//Logging
     public static int logDepth = 1000;
 
-    public static double WheelCircumference = LightningMath.in2ft(6) * Math.PI;
+    public static double WheelCircumference = LightningMath.in2ft(4) * Math.PI;
     public static double dead_band = 0.05;
   public static int TALON_TIMEOUT = 10; //ms
 
