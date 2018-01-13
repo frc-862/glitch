@@ -12,9 +12,11 @@
 package org.usfirst.frc862.glitch.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase;
+import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.RobotMap;
 import org.usfirst.frc862.glitch.commands.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -99,8 +101,10 @@ public class DriveTrain extends Subsystem {
 
     public DriveTrain() {
         super();
+        left1.setInverted(true);
+        right2.setInverted(true);
+        right3.setInverted(true);
         setVoltageMode();
-        DifferentialDrive db;
     }
 
     public Mode getMode() {
@@ -109,6 +113,17 @@ public class DriveTrain extends Subsystem {
 
     public void setVelocityMode() {
         setFollowMode(ControlMode.Velocity);
+        left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, Constants.TALON_TIMEOUT);
+        left1.config_kP(0, Constants.DRIVE_P,Constants.TALON_TIMEOUT);
+        left1.config_kI(0, Constants.DRIVE_I, Constants.TALON_TIMEOUT);
+        left1.config_kD(0, Constants.DRIVE_D,Constants.TALON_TIMEOUT);
+        left1.config_kF(0, Constants.DRIVE_F,Constants.TALON_TIMEOUT);
+        right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, Constants.TALON_TIMEOUT);
+        right1.config_kP(0, Constants.DRIVE_P,Constants.TALON_TIMEOUT);
+        right1.config_kI(0, Constants.DRIVE_I, Constants.TALON_TIMEOUT);
+        right1.config_kD(0, Constants.DRIVE_D,Constants.TALON_TIMEOUT);
+        right1.config_kF(0, Constants.DRIVE_F,Constants.TALON_TIMEOUT);
+
         mode = velocity;
     }
 

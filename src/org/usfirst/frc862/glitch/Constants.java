@@ -17,8 +17,15 @@ public class Constants extends ConstantsBase {
 
     public static double WheelCircumference = LightningMath.in2ft(6) * Math.PI;
     public static double dead_band = 0.05;
+  public static int TALON_TIMEOUT = 10; //ms
 
-    public String getFileName() {
+  //PID
+  public static double DRIVE_P = 0;
+  public static double DRIVE_I = 0;
+  public static double DRIVE_D = 0;
+  public static double DRIVE_F = 0;
+
+  public String getFileName() {
         return "~/glitch.yaml";
     }
 

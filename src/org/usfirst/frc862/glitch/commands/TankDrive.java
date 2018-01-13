@@ -41,6 +41,7 @@ public class TankDrive extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.driveTrain.setVoltageMode();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -51,14 +52,7 @@ public class TankDrive extends Command {
         double rightY = -Robot.oi.getJoystick1()
                 .getRawAxis(JOYSTICK_RIGHT_Y_AXIS);
 
-        RobotMap.driveTrainLeft1.set(ControlMode.PercentOutput, leftY);
-        //RobotMap.driveTrainLeft2.set(ControlMode.PercentOutput, leftY);
-        //RobotMap.driveTrainLeft3.set(ControlMode.PercentOutput, leftY);
-//
-        RobotMap.driveTrainRight1.set(ControlMode.PercentOutput, rightY);
-        //RobotMap.driveTrainRight2.set(ControlMode.PercentOutput, rightY);
-        //RobotMap.driveTrainRight3.set(ControlMode.PercentOutput, rightY);
-
+        Robot.driveTrain.setPower(leftY, rightY);
     }
 
     // Make this return true when this Command no longer needs to run execute()
