@@ -40,6 +40,8 @@ dependencies {
     compile navx()
 
     compile 'org.yaml:snakeyaml:1.19'
+    compile 'gov.nist.math:jama:1.0.2'
+    compile 'com.googlecode.json-simple:json-simple:1.1'
 
     // Add everything in the libs folder so that we can add our own libraries
     compile fileTree(dir: "libs", include: "**/*.jar")  // Java libs

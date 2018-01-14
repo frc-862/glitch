@@ -20,12 +20,22 @@ public class Constants extends ConstantsBase {
   public static int TALON_TIMEOUT = 10; //ms
 
   //PID
+  public static double PHYSICAL_MAX_SPEED_TICKS = 850;
+  public static double MAX_SPEED_TICKS = 600;
+
+  // NOTE we are going to want to tune for high/low gear with
+  // at the very least a different feed forward...
   public static double DRIVE_P = 0;
   public static double DRIVE_I = 0;
   public static double DRIVE_D = 0;
-  public static double DRIVE_F = 0;
-    public static double MAX_SPEED_TICKS = 600;
+  public static double DRIVE_F = 1024.0 / PHYSICAL_MAX_SPEED_TICKS;
 
+  public static double TICS_PER_ROTATION = 360;  // might be wrong!!!
+
+    // Cheesy Constants
+    public static double kSegmentCompletionTolerance = 0.1; // inches
+    public static double kPathFollowingMaxAccel = 120.0; // inches per second^2
+    
     public String getFileName() {
         return "~/glitch.yaml";
     }
