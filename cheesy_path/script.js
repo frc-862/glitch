@@ -245,6 +245,23 @@ function init() {
 			update();
 		}, 500);
 	});
+
+  $('#field').click(function(e) {
+    var imgHeight = $(this).height();
+    var imgWidth = $(this).width();
+    var offset = $(this).offset();
+
+    var x = e.pageX - offset.left;
+    var y = imgHeight - (e.pageY - offset.top);
+    x = x / imgWidth
+    y = y / imgHeight
+    x = x * fieldWidth;
+    y = y * fieldHeight;
+
+    $($('table tbody tr:last td input')[0]).prop("value",x);
+    $($('table tbody tr:last td input')[1]).prop("value",y);
+    update();
+  });
 }
 
 function clear() {
