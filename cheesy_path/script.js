@@ -4,8 +4,8 @@ var width = 1656; //pixels
 var height = 823; //pixels
 var fieldWidth = 652; // in inches
 var fieldHeight = 324; // in inches
-var robotWidth = 35.45; //inches
-var robotHeight = 33.325; //inches
+var robotWidth = 28; //inches
+var robotHeight = 33; //inches
 var pointRadius = 5;
 var turnRadius = 30;
 var kEpsilon = 1E-9;
@@ -289,6 +289,7 @@ function addPoint() {
 		prev = waypoints[waypoints.length - 1].position;
 	else 
 		prev = new Translation2d(50, 50);
+  $("tbody tr:last td:nth-child(3) input").prop("value", "30");
 	$("tbody").append("<tr>"
 		+"<td><input value='"+(prev.x+20)+"'></td>"
 		+"<td><input value='"+(prev.y+20)+"'></td>"
