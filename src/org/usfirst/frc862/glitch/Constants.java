@@ -20,7 +20,7 @@ public class Constants extends ConstantsBase {
   public static int TALON_TIMEOUT = 10; //ms
 
   //PID
-  public static double DRIVE_P = 0;
+  public static double DRIVE_P = 1;
   public static double DRIVE_I = 0;
   public static double DRIVE_D = 0;
   public static double DRIVE_F = 0;
