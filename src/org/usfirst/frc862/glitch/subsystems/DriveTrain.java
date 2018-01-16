@@ -14,6 +14,7 @@ package org.usfirst.frc862.glitch.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.team254.lib.util.math.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.RobotMap;
@@ -208,5 +209,30 @@ public class DriveTrain extends Subsystem {
         SmartDashboard.putNumber("drive left", left);
         SmartDashboard.putNumber("drive right", right);
     }
+
+    public double getLeftDistanceInches() {
+        // TODO scale correctly
+        return left1.getSelectedSensorPosition(0);
+    }
+
+    public double getRightDistanceInches() {
+        // TODO scale correctly
+        return right1.getSelectedSensorPosition(0);
+    }
+
+    public double getLeftVelocityInchesPerSec() {
+        // TODO scale correctly
+        return left1.getSelectedSensorVelocity(0);
+    }
+
+    public double getRightVelocityInchesPerSec() {
+        // TODO scale correctly
+        return right1.getSelectedSensorVelocity(0);
+    }
+
+    public Rotation2d getGyroAngle() {
+        return new Rotation2d();
+    }
+
 }
 
