@@ -83,6 +83,22 @@ public class DriveTrain extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
+    protected static double native2fps(int native_speed) {
+        final int CONV_100msTOsec = 1000 /100;
+        return native_speed * CONV_100msTOsec / Constants.TICS_PER_ROTATION * Constants.WheelCircumference;
+    }
+
+    protected static double native2rpm(int native_speed) {
+        final int CONV_100msTOsec = 1000 /100;
+        final int secPerMin = 60;
+        return (native_speed * CONV_100msTOsec * secPerMin) / Constants.TICS_PER_ROTATION;
+    }
+
+    public static double rpm2fps(int rpm) {
+        final int secPerMin = 60;
+        return rpm / 60 * Constants.WheelCircumference;
+    }
+
     protected void eachMotor(Consumer<BaseMotorController> func) {
         func.accept(left1);
         func.accept(left2);
@@ -112,6 +128,15 @@ public class DriveTrain extends Subsystem {
         left1.setInverted(true);
         right2.setInverted(true);
         right3.setInverted(true);
+
+        /* set the peak and nominal outputs, 12V means full */
+        eachMotor((baseMotorController) -> {
+            baseMotorController.configNominalOutputForward(0, Constants.TALON_TIMEOUT);
+            baseMotorController.configNominalOutputReverse(0, Constants.TALON_TIMEOUT);
+            baseMotorController.configPeakOutputForward(1, Constants.TALON_TIMEOUT);
+            baseMotorController.configPeakOutputReverse(-1, Constants.TALON_TIMEOUT);
+        });
+
         setVoltageMode();
     }
 
@@ -148,13 +173,13 @@ public class DriveTrain extends Subsystem {
     }
 
     public void stop() {
-        left1.set(0);
-        right1.set(0);
+        left1.stopMotor();
+        right1.stopMotor();
     }
 
     public void setPower(double left, double right) {
-        left1.set(ControlMode.Velocity, left);
-        right1.set(ControlMode.Velocity, right);
+        left1.set(mode == velocity ? ControlMode.Velocity : ControlMode.PercentOutput, left);
+        right1.set(mode == velocity ? ControlMode.Velocity : ControlMode.PercentOutput, right);
         SmartDashboard.putNumber("drive left", left);
         SmartDashboard.putNumber("drive right", right);
     }
