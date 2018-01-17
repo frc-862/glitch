@@ -47,7 +47,7 @@ public class Teleop extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-//        drive.drive(Robot.oi.getRotation(), Robot.oi.getThrust(), Robot.oi.getQuickTurn());
+        drive.drive(Robot.oi.getRotation(), Robot.oi.getThrust(), Robot.oi.getQuickTurn());
         Robot.driveTrain.setPower(drive.getLeft(), drive.getRight());
     }
 
