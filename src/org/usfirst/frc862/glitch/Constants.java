@@ -25,18 +25,20 @@ public class Constants extends ConstantsBase {
 
     // NOTE we are going to want to tune for high/low gear with
     // at the very least a different feed forward...
-    public static double DRIVE_P = 1.5;
-    public static double DRIVE_I = 0;
-    public static double DRIVE_D = 0;
-    public static double DRIVE_F = 950.0 / PHYSICAL_MAX_SPEED_TICKS;
-    public static final int ALLOWED_DRIVE_ERROR = 10;
+    public static final int LOWGEAR_IDX = 0;
+    public static final int HIGHGEAR_IDX = 1;
+    public static double LOWGEAR_DRIVE_P = 1.5;
+    public static double LOWGEAR_DRIVE_I = 0;
+    public static double LOWGEAR_DRIVE_D = 0;
+    public static double LOWGEAR_DRIVE_F = 950.0 / PHYSICAL_MAX_SPEED_TICKS;
+    public static final int LOWGEAR_ALLOWED_DRIVE_ERROR = 10;
 
     public static double HIGHGEAR_DRIVE_P = 0;
     public static double HIGHGEAR_DRIVE_I = 0;
     public static double HIGHGEAR_DRIVE_D = 0;
     public static double HIGHGEAR_DRIVE_F = 950.0 / PHYSICAL_MAX_SPEED_TICKS;
     public static final int HIGHGEAR_ALLOWED_DRIVE_ERROR = 10;
-    public static double TICS_PER_ROTATION = 360;  // might be wrong!!!
+    public static double TICS_PER_ROTATION = 360 * 4;  // might be wrong!!!
 
     // PID gains for drive velocity loop (HIGH GEAR)
     // Units: setpoint, error, and output are in inches per second.

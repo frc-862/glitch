@@ -11,6 +11,7 @@
 
 package org.usfirst.frc862.glitch.subsystems;
 
+import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.RobotMap;
 import org.usfirst.frc862.glitch.commands.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -52,10 +53,15 @@ public class Shifter extends Subsystem {
     }
 
     public void upshift() {
+        Robot.driveTrain.upShiftBegin();
         shift.set(DoubleSolenoid.Value.kForward);
+        Robot.driveTrain.upShiftEnd();
     }
+
     public void downshift() {
+        Robot.driveTrain.downShiftBegin();
         shift.set(DoubleSolenoid.Value.kReverse);
+        Robot.driveTrain.downShiftEnd();
     }
 
     // Put methods for controlling this subsystem

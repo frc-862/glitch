@@ -158,30 +158,30 @@ public class DriveTrain extends Subsystem {
 
     public void setVelocityMode(Mode vmode) {
         setFollowMode(ControlMode.Velocity);
-        left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, Constants.TALON_TIMEOUT);
-        left1.config_kP(0, Constants.DRIVE_P,Constants.TALON_TIMEOUT);
-        left1.config_kI(0, Constants.DRIVE_I, Constants.TALON_TIMEOUT);
-        left1.config_kD(0, Constants.DRIVE_D,Constants.TALON_TIMEOUT);
-        left1.config_kF(0, Constants.DRIVE_F,Constants.TALON_TIMEOUT);
-        left1.configAllowableClosedloopError(0, Constants.ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
-        left1.setSelectedSensorPosition(0, 0, Constants.TALON_TIMEOUT);
-        right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, Constants.TALON_TIMEOUT);
-        right1.config_kP(0, Constants.DRIVE_P,Constants.TALON_TIMEOUT);
-        right1.config_kI(0, Constants.DRIVE_I, Constants.TALON_TIMEOUT);
-        right1.config_kD(0, Constants.DRIVE_D,Constants.TALON_TIMEOUT);
-        right1.config_kF(0, Constants.DRIVE_F,Constants.TALON_TIMEOUT);
+        left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.LOWGEAR_IDX, Constants.TALON_TIMEOUT);
+        left1.config_kP(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
+        left1.config_kI(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
+        left1.config_kD(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
+        left1.config_kF(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
+        left1.configAllowableClosedloopError(Constants.LOWGEAR_IDX, Constants.LOWGEAR_ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
+        left1.setSelectedSensorPosition(Constants.LOWGEAR_IDX, 0, Constants.TALON_TIMEOUT);
+        right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.LOWGEAR_IDX, Constants.TALON_TIMEOUT);
+        right1.config_kP(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
+        right1.config_kI(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
+        right1.config_kD(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
+        right1.config_kF(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
 
-        left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 1, Constants.TALON_TIMEOUT);
-        left1.config_kP(1, Constants.HIGHGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
-        left1.config_kI(1, Constants.HIGHGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
-        left1.config_kD(1, Constants.HIGHGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
-        left1.config_kF(1, Constants.HIGHGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
-        left1.configAllowableClosedloopError(1, Constants.HIGHGEAR_ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
-        right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 1, Constants.TALON_TIMEOUT);
-        right1.config_kP(1, Constants.HIGHGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
-        right1.config_kI(1, Constants.HIGHGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
-        right1.config_kD(1, Constants.HIGHGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
-        right1.config_kF(1, Constants.HIGHGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
+        left1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.HIGHGEAR_IDX, Constants.TALON_TIMEOUT);
+        left1.config_kP(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
+        left1.config_kI(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
+        left1.config_kD(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
+        left1.config_kF(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
+        left1.configAllowableClosedloopError(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
+        right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.HIGHGEAR_IDX, Constants.TALON_TIMEOUT);
+        right1.config_kP(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
+        right1.config_kI(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
+        right1.config_kD(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
+        right1.config_kF(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
 
         mode = vmode;
     }
@@ -201,6 +201,24 @@ public class DriveTrain extends Subsystem {
         right1.stopMotor();
     }
 
+    public void upShiftBegin() {
+        // reduce motor power...
+    }
+
+    public void upShiftEnd() {
+        left1.selectProfileSlot(Constants.HIGHGEAR_IDX, 0);
+        right1.selectProfileSlot(Constants.HIGHGEAR_IDX, 0);
+    }
+
+    public void downShiftBegin() {
+        // reduce motor power...
+    }
+
+    public void downShiftEnd() {
+        left1.selectProfileSlot(Constants.LOWGEAR_IDX, 0);
+        right1.selectProfileSlot(Constants.LOWGEAR_IDX, 0);
+    }
+
     public void setVelocityIPS(double left, double right) {
         // todo scale left right correctly
         left1.set(ControlMode.Velocity, left);
@@ -213,7 +231,7 @@ public class DriveTrain extends Subsystem {
         left1.set(ControlMode.Velocity, left);
         right1.set(ControlMode.Velocity, right);
 
-        left1.set(ControlMode.Velocity, )
+        left1.selectProfileSlot(0, 0);
         SmartDashboard.putNumber("drive left", left);
         SmartDashboard.putNumber("drive right", right);
     }
