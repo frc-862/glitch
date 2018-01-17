@@ -31,6 +31,11 @@ public class Constants extends ConstantsBase {
     public static double DRIVE_F = 950.0 / PHYSICAL_MAX_SPEED_TICKS;
     public static final int ALLOWED_DRIVE_ERROR = 10;
 
+    public static double HIGHGEAR_DRIVE_P = 0;
+    public static double HIGHGEAR_DRIVE_I = 0;
+    public static double HIGHGEAR_DRIVE_D = 0;
+    public static double HIGHGEAR_DRIVE_F = 950.0 / PHYSICAL_MAX_SPEED_TICKS;
+    public static final int HIGHGEAR_ALLOWED_DRIVE_ERROR = 10;
     public static double TICS_PER_ROTATION = 360;  // might be wrong!!!
 
     // PID gains for drive velocity loop (HIGH GEAR)
