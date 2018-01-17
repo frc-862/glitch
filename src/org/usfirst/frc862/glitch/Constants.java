@@ -25,10 +25,11 @@ public class Constants extends ConstantsBase {
 
     // NOTE we are going to want to tune for high/low gear with
     // at the very least a different feed forward...
-    public static double DRIVE_P = 0;
+    public static double DRIVE_P = 1.5;
     public static double DRIVE_I = 0;
     public static double DRIVE_D = 0;
-    public static double DRIVE_F = 1024.0 / PHYSICAL_MAX_SPEED_TICKS;
+    public static double DRIVE_F = 950.0 / PHYSICAL_MAX_SPEED_TICKS;
+    public static final int ALLOWED_DRIVE_ERROR = 10;
 
     public static double TICS_PER_ROTATION = 360;  // might be wrong!!!
 

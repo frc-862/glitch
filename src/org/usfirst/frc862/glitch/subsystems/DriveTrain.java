@@ -70,16 +70,20 @@ public class DriveTrain extends Subsystem {
         // in ticks / 100ms
         double left_vel = left1.getSelectedSensorVelocity(0);
         // in ticks / sec
-        left_vel = left_vel * 10;
+//        left_vel = left_vel * 10;
         // in ft / sec
-        left_vel = left_vel / 360 * Constants.WheelCircumference;
+//        left_vel = left_vel / 360 * Constants.WheelCircumference;
 
         double right_vel = right1.getSelectedSensorVelocity(0);
 //        right_vel = right_vel * 10 / 360 * Constants.WheelCircumference;
-        right_vel = LightningMath.in2ft(2) * right_vel * 10;
+//        right_vel = LightningMath.in2ft(2) * right_vel * 10;
 
         SmartDashboard.putNumber("left", left_vel);
+        SmartDashboard.putNumber("left error", left1.getClosedLoopError(0));
         SmartDashboard.putNumber("right", right_vel);
+        SmartDashboard.putNumber("right error", right1.getClosedLoopError(0));
+
+        SmartDashboard.putNumber("left pos", left1.getSelectedSensorPosition(0));
     }
 
     // Put methods for controlling this subsystem
@@ -128,6 +132,7 @@ public class DriveTrain extends Subsystem {
     public DriveTrain() {
         super();
         left1.setInverted(true);
+        left1.setSensorPhase(true);
         right2.setInverted(true);
         right3.setInverted(true);
 
@@ -157,6 +162,8 @@ public class DriveTrain extends Subsystem {
         left1.config_kI(0, Constants.DRIVE_I, Constants.TALON_TIMEOUT);
         left1.config_kD(0, Constants.DRIVE_D,Constants.TALON_TIMEOUT);
         left1.config_kF(0, Constants.DRIVE_F,Constants.TALON_TIMEOUT);
+        left1.configAllowableClosedloopError(0, Constants.ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
+        left1.setSelectedSensorPosition(0, 0, Constants.TALON_TIMEOUT);
         right1.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, Constants.TALON_TIMEOUT);
         right1.config_kP(0, Constants.DRIVE_P,Constants.TALON_TIMEOUT);
         right1.config_kI(0, Constants.DRIVE_I, Constants.TALON_TIMEOUT);
