@@ -15,7 +15,8 @@ public class Constants extends ConstantsBase {
     //Logging
     public static int logDepth = 1000;
 
-    public static double WheelCircumference = LightningMath.in2ft(4) * Math.PI;
+    // in inches
+    public static double WheelCircumference = 4 * Math.PI;
     public static double dead_band = 0.05;
     public static int TALON_TIMEOUT = 10; //ms
 
@@ -38,7 +39,7 @@ public class Constants extends ConstantsBase {
     public static double HIGHGEAR_DRIVE_D = 0;
     public static double HIGHGEAR_DRIVE_F = 950.0 / PHYSICAL_MAX_SPEED_TICKS;
     public static final int HIGHGEAR_ALLOWED_DRIVE_ERROR = 10;
-    public static double TICS_PER_ROTATION = 360 * 4;  // might be wrong!!!
+    public static double TICS_PER_ROTATION = 360 * 4;
 
     // PID gains for drive velocity loop (HIGH GEAR)
     // Units: setpoint, error, and output are in inches per second.

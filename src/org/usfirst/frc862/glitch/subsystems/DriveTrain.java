@@ -83,21 +83,9 @@ public class DriveTrain extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-
-    protected static double native2fps(int native_speed) {
+    protected static double native2ips(int native_speed) {
         final int CONV_100msTOsec = 1000 /100;
         return native_speed * CONV_100msTOsec / Constants.TICS_PER_ROTATION * Constants.WheelCircumference;
-    }
-
-    protected static double native2rpm(int native_speed) {
-        final int CONV_100msTOsec = 1000 /100;
-        final int secPerMin = 60;
-        return (native_speed * CONV_100msTOsec * secPerMin) / Constants.TICS_PER_ROTATION;
-    }
-
-    public static double rpm2fps(int rpm) {
-        final int secPerMin = 60;
-        return rpm / 60 * Constants.WheelCircumference;
     }
 
     protected void eachMotor(Consumer<BaseMotorController> func) {

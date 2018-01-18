@@ -2,6 +2,7 @@ package org.usfirst.frc862.util;
 
 import java.io.File;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import org.usfirst.frc862.glitch.Constants;
 
 public class Logger {
@@ -53,6 +54,7 @@ public class Logger {
         base.mkdirs();
 
         int counter = 0;
+        DriverStation.getInstance().getMatchNumber();
         File result = new File(base, String.format("robot-%05d.log", counter));
         while (result.exists()) {
             result = new File(base, String.format("robot-%05d.log", ++counter));
