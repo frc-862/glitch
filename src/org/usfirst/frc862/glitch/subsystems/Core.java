@@ -53,6 +53,18 @@ public class Core extends Subsystem {
 
     }
 
+    public void enterTestMode() {
+        compressor.setClosedLoopControl(false);
+    }
+
+    public void exitTestMode() {
+        compressor.setClosedLoopControl(true);
+    }
+
+    public double getGyroAngle() {
+        return navx.getFusedHeading();
+    }
+
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 

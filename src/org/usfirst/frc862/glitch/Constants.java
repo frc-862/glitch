@@ -104,6 +104,10 @@ public class Constants extends ConstantsBase {
     public static double kTrackReportComparatorStablityWeight = 1.0;
     public static double kTrackReportComparatorAgeWeight = 1.0;
 
+    // Self test values
+    public static double MotorTestPower = 0.3;
+    public static double MotorTestDistance = 3;
+
 
     public String getFileName() {
         return "~/glitch.yaml";
