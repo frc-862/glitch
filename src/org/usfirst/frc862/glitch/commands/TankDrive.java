@@ -51,7 +51,8 @@ public class TankDrive extends Command {
         double leftY = Robot.oi.getLeftPower();
         double rightY = Robot.oi.getRightPower();
 
-        Robot.driveTrain.setVelocity(leftY * Constants.MAX_SPEED_TICKS, rightY * Constants.MAX_SPEED_TICKS);
+        Robot.driveTrain.setVelocity(leftY * Constants.PHYSICAL_MAX_HIGH_SPEED_TICKS,
+                rightY * Constants.PHYSICAL_MAX_HIGH_SPEED_TICKS);
     }
 
     // Make this return true when this Command no longer needs to run execute()

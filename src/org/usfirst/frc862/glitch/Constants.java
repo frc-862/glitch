@@ -22,6 +22,7 @@ public class Constants extends ConstantsBase {
 
     //PID
     public static double PHYSICAL_MAX_SPEED_TICKS = 850;
+    public static double PHYSICAL_MAX_HIGH_SPEED_TICKS = 1200;
     public static double MAX_SPEED_TICKS = 600;
 
     // NOTE we are going to want to tune for high/low gear with
@@ -37,7 +38,7 @@ public class Constants extends ConstantsBase {
     public static double HIGHGEAR_DRIVE_P = 0;
     public static double HIGHGEAR_DRIVE_I = 0;
     public static double HIGHGEAR_DRIVE_D = 0;
-    public static double HIGHGEAR_DRIVE_F = 950.0 / PHYSICAL_MAX_SPEED_TICKS;
+    public static double HIGHGEAR_DRIVE_F = 950 / PHYSICAL_MAX_HIGH_SPEED_TICKS;
     public static final int HIGHGEAR_ALLOWED_DRIVE_ERROR = 10;
     public static double TICS_PER_ROTATION = 360 * 4;
 
