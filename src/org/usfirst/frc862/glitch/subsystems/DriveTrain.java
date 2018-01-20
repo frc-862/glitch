@@ -14,9 +14,11 @@ package org.usfirst.frc862.glitch.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.team254.lib.util.DriveSignal;
 import com.team254.lib.util.math.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
+import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.RobotMap;
 import org.usfirst.frc862.glitch.commands.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -65,12 +67,10 @@ public class DriveTrain extends Subsystem {
 
         // Set the default command for a subsystem here.
         setDefaultCommand(new TankDrive());
-        DataLogger.addDataElement("Left error",()->left1.getClosedLoopError(0));
-        DataLogger.addDataElement("Right error",()->right1.getClosedLoopError(0));
-        DataLogger.addDataElement("Left velocity",()->left1.getSelectedSensorVelocity(0));
-        DataLogger.addDataElement("Right velocity",()->right1.getSelectedSensorVelocity(0));
-
-
+        DataLogger.addDataElement("Left error",() -> left1.getClosedLoopError(0));
+        DataLogger.addDataElement("Right error",() -> right1.getClosedLoopError(0));
+        DataLogger.addDataElement("Left velocity",() -> left1.getSelectedSensorVelocity(0));
+        DataLogger.addDataElement("Right velocity",() -> right1.getSelectedSensorVelocity(0));
     }
 
     @Override
@@ -294,6 +294,15 @@ public class DriveTrain extends Subsystem {
 
     public Rotation2d getGyroAngle() {
         return new Rotation2d();
+    }
+
+    public void setPower(DriveSignal drive) {
+        setVelocity(drive.getLeft(), drive.getRight());
+    }
+
+    public void setVelocity(DriveSignal drive) {
+        setVelocity(drive.getLeft() * Constants.PHYSICAL_MAX_HIGH_SPEED_TICKS,
+                drive.getRight() * Constants.PHYSICAL_MAX_HIGH_SPEED_TICKS);
     }
 
 }

@@ -32,6 +32,7 @@ public class DataLogger implements Loop {
         if (first_time) {
             writeHeader();
             first_time = false;
+            writer.flush();
         }
     }
     
