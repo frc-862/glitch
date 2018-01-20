@@ -41,14 +41,14 @@ public class Teleop extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.driveTrain.setVelocityMode();
+        Robot.driveTrain.setVoltageMode();
         cheesyDrive = new CheesyDriveHelper();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        DriveSignal drive = cheesyDrive.cheesyDrive(Robot.oi.getRotation(), Robot.oi.getThrust(),
+        DriveSignal drive = cheesyDrive.cheesyDrive(Robot.oi.getThrust(), Robot.oi.getRotation(),
                 Robot.oi.getQuickTurn(), Robot.shifter.isHighGear());
 //        Robot.driveTrain.setVelocity(drive);
         Robot.driveTrain.setPower(drive);
