@@ -67,10 +67,6 @@ public class DriveTrain extends Subsystem {
 
         // Set the default command for a subsystem here.
         setDefaultCommand(new TankDrive());
-        DataLogger.addDataElement("Left error",() -> left1.getClosedLoopError(0));
-        DataLogger.addDataElement("Right error",() -> right1.getClosedLoopError(0));
-        DataLogger.addDataElement("Left velocity",() -> left1.getSelectedSensorVelocity(0));
-        DataLogger.addDataElement("Right velocity",() -> right1.getSelectedSensorVelocity(0));
     }
 
     @Override
@@ -121,6 +117,12 @@ public class DriveTrain extends Subsystem {
 
     public DriveTrain() {
         super();
+
+        DataLogger.addDataElement("Left error",() -> left1.getClosedLoopError(0));
+        DataLogger.addDataElement("Right error",() -> right1.getClosedLoopError(0));
+        DataLogger.addDataElement("Left velocity",() -> left1.getSelectedSensorVelocity(0));
+        DataLogger.addDataElement("Right velocity",() -> right1.getSelectedSensorVelocity(0));
+
         left1.selectProfileSlot(0, 0);
         right1.selectProfileSlot(0, 0);
 
@@ -297,6 +299,8 @@ public class DriveTrain extends Subsystem {
     }
 
     public void setPower(DriveSignal drive) {
+        SmartDashboard.putNumber("sp left", drive.getLeft());
+        SmartDashboard.putNumber("sp right", drive.getRight());
         setVelocity(drive.getLeft(), drive.getRight());
     }
 
