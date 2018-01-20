@@ -109,6 +109,9 @@ public class Constants extends ConstantsBase {
     public static double MotorTestPower = 0.3;
     public static double MotorTestDistance = 3;
 
+    public static double slowLoopRate = 0.5;
+    public static double fastLoopRate = 0.05;
+
 
     public String getFileName() {
         return "~/glitch.yaml";
