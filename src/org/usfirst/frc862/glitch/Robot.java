@@ -86,8 +86,8 @@ public class Robot extends TimedRobot {
         slowLooper.register(DataLogger.getLogger().getLogWriter());
         fastLooper.register(DataLogger.getLogger());
 
-        slowLooper.start();
-        fastLooper.start();
+//        slowLooper.start();
+//        fastLooper.start();
     }
 
     /**
@@ -95,7 +95,10 @@ public class Robot extends TimedRobot {
      * You can use it to reset subsystems before shutting down.
      */
     @Override
-    public void disabledInit() { DataLogger.flush(); }
+    public void disabledInit() {
+        DataLogger.flush();
+        Logger.getWriter().flush();
+    }
 
     @Override
     public void disabledPeriodic() { Scheduler.getInstance().run(); }

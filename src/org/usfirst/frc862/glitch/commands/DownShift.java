@@ -12,6 +12,7 @@
 package org.usfirst.frc862.glitch.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Robot;
+import org.usfirst.frc862.util.Logger;
 
 /**
  *
@@ -48,22 +49,27 @@ public class DownShift extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return this.isTimedOut();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Logger.info("End Downshift");
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        Logger.info("Downshift interrupted");
+        end();
     }
 
     @Override
     public synchronized void start() {
+        this.setTimeout(0.1);
+        Logger.info("Start Downshift");
         Robot.shifter.downshift();
     }
 }

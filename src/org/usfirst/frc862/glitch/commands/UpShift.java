@@ -12,6 +12,7 @@
 package org.usfirst.frc862.glitch.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Robot;
+import org.usfirst.frc862.util.Logger;
 
 /**
  *
@@ -38,32 +39,41 @@ public class UpShift extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Logger.info("initialize upshift");
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        Logger.info("executing upshift");
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
+        Logger.info("upshift Isfinished?");
         return false;
+//        return this.isTimedOut();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Logger.info("End Upshift");
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        Logger.info("upshift interrupted");
+        //end();
     }
 
     @Override
     public synchronized void start() {
+        this.setTimeout(0.1);
+        Logger.info("Start Upshift");
         Robot.shifter.upshift();
     }
 }
