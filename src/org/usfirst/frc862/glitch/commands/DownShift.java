@@ -39,6 +39,9 @@ public class DownShift extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        this.setTimeout(0.1);
+        Logger.info("Start Downshift");
+        Robot.shifter.downshift();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -64,12 +67,5 @@ public class DownShift extends Command {
     protected void interrupted() {
         Logger.info("Downshift interrupted");
         end();
-    }
-
-    @Override
-    public synchronized void start() {
-        this.setTimeout(0.1);
-        Logger.info("Start Downshift");
-        Robot.shifter.downshift();
     }
 }

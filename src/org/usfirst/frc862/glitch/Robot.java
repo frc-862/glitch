@@ -86,8 +86,8 @@ public class Robot extends TimedRobot {
         slowLooper.register(DataLogger.getLogger().getLogWriter());
         fastLooper.register(DataLogger.getLogger());
 
-//        slowLooper.start();
-//        fastLooper.start();
+        slowLooper.start();
+        fastLooper.start();
     }
 
     /**

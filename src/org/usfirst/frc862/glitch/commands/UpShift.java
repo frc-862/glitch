@@ -40,6 +40,8 @@ public class UpShift extends Command {
     @Override
     protected void initialize() {
         Logger.info("initialize upshift");
+        this.setTimeout(0.1);
+        Robot.shifter.upshift();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -68,12 +70,5 @@ public class UpShift extends Command {
     protected void interrupted() {
         Logger.info("upshift interrupted");
         //end();
-    }
-
-    @Override
-    public synchronized void start() {
-        this.setTimeout(0.1);
-        Logger.info("Start Upshift");
-        Robot.shifter.upshift();
     }
 }
