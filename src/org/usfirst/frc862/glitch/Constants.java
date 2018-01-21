@@ -22,7 +22,7 @@ public class Constants extends ConstantsBase {
 
     //PID
     public static double PHYSICAL_MAX_SPEED_TICKS = 850;
-    public static double PHYSICAL_MAX_HIGH_SPEED_TICKS = 1200;
+    public static double PHYSICAL_MAX_HIGH_SPEED_TICKS = 2000;
     public static double MAX_SPEED_TICKS = 600;
 
     // NOTE we are going to want to tune for high/low gear with
@@ -111,6 +111,7 @@ public class Constants extends ConstantsBase {
 
     public static double slowLoopRate = 0.5;
     public static double fastLoopRate = 0.05;
+    public static double openLoopRamp = 0.1;
 
 
     public String getFileName() {
