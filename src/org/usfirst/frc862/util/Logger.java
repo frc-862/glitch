@@ -54,10 +54,28 @@ public class Logger {
         base.mkdirs();
 
         int counter = 0;
-        DriverStation.getInstance().getMatchNumber();
-        File result = new File(base, String.format("robot-%05d.log", counter));
+        String name_format = "robot-%05d.log";
+        DriverStation ds = DriverStation.getInstance();
+        switch(ds.getMatchType()) {
+            case Practice:
+                name_format = String.format("practice-%d-%d-%%05d.log", ds.getMatchNumber(), ds.getReplayNumber());
+                break;
+
+            case Qualification:
+                name_format = String.format("qual-%d-%d-%%05d.log", ds.getMatchNumber(), ds.getReplayNumber());
+                break;
+
+            case Elimination:
+                name_format = String.format("elim-%d-%d-%%05d.log", ds.getMatchNumber(), ds.getReplayNumber());
+                break;
+
+            default:
+                name_format = "robot-%05d.log";
+        }
+
+        File result = new File(base, String.format(name_format, counter));
         while (result.exists()) {
-            result = new File(base, String.format("robot-%05d.log", ++counter));
+            result = new File(base, String.format(name_format, ++counter));
         }
 
         return result;

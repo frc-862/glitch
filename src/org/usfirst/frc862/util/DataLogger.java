@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 
 public class DataLogger implements Loop {
@@ -81,10 +82,29 @@ public class DataLogger implements Loop {
         base = new File(base, "log");
         base.mkdirs();
 
+        String name_format = "robot-%05d-dl.log";
+        DriverStation ds = DriverStation.getInstance();
+        switch(ds.getMatchType()) {
+            case Practice:
+                name_format = String.format("practice-%d-%d-%%05d-dl.log", ds.getMatchNumber(), ds.getReplayNumber());
+                break;
+
+            case Qualification:
+                name_format = String.format("qual-%d-%d-%%05d-dl.log", ds.getMatchNumber(), ds.getReplayNumber());
+                break;
+
+            case Elimination:
+                name_format = String.format("elim-%d-%d-%%05d-dl.log", ds.getMatchNumber(), ds.getReplayNumber());
+                break;
+
+            default:
+                name_format = "robot-%05d-dl.log";
+        }
+
         int counter = 0;
-        File result = new File(base, String.format("data-%05d.log", counter));
+        File result = new File(base, String.format(name_format, counter));
         while (result.exists()) {
-            result = new File(base, String.format("data-%05d.log", ++counter));
+            result = new File(base, String.format(name_format, ++counter));
         }
 
         return result;
