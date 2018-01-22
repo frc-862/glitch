@@ -2,12 +2,12 @@ plugins {
     id "java"
     id "eclipse"
     id "idea"
-    id "jaci.openrio.gradle.GradleRIO" version "2018.01.20"
+    id "jaci.openrio.gradle.GradleRIO" version "2018.01.21"
 }
 
-wpi {
-    wpilibVersion = "2018.2.2"
-}
+//wpi {
+    //wpilibVersion = "2018.2.2"
+//}
 
 def TEAM = 862
 def ROBOT_CLASS = "org.usfirst.frc862.glitch.Robot"
