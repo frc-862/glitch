@@ -314,8 +314,17 @@ public class DriveTrain extends Subsystem {
     }
 
 	public void setPIDF(double kP, double kI, double kD, double kF) {
-		// TODO Auto-generated method stub
-		
+        eachMaster((m) -> {
+            m.config_kP(Constants.LOWGEAR_IDX, kP, Constants.TALON_TIMEOUT);
+            m.config_kI(Constants.LOWGEAR_IDX, kI, Constants.TALON_TIMEOUT);
+            m.config_kD(Constants.LOWGEAR_IDX, kD, Constants.TALON_TIMEOUT);
+            m.config_kF(Constants.LOWGEAR_IDX, kF, Constants.TALON_TIMEOUT);
+            
+            m.config_kP(Constants.HIGHGEAR_IDX, kP, Constants.TALON_TIMEOUT);
+            m.config_kI(Constants.HIGHGEAR_IDX, kI, Constants.TALON_TIMEOUT);
+            m.config_kD(Constants.HIGHGEAR_IDX, kD, Constants.TALON_TIMEOUT);
+            m.config_kF(Constants.HIGHGEAR_IDX, kF, Constants.TALON_TIMEOUT);
+        });
 	}
 
 }

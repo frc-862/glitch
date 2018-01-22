@@ -57,7 +57,7 @@ public class CalbratedRun extends Command {
 		time = SmartDashboard.getNumber("Calibrated Run kP", 5.0);
 		velocity = SmartDashboard.getNumber("Calibrated Run kP", 600);
 		
-		DataLogger.getLogger().setBaseFileName(String.format("calibrated-%06d-%06d-%06d-%06d", 
+		DataLogger.setBaseFileName(String.format("calibrated-%06d-%06d-%06d-%06d", 
 				Math.round(kP * 1000), Math.round(kI * 1000), 
 				Math.round(kD * 1000), Math.round(kF * 1000)));
 		
