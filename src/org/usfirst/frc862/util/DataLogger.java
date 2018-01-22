@@ -13,6 +13,7 @@ public class DataLogger implements Loop {
     private ArrayList<String> fieldNames = new ArrayList<String>();
     private ArrayList<DoubleSupplier> fieldValues = new ArrayList<DoubleSupplier>();
     private boolean first_time = true;
+    private String baseFName = "data";
     
     public static DataLogger getLogger() {
         if (logger == null) {
@@ -62,6 +63,11 @@ public class DataLogger implements Loop {
         writer = new LogWriter(file.getAbsolutePath());
     }
 
+    public void setBaseFileName(String fname) {
+    		this.baseFName = fname;
+    		this.reset_file();
+    }
+    
     private File logFileName() {
         File base = null;
 
@@ -82,26 +88,26 @@ public class DataLogger implements Loop {
         base = new File(base, "log");
         base.mkdirs();
 
-        String name_format = "robot-%05d-dl.log";
-        DriverStation ds = DriverStation.getInstance();
-        switch(ds.getMatchType()) {
-            case Practice:
-                name_format = String.format("practice-%d-%d-%%05d-dl.log", ds.getMatchNumber(), ds.getReplayNumber());
-                break;
+        String name_format = baseFName + "-%05-dl.log";
+//        DriverStation ds = DriverStation.getInstance();
+//        switch(ds.getMatchType()) {
+//            case Practice:
+//                name_format = String.format("practice-%d-%d-%%05d-dl.log", ds.getMatchNumber(), ds.getReplayNumber());
+//                break;
+//
+//            case Qualification:
+//                name_format = String.format("qual-%d-%d-%%05d-dl.log", ds.getMatchNumber(), ds.getReplayNumber());
+//                break;
+//
+//            case Elimination:
+//                name_format = String.format("elim-%d-%d-%%05d-dl.log", ds.getMatchNumber(), ds.getReplayNumber());
+//                break;
+//
+//            default:
+//                name_format = "robot-%05d-dl.log";
+//        }
 
-            case Qualification:
-                name_format = String.format("qual-%d-%d-%%05d-dl.log", ds.getMatchNumber(), ds.getReplayNumber());
-                break;
-
-            case Elimination:
-                name_format = String.format("elim-%d-%d-%%05d-dl.log", ds.getMatchNumber(), ds.getReplayNumber());
-                break;
-
-            default:
-                name_format = "robot-%05d-dl.log";
-        }
-
-        int counter = 0;
+        int counter = 1;
         File result = new File(base, String.format(name_format, counter));
         while (result.exists()) {
             result = new File(base, String.format(name_format, ++counter));
@@ -130,4 +136,9 @@ public class DataLogger implements Loop {
     public void onLoop() {
         writeValues();
     }
+
+	public void setFileName(String string) {
+		// TODO Auto-generated method stub
+		
+	}
 }
