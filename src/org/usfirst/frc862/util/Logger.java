@@ -8,7 +8,7 @@ import org.usfirst.frc862.glitch.Constants;
 public class Logger {
     private LogWriter writer;
 
-	private String baseFileName = "robot";
+	private static String baseFileName = "robot";
 
     public static final int TRACE = 0;
     public static final int DEBUG = 10;
@@ -35,9 +35,9 @@ public class Logger {
         return getLogger().writer;
     }
     
-    public void setBaseFileName(String fname) {
-    		this.baseFileName = fname;
-    		this.reset_file();
+    public static void setBaseFileName(String fname) {
+    		baseFileName = fname;
+    		getLogger().reset_file();
     }
     
     private File logFileName() {
