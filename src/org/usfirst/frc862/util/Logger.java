@@ -8,6 +8,8 @@ import org.usfirst.frc862.glitch.Constants;
 public class Logger {
     private LogWriter writer;
 
+	private static String baseFileName = "robot";
+
     public static final int TRACE = 0;
     public static final int DEBUG = 10;
     public static final int INFO = 20;
@@ -33,6 +35,11 @@ public class Logger {
         return getLogger().writer;
     }
     
+    public static void setBaseFileName(String fname) {
+    		baseFileName = fname;
+    		getLogger().reset_file();
+    }
+    
     private File logFileName() {
         File base = null;
 
@@ -53,26 +60,8 @@ public class Logger {
         base = new File(base, "log");
         base.mkdirs();
 
-        int counter = 0;
-        String name_format = "robot-%05d.log";
-        DriverStation ds = DriverStation.getInstance();
-        switch(ds.getMatchType()) {
-            case Practice:
-                name_format = String.format("practice-%d-%d-%%05d.log", ds.getMatchNumber(), ds.getReplayNumber());
-                break;
-
-            case Qualification:
-                name_format = String.format("qual-%d-%d-%%05d.log", ds.getMatchNumber(), ds.getReplayNumber());
-                break;
-
-            case Elimination:
-                name_format = String.format("elim-%d-%d-%%05d.log", ds.getMatchNumber(), ds.getReplayNumber());
-                break;
-
-            default:
-                name_format = "robot-%05d.log";
-        }
-
+        int counter = 1;
+        String name_format = baseFileName + "-%05d.log";
         File result = new File(base, String.format(name_format, counter));
         while (result.exists()) {
             result = new File(base, String.format(name_format, ++counter));
@@ -155,5 +144,13 @@ public class Logger {
 
     public static void flush() {
         getLogger().writer.flush();
+    }
+    
+    public void reset_file() {
+        writer.flush();
+        writer.close();
+        File file = logFileName();
+        System.out.println("new logfile: " + file);
+        writer = new LogWriter(file.getAbsolutePath());
     }
 }

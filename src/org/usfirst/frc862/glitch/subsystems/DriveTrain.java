@@ -313,5 +313,10 @@ public class DriveTrain extends Subsystem {
                 drive.getRight() * Constants.PHYSICAL_MAX_HIGH_SPEED_TICKS);
     }
 
+	public void setPIDF(double kP, double kI, double kD, double kF) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
 
