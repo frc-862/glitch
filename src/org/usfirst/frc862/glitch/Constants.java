@@ -114,6 +114,17 @@ public class Constants extends ConstantsBase {
     public static double openLoopRamp = 0.1;
 
 
+    // Autoshifter
+    public static double shiftHysteresis = 1.0;
+    public static double MinUpshiftVelocity = 1000;  // TODO calibrate me
+    public static double MinRequestedVelocityForUpshift = 1200; // TODO calibrate me
+    public static double HighCurrentThreshold;
+    public static double highCurrentTimeout;
+    public static double CrashDeacceleration;
+    public static double CoastVelocity;
+    public static double CoastTriggerTime;
+
+
     public String getFileName() {
         return "~/glitch.yaml";
     }
@@ -131,4 +142,5 @@ public class Constants extends ConstantsBase {
 
         // new Constants().readFromFile();
     }
+
 }

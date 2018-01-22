@@ -119,9 +119,4 @@ public class DataLogger implements Loop {
     public void onLoop() {
         writeValues();
     }
-
-	public void setFileName(String string) {
-		// TODO Auto-generated method stub
-		
-	}
 }

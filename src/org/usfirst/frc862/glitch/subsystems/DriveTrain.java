@@ -327,5 +327,19 @@ public class DriveTrain extends Subsystem {
         });
 	}
 
+    public void slowForSeconds(double v) {
+        // TODO implement me
+    }
+
+    public double getAbsVelocity() {
+        // TODO implement me
+        return 0;
+    }
+
+    public double getRequestedVelocity() {
+        // TODO implement me
+        return 0;
+    }
+
 }
 
