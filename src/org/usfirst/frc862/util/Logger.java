@@ -79,7 +79,7 @@ public class Logger {
     }
 
     public static void log(String s) {
-        getLogger().logString(s);
+        Logger.getLogger().logString(s);
     }
     
     public static void setLevel(int l) {
@@ -147,10 +147,6 @@ public class Logger {
     }
     
     public void reset_file() {
-        writer.flush();
-        writer.close();
-        File file = logFileName();
-        System.out.println("new logfile: " + file);
-        writer = new LogWriter(file.getAbsolutePath());
+        writer.setFileName(logFileName().getAbsolutePath());
     }
 }

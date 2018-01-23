@@ -20,18 +20,25 @@ public class LogWriter implements Loop {
     public LogWriter(String file, int buffer_depth) {
         buffer = new ArrayBlockingQueue<String>(buffer_depth);
         drain = new Vector<String>(buffer_depth);
-        
-        try {
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        setFileName(file);
     }
     
     public LogWriter(String fname) {
         this(fname, Constants.logDepth);
     }
-    
+
+    public void setFileName(String file) {
+        try {
+            if (writer != null) {
+                writer.close();
+            }
+
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void onLoop() {
         try {
             buffer.drainTo(drain);
@@ -78,7 +85,11 @@ public class LogWriter implements Loop {
     }
 
     public void close() {
-        close();
+        try {
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void logRawString(String s) {

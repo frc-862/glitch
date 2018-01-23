@@ -89,7 +89,7 @@ public class DataLogger implements Loop {
         base = new File(base, "log");
         base.mkdirs();
 
-        String name_format = baseFName + "-%05-dl.log";
+        String name_format = baseFName + "-%05d-dl.log";
         int counter = 1;
         File result = new File(base, String.format(name_format, counter));
         while (result.exists()) {
@@ -100,15 +100,7 @@ public class DataLogger implements Loop {
     }
 
     public void reset_file() {
-        writer.flush();
-        writer.close();
-        File file = logFileName();
-        System.out.println("new logfile: " + file);
-        writer = new LogWriter(file.getAbsolutePath());
-    }
-    
-    public static void new_file() {
-        getLogger().reset_file();
+        writer.setFileName(logFileName().getAbsolutePath());
     }
     
     public static void flush() {
