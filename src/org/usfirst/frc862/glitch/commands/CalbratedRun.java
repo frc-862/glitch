@@ -54,17 +54,20 @@ public class CalbratedRun extends Command {
         SmartDashboard.putNumber("Calibrated Run kF", 0);
         SmartDashboard.putNumber("Calibrated Run Time", 5.0);
         SmartDashboard.putNumber("Calibrated Run Velocity", 1);
+        SmartDashboard.putNumber("Calibrated Run Ramp time", 0);
+        SmartDashboard.putNumber("Calibrated Run wave period", 2);
+        SmartDashboard.putNumber("Calibrated Run wave amplitude", 0.5);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-		kP = SmartDashboard.getNumber("Calibrated Run kP", 0);
+		kP = SmartDashboard.getNumber("Calibrated Run kP", 1);
 		kI = SmartDashboard.getNumber("Calibrated Run kI", 0);
 		kD = SmartDashboard.getNumber("Calibrated Run kD", 0);
-		kF = SmartDashboard.getNumber("Calibrated Run kF", 0);
+		kF = SmartDashboard.getNumber("Calibrated Run kF", 0.57);
 		time = SmartDashboard.getNumber("Calibrated Run Time", 5.0);
-		velocity = SmartDashboard.getNumber("Calibrated Run Velocity", 1);
+		velocity = SmartDashboard.getNumber("Calibrated Run Velocity", 700);
 		ramp_time = SmartDashboard.getNumber("Calibrated Run Ramp time", 0);
 		wave_period = SmartDashboard.getNumber("Calibrated Run wave period", 2);
 		wave_amplitude = SmartDashboard.getNumber("Calibrated Run wave amplitude", 0.5);
@@ -83,13 +86,13 @@ public class CalbratedRun extends Command {
         if (timeSinceInitialized() < ramp_time) {
             double percent = timeSinceInitialized() / ramp_time;
             double power = velocity * percent;
-            Robot.driveTrain.setPower(power, power);
+            Robot.driveTrain.setVelocity(power, power);
         } else {
             double time_since_ramp = timeSinceInitialized() - ramp_time;
             double period = (time_since_ramp / (2 * Math.PI)) * wave_period;
             double percent = 1 - (Math.sin(period) * wave_amplitude);
             double power = velocity * percent;
-            Robot.driveTrain.setPower(power, power);
+            Robot.driveTrain.setVelocity(power, power);
         }
     }
 
@@ -103,6 +106,7 @@ public class CalbratedRun extends Command {
     @Override
     protected void end() {
         DataLogger.flush();
+        DataLogger.setBaseFileName("done");
     	Robot.driveTrain.stop();
     }
 

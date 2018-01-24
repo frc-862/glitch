@@ -21,25 +21,24 @@ public class Constants extends ConstantsBase {
     public static int TALON_TIMEOUT = 10; //ms
 
     //PID
-    public static double PHYSICAL_MAX_SPEED_TICKS = 850;
-    public static double PHYSICAL_MAX_HIGH_SPEED_TICKS = 2000;
-    public static double MAX_SPEED_TICKS = 600;
+    public static double PHYSICAL_MAX_LOW_SPEED_TICKS = 800;
+    public static double PHYSICAL_MAX_HIGH_SPEED_TICKS = 1800;
 
     // NOTE we are going to want to tune for high/low gear with
     // at the very least a different feed forward...
     public static final int LOWGEAR_IDX = 0;
     public static final int HIGHGEAR_IDX = 1;
-    public static double LOWGEAR_DRIVE_P = 1.5;
+    public static double LOWGEAR_DRIVE_P = 1.5;  // 2 oscillated a little in testing
     public static double LOWGEAR_DRIVE_I = 0;
     public static double LOWGEAR_DRIVE_D = 0;
-    public static double LOWGEAR_DRIVE_F = 950.0 / PHYSICAL_MAX_SPEED_TICKS;
-    public static final int LOWGEAR_ALLOWED_DRIVE_ERROR = 10;
+    public static double LOWGEAR_DRIVE_F = 1023 / PHYSICAL_MAX_LOW_SPEED_TICKS;
+    public static final int LOWGEAR_ALLOWED_DRIVE_ERROR = 20;
 
-    public static double HIGHGEAR_DRIVE_P = 0;
+    public static double HIGHGEAR_DRIVE_P = 0.75;
     public static double HIGHGEAR_DRIVE_I = 0;
     public static double HIGHGEAR_DRIVE_D = 0;
-    public static double HIGHGEAR_DRIVE_F = 950 / PHYSICAL_MAX_HIGH_SPEED_TICKS;
-    public static final int HIGHGEAR_ALLOWED_DRIVE_ERROR = 10;
+    public static double HIGHGEAR_DRIVE_F = 1023 / PHYSICAL_MAX_HIGH_SPEED_TICKS;
+    public static final int HIGHGEAR_ALLOWED_DRIVE_ERROR = 40;
     public static double TICS_PER_ROTATION = 360 * 4;
 
     // PID gains for drive velocity loop (HIGH GEAR)
