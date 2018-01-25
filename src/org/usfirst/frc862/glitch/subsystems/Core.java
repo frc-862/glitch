@@ -58,6 +58,9 @@ public class Core extends Subsystem {
     public void periodic() {
         // Put code here to be run every loop
         SmartDashboard.putNumber("Heading", navx.getFusedHeading());
+//        SmartDashboard.putNumber("x", navx.getVelocityX());
+//        SmartDashboard.putNumber("y", navx.getVelocityY());
+//        SmartDashboard.putNumber("z", navx.getVelocityZ());
     }
 
     public void enterTestMode() {

@@ -122,6 +122,9 @@ public class Constants extends ConstantsBase {
     public static double CrashDeacceleration;
     public static double CoastVelocity;
     public static double CoastTriggerTime;
+    public static double NotStraight = 0.1;
+    public static double StraightMarginOfError = 1.5;
+    public static double NotTurning = 0.01;
 
 
     public String getFileName() {
