@@ -104,7 +104,12 @@ public class Arcade extends Command {
                     double err = LightningMath.boundThetaNeg180to180(Robot.core.getGyroAngle() - heading);
                     if (Math.abs(err) > Constants.StraightMarginOfError) {
                         SmartDashboard.putNumber("Theta Error", err);
-                        rot = err * -0.01;
+
+                        if (Robot.shifter.isHighGear()) {
+                            rot = err * Constants.StraightenKpHighGear;
+                        } else {
+                            rot = err * Constants.StraightenKpLowGear;
+                        }
                         SmartDashboard.putNumber("Theta Correct", rot);
                         quickTurn = true;
                     }

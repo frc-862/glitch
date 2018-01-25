@@ -87,13 +87,6 @@ public class DriveTrain extends Subsystem {
         SmartDashboard.putNumber("left pos", left1.getSelectedSensorPosition(0));
     }
 
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-    protected static double native2ips(int native_speed) {
-        final int CONV_100msTOsec = 1000 /100;
-        return native_speed * CONV_100msTOsec / Constants.TICS_PER_ROTATION * Constants.WheelCircumference;
-    }
-
     protected void eachMotor(Consumer<BaseMotorController> func) {
         func.accept(left1);
         func.accept(left2);
@@ -148,7 +141,10 @@ public class DriveTrain extends Subsystem {
         right2.setInverted(true);
         right3.setInverted(true);
 
-        eachMaster((m) -> m.configOpenloopRamp(Constants.openLoopRamp, Constants.TALON_TIMEOUT));
+        eachMaster((m) -> {
+            m.configOpenloopRamp(Constants.openLoopRamp, Constants.TALON_TIMEOUT);
+            m.configClosedloopRamp(Constants.closedLoopRamp, Constants.TALON_TIMEOUT);
+        });
 
         /* set the peak and nominal outputs, 12V means full */
         eachMotor((baseMotorController) -> {
@@ -262,22 +258,18 @@ public class DriveTrain extends Subsystem {
 //    }
 
     public double getLeftDistanceInches() {
-        // TODO scale correctly
         return left1.getSelectedSensorPosition(0);
     }
 
     public double getRightDistanceInches() {
-        // TODO scale correctly
         return right1.getSelectedSensorPosition(0);
     }
 
     public double getLeftVelocityInchesPerSec() {
-        // TODO scale correctly
         return LightningMath.talon2ips(left1.getSelectedSensorVelocity(0));
     }
 
     public double getRightVelocityInchesPerSec() {
-        // TODO scale correctly
         return LightningMath.talon2ips(right1.getSelectedSensorVelocity(0));
     }
 
@@ -286,8 +278,6 @@ public class DriveTrain extends Subsystem {
     }
 
     public void setPower(DriveSignal drive) {
-        SmartDashboard.putNumber("sp left", drive.getLeft());
-        SmartDashboard.putNumber("sp right", drive.getRight());
         setPower(drive.getLeft(), drive.getRight());
     }
 
@@ -299,11 +289,6 @@ public class DriveTrain extends Subsystem {
     public void setVelocity(double left, double right) {
         left1.set(ControlMode.Velocity, left);
         right1.set(ControlMode.Velocity, right);
-
-//        left1.selectProfileSlot(0, 0);
-//        right1.selectProfileSlot(0, 0);
-        SmartDashboard.putNumber("drive left", left);
-        SmartDashboard.putNumber("drive right", right);
     }
 
     public void setVelocityIPS(double left, double right) {
