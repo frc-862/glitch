@@ -10,6 +10,7 @@
 
 package org.usfirst.frc862.glitch.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.util.CommandLogger;
 import org.usfirst.frc862.util.LightningTimer;
 import org.usfirst.frc862.util.Logger;
@@ -86,6 +87,7 @@ public class AutoShift extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        SmartDashboard.putString("auto shift state",state.toString());
         switch (state) {
             case HIGH_GEAR:
                 high_gear();
@@ -142,6 +144,10 @@ public class AutoShift extends Command {
     }
 
     private void low_gear() {
+        SmartDashboard.putNumber("abs velocity", Robot.driveTrain.getAbsVelocity());
+        SmartDashboard.putNumber("min up shift velocity",Constants.MinUpshiftVelocity);
+        SmartDashboard.putNumber("requested velocity",Robot.driveTrain.getRequestedVelocity());
+        SmartDashboard.putNumber("min requsted velocity for up shift",Constants.MinRequestedVelocityForUpshift);
         if (Robot.driveTrain.getAbsVelocity() > Constants.MinUpshiftVelocity &&
             Robot.driveTrain.getRequestedVelocity() > Constants.MinRequestedVelocityForUpshift) {
                 state = State.UP_SHIFTING;

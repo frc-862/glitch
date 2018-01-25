@@ -122,7 +122,7 @@ public class Arcade extends Command {
         SmartDashboard.putBoolean("quickturn", quickTurn);
         SmartDashboard.putString("arcade mode", state.toString());
         DriveSignal power = drive.cheesyDrive(pwr, rot, quickTurn, Robot.shifter.isHighGear());
-        Robot.driveTrain.setPower(power);
+        Robot.driveTrain.setVelocity(power);
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -115,13 +115,13 @@ public class Constants extends ConstantsBase {
 
     // Autoshifter
     public static double shiftHysteresis = 1.0;
-    public static double MinUpshiftVelocity = 1000;  // TODO calibrate me
-    public static double MinRequestedVelocityForUpshift = 1200; // TODO calibrate me
-    public static double HighCurrentThreshold;
-    public static double highCurrentTimeout;
-    public static double CrashDeacceleration;
-    public static double CoastVelocity;
-    public static double CoastTriggerTime;
+    public static double MinUpshiftVelocity = LightningMath.talon2ips(750);  // TODO calibrate me
+    public static double MinRequestedVelocityForUpshift = LightningMath.talon2ips(800); // TODO calibrate me
+    public static double HighCurrentThreshold = 200;
+    public static double highCurrentTimeout = 0.150;
+    public static double CrashDeacceleration = -12;
+    public static double CoastVelocity = LightningMath.talon2ips(400);
+    public static double CoastTriggerTime = 0.1;
     public static double NotStraight = 0.1;
     public static double StraightMarginOfError = 1.5;
     public static double NotTurning = 0.01;

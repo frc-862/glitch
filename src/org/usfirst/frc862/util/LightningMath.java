@@ -1,9 +1,18 @@
 
 package org.usfirst.frc862.util;
 
+import com.team254.lib.util.ConstantsBase;
 import org.usfirst.frc862.glitch.Constants;
 
 public class LightningMath {
+    public static double talon2ips(double talon) {
+        // multiply 100ms by 10 to get seconds
+        return ticks2inches(talon * 10);
+    }
+
+    public static double ticks2inches(double ticks) {
+        return ticks / Constants.TICS_PER_ROTATION * Constants.WheelCircumference;
+    }
 
 	public static double meters2feet(double meters) {
 		return meters * 0.3048;
