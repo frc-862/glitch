@@ -17,6 +17,7 @@ import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team254.lib.util.DriveSignal;
 import com.team254.lib.util.math.Rotation2d;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
@@ -41,6 +42,8 @@ import org.usfirst.frc862.util.LightningMath;
  *
  */
 public class DriveTrain extends Subsystem {
+
+    private double slowUntil = 0;
 
     enum Mode { voltage, velocity, test };
     Mode mode;
@@ -154,7 +157,7 @@ public class DriveTrain extends Subsystem {
             baseMotorController.configPeakOutputReverse(-1, Constants.TALON_TIMEOUT);
         });
 
-        setVoltageMode();
+        setVelocityMode();
     }
 
     public Mode getMode() {
@@ -175,9 +178,7 @@ public class DriveTrain extends Subsystem {
             m.config_kF(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
             m.configAllowableClosedloopError(Constants.LOWGEAR_IDX, Constants.LOWGEAR_ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
             m.setSelectedSensorPosition(0, Constants.LOWGEAR_IDX, Constants.TALON_TIMEOUT);
-        });
 
-        eachMaster((m) -> {
             m.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.HIGHGEAR_IDX, Constants.TALON_TIMEOUT);
             m.config_kP(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
             m.config_kI(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
@@ -185,11 +186,19 @@ public class DriveTrain extends Subsystem {
             m.config_kF(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
             m.setSelectedSensorPosition(0, Constants.HIGHGEAR_IDX, Constants.TALON_TIMEOUT);
             m.configAllowableClosedloopError(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
+
+            m.configOpenloopRamp(Constants.openLoopRamp, Constants.TALON_TIMEOUT);
+            m.configClosedloopRamp(Constants.closedLoopRamp, Constants.TALON_TIMEOUT);
         });
 
         // select slot based on current gear..
-//        left1.selectProfileSlot(Constants.LOWGEAR_IDX, 0);
-//        right1.selectProfileSlot(Constants.LOWGEAR_IDX, 0);
+        if (Robot.shifter == null || !Robot.shifter.isHighGear()) {
+            left1.selectProfileSlot(Constants.LOWGEAR_IDX, 0);
+            right1.selectProfileSlot(Constants.LOWGEAR_IDX, 0);
+        } else {
+            left1.selectProfileSlot(Constants.HIGHGEAR_IDX, 0);
+            right1.selectProfileSlot(Constants.HIGHGEAR_IDX, 0);
+        }
 
         mode = vmode;
     }
@@ -214,16 +223,16 @@ public class DriveTrain extends Subsystem {
     }
 
     public void upShiftEnd() {
-//        left1.selectProfileSlot(Constants.HIGHGEAR_IDX, 0);
-//        right1.selectProfileSlot(Constants.HIGHGEAR_IDX, 0);
-        SmartDashboard.putString("DT PID", "upshifted");
-        eachMaster((m) -> {
-            m.config_kP(Constants.LOWGEAR_IDX, Constants.HIGHGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
-            m.config_kI(Constants.LOWGEAR_IDX, Constants.HIGHGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
-            m.config_kD(Constants.LOWGEAR_IDX, Constants.HIGHGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
-            m.config_kF(Constants.LOWGEAR_IDX, Constants.HIGHGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
-            m.configAllowableClosedloopError(Constants.LOWGEAR_IDX, Constants.HIGHGEAR_ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
-        });
+        left1.selectProfileSlot(Constants.HIGHGEAR_IDX, 0);
+        right1.selectProfileSlot(Constants.HIGHGEAR_IDX, 0);
+//        SmartDashboard.putString("DT PID", "upshifted");
+//        eachMaster((m) -> {
+//            m.config_kP(Constants.LOWGEAR_IDX, Constants.HIGHGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
+//            m.config_kI(Constants.LOWGEAR_IDX, Constants.HIGHGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
+//            m.config_kD(Constants.LOWGEAR_IDX, Constants.HIGHGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
+//            m.config_kF(Constants.LOWGEAR_IDX, Constants.HIGHGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
+//            m.configAllowableClosedloopError(Constants.LOWGEAR_IDX, Constants.HIGHGEAR_ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
+//        });
     }
 
     public void downShiftBegin() {
@@ -231,16 +240,16 @@ public class DriveTrain extends Subsystem {
     }
 
     public void downShiftEnd() {
-//        left1.selectProfileSlot(Constants.LOWGEAR_IDX, 0);
-//        right1.selectProfileSlot(Constants.LOWGEAR_IDX, 0);
-        SmartDashboard.putString("DT PID", "downshifted");
-        eachMaster((m) -> {
-            m.config_kP(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
-            m.config_kI(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
-            m.config_kD(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
-            m.config_kF(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
-            m.configAllowableClosedloopError(Constants.LOWGEAR_IDX, Constants.LOWGEAR_ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
-        });
+        left1.selectProfileSlot(Constants.LOWGEAR_IDX, 0);
+        right1.selectProfileSlot(Constants.LOWGEAR_IDX, 0);
+//        SmartDashboard.putString("DT PID", "downshifted");
+//        eachMaster((m) -> {
+//            m.config_kP(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
+//            m.config_kI(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
+//            m.config_kD(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
+//            m.config_kF(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
+//            m.configAllowableClosedloopError(Constants.LOWGEAR_IDX, Constants.LOWGEAR_ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
+//        });
     }
 
     public void setPower(double left, double right) {
@@ -287,12 +296,17 @@ public class DriveTrain extends Subsystem {
     }
 
     public void setVelocity(double left, double right) {
-        left1.set(ControlMode.Velocity, left);
-        right1.set(ControlMode.Velocity, right);
+        if (Timer.getFPGATimestamp() < slowUntil) {
+            left1.set(getAverageSpeed() * Constants.slowDownRate);
+            right1.set(getAverageSpeed() * Constants.slowDownRate);
+        } else {
+            left1.set(ControlMode.Velocity, left);
+            right1.set(ControlMode.Velocity, right);
+        }
     }
 
     public void setVelocityIPS(double left, double right) {
-        setVelocity(LightningMath.talon2ips(left), LightningMath.talon2ips(right));
+        setVelocity(LightningMath.ips2talon(left), LightningMath.ips2talon(right));
     }
 
     public void setPIDF(double kP, double kI, double kD, double kF) {
@@ -309,12 +323,20 @@ public class DriveTrain extends Subsystem {
         });
 	}
 
-    public void slowForSeconds(double v) {
-
+    public void slowForSeconds(double seconds) {
+        slowUntil = Timer.getFPGATimestamp() + seconds;
     }
 
     public double getAbsVelocity() {
         return Math.abs((getRightVelocityInchesPerSec()+getLeftVelocityInchesPerSec())/2);
+    }
+
+    public double getAverageSpeed() {
+        int pidIdx = (Robot.shifter.isHighGear() ? Constants.HIGHGEAR_IDX : Constants.LOWGEAR_IDX);
+        double leftSpeed = left1.getSelectedSensorVelocity(pidIdx);
+        double rightSpeed = right1.getSelectedSensorVelocity(pidIdx);
+        double s = (leftSpeed  + rightSpeed) / 2;
+        return s;
     }
 
     public double getRequestedVelocity() {

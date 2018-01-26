@@ -125,6 +125,10 @@ public class Robot extends TimedRobot {
         Logger.getWriter().flush();
     }
 
+    // get rid of overload me message
+    @Override
+    public void robotPeriodic() { }
+
     @Override
     public void disabledPeriodic() { Scheduler.getInstance().run(); }
 

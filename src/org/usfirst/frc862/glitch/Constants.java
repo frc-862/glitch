@@ -35,9 +35,11 @@ public class Constants extends ConstantsBase {
     public static final int LOWGEAR_ALLOWED_DRIVE_ERROR = 20;
 
     public static double HIGHGEAR_DRIVE_P = 0.75;
+//    public static double HIGHGEAR_DRIVE_P = 0;
     public static double HIGHGEAR_DRIVE_I = 0;
     public static double HIGHGEAR_DRIVE_D = 0;
     public static double HIGHGEAR_DRIVE_F = 1023 / PHYSICAL_MAX_HIGH_SPEED_TICKS;
+//    public static double HIGHGEAR_DRIVE_F = 0;
     public static final int HIGHGEAR_ALLOWED_DRIVE_ERROR = 40;
     public static double TICS_PER_ROTATION = 360 * 4;
 
@@ -129,6 +131,7 @@ public class Constants extends ConstantsBase {
 
     public static double StraightenKpLowGear = -0.005;
     public static double StraightenKpHighGear = -0.01;
+    public static double slowDownRate = 0.95;
 
 
     public String getFileName() {

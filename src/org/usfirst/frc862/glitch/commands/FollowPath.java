@@ -7,7 +7,9 @@ import com.team254.lib.util.math.RigidTransform2d;
 import com.team254.lib.util.math.Twist2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
+import org.usfirst.frc862.glitch.paths.RightStartLeftSwitch;
 import org.usfirst.frc862.glitch.state.Kinematics;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.state.RobotState;
@@ -25,6 +27,8 @@ public class FollowPath extends Command {
     @Override
     protected void initialize() {
         super.initialize();
+
+        mCurrentPath = (new RightStartLeftSwitch()).buildPath();
         finished = false;
         Robot.driveTrain.setVelocityMode();
         mRobotState = RobotState.getInstance();
@@ -58,6 +62,8 @@ public class FollowPath extends Command {
             final double scale = max_desired > Constants.kDriveHighGearMaxSetpoint
                     ? Constants.kDriveHighGearMaxSetpoint / max_desired : 1.0;
 
+            SmartDashboard.putNumber("setpoint left", left_inches_per_sec * scale);
+            SmartDashboard.putNumber("setpoint right", right_inches_per_sec * scale);
             Robot.driveTrain.setVelocityIPS(left_inches_per_sec * scale, right_inches_per_sec * scale);
         } else {
             finished = true;

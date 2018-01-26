@@ -54,7 +54,7 @@ public class Arcade extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.driveTrain.setVoltageMode();
+        Robot.driveTrain.setVelocityMode();
         lastHeading = Robot.core.getGyroAngle();
         state = State.turning;
     }
