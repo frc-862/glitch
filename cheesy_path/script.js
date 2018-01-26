@@ -481,7 +481,7 @@ function exportData() {
 	update();
 	var title = ($("#title").val().length > 0) ? $("#title").val() : "UntitledPath";
 	var blob = new Blob([getDataString()], {type: "text/plain;charset=utf-8"});
-	saveAs(blob, title+".java");
+	saveAs(blob, title+".java", {type: "text/plain;charset=utf-8"});
 }
 
 function showData() {
