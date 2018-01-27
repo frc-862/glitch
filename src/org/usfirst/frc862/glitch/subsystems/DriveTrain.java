@@ -267,11 +267,11 @@ public class DriveTrain extends Subsystem {
 //    }
 
     public double getLeftDistanceInches() {
-        return left1.getSelectedSensorPosition(0);
+        return LightningMath.ticks2inches(left1.getSelectedSensorPosition(0));
     }
 
     public double getRightDistanceInches() {
-        return right1.getSelectedSensorPosition(0);
+        return LightningMath.ticks2inches(right1.getSelectedSensorPosition(0));
     }
 
     public double getLeftVelocityInchesPerSec() {
@@ -280,10 +280,6 @@ public class DriveTrain extends Subsystem {
 
     public double getRightVelocityInchesPerSec() {
         return LightningMath.talon2ips(right1.getSelectedSensorVelocity(0));
-    }
-
-    public Rotation2d getGyroAngle() {
-        return new Rotation2d();
     }
 
     public void setPower(DriveSignal drive) {

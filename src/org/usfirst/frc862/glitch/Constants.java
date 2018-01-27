@@ -112,8 +112,8 @@ public class Constants extends ConstantsBase {
 
     public static double slowLoopRate = 0.5;
     public static double fastLoopRate = 0.05;
-    public static double openLoopRamp = 0.1;
-    public static double closedLoopRamp = 0.1;
+    public static double openLoopRamp = 0.2;
+    public static double closedLoopRamp = 0.2;
 
 
     // Autoshifter
@@ -129,8 +129,8 @@ public class Constants extends ConstantsBase {
     public static double StraightMarginOfError = 1.5;
     public static double NotTurning = 0.01;
 
-    public static double StraightenKpLowGear = -0.005;
-    public static double StraightenKpHighGear = -0.01;
+    public static double StraightenKpLowGear = 0; // -0.005;
+    public static double StraightenKpHighGear = 0; // -0.01;
     public static double slowDownRate = 0.95;
 
 

@@ -120,6 +120,7 @@ public class RobotState {
             Twist2d predicted_velocity) {
         addFieldToVehicleObservation(timestamp,
                 Kinematics.integrateForwardKinematics(getLatestFieldToVehicle().getValue(), measured_velocity));
+        SmartDashboard.putString("thetas", "" + measured_velocity.dtheta + " / " + predicted_velocity.dtheta);
         vehicle_velocity_measured_ = measured_velocity;
         vehicle_velocity_predicted_ = predicted_velocity;
     }

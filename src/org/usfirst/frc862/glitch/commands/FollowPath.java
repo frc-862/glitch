@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
+import org.usfirst.frc862.glitch.paths.Curves;
 import org.usfirst.frc862.glitch.paths.RightStartLeftSwitch;
+import org.usfirst.frc862.glitch.paths.Straight;
 import org.usfirst.frc862.glitch.state.Kinematics;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.state.RobotState;
@@ -28,7 +30,7 @@ public class FollowPath extends Command {
     protected void initialize() {
         super.initialize();
 
-        mCurrentPath = (new RightStartLeftSwitch()).buildPath();
+        mCurrentPath = (new Straight().buildPath());
         finished = false;
         Robot.driveTrain.setVelocityMode();
         mRobotState = RobotState.getInstance();
