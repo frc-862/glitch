@@ -52,8 +52,12 @@ public class Core extends Subsystem {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
         headingOffset = navx.getYaw();
-       DataLogger.addDataElement("heading", () -> navx.getFusedHeading());
 
+    }
+
+    public Core() {
+        super();
+        DataLogger.addDataElement("heading", () -> navx.getFusedHeading());
     }
 
     @Override

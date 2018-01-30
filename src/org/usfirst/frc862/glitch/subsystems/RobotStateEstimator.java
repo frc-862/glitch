@@ -24,13 +24,14 @@ public class RobotStateEstimator extends Subsystem {
         core_ = core;
         left_encoder_prev_distance_ = drive_.getLeftDistanceInches();
         right_encoder_prev_distance_ = drive_.getRightDistanceInches();
+
+        DataLogger.addDataElement("robot_pose_x", () -> robot_state_.getLatestFieldToVehicle().getValue().getTranslation().x());
+        DataLogger.addDataElement("robot_pose_y", () -> robot_state_.getLatestFieldToVehicle().getValue().getTranslation().y());
+        DataLogger.addDataElement("robot_pose_theta", () -> robot_state_.getLatestFieldToVehicle().getValue().getRotation().getDegrees());
     }
 
     @Override
     protected void initDefaultCommand() {
-        DataLogger.addDataElement("robot_pose_x", () -> robot_state_.getLatestFieldToVehicle().getValue().getTranslation().x());
-        DataLogger.addDataElement("robot_pose_y", () -> robot_state_.getLatestFieldToVehicle().getValue().getTranslation().y());
-        DataLogger.addDataElement("robot_pose_theta", () -> robot_state_.getLatestFieldToVehicle().getValue().getRotation().getDegrees());
     }
 
     @Override
