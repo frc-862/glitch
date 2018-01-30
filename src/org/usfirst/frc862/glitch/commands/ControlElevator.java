@@ -44,7 +44,7 @@ public class ControlElevator extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double speed = Robot.oi.getLeftPower();
+        double speed = -Robot.oi.gamePad.getRawAxis(1);
         RobotMap.elevatormotor.set(speed);
     }
 
