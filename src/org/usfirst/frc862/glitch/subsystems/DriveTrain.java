@@ -88,6 +88,7 @@ public class DriveTrain extends Subsystem {
         SmartDashboard.putNumber("right error", right1.getClosedLoopError(0));
 
         SmartDashboard.putNumber("left pos", left1.getSelectedSensorPosition(0));
+        SmartDashboard.putNumber("right pos", right1.getSelectedSensorPosition(0));
     }
 
     protected void eachMotor(Consumer<BaseMotorController> func) {
