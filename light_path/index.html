@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8"/>
 	<title>Lightning Path</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.min.js"></script>
 	<script type="text/javascript" src="trajectory.js"></script>
 	<script type="text/javascript" src="script.js"></script>
 	<script src="blob.js"></script>
-    <script src="filesaver.js"></script>
+  <script src="filesaver.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
 	<style type="text/css">
@@ -72,6 +72,10 @@
 		width: 200px;
 	}
 
+  td.wide > input {
+    width: 250px;
+  }
+
 	.buttonContainer {
 		width: 828px;
 		margin: 10px auto;
@@ -133,6 +137,8 @@
 		padding: 0 20px;
 		font-size: 14px;
 		font-family: 'Source Code Pro', monospace !important;
+    overflow: scroll;
+		height: 80vh;
 	}
 
 	button {
@@ -208,6 +214,19 @@
         <td class="max_acc"><input value="60"></td>
 				<td class="max_jerk"><input value="660"></td>
 				<td class="time">0</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table>
+		<thead>
+			<th>Package</th>
+			<th>Parent</th>
+		</thead>
+		<tbody id="config">
+			<tr>
+				<td class="wide package"><input value="org.usfirst.frc862.glitch.paths"></td>
+				<td class="wide parent"><input value="DynamicPathCommand"></td>
 			</tr>
 		</tbody>
 	</table>

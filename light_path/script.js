@@ -465,22 +465,33 @@ function importData() {
 			let re = /(?:\/\/\sWAYPOINT_DATA:\s)(.*)/gm;
 			let reversed = /(?:\/\/\sIS_REVERSED:\s)(.*)/gm;
 			let title = /(?:\/\/\sFILE_NAME:\s)(.*)/gm;
+			let dt = (/(?:\/\/\sDT:\s)(.*)/gm).exec(c)[1];
+			let max_vel = (/(?:\/\/\sMAX_VEL:\s)(.*)/gm).exec(c)[1];
+			let max_acc = (/(?:\/\/\sMAX_ACC:\s)(.*)/gm).exec(c)[1];
+			let max_jerk = (/(?:\/\/\sMAX_JERK:\s)(.*)/gm).exec(c)[1];
+			let package = (/(?:\/\/\sPACKAGE:\s)(.*)/gm).exec(c)[1];
+			let parent = (/(?:\/\/\sPARENT:\s)(.*)/gm).exec(c)[1];
 			console.log();
 			$("#title").val(title.exec(c)[1]);
 			$("#isReversed").prop('checked', reversed.exec(c)[1].includes("true"));
+      $("td.dt input").val(dt);
+      $("td.max_vel input").val(max_vel);
+      $("td.max_acc input").val(max_acc);
+      $("td.max_jerk input").val(max_jerk);
+      $("td.package input").val(package);
+      $("td.parent input").val(parent);
 			let jde = re.exec(c)[1];
 			let jd = JSON.parse(jde);
 			// console.log(jd);
 			waypoints = []
 			$("tbody#points").empty();
 			jd.forEach((wpd) => {
-				let wp = new Waypoint(new Translation2d(wpd.position.x, wpd.position.y), wpd.speed, wpd.radius, wpd.comment);
+				let wp = new Waypoint(new Translation2d(wpd.position.x, wpd.position.y), wpd.theta, wpd.comment);
 				// console.log(wp);
 				$("tbody#points").append("<tr>"
 					+"<td><input value='" + wp.position.x + "'></td>"
 					+"<td><input value='" + wp.position.y + "'></td>"
-					+"<td><input value='" + wp.radius + "'></td>"
-					+"<td><input value='" + wp.speed + "'></td>"
+					+"<td><input value='" + Math.round(wp.theta * (180 / Math.PI)) + "'></td>"
 					+"<td class='comments'><input placeholder='Comments' value='" + wp.comment + "'></td>"
 					+"<td><button onclick='$(this).parent().parent().remove();''>Delete</button></td></tr>"
 				);
@@ -501,51 +512,51 @@ function importData() {
 
 function getDataString() {
 	var title = ($("#title").val().length > 0) ? $("#title").val() : "UntitledPath";
-	var pathInit = "";
-	for(var i=0; i<waypoints.length; i++) {
-		pathInit += "        " + waypoints[i].toString() + "\n";
-	}
 	var startPoint = "new Translation2d(" + waypoints[0].position.x + ", " + waypoints[0].position.y + ")";
 	var importStr = "WAYPOINT_DATA: " + JSON.stringify(waypoints);
 	var isReversed = $("#isReversed").is(':checked');
-  var num_elements = path.getLeftWheelTrajectory().getNumSegments();
-
-  var set_segments = "Trajectory.Segment segment;";
+  var dt = parseFloat($("td.dt input").val());
+  var max_vel = parseFloat($("td.max_vel input").val());
+  var max_acc = parseFloat($("td.max_acc input").val());
+  var max_jerk = parseFloat($("td.max_jerk input").val());
+  var package = $("td.package input").val();
+  var parent = $("td.parent input").val();
   
+  var num_elements = path.getLeftWheelTrajectory().getNumSegments();
+  var set_segments = "";
   eachTimeSlice(function(left, right, i) {
   var segment = `
-        segment = new Trajectory.Segment(${left.pos}, ${left.vel}, ${left.acc}, ${left.jerk}, ${left.heading}, ${left.dt}, ${left.x}, ${left.y});
-        left.setSegment(${i}, segment);
-
-        segment = new Trajectory.Segment(${right.pos}, ${right.vel}, ${right.acc}, ${right.jerk}, ${right.heading}, ${right.dt}, ${right.x}, ${right.y});
-        right.setSegment(${i}, segment);
+        left.setSegment(${i}, new Trajectory.Segment(${left.pos}, ${left.vel}, 
+               ${left.acc}, ${left.jerk}, ${left.heading}, ${left.dt}, ${left.x}, ${left.y});
+        right.setSegment(${i}, new Trajectory.Segment(${right.pos}, ${right.vel}, 
+               ${right.acc}, ${right.jerk}, ${right.heading}, ${right.dt}, ${right.x}, ${right.y});
 
 `;
     set_segments += segment;
   });
 
   
-	var str = `package org.usfirst.frc862.glitch.paths;
+	var str = `package ${package};
  
-import org.usfirst.frc862.util.DynamicPathCommand;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
-public class ${title} extends DynamicPathCommand {
-    
-    @Override
-    protected boolean loadPath() {
+public class ${title}${(parent.length > 0) ? " extends " + parent : ""} {
+   
+    public Path getPath() {
+        return ${title}.getPath();
+    }
+
+    public static Path getPath() {
         int num_elements = ${num_elements};
         Trajectory left = new Trajectory(num_elements);
         Trajectory right = new Trajectory(num_elements);
 
         ${set_segments}
         
-        path = new Path("${title}", new Trajectory.Pair(left, right));
-        return true;
+        return new Path("${title}", new Trajectory.Pair(left, right));
     }
 
-    @Override
     public boolean isReversed() {
         return ${isReversed}; 
     }
@@ -553,6 +564,12 @@ public class ${title} extends DynamicPathCommand {
 	// ${importStr}
 	// IS_REVERSED: ${isReversed}
 	// FILE_NAME: ${title}
+  // DT: ${dt}
+  // MAX_VEL: ${max_vel}
+  // MAX_ACC: ${max_acc}
+  // MAX_JERK: ${max_jerk}
+  // PACKAGE: ${package}
+  // PARENT: ${parent}
 }`
 	return str;
 }
