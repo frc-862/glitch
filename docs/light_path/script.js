@@ -527,9 +527,9 @@ function getDataString() {
   eachTimeSlice(function(left, right, i) {
   var segment = `
         left.setSegment(${i}, new Trajectory.Segment(${left.pos}, ${left.vel}, 
-               ${left.acc}, ${left.jerk}, ${left.heading}, ${left.dt}, ${left.x}, ${left.y});
+               ${left.acc}, ${left.jerk}, ${left.heading}, ${left.dt}, ${left.x}, ${left.y}));
         right.setSegment(${i}, new Trajectory.Segment(${right.pos}, ${right.vel}, 
-               ${right.acc}, ${right.jerk}, ${right.heading}, ${right.dt}, ${right.x}, ${right.y});
+               ${right.acc}, ${right.jerk}, ${right.heading}, ${right.dt}, ${right.x}, ${right.y}));
 
 `;
     set_segments += segment;
