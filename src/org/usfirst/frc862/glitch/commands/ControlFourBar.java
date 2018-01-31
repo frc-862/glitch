@@ -45,20 +45,6 @@ public class ControlFourBar extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        //0->A 1->B 2->X 3->Y
-
-        if(Robot.oi.gamePad.getRawButton(1)){
-            RobotMap.fourBarmotor.set(ControlMode.Position, 0);
-        }
-
-        else if(Robot.oi.gamePad.getRawButton(2)){
-            RobotMap.fourBarmotor.set(ControlMode.Position, 100);
-        }
-
-        else if(Robot.oi.gamePad.getRawButton(4)){
-            RobotMap.fourBarmotor.set(ControlMode.Position, 290);
-        }
-
     }
 
     // Make this return true when this Command no longer needs to run execute()

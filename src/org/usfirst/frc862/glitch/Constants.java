@@ -6,12 +6,11 @@ import org.usfirst.frc862.util.ConstantsBase;
 import org.usfirst.frc862.util.LightningMath;
 
 public class Constants extends ConstantsBase {
-  // Note this is final, it will not be
+    // Note this is final, it will not be
     // in the config file, and if you put
     // it there, the value will be ignored
     // as the value here in the code is 
     // immutable
-
 
     //Logging
     public static int logDepth = 1000;
@@ -134,12 +133,19 @@ public class Constants extends ConstantsBase {
     public static double StraightenKpHighGear = 0; // -0.01;
     public static double slowDownRate = 0.95;
 
+    // TODO Set these
+    public static double pathP = 0;
+    public static double pathI = 0;
+    public static double pathD = 0;
+    public static double pathV = 0;
+    public static double pathA = 0;
+    public static double pathTurn = 0;
+
     public static final int ALLOWABLE_FOURBAR_ERROR = 0;
     public static double FOURBAR_P = 0;  // 2 oscillated a little in testing
     public static double FOURBAR_I = 0;
     public static double FOURBAR_D = 0;
     public static double FOURBAR_F = 1000 / PHYSICAL_MAX_LOW_SPEED_TICKS;
-
 
     public String getFileName() {
         return "~/glitch.yaml";

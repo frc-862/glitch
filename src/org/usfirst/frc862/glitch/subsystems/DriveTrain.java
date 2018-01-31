@@ -336,5 +336,10 @@ public class DriveTrain extends Subsystem {
                 left1.getClosedLoopTarget(0) + right1.getClosedLoopTarget(0)) / 2));
     }
 
+    public void resetDistance() {
+        left1.setSelectedSensorPosition(0, 0, Constants.TALON_TIMEOUT);
+        right1.setSelectedSensorPosition(0, 0, Constants.TALON_TIMEOUT);
+    }
+
 }
 
