@@ -10,6 +10,7 @@
 
 
 package org.usfirst.frc862.glitch.commands;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.RobotMap;
@@ -44,15 +45,20 @@ public class ControlFourBar extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if(Robot.fourBar.getPositionEnc() <= 300){
-            RobotMap.fourBarmotor.set(-(Robot.oi.gamePad.getRawAxis(5)/2));
+        //0->A 1->B 2->X 3->Y
+
+        if(Robot.oi.gamePad.getRawButton(1)){
+            RobotMap.fourBarmotor.set(ControlMode.Position, 0);
         }
-        else if((-Robot.oi.gamePad.getRawAxis(5) >= 0.0)) {
-            RobotMap.fourBarmotor.set(0);
+
+        else if(Robot.oi.gamePad.getRawButton(2)){
+            RobotMap.fourBarmotor.set(ControlMode.Position, 100);
         }
-        else {
-            RobotMap.fourBarmotor.set(-(Robot.oi.gamePad.getRawAxis(5)/2));
+
+        else if(Robot.oi.gamePad.getRawButton(4)){
+            RobotMap.fourBarmotor.set(ControlMode.Position, 290);
         }
+
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -40,6 +40,11 @@ public class FourBar extends Subsystem {
     public FourBar() {
         super();
         motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, Constants.TALON_TIMEOUT);
+        motor.configAllowableClosedloopError(0, Constants.ALLOWABLE_FOURBAR_ERROR, Constants.TALON_TIMEOUT);
+        motor.config_kF(0, Constants.FOURBAR_F, Constants.TALON_TIMEOUT);
+        motor.config_kP(0, Constants.FOURBAR_P, Constants.TALON_TIMEOUT);
+        motor.config_kI(0, Constants.FOURBAR_I, Constants.TALON_TIMEOUT);
+        motor.config_kD(0, Constants.FOURBAR_D, Constants.TALON_TIMEOUT);
     }
 
     @Override
