@@ -21,9 +21,8 @@ public class DynamicPathCommand extends Command {
     private TrajectoryFollower followerLeft = new TrajectoryFollower();
     private TrajectoryFollower followerRight = new TrajectoryFollower();
     private Notifier notifier;
-    protected Path path;
     private double starting_heading;
-    protected boolean reverse = false;
+    private Path path;
 
     public DynamicPathCommand() {
         super();
@@ -56,10 +55,16 @@ public class DynamicPathCommand extends Command {
         notifier = new Notifier(()-> followPath());
     }
 
-    protected boolean loadPath() {
-        return false;
+    public Path getPath() {
+        return null;
     }
-    
+
+    private boolean loadPath() {
+        path = getPath();
+
+        return path != null;
+    }
+
     @Override
     protected void initialize() {
         Robot.driveTrain.setVelocityMode();
@@ -69,7 +74,7 @@ public class DynamicPathCommand extends Command {
             Logger.error("Failed to load path");
         }
 
-        if (reverse) {
+        if (isReversed()) {
             path.reverse();
         }
         
