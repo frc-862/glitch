@@ -542,19 +542,25 @@ import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
 public class ${title}${(parent.length > 0) ? " extends " + parent : ""} {
-   
+    private static Path path;
+
     public Path getPath() {
-        return ${title}.getPath();
+        return ${title}.generatePath();
     }
 
-    public static Path getPath() {
+    public static Path generatePath() {
+        if (path != null) {
+            return path;
+        }
+
         int num_elements = ${num_elements};
         Trajectory left = new Trajectory(num_elements);
         Trajectory right = new Trajectory(num_elements);
 
         ${set_segments}
-        
-        return new Path("${title}", new Trajectory.Pair(left, right));
+       
+        path = new Path("${title}", new Trajectory.Pair(left, right));
+        return path;
     }
 
     public boolean isReversed() {
