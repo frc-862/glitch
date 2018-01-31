@@ -51,13 +51,11 @@ public class Gripper extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
-//    public void startWaitForCube(){
-//        waitForCube.start();
-//    }
+    public void startWaitForCube(){
+    }
 
-//    public void startWaitWithCube(){
-//        waitWithCube.start();
-//    }
+    public void startWaitWithCube(){
+    }
 
     @Override
     public void periodic() {
