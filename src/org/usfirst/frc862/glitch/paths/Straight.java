@@ -1,41 +1,841 @@
 package org.usfirst.frc862.glitch.paths;
+ 
+import org.usfirst.frc862.util.DynamicPathCommand;
+import com.team254.lib.trajectory.Path;
+import com.team254.lib.trajectory.Trajectory;
 
-import java.util.ArrayList;
-
-import org.usfirst.frc862.glitch.paths.PathBuilder.Waypoint;
-import com.team254.lib.util.control.Path;
-import com.team254.lib.util.math.RigidTransform2d;
-import com.team254.lib.util.math.Rotation2d;
-import com.team254.lib.util.math.Translation2d;
-
-public class Straight implements PathContainer {
+public class Straight extends DynamicPathCommand {
     
     @Override
-    public Path buildPath() {
-        ArrayList<Waypoint> sWaypoints = new ArrayList<Waypoint>();
-        sWaypoints.add(new Waypoint(0,0,0,0));
-        sWaypoints.add(new Waypoint(120,0,0,60));
+    protected boolean loadPath() {
+        int num_elements = 116;
+        Trajectory left = new Trajectory(num_elements);
+        Trajectory right = new Trajectory(num_elements);
 
-        return PathBuilder.buildPathFromWaypoints(sWaypoints);
-    }
-    
-    @Override
-    public RigidTransform2d getStartPose() {
-        return new RigidTransform2d(new Translation2d(0, 0), Rotation2d.fromDegrees(180.0));
+        Trajectory.Segment segment;
+        segment = new Trajectory.Segment(0.002556533067196674, 0.2556533067196674, 12.78266533598337, 639.1332667991685, 0, 0.02, 20.002556533067196, 114);
+        left.setSegment(0, segment);
+
+        segment = new Trajectory.Segment(0.002556533067196674, 0.2556533067196674, 12.78266533598337, 639.1332667991685, 0, 0.02, 20.002556533067196, 96);
+        right.setSegment(0, segment);
+
+
+        segment = new Trajectory.Segment(0.012782665335984, 0.5113066134393662, 12.782665335984941, 7.851497230149107e-11, 0, 0.02, 20.012782665335983, 114);
+        left.setSegment(1, segment);
+
+        segment = new Trajectory.Segment(0.012782665335984, 0.5113066134393662, 12.782665335984941, 7.851497230149107e-11, 0, 0.02, 20.012782665335983, 96);
+        right.setSegment(1, segment);
+
+
+        segment = new Trajectory.Segment(0.035791462940754595, 1.1504398802385296, 31.95666333995817, 958.6999001986613, 0, 0.02, 20.035791462940754, 114);
+        left.setSegment(2, segment);
+
+        segment = new Trajectory.Segment(0.035791462940754595, 1.1504398802385296, 31.95666333995817, 958.6999001986613, 0, 0.02, 20.035791462940754, 96);
+        right.setSegment(2, segment);
+
+
+        segment = new Trajectory.Segment(0.07669599201590034, 2.0452264537572873, 44.739328675937884, 639.1332667989857, 0, 0.02, 20.0766959920159, 114);
+        left.setSegment(3, segment);
+
+        segment = new Trajectory.Segment(0.07669599201590034, 2.0452264537572873, 44.739328675937884, 639.1332667989857, 0, 0.02, 20.0766959920159, 96);
+        right.setSegment(3, segment);
+
+
+        segment = new Trajectory.Segment(0.14060931869581667, 3.195666333995817, 57.52199401192648, 639.1332667994299, 0, 0.02, 20.140609318695816, 114);
+        left.setSegment(4, segment);
+
+        segment = new Trajectory.Segment(0.14060931869581667, 3.195666333995817, 57.52199401192648, 639.1332667994299, 0, 0.02, 20.140609318695816, 96);
+        right.setSegment(4, segment);
+
+
+        segment = new Trajectory.Segment(0.23264450911489903, 4.601759520954118, 70.30465934791508, 639.1332667994299, 0, 0.02, 20.2326445091149, 114);
+        left.setSegment(5, segment);
+
+        segment = new Trajectory.Segment(0.23264450911489903, 4.601759520954118, 70.30465934791508, 639.1332667994299, 0, 0.02, 20.2326445091149, 96);
+        right.setSegment(5, segment);
+
+
+        segment = new Trajectory.Segment(0.35791462940753577, 6.263506014631837, 83.08732468388591, 639.1332667985416, 0, 0.02, 20.357914629407535, 114);
+        left.setSegment(6, segment);
+
+        segment = new Trajectory.Segment(0.35791462940753577, 6.263506014631837, 83.08732468388591, 639.1332667985416, 0, 0.02, 20.357914629407535, 96);
+        right.setSegment(6, segment);
+
+
+        segment = new Trajectory.Segment(0.5189762126409299, 8.053079161669707, 89.47865735189353, 319.566633400381, 0, 0.02, 20.51897621264093, 114);
+        left.setSegment(7, segment);
+
+        segment = new Trajectory.Segment(0.5189762126409299, 8.053079161669707, 89.47865735189353, 319.566633400381, 0, 0.02, 20.51897621264093, 96);
+        right.setSegment(7, segment);
+
+
+        segment = new Trajectory.Segment(0.7158292588150814, 9.842652308707578, 89.47865735189353, 0, 0, 0.02, 20.71582925881508, 114);
+        left.setSegment(8, segment);
+
+        segment = new Trajectory.Segment(0.7158292588150814, 9.842652308707578, 89.47865735189353, 0, 0, 0.02, 20.71582925881508, 96);
+        right.setSegment(8, segment);
+
+
+        segment = new Trajectory.Segment(0.9484737679299868, 11.632225455745271, 89.47865735188465, -4.440892098500626e-10, 0, 0.02, 20.948473767929986, 114);
+        left.setSegment(9, segment);
+
+        segment = new Trajectory.Segment(0.9484737679299868, 11.632225455745271, 89.47865735188465, -4.440892098500626e-10, 0, 0.02, 20.948473767929986, 96);
+        right.setSegment(9, segment);
+
+
+        segment = new Trajectory.Segment(1.2169097399856497, 13.421798602783142, 89.47865735189353, 4.440892098500626e-10, 0, 0.02, 21.21690973998565, 114);
+        left.setSegment(10, segment);
+
+        segment = new Trajectory.Segment(1.2169097399856497, 13.421798602783142, 89.47865735189353, 4.440892098500626e-10, 0, 0.02, 21.21690973998565, 96);
+        right.setSegment(10, segment);
+
+
+        segment = new Trajectory.Segment(1.5211371749820664, 15.211371749820835, 89.47865735188465, -4.440892098500626e-10, 0, 0.02, 21.521137174982066, 114);
+        left.setSegment(11, segment);
+
+        segment = new Trajectory.Segment(1.5211371749820664, 15.211371749820835, 89.47865735188465, -4.440892098500626e-10, 0, 0.02, 21.521137174982066, 96);
+        right.setSegment(11, segment);
+
+
+        segment = new Trajectory.Segment(1.861156072919237, 17.000944896858527, 89.47865735188465, 0, 0, 0.02, 21.861156072919236, 114);
+        left.setSegment(12, segment);
+
+        segment = new Trajectory.Segment(1.861156072919237, 17.000944896858527, 89.47865735188465, 0, 0, 0.02, 21.861156072919236, 96);
+        right.setSegment(12, segment);
+
+
+        segment = new Trajectory.Segment(2.236966433797165, 18.790518043896398, 89.47865735189353, 4.440892098500626e-10, 0, 0.02, 22.236966433797164, 114);
+        left.setSegment(13, segment);
+
+        segment = new Trajectory.Segment(2.236966433797165, 18.790518043896398, 89.47865735189353, 4.440892098500626e-10, 0, 0.02, 22.236966433797164, 96);
+        right.setSegment(13, segment);
+
+
+        segment = new Trajectory.Segment(2.6485682576158434, 20.580091190933913, 89.47865735187577, -8.881784197001252e-10, 0, 0.02, 22.648568257615842, 114);
+        left.setSegment(14, segment);
+
+        segment = new Trajectory.Segment(2.6485682576158434, 20.580091190933913, 89.47865735187577, -8.881784197001252e-10, 0, 0.02, 22.648568257615842, 96);
+        right.setSegment(14, segment);
+
+
+        segment = new Trajectory.Segment(3.0959615443752826, 22.36966433797196, 89.47865735190241, 1.3322676295501878e-9, 0, 0.02, 23.09596154437528, 114);
+        left.setSegment(15, segment);
+
+        segment = new Trajectory.Segment(3.0959615443752826, 22.36966433797196, 89.47865735190241, 1.3322676295501878e-9, 0, 0.02, 23.09596154437528, 96);
+        right.setSegment(15, segment);
+
+
+        segment = new Trajectory.Segment(3.579146294075369, 24.159237485004326, 89.4786573516182, -1.4210854715202004e-8, 0, 0.02, 23.579146294075368, 114);
+        left.setSegment(16, segment);
+
+        segment = new Trajectory.Segment(3.579146294075369, 24.159237485004326, 89.4786573516182, -1.4210854715202004e-8, 0, 0.02, 23.579146294075368, 96);
+        right.setSegment(16, segment);
+
+
+        segment = new Trajectory.Segment(4.098122506716135, 25.94881063203829, 89.47865735169813, 3.9968028886505635e-9, 0, 0.02, 24.098122506716134, 114);
+        left.setSegment(17, segment);
+
+        segment = new Trajectory.Segment(4.098122506716135, 25.94881063203829, 89.47865735169813, 3.9968028886505635e-9, 0, 0.02, 24.098122506716134, 96);
+        right.setSegment(17, segment);
+
+
+        segment = new Trajectory.Segment(4.652890182297644, 27.73838377907545, 89.478657351858, 7.993605777301127e-9, 0, 0.02, 24.652890182297643, 114);
+        left.setSegment(18, segment);
+
+        segment = new Trajectory.Segment(4.652890182297644, 27.73838377907545, 89.478657351858, 7.993605777301127e-9, 0, 0.02, 24.652890182297643, 96);
+        right.setSegment(18, segment);
+
+
+        segment = new Trajectory.Segment(5.2434493208198925, 29.52795692611243, 89.47865735184912, -4.440892098500626e-10, 0, 0.02, 25.24344932081989, 114);
+        left.setSegment(19, segment);
+
+        segment = new Trajectory.Segment(5.2434493208198925, 29.52795692611243, 89.47865735184912, -4.440892098500626e-10, 0, 0.02, 25.24344932081989, 96);
+        right.setSegment(19, segment);
+
+
+        segment = new Trajectory.Segment(5.869799922282888, 31.31753007314977, 89.47865735186689, 8.881784197001252e-10, 0, 0.02, 25.869799922282887, 114);
+        left.setSegment(20, segment);
+
+        segment = new Trajectory.Segment(5.869799922282888, 31.31753007314977, 89.47865735186689, 8.881784197001252e-10, 0, 0.02, 25.869799922282887, 96);
+        right.setSegment(20, segment);
+
+
+        segment = new Trajectory.Segment(6.531941986686623, 33.10710322018675, 89.47865735184912, -8.881784197001252e-10, 0, 0.02, 26.531941986686622, 114);
+        left.setSegment(21, segment);
+
+        segment = new Trajectory.Segment(6.531941986686623, 33.10710322018675, 89.47865735184912, -8.881784197001252e-10, 0, 0.02, 26.531941986686622, 96);
+        right.setSegment(21, segment);
+
+
+        segment = new Trajectory.Segment(7.2298755140315665, 34.89667636724718, 89.47865735302152, 5.8619775700208265e-8, 0, 0.02, 27.229875514031566, 114);
+        left.setSegment(22, segment);
+
+        segment = new Trajectory.Segment(7.2298755140315665, 34.89667636724718, 89.47865735302152, 5.8619775700208265e-8, 0, 0.02, 27.229875514031566, 96);
+        right.setSegment(22, segment);
+
+
+        segment = new Trajectory.Segment(7.963600504317296, 36.68624951428647, 89.47865735196459, -5.284661597215745e-8, 0, 0.02, 27.963600504317295, 114);
+        left.setSegment(23, segment);
+
+        segment = new Trajectory.Segment(7.963600504317296, 36.68624951428647, 89.47865735196459, -5.284661597215745e-8, 0, 0.02, 27.963600504317295, 96);
+        right.setSegment(23, segment);
+
+
+        segment = new Trajectory.Segment(8.733116957543793, 38.47582266132488, 89.47865735192018, -2.220446049250313e-9, 0, 0.02, 28.733116957543793, 114);
+        left.setSegment(24, segment);
+
+        segment = new Trajectory.Segment(8.733116957543793, 38.47582266132488, 89.47865735192018, -2.220446049250313e-9, 0, 0.02, 28.733116957543793, 96);
+        right.setSegment(24, segment);
+
+
+        segment = new Trajectory.Segment(9.538424873711058, 40.26539580836328, 89.47865735192018, 0, 0, 0.02, 29.538424873711058, 114);
+        left.setSegment(25, segment);
+
+        segment = new Trajectory.Segment(9.538424873711058, 40.26539580836328, 89.47865735192018, 0, 0, 0.02, 29.538424873711058, 96);
+        right.setSegment(25, segment);
+
+
+        segment = new Trajectory.Segment(10.379524252819088, 42.054968955401506, 89.4786573519113, -4.440892098500626e-10, 0, 0.02, 30.37952425281909, 114);
+        left.setSegment(26, segment);
+
+        segment = new Trajectory.Segment(10.379524252819088, 42.054968955401506, 89.4786573519113, -4.440892098500626e-10, 0, 0.02, 30.37952425281909, 96);
+        right.setSegment(26, segment);
+
+
+        segment = new Trajectory.Segment(11.256415094867886, 43.84454210243991, 89.47865735192018, 4.440892098500626e-10, 0, 0.02, 31.256415094867886, 114);
+        left.setSegment(27, segment);
+
+        segment = new Trajectory.Segment(11.256415094867886, 43.84454210243991, 89.47865735192018, 4.440892098500626e-10, 0, 0.02, 31.256415094867886, 96);
+        right.setSegment(27, segment);
+
+
+        segment = new Trajectory.Segment(12.16909739985745, 45.634115249478135, 89.4786573519113, -4.440892098500626e-10, 0, 0.02, 32.16909739985745, 114);
+        left.setSegment(28, segment);
+
+        segment = new Trajectory.Segment(12.16909739985745, 45.634115249478135, 89.4786573519113, -4.440892098500626e-10, 0, 0.02, 32.16909739985745, 96);
+        right.setSegment(28, segment);
+
+
+        segment = new Trajectory.Segment(13.117571167787787, 47.423688396516894, 89.47865735193794, 1.3322676295501878e-9, 0, 0.02, 33.11757116778779, 114);
+        left.setSegment(29, segment);
+
+        segment = new Trajectory.Segment(13.117571167787787, 47.423688396516894, 89.47865735193794, 1.3322676295501878e-9, 0, 0.02, 33.11757116778779, 96);
+        right.setSegment(29, segment);
+
+
+        segment = new Trajectory.Segment(14.101836398657532, 49.21326154348726, 89.47865734851845, -1.709743457922741e-7, 0, 0.02, 34.10183639865753, 114);
+        left.setSegment(30, segment);
+
+        segment = new Trajectory.Segment(14.101836398657532, 49.21326154348726, 89.47865734851845, -1.709743457922741e-7, 0, 0.02, 34.10183639865753, 96);
+        right.setSegment(30, segment);
+
+
+        segment = new Trajectory.Segment(15.121893092467985, 51.00283469052265, 89.47865735176919, 1.6253665080512292e-7, 0, 0.02, 35.121893092467985, 114);
+        left.setSegment(31, segment);
+
+        segment = new Trajectory.Segment(15.121893092467985, 51.00283469052265, 89.47865735176919, 1.6253665080512292e-7, 0, 0.02, 35.121893092467985, 96);
+        right.setSegment(31, segment);
+
+
+        segment = new Trajectory.Segment(16.177741249219153, 52.792407837558386, 89.47865735178695, 8.881784197001252e-10, 0, 0.02, 36.17774124921915, 114);
+        left.setSegment(32, segment);
+
+        segment = new Trajectory.Segment(16.177741249219153, 52.792407837558386, 89.47865735178695, 8.881784197001252e-10, 0, 0.02, 36.17774124921915, 96);
+        right.setSegment(32, segment);
+
+
+        segment = new Trajectory.Segment(17.269380868911043, 54.58198098459448, 89.47865735180471, 8.881784197001252e-10, 0, 0.02, 37.26938086891104, 114);
+        left.setSegment(33, segment);
+
+        segment = new Trajectory.Segment(17.269380868911043, 54.58198098459448, 89.47865735180471, 8.881784197001252e-10, 0, 0.02, 37.26938086891104, 96);
+        right.setSegment(33, segment);
+
+
+        segment = new Trajectory.Segment(18.396811951543654, 56.371554131630575, 89.47865735180471, 0, 0, 0.02, 38.396811951543654, 114);
+        left.setSegment(34, segment);
+
+        segment = new Trajectory.Segment(18.396811951543654, 56.371554131630575, 89.47865735180471, 0, 0, 0.02, 38.396811951543654, 96);
+        right.setSegment(34, segment);
+
+
+        segment = new Trajectory.Segment(19.560034497116973, 58.16112727866596, 89.47865735176919, -1.7763568394002505e-9, 0, 0.02, 39.56003449711697, 114);
+        left.setSegment(35, segment);
+
+        segment = new Trajectory.Segment(19.560034497116973, 58.16112727866596, 89.47865735176919, -1.7763568394002505e-9, 0, 0.02, 39.56003449711697, 96);
+        right.setSegment(35, segment);
+
+
+        segment = new Trajectory.Segment(20.759048505631014, 59.95070042570205, 89.47865735180471, 1.7763568394002505e-9, 0, 0.02, 40.759048505631014, 114);
+        left.setSegment(36, segment);
+
+        segment = new Trajectory.Segment(20.759048505631014, 59.95070042570205, 89.47865735180471, 1.7763568394002505e-9, 0, 0.02, 40.759048505631014, 96);
+        right.setSegment(36, segment);
+
+
+        segment = new Trajectory.Segment(21.993853977085777, 61.74027357273815, 89.47865735180471, 0, 0, 0.02, 41.99385397708578, 114);
+        left.setSegment(37, segment);
+
+        segment = new Trajectory.Segment(21.993853977085777, 61.74027357273815, 89.47865735180471, 0, 0, 0.02, 41.99385397708578, 96);
+        right.setSegment(37, segment);
+
+
+        segment = new Trajectory.Segment(23.264450911481248, 63.52984671977353, 89.47865735176919, -1.7763568394002505e-9, 0, 0.02, 43.26445091148125, 114);
+        left.setSegment(38, segment);
+
+        segment = new Trajectory.Segment(23.264450911481248, 63.52984671977353, 89.47865735176919, -1.7763568394002505e-9, 0, 0.02, 43.26445091148125, 96);
+        right.setSegment(38, segment);
+
+
+        segment = new Trajectory.Segment(24.57083930881744, 65.31941986680962, 89.47865735180471, 1.7763568394002505e-9, 0, 0.02, 44.57083930881744, 114);
+        left.setSegment(39, segment);
+
+        segment = new Trajectory.Segment(24.57083930881744, 65.31941986680962, 89.47865735180471, 1.7763568394002505e-9, 0, 0.02, 44.57083930881744, 96);
+        right.setSegment(39, segment);
+
+
+        segment = new Trajectory.Segment(25.913019169094355, 67.10899301384572, 89.47865735180471, 0, 0, 0.02, 45.913019169094355, 114);
+        left.setSegment(40, segment);
+
+        segment = new Trajectory.Segment(25.913019169094355, 67.10899301384572, 89.47865735180471, 0, 0, 0.02, 45.913019169094355, 96);
+        right.setSegment(40, segment);
+
+
+        segment = new Trajectory.Segment(27.290990492311977, 68.8985661608811, 89.47865735176919, -1.7763568394002505e-9, 0, 0.02, 47.29099049231198, 114);
+        left.setSegment(41, segment);
+
+        segment = new Trajectory.Segment(27.290990492311977, 68.8985661608811, 89.47865735176919, -1.7763568394002505e-9, 0, 0.02, 47.29099049231198, 96);
+        right.setSegment(41, segment);
+
+
+        segment = new Trajectory.Segment(28.704753278470335, 70.68813930791791, 89.47865735184024, 3.552713678800501e-9, 0, 0.02, 48.704753278470335, 114);
+        left.setSegment(42, segment);
+
+        segment = new Trajectory.Segment(28.704753278470335, 70.68813930791791, 89.47865735184024, 3.552713678800501e-9, 0, 0.02, 48.704753278470335, 96);
+        right.setSegment(42, segment);
+
+
+        segment = new Trajectory.Segment(30.1543075275694, 72.47771245495329, 89.47865735176919, -3.552713678800501e-9, 0, 0.02, 50.1543075275694, 114);
+        left.setSegment(43, segment);
+
+        segment = new Trajectory.Segment(30.1543075275694, 72.47771245495329, 89.47865735176919, -3.552713678800501e-9, 0, 0.02, 50.1543075275694, 96);
+        right.setSegment(43, segment);
+
+
+        segment = new Trajectory.Segment(31.639653239609174, 74.26728560198868, 89.47865735176919, 0, 0, 0.02, 51.639653239609174, 114);
+        left.setSegment(44, segment);
+
+        segment = new Trajectory.Segment(31.639653239609174, 74.26728560198868, 89.47865735176919, 0, 0, 0.02, 51.639653239609174, 96);
+        right.setSegment(44, segment);
+
+
+        segment = new Trajectory.Segment(33.160790414589684, 76.05685874902548, 89.47865735184024, 3.552713678800501e-9, 0, 0.02, 53.160790414589684, 114);
+        left.setSegment(45, segment);
+
+        segment = new Trajectory.Segment(33.160790414589684, 76.05685874902548, 89.47865735184024, 3.552713678800501e-9, 0, 0.02, 53.160790414589684, 96);
+        right.setSegment(45, segment);
+
+
+        segment = new Trajectory.Segment(34.7177190525109, 77.84643189606086, 89.47865735176919, -3.552713678800501e-9, 0, 0.02, 54.7177190525109, 114);
+        left.setSegment(46, segment);
+
+        segment = new Trajectory.Segment(34.7177190525109, 77.84643189606086, 89.47865735176919, -3.552713678800501e-9, 0, 0.02, 54.7177190525109, 96);
+        right.setSegment(46, segment);
+
+
+        segment = new Trajectory.Segment(36.31043915337283, 79.6360050430966, 89.47865735178695, 8.881784197001252e-10, 0, 0.02, 56.31043915337283, 114);
+        left.setSegment(47, segment);
+
+        segment = new Trajectory.Segment(36.31043915337283, 79.6360050430966, 89.47865735178695, 8.881784197001252e-10, 0, 0.02, 56.31043915337283, 96);
+        right.setSegment(47, segment);
+
+
+        segment = new Trajectory.Segment(37.93895071717549, 81.4255781901327, 89.47865735180471, 8.881784197001252e-10, 0, 0.02, 57.93895071717549, 114);
+        left.setSegment(48, segment);
+
+        segment = new Trajectory.Segment(37.93895071717549, 81.4255781901327, 89.47865735180471, 8.881784197001252e-10, 0, 0.02, 57.93895071717549, 96);
+        right.setSegment(48, segment);
+
+
+        segment = new Trajectory.Segment(39.603253743918856, 83.21515133716844, 89.47865735178695, -8.881784197001252e-10, 0, 0.02, 59.603253743918856, 114);
+        left.setSegment(49, segment);
+
+        segment = new Trajectory.Segment(39.603253743918856, 83.21515133716844, 89.47865735178695, -8.881784197001252e-10, 0, 0.02, 59.603253743918856, 96);
+        right.setSegment(49, segment);
+
+
+        segment = new Trajectory.Segment(41.30334823360294, 85.00472448420417, 89.47865735178695, 0, 0, 0.02, 61.30334823360294, 114);
+        left.setSegment(50, segment);
+
+        segment = new Trajectory.Segment(41.30334823360294, 85.00472448420417, 89.47865735178695, 0, 0, 0.02, 61.30334823360294, 96);
+        right.setSegment(50, segment);
+
+
+        segment = new Trajectory.Segment(43.03667765316056, 86.666470977881, 83.0873246838415, -319.5666333972724, 0, 0.02, 63.03667765316056, 114);
+        left.setSegment(51, segment);
+
+        segment = new Trajectory.Segment(43.03667765316056, 86.666470977881, 83.0873246838415, -319.5666333972724, 0, 0.02, 63.03667765316056, 96);
+        right.setSegment(51, segment);
+
+
+        segment = new Trajectory.Segment(44.7981289364573, 88.07256416483717, 70.3046593478085, -639.1332668016503, 0, 0.02, 64.7981289364573, 114);
+        left.setSegment(52, segment);
+
+        segment = new Trajectory.Segment(44.7981289364573, 88.07256416483717, 70.3046593478085, -639.1332668016503, 0, 0.02, 64.7981289364573, 96);
+        right.setSegment(52, segment);
+
+
+        segment = new Trajectory.Segment(46.5825890173588, 89.22300404507482, 57.52199401188207, -639.1332667963212, 0, 0.02, 66.5825890173588, 114);
+        left.setSegment(53, segment);
+
+        segment = new Trajectory.Segment(46.5825890173588, 89.22300404507482, 57.52199401188207, -639.1332667963212, 0, 0.02, 66.5825890173588, 96);
+        right.setSegment(53, segment);
+
+
+        segment = new Trajectory.Segment(48.38494482973064, 90.11779061859215, 44.73932867586683, -639.133266800762, 0, 0.02, 68.38494482973064, 114);
+        left.setSegment(54, segment);
+
+        segment = new Trajectory.Segment(48.38494482973064, 90.11779061859215, 44.73932867586683, -639.133266800762, 0, 0.02, 68.38494482973064, 96);
+        right.setSegment(54, segment);
+
+
+        segment = new Trajectory.Segment(50.200083307438476, 90.75692388539167, 31.956663339975933, -639.1332667945449, 0, 0.02, 70.20008330743848, 114);
+        left.setSegment(55, segment);
+
+        segment = new Trajectory.Segment(50.200083307438476, 90.75692388539167, 31.956663339975933, -639.1332667945449, 0, 0.02, 70.20008330743848, 96);
+        right.setSegment(55, segment);
+
+
+        segment = new Trajectory.Segment(52.02289138434787, 91.14040384546982, 19.1739980039074, -639.1332668034266, 0, 0.02, 72.02289138434787, 114);
+        left.setSegment(56, segment);
+
+        segment = new Trajectory.Segment(52.02289138434787, 91.14040384546982, 19.1739980039074, -639.1332668034266, 0, 0.02, 72.02289138434787, 96);
+        right.setSegment(56, segment);
+
+
+        segment = new Trajectory.Segment(53.847035899963686, 91.20722578079068, 3.3410967660429947, -791.6450618932203, 0, 0.02, 73.84703589996369, 114);
+        left.setSegment(57, segment);
+
+        segment = new Trajectory.Segment(53.847035899963686, 91.20722578079068, 3.3410967660429947, -791.6450618932203, 0, 0.02, 73.84703589996369, 96);
+        right.setSegment(57, segment);
+
+
+        segment = new Trajectory.Segment(55.66618369377835, 90.95738969073324, -12.491804502872128, -791.6450634457561, 0, 0.02, 75.66618369377835, 114);
+        left.setSegment(58, segment);
+
+        segment = new Trajectory.Segment(55.66618369377835, 90.95738969073324, -12.491804502872128, -791.6450634457561, 0, 0.02, 75.66618369377835, 96);
+        right.setSegment(58, segment);
+
+
+        segment = new Trajectory.Segment(57.47522169965485, 90.4519002938251, -25.2744698454066, -639.1332671267236, 0, 0.02, 77.47522169965485, 114);
+        left.setSegment(59, segment);
+
+        segment = new Trajectory.Segment(57.47522169965485, 90.4519002938251, -25.2744698454066, -639.1332671267236, 0, 0.02, 77.47522169965485, 96);
+        right.setSegment(59, segment);
+
+
+        segment = new Trajectory.Segment(59.269036851458736, 89.69075759019418, -38.05713518154619, -639.1332668069793, 0, 0.02, 79.26903685145874, 114);
+        left.setSegment(60, segment);
+
+        segment = new Trajectory.Segment(59.269036851458736, 89.69075759019418, -38.05713518154619, -639.1332668069793, 0, 0.02, 79.26903685145874, 96);
+        right.setSegment(60, segment);
+
+
+        segment = new Trajectory.Segment(61.042516083055574, 88.67396157984189, -50.83980051761472, -639.1332668034266, 0, 0.02, 81.04251608305557, 114);
+        left.setSegment(61, segment);
+
+        segment = new Trajectory.Segment(61.042516083055574, 88.67396157984189, -50.83980051761472, -639.1332668034266, 0, 0.02, 81.04251608305557, 96);
+        right.setSegment(61, segment);
+
+
+        segment = new Trajectory.Segment(62.790546328310995, 87.40151226277106, -63.622465853541144, -639.1332667963212, 0, 0.02, 82.790546328311, 114);
+        left.setSegment(62, segment);
+
+        segment = new Trajectory.Segment(62.790546328310995, 87.40151226277106, -63.622465853541144, -639.1332667963212, 0, 0.02, 82.790546328311, 96);
+        right.setSegment(62, segment);
+
+
+        segment = new Trajectory.Segment(64.50801452109056, 85.87340963897816, -76.4051311896452, -639.133266805203, 0, 0.02, 84.50801452109056, 114);
+        left.setSegment(63, segment);
+
+        segment = new Trajectory.Segment(64.50801452109056, 85.87340963897816, -76.4051311896452, -639.133266805203, 0, 0.02, 84.50801452109056, 96);
+        right.setSegment(63, segment);
+
+
+        segment = new Trajectory.Segment(66.19102768962813, 84.15065842687852, -86.1375606049819, -486.6214707668348, 0, 0.02, 86.19102768962813, 114);
+        left.setSegment(64, segment);
+
+        segment = new Trajectory.Segment(66.19102768962813, 84.15065842687852, -86.1375606049819, -486.6214707668348, 0, 0.02, 86.19102768962813, 96);
+        right.setSegment(64, segment);
+
+
+        segment = new Trajectory.Segment(67.83824939522479, 82.36108527983319, -89.47865735226657, -167.05483736423332, 0, 0.02, 87.83824939522479, 114);
+        left.setSegment(65, segment);
+
+        segment = new Trajectory.Segment(67.83824939522479, 82.36108527983319, -89.47865735226657, -167.05483736423332, 0, 0.02, 87.83824939522479, 96);
+        right.setSegment(65, segment);
+
+
+        segment = new Trajectory.Segment(69.44967963788052, 80.57151213278644, -89.47865735233762, -3.552713678800501e-9, 0, 0.02, 89.44967963788052, 114);
+        left.setSegment(66, segment);
+
+        segment = new Trajectory.Segment(69.44967963788052, 80.57151213278644, -89.47865735233762, -3.552713678800501e-9, 0, 0.02, 89.44967963788052, 96);
+        right.setSegment(66, segment);
+
+
+        segment = new Trajectory.Segment(71.02531841759534, 78.7819389857411, -89.47865735226657, 3.552713678800501e-9, 0, 0.02, 91.02531841759534, 114);
+        left.setSegment(67, segment);
+
+        segment = new Trajectory.Segment(71.02531841759534, 78.7819389857411, -89.47865735226657, 3.552713678800501e-9, 0, 0.02, 91.02531841759534, 96);
+        right.setSegment(67, segment);
+
+
+        segment = new Trajectory.Segment(72.56516573436924, 76.99236583869506, -89.4786573523021, -1.7763568394002505e-9, 0, 0.02, 92.56516573436924, 114);
+        left.setSegment(68, segment);
+
+        segment = new Trajectory.Segment(72.56516573436924, 76.99236583869506, -89.4786573523021, -1.7763568394002505e-9, 0, 0.02, 92.56516573436924, 96);
+        right.setSegment(68, segment);
+
+
+        segment = new Trajectory.Segment(74.06922158820224, 75.20279269164973, -89.47865735226657, 1.7763568394002505e-9, 0, 0.02, 94.06922158820224, 114);
+        left.setSegment(69, segment);
+
+        segment = new Trajectory.Segment(74.06922158820224, 75.20279269164973, -89.47865735226657, 1.7763568394002505e-9, 0, 0.02, 94.06922158820224, 96);
+        right.setSegment(69, segment);
+
+
+        segment = new Trajectory.Segment(75.5374859790943, 73.41321954460298, -89.47865735233762, -3.552713678800501e-9, 0, 0.02, 95.5374859790943, 114);
+        left.setSegment(70, segment);
+
+        segment = new Trajectory.Segment(75.5374859790943, 73.41321954460298, -89.47865735233762, -3.552713678800501e-9, 0, 0.02, 95.5374859790943, 96);
+        right.setSegment(70, segment);
+
+
+        segment = new Trajectory.Segment(76.96995890704545, 71.62364639755765, -89.47865735226657, 3.552713678800501e-9, 0, 0.02, 96.96995890704545, 114);
+        left.setSegment(71, segment);
+
+        segment = new Trajectory.Segment(76.96995890704545, 71.62364639755765, -89.47865735226657, 3.552713678800501e-9, 0, 0.02, 96.96995890704545, 96);
+        right.setSegment(71, segment);
+
+
+        segment = new Trajectory.Segment(78.36664037205568, 69.83407325051161, -89.4786573523021, -1.7763568394002505e-9, 0, 0.02, 98.36664037205568, 114);
+        left.setSegment(72, segment);
+
+        segment = new Trajectory.Segment(78.36664037205568, 69.83407325051161, -89.4786573523021, -1.7763568394002505e-9, 0, 0.02, 98.36664037205568, 96);
+        right.setSegment(72, segment);
+
+
+        segment = new Trajectory.Segment(79.72753037412502, 68.04450010346699, -89.47865735223104, 3.552713678800501e-9, 0, 0.02, 99.72753037412502, 114);
+        left.setSegment(73, segment);
+
+        segment = new Trajectory.Segment(79.72753037412502, 68.04450010346699, -89.47865735223104, 3.552713678800501e-9, 0, 0.02, 99.72753037412502, 96);
+        right.setSegment(73, segment);
+
+
+        segment = new Trajectory.Segment(81.05262891325341, 66.25492695641952, -89.47865735237315, -7.105427357601002e-9, 0, 0.02, 101.05262891325341, 114);
+        left.setSegment(74, segment);
+
+        segment = new Trajectory.Segment(81.05262891325341, 66.25492695641952, -89.47865735237315, -7.105427357601002e-9, 0, 0.02, 101.05262891325341, 96);
+        right.setSegment(74, segment);
+
+
+        segment = new Trajectory.Segment(82.3419359894409, 64.4653538093742, -89.47865735226657, 5.329070518200751e-9, 0, 0.02, 102.3419359894409, 114);
+        left.setSegment(75, segment);
+
+        segment = new Trajectory.Segment(82.3419359894409, 64.4653538093742, -89.47865735226657, 5.329070518200751e-9, 0, 0.02, 102.3419359894409, 96);
+        right.setSegment(75, segment);
+
+
+        segment = new Trajectory.Segment(83.59545160268748, 62.67578066232886, -89.47865735226657, 0, 0, 0.02, 103.59545160268748, 114);
+        left.setSegment(76, segment);
+
+        segment = new Trajectory.Segment(83.59545160268748, 62.67578066232886, -89.47865735226657, 0, 0, 0.02, 103.59545160268748, 96);
+        right.setSegment(76, segment);
+
+
+        segment = new Trajectory.Segment(84.81317575299313, 60.88620751528282, -89.4786573523021, -1.7763568394002505e-9, 0, 0.02, 104.81317575299313, 114);
+        left.setSegment(77, segment);
+
+        segment = new Trajectory.Segment(84.81317575299313, 60.88620751528282, -89.4786573523021, -1.7763568394002505e-9, 0, 0.02, 104.81317575299313, 96);
+        right.setSegment(77, segment);
+
+
+        segment = new Trajectory.Segment(85.99510844035788, 59.09663436823749, -89.47865735226657, 1.7763568394002505e-9, 0, 0.02, 105.99510844035788, 114);
+        left.setSegment(78, segment);
+
+        segment = new Trajectory.Segment(85.99510844035788, 59.09663436823749, -89.47865735226657, 1.7763568394002505e-9, 0, 0.02, 105.99510844035788, 96);
+        right.setSegment(78, segment);
+
+
+        segment = new Trajectory.Segment(87.1412496647817, 57.307061221190736, -89.47865735233762, -3.552713678800501e-9, 0, 0.02, 107.1412496647817, 114);
+        left.setSegment(79, segment);
+
+        segment = new Trajectory.Segment(87.1412496647817, 57.307061221190736, -89.47865735233762, -3.552713678800501e-9, 0, 0.02, 107.1412496647817, 96);
+        right.setSegment(79, segment);
+
+
+        segment = new Trajectory.Segment(88.2515994262646, 55.517488074145405, -89.47865735226657, 3.552713678800501e-9, 0, 0.02, 108.2515994262646, 114);
+        left.setSegment(80, segment);
+
+        segment = new Trajectory.Segment(88.2515994262646, 55.517488074145405, -89.47865735226657, 3.552713678800501e-9, 0, 0.02, 108.2515994262646, 96);
+        right.setSegment(80, segment);
+
+
+        segment = new Trajectory.Segment(89.32615772480659, 53.72791492709936, -89.4786573523021, -1.7763568394002505e-9, 0, 0.02, 109.32615772480659, 114);
+        left.setSegment(81, segment);
+
+        segment = new Trajectory.Segment(89.32615772480659, 53.72791492709936, -89.4786573523021, -1.7763568394002505e-9, 0, 0.02, 109.32615772480659, 96);
+        right.setSegment(81, segment);
+
+
+        segment = new Trajectory.Segment(90.36492456040767, 51.93834178005403, -89.47865735226657, 1.7763568394002505e-9, 0, 0.02, 110.36492456040767, 114);
+        left.setSegment(82, segment);
+
+        segment = new Trajectory.Segment(90.36492456040767, 51.93834178005403, -89.47865735226657, 1.7763568394002505e-9, 0, 0.02, 110.36492456040767, 96);
+        right.setSegment(82, segment);
+
+
+        segment = new Trajectory.Segment(91.36789993306783, 50.14876863300799, -89.4786573523021, -1.7763568394002505e-9, 0, 0.02, 111.36789993306783, 114);
+        left.setSegment(83, segment);
+
+        segment = new Trajectory.Segment(91.36789993306783, 50.14876863300799, -89.4786573523021, -1.7763568394002505e-9, 0, 0.02, 111.36789993306783, 96);
+        right.setSegment(83, segment);
+
+
+        segment = new Trajectory.Segment(92.33508384278707, 48.35919548596195, -89.4786573523021, 0, 0, 0.02, 112.33508384278707, 114);
+        left.setSegment(84, segment);
+
+        segment = new Trajectory.Segment(92.33508384278707, 48.35919548596195, -89.4786573523021, 0, 0, 0.02, 112.33508384278707, 96);
+        right.setSegment(84, segment);
+
+
+        segment = new Trajectory.Segment(93.26647628956539, 46.569622338915906, -89.4786573523021, 0, 0, 0.02, 113.26647628956539, 114);
+        left.setSegment(85, segment);
+
+        segment = new Trajectory.Segment(93.26647628956539, 46.569622338915906, -89.4786573523021, 0, 0, 0.02, 113.26647628956539, 96);
+        right.setSegment(85, segment);
+
+
+        segment = new Trajectory.Segment(94.1620772734028, 44.780049191870575, -89.47865735226657, 1.7763568394002505e-9, 0, 0.02, 114.1620772734028, 114);
+        left.setSegment(86, segment);
+
+        segment = new Trajectory.Segment(94.1620772734028, 44.780049191870575, -89.47865735226657, 1.7763568394002505e-9, 0, 0.02, 114.1620772734028, 96);
+        right.setSegment(86, segment);
+
+
+        segment = new Trajectory.Segment(95.0218867942993, 42.99047604482524, -89.47865735226657, 0, 0, 0.02, 115.0218867942993, 114);
+        left.setSegment(87, segment);
+
+        segment = new Trajectory.Segment(95.0218867942993, 42.99047604482524, -89.47865735226657, 0, 0, 0.02, 115.0218867942993, 96);
+        right.setSegment(87, segment);
+
+
+        segment = new Trajectory.Segment(95.84590485225486, 41.20090289777778, -89.47865735237315, -5.329070518200751e-9, 0, 0.02, 115.84590485225486, 114);
+        left.setSegment(88, segment);
+
+        segment = new Trajectory.Segment(95.84590485225486, 41.20090289777778, -89.47865735237315, -5.329070518200751e-9, 0, 0.02, 115.84590485225486, 96);
+        right.setSegment(88, segment);
+
+
+        segment = new Trajectory.Segment(96.63413144726954, 39.41132975073387, -89.47865735219551, 8.881784197001252e-9, 0, 0.02, 116.63413144726954, 114);
+        left.setSegment(89, segment);
+
+        segment = new Trajectory.Segment(96.63413144726954, 39.41132975073387, -89.47865735219551, 8.881784197001252e-9, 0, 0.02, 116.63413144726954, 96);
+        right.setSegment(89, segment);
+
+
+        segment = new Trajectory.Segment(97.38656657934327, 37.62175660368641, -89.47865735237315, -8.881784197001252e-9, 0, 0.02, 117.38656657934327, 114);
+        left.setSegment(90, segment);
+
+        segment = new Trajectory.Segment(97.38656657934327, 37.62175660368641, -89.47865735237315, -8.881784197001252e-9, 0, 0.02, 117.38656657934327, 96);
+        right.setSegment(90, segment);
+
+
+        segment = new Trajectory.Segment(98.10321024847612, 35.8321834566425, -89.47865735219551, 8.881784197001252e-9, 0, 0.02, 118.10321024847612, 114);
+        left.setSegment(91, segment);
+
+        segment = new Trajectory.Segment(98.10321024847612, 35.8321834566425, -89.47865735219551, 8.881784197001252e-9, 0, 0.02, 118.10321024847612, 96);
+        right.setSegment(91, segment);
+
+
+        segment = new Trajectory.Segment(98.78406245466802, 34.042610309595034, -89.47865735237315, -8.881784197001252e-9, 0, 0.02, 118.78406245466802, 114);
+        left.setSegment(92, segment);
+
+        segment = new Trajectory.Segment(98.78406245466802, 34.042610309595034, -89.47865735237315, -8.881784197001252e-9, 0, 0.02, 118.78406245466802, 96);
+        right.setSegment(92, segment);
+
+
+        segment = new Trajectory.Segment(99.429123197919, 32.25303716254899, -89.4786573523021, 3.552713678800501e-9, 0, 0.02, 119.429123197919, 114);
+        left.setSegment(93, segment);
+
+        segment = new Trajectory.Segment(99.429123197919, 32.25303716254899, -89.4786573523021, 3.552713678800501e-9, 0, 0.02, 119.429123197919, 96);
+        right.setSegment(93, segment);
+
+
+        segment = new Trajectory.Segment(100.03839247822907, 30.46346401550366, -89.47865735226657, 1.7763568394002505e-9, 0, 0.02, 120.03839247822907, 114);
+        left.setSegment(94, segment);
+
+        segment = new Trajectory.Segment(100.03839247822907, 30.46346401550366, -89.47865735226657, 1.7763568394002505e-9, 0, 0.02, 120.03839247822907, 96);
+        right.setSegment(94, segment);
+
+
+        segment = new Trajectory.Segment(100.61187029559825, 28.67389086845904, -89.47865735223104, 1.7763568394002505e-9, 0, 0.02, 120.61187029559825, 114);
+        left.setSegment(95, segment);
+
+        segment = new Trajectory.Segment(100.61187029559825, 28.67389086845904, -89.47865735223104, 1.7763568394002505e-9, 0, 0.02, 120.61187029559825, 96);
+        right.setSegment(95, segment);
+
+
+        segment = new Trajectory.Segment(101.1495566500265, 26.884317721412287, -89.47865735233762, -5.329070518200751e-9, 0, 0.02, 121.1495566500265, 114);
+        left.setSegment(96, segment);
+
+        segment = new Trajectory.Segment(101.1495566500265, 26.884317721412287, -89.47865735233762, -5.329070518200751e-9, 0, 0.02, 121.1495566500265, 96);
+        right.setSegment(96, segment);
+
+
+        segment = new Trajectory.Segment(101.65145154151384, 25.094744574366956, -89.47865735226657, 3.552713678800501e-9, 0, 0.02, 121.65145154151384, 114);
+        left.setSegment(97, segment);
+
+        segment = new Trajectory.Segment(101.65145154151384, 25.094744574366956, -89.47865735226657, 3.552713678800501e-9, 0, 0.02, 121.65145154151384, 96);
+        right.setSegment(97, segment);
+
+
+        segment = new Trajectory.Segment(102.11755497006024, 23.305171427320204, -89.47865735233762, -3.552713678800501e-9, 0, 0.02, 122.11755497006024, 114);
+        left.setSegment(98, segment);
+
+        segment = new Trajectory.Segment(102.11755497006024, 23.305171427320204, -89.47865735233762, -3.552713678800501e-9, 0, 0.02, 122.11755497006024, 96);
+        right.setSegment(98, segment);
+
+
+        segment = new Trajectory.Segment(102.54786693566574, 21.515598280274872, -89.47865735226657, 3.552713678800501e-9, 0, 0.02, 122.54786693566574, 114);
+        left.setSegment(99, segment);
+
+        segment = new Trajectory.Segment(102.54786693566574, 21.515598280274872, -89.47865735226657, 3.552713678800501e-9, 0, 0.02, 122.54786693566574, 96);
+        right.setSegment(99, segment);
+
+
+        segment = new Trajectory.Segment(102.94238743833031, 19.72602513322883, -89.4786573523021, -1.7763568394002505e-9, 0, 0.02, 122.94238743833031, 114);
+        left.setSegment(100, segment);
+
+        segment = new Trajectory.Segment(102.94238743833031, 19.72602513322883, -89.4786573523021, -1.7763568394002505e-9, 0, 0.02, 122.94238743833031, 96);
+        right.setSegment(100, segment);
+
+
+        segment = new Trajectory.Segment(103.30111647805397, 17.93645198618279, -89.4786573523021, 0, 0, 0.02, 123.30111647805397, 114);
+        left.setSegment(101, segment);
+
+        segment = new Trajectory.Segment(103.30111647805397, 17.93645198618279, -89.4786573523021, 0, 0, 0.02, 123.30111647805397, 96);
+        right.setSegment(101, segment);
+
+
+        segment = new Trajectory.Segment(103.62405405483672, 16.146878839137457, -89.47865735226657, 1.7763568394002505e-9, 0, 0.02, 123.62405405483672, 114);
+        left.setSegment(102, segment);
+
+        segment = new Trajectory.Segment(103.62405405483672, 16.146878839137457, -89.47865735226657, 1.7763568394002505e-9, 0, 0.02, 123.62405405483672, 96);
+        right.setSegment(102, segment);
+
+
+        segment = new Trajectory.Segment(103.91120016867855, 14.357305692091415, -89.4786573523021, -1.7763568394002505e-9, 0, 0.02, 123.91120016867855, 114);
+        left.setSegment(103, segment);
+
+        segment = new Trajectory.Segment(103.91120016867855, 14.357305692091415, -89.4786573523021, -1.7763568394002505e-9, 0, 0.02, 123.91120016867855, 96);
+        right.setSegment(103, segment);
+
+
+        segment = new Trajectory.Segment(104.16255481957946, 12.567732545045374, -89.4786573523021, 0, 0, 0.02, 124.16255481957946, 114);
+        left.setSegment(104, segment);
+
+        segment = new Trajectory.Segment(104.16255481957946, 12.567732545045374, -89.4786573523021, 0, 0, 0.02, 124.16255481957946, 96);
+        right.setSegment(104, segment);
+
+
+        segment = new Trajectory.Segment(104.37811800753946, 10.778159398000042, -89.47865735226657, 1.7763568394002505e-9, 0, 0.02, 124.37811800753946, 114);
+        left.setSegment(105, segment);
+
+        segment = new Trajectory.Segment(104.37811800753946, 10.778159398000042, -89.47865735226657, 1.7763568394002505e-9, 0, 0.02, 124.37811800753946, 96);
+        right.setSegment(105, segment);
+
+
+        segment = new Trajectory.Segment(104.55788973255855, 8.988586250954711, -89.47865735226657, 0, 0, 0.02, 124.55788973255855, 114);
+        left.setSegment(106, segment);
+
+        segment = new Trajectory.Segment(104.55788973255855, 8.988586250954711, -89.47865735226657, 0, 0, 0.02, 124.55788973255855, 96);
+        right.setSegment(106, segment);
+
+
+        segment = new Trajectory.Segment(104.70186999463672, 7.199013103908669, -89.4786573523021, -1.7763568394002505e-9, 0, 0.02, 124.70186999463672, 114);
+        left.setSegment(107, segment);
+
+        segment = new Trajectory.Segment(104.70186999463672, 7.199013103908669, -89.4786573523021, -1.7763568394002505e-9, 0, 0.02, 124.70186999463672, 96);
+        right.setSegment(107, segment);
+
+
+        segment = new Trajectory.Segment(104.81127888814225, 5.470444675276553, -86.42842143160578, 152.51179603481546, 0, 0.02, 124.81127888814225, 114);
+        left.setSegment(108, segment);
+
+        segment = new Trajectory.Segment(104.81127888814225, 5.470444675276553, -86.42842143160578, 152.51179603481546, 0, 0.02, 124.81127888814225, 96);
+        right.setSegment(108, segment);
+
+
+        segment = new Trajectory.Segment(104.88989304051063, 3.930707618418694, -76.98685284289297, 472.0784294356406, 0, 0.02, 124.88989304051063, 114);
+        left.setSegment(109, segment);
+
+        segment = new Trajectory.Segment(104.88989304051063, 3.930707618418694, -76.98685284289297, 472.0784294356406, 0, 0.02, 124.88989304051063, 96);
+        right.setSegment(109, segment);
+
+
+        segment = new Trajectory.Segment(104.9428255178763, 2.6466238682836263, -64.20418750675339, 639.1332668069793, 0, 0.02, 124.9428255178763, 114);
+        left.setSegment(110, segment);
+
+        segment = new Trajectory.Segment(104.9428255178763, 2.6466238682836263, -64.20418750675339, 639.1332668069793, 0, 0.02, 124.9428255178763, 96);
+        right.setSegment(110, segment);
+
+
+        segment = new Trajectory.Segment(104.97518938637366, 1.6181934248677976, -51.421522170791434, 639.1332667980976, 0, 0.02, 124.97518938637366, 114);
+        left.setSegment(111, segment);
+
+        segment = new Trajectory.Segment(104.97518938637366, 1.6181934248677976, -51.421522170791434, 639.1332667980976, 0, 0.02, 124.97518938637366, 96);
+        right.setSegment(111, segment);
+
+
+        segment = new Trajectory.Segment(104.99209771213711, 0.845416288172629, -38.63885683475843, 639.1332668016503, 0, 0.02, 124.99209771213711, 114);
+        left.setSegment(112, segment);
+
+        segment = new Trajectory.Segment(104.99209771213711, 0.845416288172629, -38.63885683475843, 639.1332668016503, 0, 0.02, 124.99209771213711, 96);
+        right.setSegment(112, segment);
+
+
+        segment = new Trajectory.Segment(104.9986635613011, 0.32829245819954167, -25.85619149865437, 639.133266805203, 0, 0.02, 124.9986635613011, 114);
+        left.setSegment(113, segment);
+
+        segment = new Trajectory.Segment(104.9986635613011, 0.32829245819954167, -25.85619149865437, 639.133266805203, 0, 0.02, 124.9986635613011, 96);
+        right.setSegment(113, segment);
+
+
+        segment = new Trajectory.Segment(105, 0.06682193494498279, -13.073526162727944, 639.1332667963212, 0, 0.02, 125, 114);
+        left.setSegment(114, segment);
+
+        segment = new Trajectory.Segment(105, 0.06682193494498279, -13.073526162727944, 639.1332667963212, 0, 0.02, 125, 96);
+        right.setSegment(114, segment);
+
+
+        segment = new Trajectory.Segment(105, 0, -3.3410967472491393, 486.62147077394025, 0, 0.02, 125, 114);
+        left.setSegment(115, segment);
+
+        segment = new Trajectory.Segment(105, 0, -3.3410967472491393, 486.62147077394025, 0, 0.02, 125, 96);
+        right.setSegment(115, segment);
+
+
+        
+        path = new Path("Straight", new Trajectory.Pair(left, right));
+        return true;
     }
 
     @Override
     public boolean isReversed() {
         return false; 
     }
-	// WAYPOINT_DATA: [{"position":{"x":28,"y":49},"speed":0,"radius":0,"comment":""},{"position":{"x":246,"y":48},"speed":60,"radius":50,"comment":""},{"position":{"x":245,"y":283},"speed":60,"radius":30,"comment":""},{"position":{"x":176,"y":283},"speed":60,"radius":30,"comment":""},{"position":{"x":176,"y":254},"speed":60,"radius":0,"comment":""}]
+  
+	// WAYPOINT_DATA: [{"position":{"x":20,"y":105},"theta":0,"comment":""},{"position":{"x":125,"y":105},"theta":0,"comment":""}]
 	// IS_REVERSED: false
-	// FILE_NAME: Right Start Left Switch
-
-
-    public static void main(String argv[]) {
-        System.out.println("Hi Pat!");
-        Path path = (new RightStartLeftSwitch()).buildPath();
-        System.out.println(path);
-    }
+	// FILE_NAME: Straight
 }

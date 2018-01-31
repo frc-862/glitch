@@ -33,8 +33,10 @@ public class FollowPath extends Command {
         super.initialize();
 
         logger = new CommandLogger("follow");
+        // TODO debug adaptive pursuit and fix
 //        PathContainer path = new GentleCurve();
-        PathContainer path = new Straight();
+//        PathContainer path = new Straight();
+        PathContainer path = null;
         Robot.robotStateEstimator.setStartPose(path.getStartPose());
         mCurrentPath = (path.buildPath());
 

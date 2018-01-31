@@ -344,26 +344,20 @@ function update() {
 }
 
 function drawPath() {
-  var pair = path.getPair();
-  var lpoints = pair.left.segments_;
-  var rpoints = pair.right.segments_;
-
-  var count = lpoints.length;
-
 	color = "#000";
 	ctx.beginPath();
 	ctx.fillStyle = color;
 	ctx.strokeStyle = color;
-  for (var i = 0; i < count; ++i) {
-    var left = lpoints[i];
+
+  eachTimeSlice(function(left, right) {
     ctx.fillStyle = getColorForSpeed(left.vel);
     ctx.strokeStyle = getColorForSpeed(left.vel);
     (new Translation2d(left.x, left.y)).point();
-    var right = rpoints[i];
     ctx.fillStyle = getColorForSpeed(right.vel);
     ctx.strokeStyle = getColorForSpeed(right.vel);
     (new Translation2d(right.x, right.y)).point();
-  }
+  });
+
 	ctx.fill();
 	ctx.lineWidth = 0;
 	ctx.stroke();
@@ -376,7 +370,7 @@ function eachTimeSlice(func) {
   var count = lpoints.length;
 
   for (var i = 0; i < count; ++i) {
-    func(lpoints[i], rpoints[i]);
+    func(lpoints[i], rpoints[i], i);
   }
 }
 
@@ -516,24 +510,20 @@ function getDataString() {
 	var isReversed = $("#isReversed").is(':checked');
   var num_elements = path.getLeftWheelTrajectory().getNumSegments();
 
-  var set_segments = "";
+  var set_segments = "Trajectory.Segment segment;";
   
-  var segement = `
-      Trajectory.Segment segment = new Trajectory.Segment();
-      StringTokenizer line_tokenizer = new StringTokenizer(
-              tokenizer.nextToken(), " ");
-      
-      segment.pos = Double.parseDouble(line_tokenizer.nextToken());
-      segment.vel = Double.parseDouble(line_tokenizer.nextToken());
-      segment.acc = Double.parseDouble(line_tokenizer.nextToken());
-      segment.jerk = Double.parseDouble(line_tokenizer.nextToken());
-      segment.heading = Double.parseDouble(line_tokenizer.nextToken());
-      segment.dt = Double.parseDouble(line_tokenizer.nextToken());
-      segment.x = Double.parseDouble(line_tokenizer.nextToken());
-      segment.y = Double.parseDouble(line_tokenizer.nextToken());
-      
-      left.setSegment(i, segment);
+  eachTimeSlice(function(left, right, i) {
+  var segment = `
+        segment = new Trajectory.Segment(${left.pos}, ${left.vel}, ${left.acc}, ${left.jerk}, ${left.heading}, ${left.dt}, ${left.x}, ${left.y});
+        left.setSegment(${i}, segment);
+
+        segment = new Trajectory.Segment(${right.pos}, ${right.vel}, ${right.acc}, ${right.jerk}, ${right.heading}, ${right.dt}, ${right.x}, ${right.y});
+        right.setSegment(${i}, segment);
+
 `;
+    set_segments += segment;
+  });
+
   
 	var str = `package org.usfirst.frc862.glitch.paths;
  
@@ -541,7 +531,7 @@ import org.usfirst.frc862.util.DynamicPathCommand;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
-public class ${title} implements DynamicPathCommand {
+public class ${title} extends DynamicPathCommand {
     
     @Override
     protected boolean loadPath() {
@@ -549,6 +539,8 @@ public class ${title} implements DynamicPathCommand {
         Trajectory left = new Trajectory(num_elements);
         Trajectory right = new Trajectory(num_elements);
 
+        ${set_segments}
+        
         path = new Path("${title}", new Trajectory.Pair(left, right));
         return true;
     }
