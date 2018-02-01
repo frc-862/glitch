@@ -134,11 +134,11 @@ public class Constants extends ConstantsBase {
     public static double slowDownRate = 0.95;
 
     // TODO Set these
-    public static double pathP = 0;
+    public static double pathP = 5;
     public static double pathI = 0;
     public static double pathD = 0;
-    public static double pathV = 0;
-    public static double pathA = 0;
+    public static double pathV = 1;  // Velocity is in IPS, we command IPS
+    public static double pathA = 0.1;
     public static double pathTurn = 0;
 
     public String getFileName() {
