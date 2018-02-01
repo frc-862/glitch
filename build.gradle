@@ -3,7 +3,6 @@ plugins {
     id "eclipse"
     id "idea"
     id "jaci.openrio.gradle.GradleRIO" version "2018.01.22"
-	id 'org.junit.platform.gradle.plugin'
 }
 
 //wpi {
@@ -53,12 +52,20 @@ dependencies {
     nativeLib fileTree(dir: "libs", include: "**/*.so") // Native libs
 
     robotBuilder "edu.wpi.first.wpilib:RobotBuilder:3.0.+"
+
+    testCompile 'junit:junit:4.12'
+    compile 'junit:junit:4.12'
 }
 
 sourceSets {
     main {
         java {
             srcDirs = ['src']
+        }
+    }
+    test {
+        java {
+            srcDirs = ["test"]  // Note @Peter's comment below
         }
     }
 }

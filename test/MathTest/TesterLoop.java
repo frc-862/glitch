@@ -1,9 +1,9 @@
 package MathTest;
 
-public class testerLoop {
+public class TesterLoop {
 
 	public static void main(String[] args) {
-		tester elevator = new tester();
+		Tester elevator = new Tester();
 
 	}
 

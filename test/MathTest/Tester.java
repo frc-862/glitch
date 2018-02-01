@@ -1,6 +1,6 @@
 package MathTest;
 
-public class tester {
+public class Tester {
 
 	// change all of these values I just put the ones that were in the video
 	// The stall torque, or max torque
@@ -31,7 +31,7 @@ public class tester {
 	private double velocity = 0.0;
 	private double position = 0.0;
 	
-	public tester() {
+	public Tester() {
 		
 	}
 	
@@ -57,4 +57,7 @@ public class tester {
 		
 	}
 
+	public static int testMe() {
+		return 42;
+	}
 }
