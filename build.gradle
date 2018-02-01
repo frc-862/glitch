@@ -3,6 +3,7 @@ plugins {
     id "eclipse"
     id "idea"
     id "jaci.openrio.gradle.GradleRIO" version "2018.01.22"
+	id 'org.junit.platform.gradle.plugin'
 }
 
 //wpi {
