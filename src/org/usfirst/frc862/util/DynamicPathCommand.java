@@ -53,6 +53,11 @@ public class DynamicPathCommand extends Command {
         logger.addDataElement("angle_diff");
         
         notifier = new Notifier(()-> followPath());
+        loadPath();
+
+        if (isReversed()) {
+            path.reverse();
+        }
     }
 
     public Path getPath() {
@@ -68,16 +73,12 @@ public class DynamicPathCommand extends Command {
     @Override
     protected void initialize() {
         Robot.driveTrain.setVelocityMode();
-        Robot.shifter.downshift();
+//        Robot.shifter.downshift();
         
         if (!loadPath()) {
             Logger.error("Failed to load path");
         }
 
-        if (isReversed()) {
-            path.reverse();
-        }
-        
         Robot.driveTrain.resetDistance();
         starting_heading = Robot.core.getGyroAngle();
         followerLeft.configure(Constants.pathP, Constants.pathI, Constants.pathD, Constants.pathV, Constants.pathA);        
@@ -110,7 +111,7 @@ public class DynamicPathCommand extends Command {
         double requestedLeft = speedLeft + turn;
         double requestedRight = speedRight - turn;
         
-        drive.setVelocity(requestedLeft, requestedRight);
+        drive.setVelocityIPS(requestedLeft, requestedRight);
 
         logger.set("projected_left_pos", left.pos);
         logger.set("requested_left_vel", requestedLeft);
