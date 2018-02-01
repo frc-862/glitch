@@ -28,22 +28,24 @@ public class tester {
 	// control loop time step
 	private static double kDt = 0.010;
 	
-	private static double velocity = 0.0;
-	private static double position = 0.0;
+	private double velocity = 0.0;
+	private double position = 0.0;
+	
+	public tester() {
+		
+	}
 	
 	// V = I * R + omega / Kv
 	// torque = Kt * I
 	
-	public static void main(String[] args) {
-		
-		simulateTime(1, 1);
-	}
+	//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+	//----------------------------------------+---------------------------------------
 	
-	private static double getAcceleration(double voltage) {
+	private double getAcceleration(double voltage) {
 		return -Kt * kG / (Kv * kResistance * Math.pow(kr, 2) * kMass) * velocity + kG * Kt / (kResistance * kr * kMass) * voltage;
 	}
 	
-	private static void simulateTime(double voltage, double time) {
+	private void simulateTime(double voltage, double time) {
 		double kSimTime = 0.0001;
 		double currentTime = 0;
 		while (currentTime < time) {
@@ -51,7 +53,6 @@ public class tester {
 			position += velocity * currentTime;
 			velocity += acc * currentTime;
 			currentTime += kSimTime;
-			System.out.println(position);
 		}
 		
 	}
