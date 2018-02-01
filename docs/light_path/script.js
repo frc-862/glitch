@@ -15,6 +15,7 @@ var kEpsilon = 1E-9;
 var image;
 var imageFlipped;
 var wto;
+var activeWaypoint = 0;
 
 var maxSpeed = 120;
 var maxSpeedColor = [0, 255, 0];
@@ -264,8 +265,21 @@ function init() {
     x = Math.floor(x * fieldWidth);
     y = Math.floor(y * fieldHeight);
 
-    $($('table tbody#points tr:last td input')[0]).prop("value",x);
-    $($('table tbody#points tr:last td input')[1]).prop("value",y);
+    var changeWaypoint = false;
+    // is this inside a previous waypoint?
+    eachPoint(function(rx,ry, theta, comment, idx) {
+        //var robotWidth = 28; //inches
+        //var robotHeight = 33; //inches
+        if ((Math.abs(rx - x) < (robotWidth / 2)) && (Math.abs(ry - y) < (robotHeight / 2))) {
+          activeWaypoint = idx;
+          changeWaypoint = true;  
+        }
+    });
+
+    if (changeWaypoint == false) {
+      $($('table tbody#points tr:eq(' + activeWaypoint + ') td input')[0]).prop("value",x);
+      $($('table tbody#points tr:eq(' + activeWaypoint + ') td input')[1]).prop("value",y);
+    }
     update();
   });
 }
@@ -295,6 +309,7 @@ function addPoint() {
 		prev = waypoints[waypoints.length - 1].position;
 	else 
 		prev = new Translation2d(50, 50);
+  activeWaypoint = waypoints.length;
   //$("tbody#points tr:last td:nth-child(3) input").prop("value", "30");
 	$("tbody#points").append("<tr>"
 		+"<td><input value='"+(prev.x+40)+"'></td>"
@@ -321,11 +336,17 @@ function degrees2radians(deg) {
 function update() {
   clear();
 	waypoints = [];
+  var color = "#000";
   points = new WaypointSequence($("tbody#points tr").length);
-  eachPoint(function(x,y,theta,comment) {
+  eachPoint(function(x,y,theta,comment, i) {
     var pos = new Translation2d(x,y);
     waypoints.push(new Waypoint(pos, theta, comment));
-		drawRotatedRect(pos, robotHeight, robotWidth, -theta, getColorForSpeed(10));
+    if (activeWaypoint == i) {
+      color = getColorForSpeed(10);
+    } else {
+      color = "#000";
+    }
+		drawRotatedRect(pos, robotHeight, robotWidth, -theta, color);
     points.addWaypoint(new WaypointSequence.Waypoint(x, y, theta));
   });
   config = new TrajectoryGenerator.Config();
@@ -375,6 +396,7 @@ function eachTimeSlice(func) {
 }
 
 function eachPoint(func) {
+  var idx = 0;
 	$('tbody#points').children('tr').each(function () {
     var x = parseInt( $($($(this).children()).children()[0]).val() );
     if(isNaN(x)) {
@@ -390,7 +412,7 @@ function eachPoint(func) {
     }
     theta = degrees2radians(theta);
     var comment = ( $($($(this).children()).children()[3]).val() )
-    func(x,y,theta,comment);
+    func(x,y,theta,comment, idx++);
   });
 }
 
