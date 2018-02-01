@@ -45,7 +45,20 @@ public class ControlFourBar extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        if (Robot.oi.gamePad.getRawButtonPressed(1)) {
+            Robot.fourBar.moveToBottom();
+        }
+        else if (Robot.oi.gamePad.getRawButtonPressed(2)) {
+            Robot.fourBar.moveToCollect();
+        }
+        else if (Robot.oi.gamePad.getRawButtonPressed(3)) {
+            Robot.fourBar.moveToSwitch();
+        }
+        else if (Robot.oi.gamePad.getRawButtonPressed(4)) {
+            Robot.fourBar.moveToScale();
+        }
     }
+
 
     // Make this return true when this Command no longer needs to run execute()
     @Override

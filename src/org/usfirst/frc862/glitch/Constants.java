@@ -141,11 +141,16 @@ public class Constants extends ConstantsBase {
     public static double pathA = 0;
     public static double pathTurn = 0;
 
+    // TODO Calibrate
     public static final int ALLOWABLE_FOURBAR_ERROR = 0;
-    public static double FOURBAR_P = 0;  // 2 oscillated a little in testing
+    public static double FOURBAR_P = 0;
     public static double FOURBAR_I = 0;
     public static double FOURBAR_D = 0;
     public static double FOURBAR_F = 1000 / PHYSICAL_MAX_LOW_SPEED_TICKS;
+    public static final double FOURBAR_SCALE_POS = 290;
+    public static final double FOURBAR_SWITCH_POS = 100;
+    public static final double FOURBAR_BOTTOM_POS = 10;
+    public static final double FOURBAR_COLLECT_POS = 50;
 
     public String getFileName() {
         return "~/glitch.yaml";

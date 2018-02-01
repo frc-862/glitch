@@ -45,6 +45,7 @@ public class FourBar extends Subsystem {
         motor.config_kP(0, Constants.FOURBAR_P, Constants.TALON_TIMEOUT);
         motor.config_kI(0, Constants.FOURBAR_I, Constants.TALON_TIMEOUT);
         motor.config_kD(0, Constants.FOURBAR_D, Constants.TALON_TIMEOUT);
+        motor.config_kF(0, Constants.FOURBAR_F, Constants.TALON_TIMEOUT);
     }
 
     @Override
@@ -73,19 +74,19 @@ public class FourBar extends Subsystem {
     }
 
     public void moveToScale() {
-        RobotMap.fourBarmotor.set(ControlMode.Position, 290);
+        RobotMap.fourBarmotor.set(ControlMode.Position, Constants.FOURBAR_SCALE_POS);
     }
 
     public void moveToSwitch() {
-            RobotMap.fourBarmotor.set(ControlMode.Position, 100);
+            RobotMap.fourBarmotor.set(ControlMode.Position, Constants.FOURBAR_SWITCH_POS);
     }
 
     public void moveToBottom() {
-        RobotMap.fourBarmotor.set(ControlMode.Position, 10);
+        RobotMap.fourBarmotor.set(ControlMode.Position, Constants.FOURBAR_BOTTOM_POS);
     }
 
     public void moveToCollect() {
-        RobotMap.fourBarmotor.set(ControlMode.Position, 50);
+        RobotMap.fourBarmotor.set(ControlMode.Position, Constants.FOURBAR_COLLECT_POS);
     }
 }
 
