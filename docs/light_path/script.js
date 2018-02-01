@@ -271,8 +271,10 @@ function init() {
         //var robotWidth = 28; //inches
         //var robotHeight = 33; //inches
         if ((Math.abs(rx - x) < (robotWidth / 2)) && (Math.abs(ry - y) < (robotHeight / 2))) {
-          activeWaypoint = idx;
-          changeWaypoint = true;  
+          if (activeWaypoint != idx) {
+            activeWaypoint = idx;
+            changeWaypoint = true;  
+          }
         }
     });
 
