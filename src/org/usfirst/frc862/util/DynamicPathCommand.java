@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class DynamicPathCommand extends Command {
-    protected TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
     private CommandLogger logger;
     private TrajectoryFollower followerLeft = new TrajectoryFollower();
     private TrajectoryFollower followerRight = new TrajectoryFollower();
@@ -89,7 +88,7 @@ public class DynamicPathCommand extends Command {
         followerRight.setTrajectory(path.getRightWheelTrajectory());
         followerRight.reset();
 
-        notifier.startPeriodic(config.dt);
+        notifier.startPeriodic(path.getLeftWheelTrajectory().getSegment(0).dt);
     }
 
     private void followPath() {
