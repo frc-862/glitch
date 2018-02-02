@@ -2,14 +2,15 @@ package org.usfirst.frc862.util;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import java.util.*;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class TimedTriggers extends Command {
-    class TimedCommandEntry implements Comparator<TimedCommandEntry> {
+    public static class TimedCommandEntry implements Comparable<TimedCommandEntry> {
         private final Command command;
         private final double at;
 
-        TimedCommandEntry(Command cmd, double at) {
+        public TimedCommandEntry(Command cmd, double at) {
             this.command = cmd;
             this.at = at;
         }
@@ -23,9 +24,11 @@ public class TimedTriggers extends Command {
             return false;
         }
 
+        public double getAt() { return at; }
+
         @Override
-        public int compare(TimedCommandEntry o1, TimedCommandEntry o2) {
-            return (int) Math.round(o1.at - o2.at);
+        public int compareTo(TimedCommandEntry o) {
+            return (int) Math.round(this.at - o.at);
         }
     }
 
