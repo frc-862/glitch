@@ -2,6 +2,7 @@ package org.usfirst.frc862.glitch;
 
 import java.io.File;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.util.ConstantsBase;
 import org.usfirst.frc862.util.LightningMath;
 
@@ -140,6 +141,17 @@ public class Constants extends ConstantsBase {
     public static double pathV = 1;  // Velocity is in IPS, we command IPS
     public static double pathA = 0.1;
     public static double pathTurn = 0;
+
+    // TODO Calibrate
+    public static final int ALLOWABLE_FOURBAR_ERROR = 0;
+    public static double FOURBAR_P = SmartDashboard.getNumber("Fourbar P",20);
+    public static double FOURBAR_I = SmartDashboard.getNumber("Fourbar I",0);
+    public static double FOURBAR_D = SmartDashboard.getNumber("Fourbar D",0);
+    public static double FOURBAR_F = SmartDashboard.getNumber("Fourbar F",0);
+    public static final double FOURBAR_SCALE_POS = 290;
+    public static final double FOURBAR_SWITCH_POS = 100;
+    public static final double FOURBAR_COLLECT_POS = 25;
+    public static final double FOURBAR_BOTTOM_POS = 10;
 
     public String getFileName() {
         return "~/glitch.yaml";
