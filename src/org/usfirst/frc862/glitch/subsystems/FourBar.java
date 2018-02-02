@@ -11,6 +11,7 @@
 
 package org.usfirst.frc862.glitch.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
@@ -40,6 +41,11 @@ public class FourBar extends Subsystem {
     public FourBar() {
         super();
         motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, Constants.TALON_TIMEOUT);
+        motor.configAllowableClosedloopError(0, Constants.ALLOWABLE_FOURBAR_ERROR, Constants.TALON_TIMEOUT);
+        motor.config_kP(0, Constants.FOURBAR_P, Constants.TALON_TIMEOUT);
+        motor.config_kI(0, Constants.FOURBAR_I, Constants.TALON_TIMEOUT);
+        motor.config_kD(0, Constants.FOURBAR_D, Constants.TALON_TIMEOUT);
+        motor.config_kF(0, Constants.FOURBAR_F, Constants.TALON_TIMEOUT);
     }
 
     @Override
@@ -56,7 +62,7 @@ public class FourBar extends Subsystem {
 
     @Override
     public void periodic() {
-        // Put code here to be run every loopss
+        // Put code here to be run every loop
         SmartDashboard.putNumber("FourBar Encoder", (double) motor.getSelectedSensorPosition(0));
     }
 
@@ -65,6 +71,22 @@ public class FourBar extends Subsystem {
 
     public int getPositionEnc() {
         return motor.getSelectedSensorPosition(0);
+    }
+
+    public void moveToScale() {
+        RobotMap.fourBarmotor.set(ControlMode.Position, Constants.FOURBAR_SCALE_POS);
+    }
+
+    public void moveToSwitch() {
+            RobotMap.fourBarmotor.set(ControlMode.Position, Constants.FOURBAR_SWITCH_POS);
+    }
+
+    public void moveToBottom() {
+        RobotMap.fourBarmotor.set(ControlMode.Position, Constants.FOURBAR_BOTTOM_POS);
+    }
+
+    public void moveToCollect() {
+        RobotMap.fourBarmotor.set(ControlMode.Position, Constants.FOURBAR_COLLECT_POS);
     }
 }
 
