@@ -16,31 +16,35 @@ public class Constants extends ConstantsBase {
     //Logging
     public static int logDepth = 1000;
 
+
+
+    /*DRIVE TRAIN*/
+    // NOTE we are going to want to tune for high/low gear with
+    // at the very least a different feed forward...
     // in inches
     public static double WheelCircumference = 4 * Math.PI;
-    public static double dead_band = 0.05;
-    public static int TALON_TIMEOUT = 10; //ms
-
-    //PID
     public static double PHYSICAL_MAX_LOW_SPEED_TICKS = 800;
     public static double PHYSICAL_MAX_HIGH_SPEED_TICKS = 1800;
 
-    // NOTE we are going to want to tune for high/low gear with
-    // at the very least a different feed forward...
+    public static double dead_band = 0.05;
+    public static int TALON_TIMEOUT = 10; //ms
+
+    // not currently functional
     public static final int LOWGEAR_IDX = 0;
     public static final int HIGHGEAR_IDX = 1;
+
+    // low gear
     public static double LOWGEAR_DRIVE_P = 1.5;  // 2 oscillated a little in testing
     public static double LOWGEAR_DRIVE_I = 0;
     public static double LOWGEAR_DRIVE_D = 0;
     public static double LOWGEAR_DRIVE_F = 1023 / PHYSICAL_MAX_LOW_SPEED_TICKS;
     public static final int LOWGEAR_ALLOWED_DRIVE_ERROR = 20;
 
+    // high gear
     public static double HIGHGEAR_DRIVE_P = 0.75;
-//    public static double HIGHGEAR_DRIVE_P = 0;
     public static double HIGHGEAR_DRIVE_I = 0;
     public static double HIGHGEAR_DRIVE_D = 0;
     public static double HIGHGEAR_DRIVE_F = 1023 / PHYSICAL_MAX_HIGH_SPEED_TICKS;
-//    public static double HIGHGEAR_DRIVE_F = 0;
     public static final int HIGHGEAR_ALLOWED_DRIVE_ERROR = 40;
     public static double TICS_PER_ROTATION = 360 * 4;
 
@@ -55,7 +59,10 @@ public class Constants extends ConstantsBase {
     public static double kDriveHighGearNominalOutput = 0.5;
     public static double kDriveHighGearMaxSetpoint = 17.0 * 12.0; // 17 fps
 
+
+
     /* ROBOT PHYSICAL CONSTANTS */
+    //TODO tune for glitch
 
     // Wheels
     public static double kDriveWheelDiameterInches = 3.419;
@@ -85,8 +92,11 @@ public class Constants extends ConstantsBase {
     public static double kDeltaLookAheadSpeed = kMaxLookAheadSpeed - kMinLookAheadSpeed;
 
     public static double kInertiaSteeringGain = 0.0; // angular velocity command is multiplied by this gain *
-    // our speed
-    // in inches per sec
+                                                    // our speed in inches per second
+
+
+
+    /*PATH FOLLOWER*/
     public static double kSegmentCompletionTolerance = 0.1; // inches
     public static double kPathFollowingMaxAccel = 120.0; // inches per second^2
     public static double kPathFollowingMaxVel = 120.0; // inches per second
@@ -98,6 +108,15 @@ public class Constants extends ConstantsBase {
     public static double kPathFollowingGoalPosTolerance = 0.75;
     public static double kPathFollowingGoalVelTolerance = 12.0;
     public static double kPathStopSteeringDistance = 9.0;
+
+    //PID
+    // TODO Set these
+    public static double pathP = 5;
+    public static double pathI = 0;
+    public static double pathD = 0;
+    public static double pathV = 1;  // Velocity is in IPS, we command IPS
+    public static double pathA = 0.1;
+    public static double pathTurn = 0;
 
 
     // Goal tracker constants
@@ -117,37 +136,39 @@ public class Constants extends ConstantsBase {
     public static double closedLoopRamp = 0.2;
 
 
-    // Autoshifter
-    public static double shiftHysteresis = 1.0;
+
+    /*AUTOSHIFTER*/
     public static double MinUpshiftVelocity = LightningMath.talon2ips(750);  // TODO calibrate me
     public static double MinRequestedVelocityForUpshift = LightningMath.talon2ips(800); // TODO calibrate me
+    public static double shiftHysteresis = 1.0;
     public static double HighCurrentThreshold = 200;
     public static double highCurrentTimeout = 0.150;
     public static double CrashDeacceleration = -12;
     public static double CoastVelocity = LightningMath.talon2ips(400);
     public static double CoastTriggerTime = 0.1;
-    public static double NotStraight = 0.1;
-    public static double StraightMarginOfError = 1.5;
-    public static double NotTurning = 0.01;
-
-    public static double StraightenKpLowGear = 0; // -0.005;
-    public static double StraightenKpHighGear = 0; // -0.01;
     public static double slowDownRate = 0.95;
 
-    // TODO Set these
-    public static double pathP = 5;
-    public static double pathI = 0;
-    public static double pathD = 0;
-    public static double pathV = 1;  // Velocity is in IPS, we command IPS
-    public static double pathA = 0.1;
-    public static double pathTurn = 0;
 
+
+    /*AUTO STRAIGHTEN*/
+    public static double NotTurning = 0.01;
+    public static double NotStraight = 0.1;
+    public static double StraightMarginOfError = 1.5;
+    public static double StraightenKpLowGear = 0; // -0.005;
+    public static double StraightenKpHighGear = 0; // -0.01;
+
+
+
+    /*FOURBAR*/
+    //PID
     // TODO Calibrate
     public static final int ALLOWABLE_FOURBAR_ERROR = 0;
     public static double FOURBAR_P = SmartDashboard.getNumber("Fourbar P",20);
     public static double FOURBAR_I = SmartDashboard.getNumber("Fourbar I",0);
     public static double FOURBAR_D = SmartDashboard.getNumber("Fourbar D",0);
     public static double FOURBAR_F = SmartDashboard.getNumber("Fourbar F",0);
+
+    // Positions in encoder ticks MAX: ~300
     public static final double FOURBAR_SCALE_POS = 290;
     public static final double FOURBAR_SWITCH_POS = 100;
     public static final double FOURBAR_COLLECT_POS = 25;
