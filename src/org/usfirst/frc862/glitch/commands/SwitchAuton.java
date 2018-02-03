@@ -12,8 +12,12 @@
 package org.usfirst.frc862.glitch.commands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Robot;
+import org.usfirst.frc862.glitch.paths.BlueRightSwitchFar;
+import org.usfirst.frc862.glitch.paths.RedLeftScaleClose;
+import org.usfirst.frc862.glitch.paths.RedLeftScaleFar;
 
 /**
  *
@@ -45,26 +49,31 @@ public class SwitchAuton extends Command {
         String fieldConfig = DriverStation.getInstance().getGameSpecificMessage();
         //DriverStation.Alliance alliance=DriverStation.getInstance().getAlliance();
 
+        CommandGroup cmd = new CommandGroup();
+        cmd.addParallel(new MoveCollectorToSwitch());
+
         if(leftStart && fieldConfig.substring(0,1).equalsIgnoreCase("L"))
         {
             //Go straight
-            (new StraightSwitchAuton()).start();
+            cmd.addParallel(new MoveCollectorToSwitch());
         }
         else if(!leftStart && fieldConfig.substring(0,1).equalsIgnoreCase("R"))
         {
             //Go straight
-            (new StraightSwitchAuton()).start();
+            cmd.addParallel(new RedLeftScaleClose());   // straight is straight, don't need 4 different paths
         }
         else if(leftStart)
         {
             //Curve right
-            (new CurveRightSwitchAuton()).start();
+            cmd.addParallel(new RedLeftScaleFar());
         }
         else
         {
             //Curve left
-            (new CurveLeftSwitchAuton()).start();
+            cmd.addParallel(new BlueRightSwitchFar());
         }
+        cmd.addSequential(new EjectCube());
+        cmd.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
