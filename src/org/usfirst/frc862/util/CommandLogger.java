@@ -14,6 +14,7 @@ import org.usfirst.frc862.glitch.Constants;
 import edu.wpi.first.wpilibj.Timer;
 
 public class CommandLogger {
+    private final String prefix;
     private BufferedWriter writer;
     private ArrayBlockingQueue<String> buffer = new ArrayBlockingQueue<String>(Constants.logDepth);
     private Vector<String> drain = new Vector<String>(Constants.logDepth);
@@ -24,8 +25,20 @@ public class CommandLogger {
     private boolean first_time = true;
         
     public CommandLogger(String prefix) {
+        this.prefix = prefix;
+        reset();
+    }
+
+    public void reset() {
         File file = logFileName(prefix);
         try {
+            if (writer != null) {
+                drain();
+                writer.close();
+                writer = null;
+                buffer.clear();
+                first_time = true;
+            }
             writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file.getAbsolutePath()), "utf-8"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -103,6 +116,10 @@ public class CommandLogger {
     }
 
     public void drain() {
+        if (writer == null) {
+           return;
+        }
+
         try {
             buffer.drainTo(drain);
             for (String msg : drain) {
@@ -129,7 +146,9 @@ public class CommandLogger {
     
     public void flush() {
         try {
-            writer.flush();
+            if (writer != null) {
+                writer.flush();
+            }
         } catch (IOException e) {
             // Do nothing
         }
@@ -137,7 +156,11 @@ public class CommandLogger {
     
     public void close() {
         try {
-            writer.close();
+            if (writer != null) {
+                drain();
+                writer.close();
+            }
+            writer = null;
         } catch (IOException e) {
             // Do nothing
         }

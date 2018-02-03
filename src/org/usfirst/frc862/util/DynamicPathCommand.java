@@ -36,21 +36,6 @@ public class DynamicPathCommand extends Command {
     private void setup() {
         requires(Robot.driveTrain);
 
-        logger = new CommandLogger(this.getName());
-        logger.addDataElement("projected_left_pos");
-        logger.addDataElement("requested_left_vel");
-        logger.addDataElement("actual_left_pos");
-        logger.addDataElement("projected_left_vel");
-        logger.addDataElement("actual_left_vel");
-        logger.addDataElement("projected_right_pos");
-        logger.addDataElement("requested_right_pos");
-        logger.addDataElement("actual_right_pos");
-        logger.addDataElement("projected_right_vel");
-        logger.addDataElement("actual_right_vel");
-        logger.addDataElement("projected_heading");
-        logger.addDataElement("actual_heading");
-        logger.addDataElement("angle_diff");
-        
         notifier = new Notifier(()-> followPath());
         loadPath();
 
@@ -71,6 +56,22 @@ public class DynamicPathCommand extends Command {
 
     @Override
     protected void initialize() {
+        // move this to ensure that we get a new log for each run
+        logger = new CommandLogger(this.getName());
+        logger.addDataElement("projected_left_pos");
+        logger.addDataElement("requested_left_vel");
+        logger.addDataElement("actual_left_pos");
+        logger.addDataElement("projected_left_vel");
+        logger.addDataElement("actual_left_vel");
+        logger.addDataElement("projected_right_pos");
+        logger.addDataElement("requested_right_pos");
+        logger.addDataElement("actual_right_pos");
+        logger.addDataElement("projected_right_vel");
+        logger.addDataElement("actual_right_vel");
+        logger.addDataElement("projected_heading");
+        logger.addDataElement("actual_heading");
+        logger.addDataElement("angle_diff");
+
         Robot.driveTrain.setVelocityMode();
 //        Robot.shifter.downshift();
         
@@ -138,6 +139,8 @@ public class DynamicPathCommand extends Command {
         notifier.stop();
         logger.drain();
         logger.flush();
+        logger.close();
+
         
         if (LightningMath.isZero(Robot.driveTrain.getLeftDistanceInches())) {
             FaultCode.write(Codes.LEFT_ENCODER_NOT_FOUND);
