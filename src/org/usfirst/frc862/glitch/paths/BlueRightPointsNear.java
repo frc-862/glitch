@@ -2,6 +2,7 @@ package org.usfirst.frc862.glitch.paths;
  
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
+import org.usfirst.frc862.util.DynamicPathCommand;
 
 public class BlueRightPointsNear extends DynamicPathCommand {
     private static Path path;
