@@ -39,14 +39,11 @@ public class SmartAutonSelector extends Command {
     @Override
     protected void initialize() {
         String mode= SmartDashboard.getString("select mode", "switch");
-        if(mode.equalsIgnoreCase("switch")){
+        if(mode.equalsIgnoreCase("switch")) {
             (new SwitchAuton()).start();
-
-        }
-        else if(mode.equalsIgnoreCase("scale")){
+        } else if(mode.equalsIgnoreCase("scale")) {
             (new ScaleAuton()).start();
-        }
-        else{
+        } else {
             (new SmartAuton()).start();
         }
     }

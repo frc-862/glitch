@@ -39,11 +39,12 @@ public class SwitchAuton extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        boolean leftStart= SmartDashboard.getBoolean("start side", false);
+        boolean leftStart = SmartDashboard.getBoolean("start side", false);
         //int powerCubes= (int)Math.round(SmartDashboard.getNumber("auton powercubes",1));
         //String mode=SmartDashboard.getString("select mode", "switch");
-        String fieldConfig= DriverStation.getInstance().getGameSpecificMessage();
-        DriverStation.Alliance alliance=DriverStation.getInstance().getAlliance();
+        String fieldConfig = DriverStation.getInstance().getGameSpecificMessage();
+        //DriverStation.Alliance alliance=DriverStation.getInstance().getAlliance();
+
         if(leftStart && fieldConfig.substring(0,1).equalsIgnoreCase("L"))
         {
             //Go straight

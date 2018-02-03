@@ -10,8 +10,13 @@
 
 
 package org.usfirst.frc862.glitch.commands;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Robot;
+import org.usfirst.frc862.glitch.paths.*;
+import org.usfirst.frc862.util.TimedTriggers;
 
 /**
  *
@@ -37,6 +42,74 @@ public class ScaleAuton extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        DriverStation.Alliance alliance=DriverStation.getInstance().getAlliance();
+        CommandGroup cmd;
+
+        if (alliance == DriverStation.Alliance.Blue) {
+            cmd = blueAlliance();
+        } else {
+            cmd = redAlliance();
+        }
+
+        cmd.addSequential(new EjectCube());
+        cmd.start();
+    }
+
+    private CommandGroup blueAlliance() {
+        boolean leftStart = SmartDashboard.getBoolean("start side", false);
+        String fieldConfig = DriverStation.getInstance().getGameSpecificMessage();
+
+        CommandGroup cmd = new CommandGroup();
+        TimedTriggers triggers = new TimedTriggers();
+
+        if (leftStart && fieldConfig.substring(0,1).equalsIgnoreCase("L")) {
+            cmd.addParallel(new BlueLeftScaleClose());
+            triggers.addAction(new MoveCollectorToScale(), 4.0);
+        } else if (leftStart && fieldConfig.substring(0,1).equalsIgnoreCase("R")) {
+            cmd.addParallel(new BlueLeftScaleFar());
+            triggers.addAction(new MoveCollectorToScale(), 6.0);
+        } else if (fieldConfig.substring(0,1).equalsIgnoreCase("R")) {
+            // If we made it this far, we have to be on the right side
+            cmd.addParallel(new BlueRightScaleClose());
+            triggers.addAction(new MoveCollectorToScale(), 4.0);
+        } else {
+            // Must be right far
+            cmd.addParallel(new BlueRightScaleFar());
+            triggers.addAction(new MoveCollectorToScale(), 6.0);
+        }
+
+        cmd.addParallel(triggers);
+        return cmd;
+    }
+
+    private CommandGroup redAlliance() {
+        boolean leftStart = SmartDashboard.getBoolean("start side", false);
+        String fieldConfig = DriverStation.getInstance().getGameSpecificMessage();
+
+        CommandGroup cmd = new CommandGroup();
+        TimedTriggers triggers = new TimedTriggers();
+
+        if (leftStart && fieldConfig.substring(0,1).equalsIgnoreCase("L")) {
+            cmd.addParallel(new RedLeftScaleClose());
+            triggers.addAction(new MoveCollectorToScale(), 4.0);
+        } else if (leftStart && fieldConfig.substring(0,1).equalsIgnoreCase("R")) {
+            cmd.addParallel(new RedLeftScaleFar());
+            triggers.addAction(new MoveCollectorToScale(), 6.0);
+        } else if (fieldConfig.substring(0,1).equalsIgnoreCase("R")) {
+            // If we made it this far, we have to be on the right side
+            // need right --> Thanks Shane
+            // todo
+            triggers.addAction(new MoveCollectorToScale(), 4.0);
+        } else {
+            // Must be right far
+            // cmd.addParallel(new BlueRightSwitchFar());
+            // todo
+            // new Right here too -- make it happen Shane -- cmd.addParallel(new RedLeftScaleFar());
+            triggers.addAction(new MoveCollectorToScale(), 6.0);
+        }
+
+        cmd.addParallel(triggers);
+        return cmd;
     }
 
     // Called repeatedly when this Command is scheduled to run

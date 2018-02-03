@@ -45,13 +45,14 @@ public class SmartAuton extends Command {
         String fieldConfig=DriverStation.getInstance().getGameSpecificMessage();
         DriverStation.Alliance alliance=DriverStation.getInstance().getAlliance();
 
+
         if(leftStart){
             //todo support the left
         }
         else{
             if(powerCubes==1){
                 if(mode.equalsIgnoreCase("switch")){
-
+                    (new SwitchAuton()).start();
                 }
             }
         }

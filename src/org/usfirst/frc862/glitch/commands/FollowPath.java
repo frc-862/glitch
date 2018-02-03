@@ -33,7 +33,7 @@ public class FollowPath extends Command {
         super.initialize();
 
         logger = new CommandLogger("follow");
-        // TODO debug adaptive pursuit and fix
+        //  debug adaptive pursuit and fix -- by next year
 //        PathContainer path = new GentleCurve();
 //        PathContainer path = new Straight();
         PathContainer path = null;
