@@ -29,6 +29,7 @@ import org.usfirst.frc862.util.Logger;
 import org.usfirst.frc862.util.Looper;
 
 import javax.xml.crypto.Data;
+import java.io.File;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -187,4 +188,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() { Scheduler.getInstance().run(); }
+
+    public static boolean isOBot() {
+        return new File("/home/lvuser/obot").exists();
+    }
 }
