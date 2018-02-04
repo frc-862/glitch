@@ -138,10 +138,17 @@ public class DriveTrain extends Subsystem {
 
         eachMaster((m) -> m.selectProfileSlot(0, 0));
 
-        left1.setInverted(true);
-        left1.setSensorPhase(true);
-        right2.setInverted(true);
-        right3.setInverted(true);
+        if (Robot.isOBot()) {
+            left1.setInverted(true);
+            left1.setSensorPhase(true);
+            right2.setInverted(true);
+            right3.setInverted(true);
+        } else {
+            left1.setInverted(true);
+            left1.setSensorPhase(true);
+            left2.setInverted(true);
+            right3.setInverted(true);
+        }
 
         eachMaster((m) -> {
             m.configOpenloopRamp(Constants.openLoopRamp, Constants.TALON_TIMEOUT);
