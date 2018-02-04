@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.paths.*;
 import org.usfirst.frc862.util.TimedTriggers;
 
@@ -93,7 +92,7 @@ public class ScaleAuton extends Command {
             cmd.addParallel(new RedLeftScaleClose());
             triggers.addAction(new MoveCollectorToScale(), 4.0);
         } else if (leftStart && fieldConfig.substring(0,1).equalsIgnoreCase("R")) {
-            cmd.addParallel(new RedLeftScaleFar());
+            cmd.addParallel(new SwitchCurveRightPath());
             triggers.addAction(new MoveCollectorToScale(), 6.0);
         } else if (fieldConfig.substring(0,1).equalsIgnoreCase("R")) {
             // If we made it this far, we have to be on the right side
@@ -102,9 +101,9 @@ public class ScaleAuton extends Command {
             triggers.addAction(new MoveCollectorToScale(), 4.0);
         } else {
             // Must be right far
-            // cmd.addParallel(new BlueRightSwitchFar());
+            // cmd.addParallel(new SwitchCurveLeftPath());
             // todo
-            // new Right here too -- make it happen Shane -- cmd.addParallel(new RedLeftScaleFar());
+            // new Right here too -- make it happen Shane -- cmd.addParallel(new SwitchCurveRightPath());
             triggers.addAction(new MoveCollectorToScale(), 6.0);
         }
 
@@ -112,25 +111,10 @@ public class ScaleAuton extends Command {
         return cmd;
     }
 
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-    }
-
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
-    // Called once after isFinished returns true
-    @Override
-    protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
-    }
 }

@@ -2,13 +2,12 @@ package org.usfirst.frc862.glitch.paths;
  
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
-import org.usfirst.frc862.util.DynamicPathCommand;
 
-public class RedLeftScaleFar extends DynamicPathCommand {
+public class SwitchCurveRightPath extends org.usfirst.frc862.util.DynamicPathCommand {
     private static Path path;
 
     public Path getPath() {
-        return RedLeftScaleFar.generatePath();
+        return SwitchCurveRightPath.generatePath();
     }
 
     public static Path generatePath() {
@@ -1552,7 +1551,7 @@ public class RedLeftScaleFar extends DynamicPathCommand {
 
 
        
-        path = new Path("RedLeftScaleFar", new Trajectory.Pair(left, right));
+        path = new Path("SwitchCurveRightPath", new Trajectory.Pair(left, right));
         return path;
     }
 
@@ -1562,11 +1561,11 @@ public class RedLeftScaleFar extends DynamicPathCommand {
   
 	// WAYPOINT_DATA: [{"position":{"x":25,"y":260},"theta":0,"comment":""},{"position":{"x":180,"y":260},"theta":0,"comment":""},{"position":{"x":232,"y":215},"theta":1.5707499999936907,"comment":""},{"position":{"x":232,"y":120},"theta":1.5707499999936907,"comment":""},{"position":{"x":284,"y":80},"theta":0,"comment":""}]
 	// IS_REVERSED: false
-	// FILE_NAME: RedLeftScaleFar
+	// FILE_NAME: SwitchCurveRightPath
   // DT: 0.02
   // MAX_VEL: 120
   // MAX_ACC: 80
   // MAX_JERK: 660
   // PACKAGE: org.usfirst.frc862.glitch.paths
-  // PARENT: DynamicPathCommand
+  // PARENT: org.usfirst.frc862.util.DynamicPathCommand
 }

@@ -2,13 +2,12 @@ package org.usfirst.frc862.glitch.paths;
  
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
-import org.usfirst.frc862.util.DynamicPathCommand;
 
-public class BlueLeftSwitchClose extends DynamicPathCommand {
+public class SwitchStraightPath extends org.usfirst.frc862.util.DynamicPathCommand {
     private static Path path;
 
     public Path getPath() {
-        return BlueLeftSwitchClose.generatePath();
+        return SwitchStraightPath.generatePath();
     }
 
     public static Path generatePath() {
@@ -742,7 +741,7 @@ public class BlueLeftSwitchClose extends DynamicPathCommand {
 
 
        
-        path = new Path("BlueLeftSwitchClose", new Trajectory.Pair(left, right));
+        path = new Path("SwitchStraightPath", new Trajectory.Pair(left, right));
         return path;
     }
 
@@ -752,11 +751,11 @@ public class BlueLeftSwitchClose extends DynamicPathCommand {
   
 	// WAYPOINT_DATA: [{"position":{"x":25,"y":220},"theta":0,"comment":""},{"position":{"x":125,"y":220},"theta":0,"comment":""}]
 	// IS_REVERSED: false
-	// FILE_NAME: BlueLeftSwitchClose
+	// FILE_NAME: SwitchStraightPath
   // DT: 0.02
   // MAX_VEL: 120
   // MAX_ACC: 80
   // MAX_JERK: 660
   // PACKAGE: org.usfirst.frc862.glitch.paths
-  // PARENT: DynamicPathCommand
+  // PARENT: org.usfirst.frc862.util.DynamicPathCommand
 }

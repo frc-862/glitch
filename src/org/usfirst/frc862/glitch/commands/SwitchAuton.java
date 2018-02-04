@@ -14,10 +14,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc862.glitch.Robot;
-import org.usfirst.frc862.glitch.paths.BlueRightSwitchFar;
-import org.usfirst.frc862.glitch.paths.RedLeftScaleClose;
-import org.usfirst.frc862.glitch.paths.RedLeftScaleFar;
+import org.usfirst.frc862.glitch.paths.SwitchCurveLeftPath;
+import org.usfirst.frc862.glitch.paths.SwitchCurveRightPath;
+import org.usfirst.frc862.glitch.paths.SwitchStraightPath;
 
 /**
  *
@@ -54,47 +53,29 @@ public class SwitchAuton extends Command {
 
         if(leftStart && fieldConfig.substring(0,1).equalsIgnoreCase("L"))
         {
-            //Go straight
-            cmd.addParallel(new MoveCollectorToSwitch());
+            cmd.addParallel(new SwitchStraightPath());
         }
         else if(!leftStart && fieldConfig.substring(0,1).equalsIgnoreCase("R"))
         {
-            //Go straight
-            cmd.addParallel(new RedLeftScaleClose());   // straight is straight, don't need 4 different paths
+            cmd.addParallel(new SwitchStraightPath());
         }
         else if(leftStart)
         {
             //Curve right
-            cmd.addParallel(new RedLeftScaleFar());
+            cmd.addParallel(new SwitchCurveRightPath());
         }
         else
         {
             //Curve left
-            cmd.addParallel(new BlueRightSwitchFar());
+            cmd.addParallel(new SwitchCurveLeftPath());
         }
         cmd.addSequential(new EjectCube());
         cmd.start();
     }
 
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-    }
-
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
-    }
-
-    // Called once after isFinished returns true
-    @Override
-    protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
+        return true;
     }
 }
