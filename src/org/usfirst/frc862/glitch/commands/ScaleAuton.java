@@ -92,18 +92,15 @@ public class ScaleAuton extends Command {
             cmd.addParallel(new RedLeftScaleClose());
             triggers.addAction(new MoveCollectorToScale(), 4.0);
         } else if (leftStart && fieldConfig.substring(0,1).equalsIgnoreCase("R")) {
-            cmd.addParallel(new SwitchCurveRightPath());
+            cmd.addParallel(new RedLeftScaleFar());
             triggers.addAction(new MoveCollectorToScale(), 6.0);
         } else if (fieldConfig.substring(0,1).equalsIgnoreCase("R")) {
             // If we made it this far, we have to be on the right side
-            // need right --> Thanks Shane
-            // todo
+            cmd.addParallel(new RedRightScaleNear());
             triggers.addAction(new MoveCollectorToScale(), 4.0);
         } else {
             // Must be right far
-            // cmd.addParallel(new SwitchCurveLeftPath());
-            // todo
-            // new Right here too -- make it happen Shane -- cmd.addParallel(new SwitchCurveRightPath());
+            cmd.addParallel(new RedRightScaleFar());
             triggers.addAction(new MoveCollectorToScale(), 6.0);
         }
 
