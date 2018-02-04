@@ -684,31 +684,6 @@ Children:
         value: []
       Run When Disabled: !!robotbuilder.data.properties.BooleanProperty {default: false,
         name: Run When Disabled, validators: null, value: false}
-      Parameter presets: !!robotbuilder.data.properties.ParameterSetProperty
-        default: []
-        name: Parameter presets
-        validators: null
-        value: []
-      Commands: !!robotbuilder.data.properties.ListProperty
-        default: []
-        name: Commands
-        validators: &id011 [List]
-        value: []
-      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
-        name: Button on SmartDashboard, validators: null, value: false}
-    Base: Command Group
-    Name: StraightSwitchAuton
-  - Children: []
-    Properties:
-      Autonomous Selection: !!robotbuilder.data.properties.BooleanProperty {default: false,
-        name: Autonomous Selection, validators: null, value: false}
-      Parameters: !!robotbuilder.data.properties.ParametersProperty
-        default: []
-        name: Parameters
-        validators: null
-        value: []
-      Run When Disabled: !!robotbuilder.data.properties.BooleanProperty {default: false,
-        name: Run When Disabled, validators: null, value: false}
       Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
         name: Requires, type: Subsystem, validators: null, value: None}
       Parameter presets: !!robotbuilder.data.properties.ParameterSetProperty
@@ -786,61 +761,11 @@ Children:
         name: Button on SmartDashboard, validators: null, value: false}
     Base: Command
     Name: MoveCollectorToGround
-  - Children: []
-    Properties:
-      Autonomous Selection: !!robotbuilder.data.properties.BooleanProperty {default: false,
-        name: Autonomous Selection, validators: null, value: false}
-      Parameters: !!robotbuilder.data.properties.ParametersProperty
-        default: []
-        name: Parameters
-        validators: null
-        value: []
-      Run When Disabled: !!robotbuilder.data.properties.BooleanProperty {default: false,
-        name: Run When Disabled, validators: null, value: false}
-      Parameter presets: !!robotbuilder.data.properties.ParameterSetProperty
-        default: []
-        name: Parameter presets
-        validators: null
-        value: []
-      Commands: !!robotbuilder.data.properties.ListProperty
-        default: []
-        name: Commands
-        validators: *id011
-        value: []
-      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
-        name: Button on SmartDashboard, validators: null, value: false}
-    Base: Command Group
-    Name: CurveRightSwitchAuton
-  - Children: []
-    Properties:
-      Autonomous Selection: !!robotbuilder.data.properties.BooleanProperty {default: false,
-        name: Autonomous Selection, validators: null, value: false}
-      Parameters: !!robotbuilder.data.properties.ParametersProperty
-        default: []
-        name: Parameters
-        validators: null
-        value: []
-      Run When Disabled: !!robotbuilder.data.properties.BooleanProperty {default: false,
-        name: Run When Disabled, validators: null, value: false}
-      Parameter presets: !!robotbuilder.data.properties.ParameterSetProperty
-        default: []
-        name: Parameter presets
-        validators: null
-        value: []
-      Commands: !!robotbuilder.data.properties.ListProperty
-        default: []
-        name: Commands
-        validators: *id011
-        value: []
-      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
-        name: Button on SmartDashboard, validators: null, value: false}
-    Base: Command Group
-    Name: CurveLeftSwitchAuton
   Properties: {}
   Base: Commands
   Name: Commands
 Properties:
-  Eclipse Workspace: !!robotbuilder.data.properties.FileProperty {default: /Users/phurley/workspace,
+  Eclipse Workspace: !!robotbuilder.data.properties.FileProperty {default: /Users/shane/workspace,
     extension: null, folder: true, name: Eclipse Workspace, validators: null, value: ../}
   Export Commands: !!robotbuilder.data.properties.BooleanProperty {default: true,
     name: Export Commands, validators: null, value: true}
@@ -859,7 +784,7 @@ Properties:
     name: Export Subsystems, validators: null, value: true}
   Simulation World File: !!robotbuilder.data.properties.StringProperty {default: /usr/share/frcsim/worlds/GearsBotDemo.world,
     name: Simulation World File, validators: null, value: /usr/share/frcsim/worlds/GearsBotDemo.world}
-  Wiring file location: !!robotbuilder.data.properties.FileProperty {default: /Users/phurley/,
+  Wiring file location: !!robotbuilder.data.properties.FileProperty {default: /Users/shane/,
     extension: null, folder: true, name: Wiring file location, validators: null, value: ./}
   Autonomous Command: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
     name: Autonomous Command, type: Command, validators: null, value: None}
