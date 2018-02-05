@@ -5,6 +5,11 @@ plugins {
     id "jaci.openrio.gradle.GradleRIO" version "2018.01.22"
 }
 
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
 //wpi {
     //wpilibVersion = "2018.2.2"
 //}
