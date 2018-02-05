@@ -547,19 +547,34 @@ function getDataString() {
   var parent = $("td.parent input").val();
   
   var num_elements = path.getLeftWheelTrajectory().getNumSegments();
-  var set_segments = "";
+  var set_segments = [];
+  
   eachTimeSlice(function(left, right, i) {
-  var segment = `
+    if ((i % 500) == 0) {
+      set_segments.push("");
+    }
+    var segment = `
         left.setSegment(${i}, new Trajectory.Segment(${left.pos}, ${left.vel}, 
                ${left.acc}, ${left.jerk}, ${left.heading}, ${left.dt}, ${left.x}, ${left.y}));
         right.setSegment(${i}, new Trajectory.Segment(${right.pos}, ${right.vel}, 
                ${right.acc}, ${right.jerk}, ${right.heading}, ${right.dt}, ${right.x}, ${right.y}));
 
 `;
-    set_segments += segment;
+
+    set_segments[set_segments.length-1] += segment;
   });
 
-  
+  var build_functions = "";
+  var func_bodies = "";
+  for (var i = 0; i < set_segments.length; ++i) {
+    build_functions += `        build_segments_${i}(left, right);\n`;
+    func_bodies += `
+    private static void build_segments_${i}(Trajectory left, Trajectory right) {
+${set_segments[i]}
+    }
+`;
+  }
+ 
 	var str = `package ${package};
  
 import com.team254.lib.trajectory.Path;
@@ -581,11 +596,13 @@ public class ${title}${(parent.length > 0) ? " extends " + parent : ""} {
         Trajectory left = new Trajectory(num_elements);
         Trajectory right = new Trajectory(num_elements);
 
-        ${set_segments}
+${build_functions}
        
         path = new Path("${title}", new Trajectory.Pair(left, right));
         return path;
     }
+
+${func_bodies}
 
     public boolean isReversed() {
         return ${isReversed}; 
