@@ -61,13 +61,13 @@ public class ScaleAuton extends Command {
         CommandGroup cmd = new CommandGroup();
         TimedTriggers triggers = new TimedTriggers();
 
-        if (leftStart && fieldConfig.substring(0,1).equalsIgnoreCase("L")) {
+        if (leftStart && fieldConfig.substring(1,1).equalsIgnoreCase("L")) {
             cmd.addParallel(new BlueLeftScaleClose());
             triggers.addAction(new MoveCollectorToScale(), 4.0);
-        } else if (leftStart && fieldConfig.substring(0,1).equalsIgnoreCase("R")) {
+        } else if (leftStart && fieldConfig.substring(1,1).equalsIgnoreCase("R")) {
             cmd.addParallel(new BlueLeftScaleFar());
             triggers.addAction(new MoveCollectorToScale(), 6.0);
-        } else if (fieldConfig.substring(0,1).equalsIgnoreCase("R")) {
+        } else if (fieldConfig.substring(1,1).equalsIgnoreCase("R")) {
             // If we made it this far, we have to be on the right side
             cmd.addParallel(new BlueRightScaleClose());
             triggers.addAction(new MoveCollectorToScale(), 4.0);
@@ -88,13 +88,13 @@ public class ScaleAuton extends Command {
         CommandGroup cmd = new CommandGroup();
         TimedTriggers triggers = new TimedTriggers();
 
-        if (leftStart && fieldConfig.substring(0,1).equalsIgnoreCase("L")) {
+        if (leftStart && fieldConfig.substring(1,1).equalsIgnoreCase("L")) {
             cmd.addParallel(new RedLeftScaleClose());
             triggers.addAction(new MoveCollectorToScale(), 4.0);
-        } else if (leftStart && fieldConfig.substring(0,1).equalsIgnoreCase("R")) {
+        } else if (leftStart && fieldConfig.substring(1,1).equalsIgnoreCase("R")) {
             cmd.addParallel(new RedLeftScaleFar());
             triggers.addAction(new MoveCollectorToScale(), 6.0);
-        } else if (fieldConfig.substring(0,1).equalsIgnoreCase("R")) {
+        } else if (fieldConfig.substring(1,1).equalsIgnoreCase("R")) {
             // If we made it this far, we have to be on the right side
             cmd.addParallel(new RedRightScaleNear());
             triggers.addAction(new MoveCollectorToScale(), 4.0);
