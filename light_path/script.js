@@ -337,7 +337,7 @@ function update() {
   if (points.getNumWaypoints() > 1) {
     path = PathGenerator.makePath(points, config, 18.0, "Curve");
     drawPath();
-    $("td.time").text("" + path.getLeftWheelTrajectory().getNumSegments()*0.02);
+    $("td.time").text("" + path.getLeftWheelTrajectory().getNumSegments() * config.dt);
   } else {
     $("td.time").text("0");
   }
