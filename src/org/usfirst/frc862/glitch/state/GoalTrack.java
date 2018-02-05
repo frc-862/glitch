@@ -2,7 +2,6 @@ package org.usfirst.frc862.glitch.state;
 
 import edu.wpi.first.wpilibj.Timer;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -72,12 +71,7 @@ public class GoalTrack {
      */
     void pruneByTime() {
         double delete_before = Timer.getFPGATimestamp() - Constants.kMaxGoalTrackAge;
-        for (Iterator<Map.Entry<Double, Translation2d>> it = mObservedPositions.entrySet().iterator(); it.hasNext();) {
-            Map.Entry<Double, Translation2d> entry = it.next();
-            if (entry.getKey() < delete_before) {
-                it.remove();
-            }
-        }
+        mObservedPositions.entrySet().removeIf(entry -> entry.getKey() < delete_before);
         if (mObservedPositions.isEmpty()) {
             mSmoothedPosition = null;
         } else {

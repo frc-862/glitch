@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * match.
  */
 public class Looper {
-    public double period = 0.1;
+    public double period;
 
     private boolean looperRunning;
 
@@ -22,32 +22,31 @@ public class Looper {
     private final Object taskRunningLock = new Object();
     private double timestamp = 0;
     private double dt = 0;
-    
-    private final CrashTrackingRunnable runnable = new CrashTrackingRunnable() {
-        @Override
-        public void runCrashTracked() {
-            synchronized (taskRunningLock) {
-                if (looperRunning) {
-                    double start = Timer.getFPGATimestamp();
-                    dt = start - timestamp;
-                    timestamp = start;
-                    for (Loop loop : loops) {
-                        loop.onLoop();
-                    }
-                    double duration = Timer.getFPGATimestamp() - start;
-                    timestamp = start;
-                    
-                    if (duration > period) {
-                        FaultCode.write(FaultCode.Codes.SLOW_LOOPER, 
-                                "expected <" + period + " had " + dt);
-                    }
-                }
-            }
-        }
-    };
 
     public Looper(double period) {
         this.period = period;
+        CrashTrackingRunnable runnable = new CrashTrackingRunnable() {
+            @Override
+            public void runCrashTracked() {
+                synchronized (taskRunningLock) {
+                    if (looperRunning) {
+                        double start = Timer.getFPGATimestamp();
+                        dt = start - timestamp;
+                        timestamp = start;
+                        for (Loop loop : loops) {
+                            loop.onLoop();
+                        }
+                        double duration = Timer.getFPGATimestamp() - start;
+                        timestamp = start;
+
+                        if (duration > period) {
+                            FaultCode.write(FaultCode.Codes.SLOW_LOOPER,
+                                    "expected <" + period + " had " + dt);
+                        }
+                    }
+                }
+            }
+        };
         notifier = new Notifier(runnable);
         looperRunning = false;
         loops = new ArrayList<>();

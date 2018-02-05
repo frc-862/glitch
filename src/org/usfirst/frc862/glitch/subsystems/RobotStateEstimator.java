@@ -5,9 +5,6 @@ import com.team254.lib.util.math.Rotation2d;
 import com.team254.lib.util.math.Twist2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc862.glitch.Robot;
-import org.usfirst.frc862.glitch.RobotMap;
 import org.usfirst.frc862.glitch.state.Kinematics;
 import org.usfirst.frc862.glitch.state.RobotState;
 import org.usfirst.frc862.util.DataLogger;
@@ -16,8 +13,8 @@ public class RobotStateEstimator extends Subsystem {
     RobotState robot_state_ = RobotState.getInstance();
     DriveTrain drive_;
     Core core_;
-    double left_encoder_prev_distance_ = 0;
-    double right_encoder_prev_distance_ = 0;
+    double left_encoder_prev_distance_;
+    double right_encoder_prev_distance_;
 
     public RobotStateEstimator(DriveTrain drive, Core core) {
         drive_ = drive;

@@ -1,7 +1,7 @@
 package org.usfirst.frc862.util;
 
 public class MovingAverageFilter implements ValueFilter {
-    private double[] values;
+    private final double[] values;
     private double average = 0;
     private int pos = 0;
     private int count = 0;

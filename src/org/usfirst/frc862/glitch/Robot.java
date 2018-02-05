@@ -11,14 +11,10 @@
 
 package org.usfirst.frc862.glitch;
 
-import com.team254.lib.util.ConstantsBase;
-
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.commands.*;
@@ -28,7 +24,6 @@ import org.usfirst.frc862.util.DataLogger;
 import org.usfirst.frc862.util.Logger;
 import org.usfirst.frc862.util.Looper;
 
-import javax.xml.crypto.Data;
 import java.io.File;
 
 /**
@@ -191,5 +186,9 @@ public class Robot extends TimedRobot {
 
     public static boolean isOBot() {
         return new File("/home/lvuser/obot").exists();
+    }
+
+    public static boolean isEcho() {
+        return new File("/home/lvuser/echo").exists();
     }
 }

@@ -16,8 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.util.DataLogger;
 
-import com.team254.lib.util.SmartDashboardUtil;
-
 /**
  *
  */

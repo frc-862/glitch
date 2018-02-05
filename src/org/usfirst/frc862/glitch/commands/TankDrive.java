@@ -10,14 +10,10 @@
 
 
 package org.usfirst.frc862.glitch.commands;
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
-import org.usfirst.frc862.glitch.RobotMap;
 import org.usfirst.frc862.util.Logger;
-
-import static org.usfirst.frc862.glitch.JoystickConstants.*;
 
 /**
  *

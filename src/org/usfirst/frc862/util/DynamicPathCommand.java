@@ -8,8 +8,6 @@ import org.usfirst.frc862.glitch.subsystems.DriveTrain;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 import com.team254.lib.trajectory.TrajectoryFollower;
-import com.team254.lib.trajectory.TrajectoryGenerator;
-import com.team254.lib.trajectory.WaypointSequence;
 import com.team254.lib.util.ChezyMath;
 
 import edu.wpi.first.wpilibj.Notifier;
@@ -36,7 +34,7 @@ public class DynamicPathCommand extends Command {
     private void setup() {
         requires(Robot.driveTrain);
 
-        notifier = new Notifier(()-> followPath());
+        notifier = new Notifier(this::followPath);
         loadPath();
 
         if (isReversed()) {

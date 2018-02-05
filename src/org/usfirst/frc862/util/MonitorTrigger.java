@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
  */
 
 public class MonitorTrigger extends Trigger {
-    BooleanSupplier test;
-    double duration;
-    Timer timer = new Timer();
+    final BooleanSupplier test;
+    final double duration;
+    final Timer timer = new Timer();
 
     public MonitorTrigger(double duration, BooleanSupplier test) {
         this.test = test;

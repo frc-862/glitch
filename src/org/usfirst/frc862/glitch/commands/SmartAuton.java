@@ -13,7 +13,6 @@ package org.usfirst.frc862.glitch.commands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc862.glitch.Robot;
 
 /**
  *
@@ -46,6 +45,7 @@ public class SmartAuton extends Command {
         DriverStation.Alliance alliance=DriverStation.getInstance().getAlliance();
 
 
+        //noinspection StatementWithEmptyBody
         if(leftStart){
             //todo support the left
         }

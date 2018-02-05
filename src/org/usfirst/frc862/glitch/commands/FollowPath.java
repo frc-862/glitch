@@ -7,15 +7,12 @@ import com.team254.lib.util.math.RigidTransform2d;
 import com.team254.lib.util.math.Twist2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.paths.*;
 import org.usfirst.frc862.glitch.state.Kinematics;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.state.RobotState;
-import org.usfirst.frc862.glitch.subsystems.RobotStateEstimator;
 import org.usfirst.frc862.util.CommandLogger;
-import org.usfirst.frc862.util.DataLogger;
 
 public class FollowPath extends Command {
     protected Path mCurrentPath;

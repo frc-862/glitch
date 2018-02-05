@@ -1,7 +1,5 @@
 package org.usfirst.frc862.glitch;
 
-import java.io.File;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.util.ConstantsBase;
 import org.usfirst.frc862.util.LightningMath;
@@ -184,8 +182,8 @@ public class Constants extends ConstantsBase {
 //        Constants.lookupTable.put(50.0, 2500.0);
 //        Constants.lookupTable.put(100.0, 10000.0);
 
-        File file = new File("/home/lvuser/echo");
-        if (file.exists()) {
+        //noinspection StatementWithEmptyBody
+        if (Robot.isEcho()) {
             // echo specific over-rides can go here
         }
 

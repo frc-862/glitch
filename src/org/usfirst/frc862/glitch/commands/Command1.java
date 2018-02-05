@@ -11,7 +11,6 @@
 
 package org.usfirst.frc862.glitch.commands;
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc862.glitch.Robot;
 
 /**
  *

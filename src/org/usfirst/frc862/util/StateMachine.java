@@ -15,7 +15,7 @@ public class StateMachine implements Loop {
     
     public class StateEntry {
         public State state;
-        public HashMap<Integer,StateEntry> transitions = new HashMap<>();
+        public final HashMap<Integer,StateEntry> transitions = new HashMap<>();
     }
     
     boolean first_time = true;

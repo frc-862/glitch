@@ -15,8 +15,7 @@ public class Trajectory {
     }
     
     public Pair reverse() {
-        Pair result = new Pair(left.reverse(), right.reverse());
-        return result;
+      return new Pair(left.reverse(), right.reverse());
     }
 
     public Trajectory left;

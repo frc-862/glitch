@@ -16,12 +16,12 @@ import edu.wpi.first.wpilibj.Timer;
 public class CommandLogger {
     private final String prefix;
     private BufferedWriter writer;
-    private ArrayBlockingQueue<String> buffer = new ArrayBlockingQueue<String>(Constants.logDepth);
-    private Vector<String> drain = new Vector<String>(Constants.logDepth);
+    private final ArrayBlockingQueue<String> buffer = new ArrayBlockingQueue<>(Constants.logDepth);
+    private final Vector<String> drain = new Vector<>(Constants.logDepth);
     private boolean overflow = false;
     
-    private HashMap<String,String> values = new HashMap<String,String>();
-    private ArrayList<String> fieldNames = new ArrayList<String>();
+    private final HashMap<String,String> values = new HashMap<>();
+    private final ArrayList<String> fieldNames = new ArrayList<>();
     private boolean first_time = true;
         
     public CommandLogger(String prefix) {
@@ -67,11 +67,11 @@ public class CommandLogger {
     }
     
     private void writeHeader() {
-        String header = "timestamp";
+        StringBuilder header = new StringBuilder("timestamp");
         for (String fld : fieldNames) {
-            header += "," + fld;
+            header.append(",").append(fld);
         }
-        logString(header);
+        logString(header.toString());
     }
 
     private void logString(String s) {
@@ -79,11 +79,11 @@ public class CommandLogger {
     }
     
     public void writeValues() {
-        String line = Double.toString(Timer.getFPGATimestamp());
+        StringBuilder line = new StringBuilder(Double.toString(Timer.getFPGATimestamp()));
         for (String fld : fieldNames) {
-            line += "," + values.get(fld);
+            line.append(",").append(values.get(fld));
         }
-        logString(line);
+        logString(line.toString());
     }
     
     private File logFileName(String prefix) {
@@ -104,6 +104,7 @@ public class CommandLogger {
         }
 
         base = new File(base, "log");
+        //noinspection ResultOfMethodCallIgnored
         base.mkdirs();
 
         int counter = 0;

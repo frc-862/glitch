@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 
 public class DataLogger implements Loop {
@@ -12,8 +11,8 @@ public class DataLogger implements Loop {
     private static String baseFName = "data";
     
     private LogWriter writer;
-    private ArrayList<String> fieldNames = new ArrayList<String>();
-    private ArrayList<DoubleSupplier> fieldValues = new ArrayList<DoubleSupplier>();
+    private ArrayList<String> fieldNames = new ArrayList<>();
+    private ArrayList<DoubleSupplier> fieldValues = new ArrayList<>();
     private boolean first_time = true;
     
     public static DataLogger getLogger() {
@@ -44,19 +43,19 @@ public class DataLogger implements Loop {
     }
     
     private void writeHeader() {
-        String header = "timestamp";
+        StringBuilder header = new StringBuilder("timestamp");
         for (String fld : fieldNames) {
-            header += "," + fld;
+            header.append(",").append(fld);
         }
-        writer.logRawString(header);
+        writer.logRawString(header.toString());
     }
     
     private void writeValues() {
-        String values = Double.toString(Timer.getFPGATimestamp());
+        StringBuilder values = new StringBuilder(Double.toString(Timer.getFPGATimestamp()));
         for (DoubleSupplier fld : fieldValues) {
-            values += "," + Double.toString(fld.getAsDouble());
+            values.append(",").append(Double.toString(fld.getAsDouble()));
         }
-        writer.logRawString(values);
+        writer.logRawString(values.toString());
     }
     
     private DataLogger() {
@@ -87,6 +86,7 @@ public class DataLogger implements Loop {
         }
 
         base = new File(base, "log");
+        //noinspection ResultOfMethodCallIgnored
         base.mkdirs();
 
         String name_format = baseFName + "-%05d-dl.log";

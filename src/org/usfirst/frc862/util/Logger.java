@@ -2,11 +2,10 @@ package org.usfirst.frc862.util;
 
 import java.io.File;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import org.usfirst.frc862.glitch.Constants;
 
 public class Logger {
-    private LogWriter writer;
+    private final LogWriter writer;
 
 	private static String baseFileName = "robot";
 
@@ -58,6 +57,7 @@ public class Logger {
         }
 
         base = new File(base, "log");
+        //noinspection ResultOfMethodCallIgnored
         base.mkdirs();
 
         int counter = 1;

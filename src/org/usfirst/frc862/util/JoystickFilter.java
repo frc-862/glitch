@@ -62,12 +62,15 @@ public class JoystickFilter {
         switch (mode) {
         case LINEAR:
             output = scale(input, deadband, 1, minPower, maxPower);
+            break;
 
         case SQUARED:
             output = scale(input * input, deadband * deadband, 1, minPower, maxPower);
+            break;
 
         case CUBED:
             output = scale(input * input * input, deadband * deadband * deadband , 1, minPower, maxPower);
+            break;
         }
 
         if (negative)

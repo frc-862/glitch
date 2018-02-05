@@ -44,7 +44,7 @@ public class ConstantsBase {
 
     public void writeToFile() {
         Logger.debug("WriteToFile: " + getResolvedFileName());
-        Map<String, Object> data = new HashMap<String, Object>();
+        Map<String, Object> data = new HashMap<>();
         data.put("array", new String[] { "ONE_HAND", "Stay", "away", "from", "the", "band", "saw" });
         OutputStream output = null;
 
@@ -54,7 +54,7 @@ public class ConstantsBase {
 
             withEachStaticField((Field f) -> {
                 String name = f.getName();
-                Object value = null;
+                Object value;
                 try {
                     value = f.get(this);
                     data.put(name, value);
@@ -113,8 +113,6 @@ public class ConstantsBase {
                                 f.set(this, map.get(name));
                             }
                         }
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

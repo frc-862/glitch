@@ -13,13 +13,13 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class LogWriter implements Loop {
     private BufferedWriter writer;
-    private ArrayBlockingQueue<String> buffer;
-    private Vector<String> drain;
+    private final ArrayBlockingQueue<String> buffer;
+    private final Vector<String> drain;
     private boolean overflow = false;
 
     public LogWriter(String file, int buffer_depth) {
-        buffer = new ArrayBlockingQueue<String>(buffer_depth);
-        drain = new Vector<String>(buffer_depth);
+        buffer = new ArrayBlockingQueue<>(buffer_depth);
+        drain = new Vector<>(buffer_depth);
         setFileName(file);
     }
     

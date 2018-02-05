@@ -1,7 +1,6 @@
 
 package org.usfirst.frc862.util;
 
-import com.team254.lib.util.ConstantsBase;
 import org.usfirst.frc862.glitch.Constants;
 
 public class LightningMath {
@@ -12,8 +11,7 @@ public class LightningMath {
 
     public static double ips2talon(double ips) {
         double ip100ms = ips / 10;
-        double ticksPer100ms = inches2ticks(ip100ms);
-        return ticksPer100ms;
+        return inches2ticks(ip100ms);
     }
 
     public static double inches2ticks(double inches) {

@@ -16,8 +16,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
  */
 public class POVButton extends Button {
 
-  GenericHID joystick;
-  int position;
+  final GenericHID joystick;
+  final int position;
 
   /**
    * Create a joystick button for triggering commands
@@ -27,9 +27,9 @@ public class POVButton extends Button {
    * @param buttonNumber The button number (see
    *        {@link GenericHID#getRawButton(int) }
    */
-  public POVButton(GenericHID joystick, int position) {
+  public POVButton(GenericHID joystick, int buttonNumber) {
     this.joystick = joystick;
-    this.position = position;
+    this.position = buttonNumber;
   }
 
   /**

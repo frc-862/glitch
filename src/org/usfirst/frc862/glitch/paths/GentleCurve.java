@@ -12,7 +12,7 @@ public class GentleCurve implements PathContainer {
     
     @Override
     public Path buildPath() {
-        ArrayList<Waypoint> sWaypoints = new ArrayList<Waypoint>();
+        ArrayList<Waypoint> sWaypoints = new ArrayList<>();
         sWaypoints.add(new Waypoint(50,50,0,0));
         sWaypoints.add(new Waypoint(100,50,25,60));
         sWaypoints.add(new Waypoint(125,75,0,60));

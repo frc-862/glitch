@@ -2,7 +2,6 @@ package org.usfirst.frc862.glitch.state;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import com.team254.lib.util.math.Translation2d;
@@ -114,12 +113,7 @@ public class GoalTracker {
             }
         }
         // Prune any tracks that have died
-        for (Iterator<GoalTrack> it = mCurrentTracks.iterator(); it.hasNext();) {
-            GoalTrack track = it.next();
-            if (!track.isAlive()) {
-                it.remove();
-            }
-        }
+        mCurrentTracks.removeIf(track -> !track.isAlive());
         // If all tracks are dead, start new tracks for any detections
         if (mCurrentTracks.isEmpty()) {
             for (Translation2d target : field_to_goals) {
