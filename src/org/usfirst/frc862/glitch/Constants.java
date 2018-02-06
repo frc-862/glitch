@@ -160,7 +160,7 @@ public class Constants extends ConstantsBase {
     /*FOURBAR*/
     //PID
     // TODO Calibrate
-    public static final int ALLOWABLE_FOURBAR_ERROR = 0;
+    public static int FOURBAR_ALLOWABLE_ERROR = 0;
     public static double FOURBAR_P = SmartDashboard.getNumber("Fourbar P",20);
     public static double FOURBAR_I = SmartDashboard.getNumber("Fourbar I",0);
     public static double FOURBAR_D = SmartDashboard.getNumber("Fourbar D",0);
