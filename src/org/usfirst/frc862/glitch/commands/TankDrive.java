@@ -41,6 +41,7 @@ public class TankDrive extends Command {
     @Override
     protected void initialize() {
         Robot.driveTrain.setVelocityMode();
+        Robot.driveTrain.setVoltageMode();
         Logger.info("Start Tank");
     }
 
@@ -50,8 +51,9 @@ public class TankDrive extends Command {
         double leftY = Robot.oi.getLeftPower();
         double rightY = Robot.oi.getRightPower();
 
-        Robot.driveTrain.setVelocity(leftY * Constants.PHYSICAL_MAX_HIGH_SPEED_TICKS,
-                rightY * Constants.PHYSICAL_MAX_HIGH_SPEED_TICKS);
+//        Robot.driveTrain.setVelocity(leftY * Constants.PHYSICAL_MAX_HIGH_SPEED_TICKS,
+//                rightY * Constants.PHYSICAL_MAX_HIGH_SPEED_TICKS);
+        Robot.driveTrain.setPower(leftY, rightY);
     }
 
     // Make this return true when this Command no longer needs to run execute()

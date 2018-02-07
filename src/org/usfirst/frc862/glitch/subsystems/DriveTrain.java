@@ -56,8 +56,8 @@ public class DriveTrain extends Subsystem {
 
     BaseMotorController left2 = RobotMap.leftSlave1;
     BaseMotorController left3 = RobotMap.leftSlave2;
-    BaseMotorController right2 = RobotMap.leftSlave1;
-    BaseMotorController right3 = RobotMap.leftSlave2;
+    BaseMotorController right2 = RobotMap.rightSlave1;
+    BaseMotorController right3 = RobotMap.rightSlave2;
 
     @Override
     public void initDefaultCommand() {
@@ -105,12 +105,12 @@ public class DriveTrain extends Subsystem {
         func.accept(right1);
     }
 
-    protected void eachSlave(Consumer<BaseMotorController> func) {
-        func.accept(left2);
-        func.accept(left3);
-        func.accept(right2);
-        func.accept(right3);
-    }
+//    protected void eachSlave(Consumer<BaseMotorController> func) {
+//        func.accept(left2);
+//        func.accept(left3);
+//        func.accept(right2);
+//        func.accept(right3);
+//    }
 
     protected void eachSlave(BiConsumer<TalonSRX, BaseMotorController> func) {
         func.accept(left1, left2);
@@ -136,12 +136,17 @@ public class DriveTrain extends Subsystem {
         if (Robot.isOBot()) {
             left1.setInverted(true);
             left1.setSensorPhase(true);
+
             right2.setInverted(true);
             right3.setInverted(true);
         } else {
-            left1.setInverted(true);
+            left1.setInverted(false);
             left1.setSensorPhase(true);
             left2.setInverted(true);
+            left3.setInverted(false);
+
+            right1.setInverted(true);
+            right2.setInverted(false);
             right3.setInverted(true);
         }
 

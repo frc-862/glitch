@@ -55,7 +55,8 @@ public class Arcade extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.driveTrain.setVelocityMode();
+//        Robot.driveTrain.setVelocityMode();
+        Robot.driveTrain.setVoltageMode();
         lastHeading = Robot.core.getGyroAngle();
         state = State.turning;
     }
@@ -128,7 +129,7 @@ public class Arcade extends Command {
         SmartDashboard.putBoolean("quickturn", quickTurn);
         SmartDashboard.putString("arcade mode", state.toString());
         DriveSignal power = drive.cheesyDrive(pwr, rot, quickTurn, Robot.shifter.isHighGear());
-        Robot.driveTrain.setVelocity(power);
+        Robot.driveTrain.setPower(power);
     }
 
     // Make this return true when this Command no longer needs to run execute()

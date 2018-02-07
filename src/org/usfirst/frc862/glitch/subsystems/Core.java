@@ -55,6 +55,7 @@ public class Core extends Subsystem {
 
     public Core() {
         super();
+        exitTestMode();
         DataLogger.addDataElement("heading", () -> navx.getFusedHeading());
     }
 

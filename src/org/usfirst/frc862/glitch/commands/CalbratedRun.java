@@ -84,13 +84,13 @@ public class CalbratedRun extends Command {
         if (timeSinceInitialized() < ramp_time) {
             double percent = timeSinceInitialized() / ramp_time;
             double power = velocity * percent;
-            Robot.driveTrain.setVelocity(power, power);
+            Robot.driveTrain.setPower(power, power);
         } else {
             double time_since_ramp = timeSinceInitialized() - ramp_time;
             double period = (time_since_ramp / (2 * Math.PI)) * wave_period;
             double percent = 1 - (Math.sin(period) * wave_amplitude);
             double power = velocity * percent;
-            Robot.driveTrain.setVelocity(power, power);
+            Robot.driveTrain.setPower(power, power);
         }
     }
 
