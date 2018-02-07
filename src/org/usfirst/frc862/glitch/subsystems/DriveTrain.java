@@ -141,11 +141,12 @@ public class DriveTrain extends Subsystem {
             right3.setInverted(true);
         } else {
             left1.setInverted(false);
-            left1.setSensorPhase(true);
+            left1.setSensorPhase(false);
             left2.setInverted(true);
             left3.setInverted(false);
 
             right1.setInverted(true);
+            right1.setSensorPhase(true);
             right2.setInverted(false);
             right3.setInverted(true);
         }

@@ -70,10 +70,10 @@ public class CalbratedRun extends Command {
 		wave_period = SmartDashboard.getNumber("Calibrated Run wave period", 2);
 		wave_amplitude = SmartDashboard.getNumber("Calibrated Run wave amplitude", 0.5);
 
-		DataLogger.setBaseFileName(String.format("calibrated-%06d-%06d-%06d-%06d", 
+		DataLogger.setBaseFileName(String.format("calibrated-%06d-%06d-%06d-%06d",
 				Math.round(kP * 1000), Math.round(kI * 1000), 
 				Math.round(kD * 1000), Math.round(kF * 1000)));
-		
+
 		this.setTimeout(time);
 		Robot.driveTrain.setPIDF(kP, kI, kD, kF);
     }
@@ -81,15 +81,17 @@ public class CalbratedRun extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        double percent;
+        double power;
         if (timeSinceInitialized() < ramp_time) {
-            double percent = timeSinceInitialized() / ramp_time;
-            double power = velocity * percent;
+            percent = timeSinceInitialized() / ramp_time;
+            power = velocity * percent;
             Robot.driveTrain.setPower(power, power);
         } else {
             double time_since_ramp = timeSinceInitialized() - ramp_time;
             double period = (time_since_ramp / (2 * Math.PI)) * wave_period;
-            double percent = 1 - (Math.sin(period) * wave_amplitude);
-            double power = velocity * percent;
+            percent = 1 - (Math.sin(period) * wave_amplitude);
+            power = velocity * percent;
             Robot.driveTrain.setPower(power, power);
         }
     }
@@ -104,7 +106,7 @@ public class CalbratedRun extends Command {
     @Override
     protected void end() {
         DataLogger.flush();
-        DataLogger.setBaseFileName("done");
+        DataLogger.setBaseFileName("robot");
     	Robot.driveTrain.stop();
     }
 

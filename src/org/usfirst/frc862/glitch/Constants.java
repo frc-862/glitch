@@ -20,7 +20,7 @@ public class Constants extends ConstantsBase {
     // NOTE we are going to want to tune for high/low gear with
     // at the very least a different feed forward...
     // in inches
-    public static double WheelCircumference = 4 * Math.PI;
+    public static double WheelCircumference = (Robot.isOBot() ? 4 : 6) * Math.PI;
     public static double PHYSICAL_MAX_LOW_SPEED_TICKS = 800;
     public static double PHYSICAL_MAX_HIGH_SPEED_TICKS = 1800;
 
