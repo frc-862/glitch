@@ -57,16 +57,14 @@ public class Core extends Subsystem {
         super();
         exitTestMode();
         DataLogger.addDataElement("heading", () -> navx.getFusedHeading());
+        DataLogger.addDataElement("current", () -> powerDistributionPanel.getTotalCurrent());
+        DataLogger.addDataElement("voltage", () -> powerDistributionPanel.getVoltage());
     }
 
     @Override
     public void periodic() {
         // Put code here to be run every loop
         SmartDashboard.putNumber("Heading", navx.getFusedHeading());
-        SmartDashboard.putNumber("YAW", getGyroAngle());
-//        SmartDashboard.putNumber("x", navx.getVelocityX());
-//        SmartDashboard.putNumber("y", navx.getVelocityY());
-//        SmartDashboard.putNumber("z", navx.getVelocityZ());
     }
 
     public void enterTestMode() {

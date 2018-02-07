@@ -22,9 +22,9 @@ public class RobotStateEstimator extends Subsystem {
         left_encoder_prev_distance_ = drive_.getLeftDistanceInches();
         right_encoder_prev_distance_ = drive_.getRightDistanceInches();
 
-        DataLogger.addDataElement("robot_pose_x", () -> robot_state_.getLatestFieldToVehicle().getValue().getTranslation().x());
-        DataLogger.addDataElement("robot_pose_y", () -> robot_state_.getLatestFieldToVehicle().getValue().getTranslation().y());
-        DataLogger.addDataElement("robot_pose_theta", () -> robot_state_.getLatestFieldToVehicle().getValue().getRotation().getDegrees());
+//        DataLogger.addDataElement("robot_pose_x", () -> robot_state_.getLatestFieldToVehicle().getValue().getTranslation().x());
+//        DataLogger.addDataElement("robot_pose_y", () -> robot_state_.getLatestFieldToVehicle().getValue().getTranslation().y());
+//        DataLogger.addDataElement("robot_pose_theta", () -> robot_state_.getLatestFieldToVehicle().getValue().getRotation().getDegrees());
     }
 
     @Override
@@ -46,7 +46,7 @@ public class RobotStateEstimator extends Subsystem {
         robot_state_.addObservations(timestamp, odometry_velocity, predicted_velocity);
         left_encoder_prev_distance_ = left_distance;
         right_encoder_prev_distance_ = right_distance;
-        robot_state_.outputToSmartDashboard();
+//        robot_state_.outputToSmartDashboard();
     }
 
     public void setStartPose(RigidTransform2d startPose) {
