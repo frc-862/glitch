@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj.Spark;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc862.util.FaultCode;
 import org.usfirst.frc862.util.Logger;
 import com.kauailabs.navx.frc.AHRS;
@@ -101,7 +103,7 @@ public class RobotMap {
         }
 
         resetNavX();
-
+        
         fourBarmotor.setSelectedSensorPosition(0, 0, Constants.TALON_TIMEOUT);
     }
 

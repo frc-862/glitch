@@ -14,6 +14,8 @@ package org.usfirst.frc862.glitch;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.usfirst.frc862.glitch.commands.*;
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.paths.SwitchCurveLeftPath;
 import org.usfirst.frc862.glitch.paths.SwitchCurveRightPath;
@@ -94,7 +96,14 @@ public class OI {
         SmartDashboard.putData("Switch Straight", new SwitchStraightPath());
         SmartDashboard.putData("Curve Left", new SwitchCurveLeftPath());
         SmartDashboard.putData("Curve Right", new SwitchCurveRightPath());
+<<<<<<< Updated upstream
 
+=======
+        
+        SmartDashboard.putData("Gyro", RobotMap.navx);
+        
+        SmartDashboard.putData("FollowPath", new FollowPath());
+>>>>>>> Stashed changes
         driver = new XBoxController(0);
     }
 
