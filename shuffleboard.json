@@ -1,5 +1,5 @@
 {
-  "dividerPosition": 0.3078635014836795,
+  "dividerPosition": 0.33357771260997066,
   "tabPane": [
     {
       "title": "SmartDashboard",
@@ -166,7 +166,7 @@
           },
           "4,2": {
             "size": [
-              2,
+              1,
               2
             ],
             "content": {
@@ -339,7 +339,7 @@
           },
           "4,0": {
             "size": [
-              2,
+              1,
               4
             ],
             "content": {
@@ -374,14 +374,14 @@
               "tickMarkRingVisible": true
             }
           },
-          "8,0": {
+          "7,0": {
             "size": [
               3,
               5
             ],
             "content": {
               "_type": "List Layout",
-              "_title": "List",
+              "_title": "Auton Selectors",
               "_children": [
                 {
                   "_type": "ComboBox Chooser",
@@ -399,6 +399,16 @@
                   "_title": "Side"
                 }
               ]
+            }
+          },
+          "3,0": {
+            "size": [
+              4,
+              4
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_title": ""
             }
           }
         }

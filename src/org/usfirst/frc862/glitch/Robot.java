@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.CameraServer;
 import org.usfirst.frc862.glitch.commands.*;
 import org.usfirst.frc862.glitch.subsystems.*;
 import org.usfirst.frc862.util.CrashTracker;
@@ -139,10 +140,17 @@ public class Robot extends TimedRobot {
         
         allianceChooser.addDefault("Blue", "blue");
         allianceChooser.addObject("Red", "red");
+
+        allianceChooser.addDefault("hi", "hi");
         
         SmartDashboard.putData("Side", sideChooser);
         SmartDashboard.putData("Switch\\Scale", leverChooser);
         SmartDashboard.putData("Alliance", allianceChooser);
+        
+        UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+        camera.setResolution(640, 480);
+        
+        
         
         Robot.resetLoggingFiles();
 

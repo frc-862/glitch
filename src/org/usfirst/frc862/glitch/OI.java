@@ -96,14 +96,10 @@ public class OI {
         SmartDashboard.putData("Switch Straight", new SwitchStraightPath());
         SmartDashboard.putData("Curve Left", new SwitchCurveLeftPath());
         SmartDashboard.putData("Curve Right", new SwitchCurveRightPath());
-<<<<<<< Updated upstream
-
-=======
         
         SmartDashboard.putData("Gyro", RobotMap.navx);
         
         SmartDashboard.putData("FollowPath", new FollowPath());
->>>>>>> Stashed changes
         driver = new XBoxController(0);
     }
 
