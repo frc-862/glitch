@@ -55,8 +55,7 @@ public class Arcade extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-//        Robot.driveTrain.setVelocityMode();
-        Robot.driveTrain.setVoltageMode();
+        Robot.driveTrain.setVelocityMode();
         lastHeading = Robot.core.getGyroAngle();
         state = State.turning;
     }
@@ -73,7 +72,6 @@ public class Arcade extends Command {
 //        Robot.driveTrain.setPower(left,right);
 
         double start = Timer.getFPGATimestamp();
-
         double rot = Robot.oi.getRotation();
         rot = rot * rot * rot;
         double pwr = Robot.oi.getThrust();
@@ -103,7 +101,7 @@ public class Arcade extends Command {
                 if (Math.abs(rot) > Constants.NotStraight) {
                     state = State.turning;
                 } else {
-                    double err = LightningMath.boundThetaNeg180to180(Robot.core.getGyroAngle() - heading);
+                    double err = LightningMath.boundThetaNeg180to180(heading - Robot.core.getGyroAngle());
                     if (Math.abs(err) > Constants.StraightMarginOfError) {
                         SmartDashboard.putNumber("Theta Error", err);
 
@@ -113,7 +111,7 @@ public class Arcade extends Command {
                             rot = err * Constants.StraightenKpLowGear;
                         }
                         SmartDashboard.putNumber("Theta Correct", rot);
-                        quickTurn = true;
+//                        quickTurn = true;
                     }
                 }
                 break;
@@ -123,13 +121,17 @@ public class Arcade extends Command {
                     state = State.straight;
                     heading = Robot.core.getGyroAngle();
                 }
+
+                if (Math.abs(pwr) < Constants.dead_band) {
+                    quickTurn = true;
+                }
                 break;
         }
 
         SmartDashboard.putBoolean("quickturn", quickTurn);
         SmartDashboard.putString("arcade mode", state.toString());
         DriveSignal power = drive.cheesyDrive(pwr, rot, quickTurn, Robot.shifter.isHighGear());
-        Robot.driveTrain.setPower(power);
+        Robot.driveTrain.setVelocity(power);
     }
 
     // Make this return true when this Command no longer needs to run execute()

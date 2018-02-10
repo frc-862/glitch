@@ -20,11 +20,11 @@ public class Constants extends ConstantsBase {
     // NOTE we are going to want to tune for high/low gear with
     // at the very least a different feed forward...
     // in inches
-    public static double WheelCircumference = (Robot.isOBot() ? 4 : 6) * Math.PI;
-    public static double PHYSICAL_MAX_LOW_SPEED_TICKS = 800;
-    public static double PHYSICAL_MAX_HIGH_SPEED_TICKS = 1800;
+    public static double WheelCircumference = (Robot.isOBot() ? 4 : 6.25) * Math.PI;
+    public static double PHYSICAL_MAX_LOW_SPEED_TICKS = 700;
+    public static double PHYSICAL_MAX_HIGH_SPEED_TICKS = 1300;
 
-    public static double dead_band = 0.05;
+    public static double dead_band = 0.025;
     public static int TALON_TIMEOUT = 10; //ms
 
     // not currently functional
@@ -32,7 +32,7 @@ public class Constants extends ConstantsBase {
     public static final int HIGHGEAR_IDX = 1;
 
     // low gear
-    public static double LOWGEAR_DRIVE_P = 1.5;  // 2 oscillated a little in testing
+    public static double LOWGEAR_DRIVE_P = 1.55;  // 2 oscillated a little in testing
     public static double LOWGEAR_DRIVE_I = 0;
     public static double LOWGEAR_DRIVE_D = 0;
     public static double LOWGEAR_DRIVE_F = 1023 / PHYSICAL_MAX_LOW_SPEED_TICKS;
@@ -45,6 +45,15 @@ public class Constants extends ConstantsBase {
     public static double HIGHGEAR_DRIVE_F = 1023 / PHYSICAL_MAX_HIGH_SPEED_TICKS;
     public static final int HIGHGEAR_ALLOWED_DRIVE_ERROR = 40;
     public static double TICS_PER_ROTATION = 360 * 4;
+
+    //PID
+    public static double pathP = 7.5;
+    public static double pathI = 0;
+    public static double pathD = 0;
+    public static double pathV = 1;  // Velocity is in IPS, we command IPS
+    public static double pathA = 0;
+    public static double pathTurn = 1; // 1; // 2; // 1.2; // 0.862;
+    public static double pathFeedF = 6; // 4;
 
     // PID gains for drive velocity loop (HIGH GEAR)
     // Units: setpoint, error, and output are in inches per second.
@@ -107,16 +116,6 @@ public class Constants extends ConstantsBase {
     public static double kPathFollowingGoalVelTolerance = 12.0;
     public static double kPathStopSteeringDistance = 9.0;
 
-    //PID
-    // TODO Set these
-    public static double pathP = 5;
-    public static double pathI = 0;
-    public static double pathD = 0;
-    public static double pathV = 1;  // Velocity is in IPS, we command IPS
-    public static double pathA = 0.1;
-    public static double pathTurn = 0;
-
-
     // Goal tracker constants
     public static double kMaxGoalTrackAge = 1.0;
     public static double kMaxTrackerDistance = 18.0;
@@ -129,14 +128,14 @@ public class Constants extends ConstantsBase {
     public static double MotorTestDistance = 3;
 
     public static double slowLoopRate = 0.5;
-    public static double fastLoopRate = 0.05;
+    public static double fastLoopRate = 0.005;
     public static double openLoopRamp = 0.2;
     public static double closedLoopRamp = 0.2;
 
 
 
     /*AUTOSHIFTER*/
-    public static double MinUpshiftVelocity = LightningMath.talon2ips(750);  // TODO calibrate me
+    public static double MinUpshiftVelocity = LightningMath.talon2ips(600);  // TODO calibrate me
     public static double MinRequestedVelocityForUpshift = LightningMath.talon2ips(800); // TODO calibrate me
     public static double shiftHysteresis = 1.0;
     public static double HighCurrentThreshold = 200;
@@ -150,10 +149,10 @@ public class Constants extends ConstantsBase {
 
     /*AUTO STRAIGHTEN*/
     public static double NotTurning = 0.01;
-    public static double NotStraight = 0.1;
+    public static double NotStraight = 0.025;
     public static double StraightMarginOfError = 1.5;
-    public static double StraightenKpLowGear = 0; // -0.005;
-    public static double StraightenKpHighGear = 0; // -0.01;
+    public static double StraightenKpLowGear = 0.005;
+    public static double StraightenKpHighGear = 0.01;
 
 
 

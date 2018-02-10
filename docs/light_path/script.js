@@ -358,7 +358,7 @@ function update() {
   config.max_jerk = parseFloat($("td.max_jerk input").val());
 
   if (points.getNumWaypoints() > 1) {
-    path = PathGenerator.makePath(points, config, 18.0, "Curve");
+    path = PathGenerator.makePath(points, config, 25.0, "Curve");
     drawPath();
     $("td.time").text("" + path.getLeftWheelTrajectory().getNumSegments()*0.02);
   } else {

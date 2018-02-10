@@ -130,8 +130,12 @@ public class DriveTrain extends Subsystem {
         DataLogger.addDataElement("Right error",() -> right1.getClosedLoopError(0));
         DataLogger.addDataElement("Left velocity",() -> left1.getSelectedSensorVelocity(0));
         DataLogger.addDataElement("Right velocity",() -> right1.getSelectedSensorVelocity(0));
-        DataLogger.addDataElement("Left command",() -> left1.getMotorOutputPercent());
-        DataLogger.addDataElement("Right command",() -> right1.getMotorOutputPercent());
+        DataLogger.addDataElement("Left command",() -> left1.getClosedLoopTarget(0));
+        DataLogger.addDataElement("Right command",() -> right1.getClosedLoopTarget(0));
+        DataLogger.addDataElement("Left percent",() -> left1.getMotorOutputPercent());
+        DataLogger.addDataElement("Right percent",() -> right1.getMotorOutputPercent());
+        DataLogger.addDataElement("Ave Speed",() -> this.getAverageSpeed());
+        DataLogger.addDataElement("Req Speed",() -> this.getRequestedVelocity());
 
         eachMaster((m) -> m.selectProfileSlot(0, 0));
 

@@ -46,6 +46,9 @@ public class SwitchAuton extends Command {
         //int powerCubes= (int)Math.round(SmartDashboard.getNumber("auton powercubes",1));
         //String mode=SmartDashboard.getString("select mode", "switch");
         String fieldConfig = DriverStation.getInstance().getGameSpecificMessage();
+        while (fieldConfig == null || fieldConfig.length() < 2) {
+            fieldConfig = DriverStation.getInstance().getGameSpecificMessage();
+        }
         //DriverStation.Alliance alliance=DriverStation.getInstance().getAlliance();
 
         CommandGroup cmd = new CommandGroup();
