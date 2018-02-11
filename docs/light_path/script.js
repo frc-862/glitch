@@ -356,9 +356,10 @@ function update() {
   config.max_vel = parseFloat($("td.max_vel input").val());
   config.max_acc = parseFloat($("td.max_acc input").val());
   config.max_jerk = parseFloat($("td.max_jerk input").val());
+  var wheel_base = parseFloat($("td.wheel_base input").val());
 
   if (points.getNumWaypoints() > 1) {
-    path = PathGenerator.makePath(points, config, 25.0, "Curve");
+    path = PathGenerator.makePath(points, config, wheel_base, "Curve");
     drawPath();
     $("td.time").text("" + path.getLeftWheelTrajectory().getNumSegments()*0.02);
   } else {
@@ -493,15 +494,16 @@ function importData() {
 			let max_vel = (/(?:\/\/\sMAX_VEL:\s)(.*)/gm).exec(c)[1];
 			let max_acc = (/(?:\/\/\sMAX_ACC:\s)(.*)/gm).exec(c)[1];
 			let max_jerk = (/(?:\/\/\sMAX_JERK:\s)(.*)/gm).exec(c)[1];
+			let wheel_base = (/(?:\/\/\sWHEEL_BASE:\s)(.*)/gm).exec(c)[1];
 			let package = (/(?:\/\/\sPACKAGE:\s)(.*)/gm).exec(c)[1];
 			let parent = (/(?:\/\/\sPARENT:\s)(.*)/gm).exec(c)[1];
-			console.log();
 			$("#title").val(title.exec(c)[1]);
 			$("#isReversed").prop('checked', reversed.exec(c)[1].includes("true"));
       $("td.dt input").val(dt);
       $("td.max_vel input").val(max_vel);
       $("td.max_acc input").val(max_acc);
       $("td.max_jerk input").val(max_jerk);
+      $("td.wheel_base input").val(wheel_base);
       $("td.package input").val(package);
       $("td.parent input").val(parent);
 			let jde = re.exec(c)[1];
@@ -543,6 +545,7 @@ function getDataString() {
   var max_vel = parseFloat($("td.max_vel input").val());
   var max_acc = parseFloat($("td.max_acc input").val());
   var max_jerk = parseFloat($("td.max_jerk input").val());
+  var wheel_base = parseFloat($("td.wheel_base input").val());
   var package = $("td.package input").val();
   var parent = $("td.parent input").val();
   
@@ -615,6 +618,7 @@ ${func_bodies}
   // MAX_VEL: ${max_vel}
   // MAX_ACC: ${max_acc}
   // MAX_JERK: ${max_jerk}
+  // WHEEL_BASE: ${wheel_base}
   // PACKAGE: ${package}
   // PARENT: ${parent}
 }`
