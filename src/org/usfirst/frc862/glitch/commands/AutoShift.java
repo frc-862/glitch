@@ -118,7 +118,6 @@ public class AutoShift extends Command {
                 break;
 
             case UP_SHIFTING:
-                Robot.driveTrain.slowForSeconds(0.25);
                 originalRDistance = Robot.driveTrain.getRightDistanceInches();
                 originalLDistance = Robot.driveTrain.getLeftDistanceInches();
                 Robot.shifter.upshift();
