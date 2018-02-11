@@ -48,10 +48,13 @@ public class FourBar extends Subsystem {
         motor.config_kF(0, Constants.FOURBAR_F, Constants.TALON_TIMEOUT);
 
         SmartDashboard.putNumber("Fourbar Allowable Error", Constants.FOURBAR_ALLOWABLE_ERROR);
-        SmartDashboard.putNumber("Fourbar P",20);
-        SmartDashboard.putNumber("Fourbar I",0);
-        SmartDashboard.putNumber("Fourbar D",0);
-        SmartDashboard.putNumber("Fourbar F",0);
+        SmartDashboard.putNumber("Fourbar P", Constants.FOURBAR_P);
+        SmartDashboard.putNumber("Fourbar I", Constants.FOURBAR_I);
+        SmartDashboard.putNumber("Fourbar D", Constants.FOURBAR_D);
+        SmartDashboard.putNumber("Fourbar F", Constants.FOURBAR_F);
+
+        motor.configMotionAcceleration(24 * 2, Constants.TALON_TIMEOUT);
+        motor.configMotionCruiseVelocity(24, Constants.TALON_TIMEOUT);
     }
 
     @Override
@@ -69,12 +72,17 @@ public class FourBar extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
-        SmartDashboard.getNumber("Fourbar Allowable Error", Constants.FOURBAR_ALLOWABLE_ERROR);
-        SmartDashboard.getNumber("Fourbar P", Constants.FOURBAR_P);
-        SmartDashboard.getNumber("Fourbar I", Constants.FOURBAR_I);
-        SmartDashboard.getNumber("Fourbar D", Constants.FOURBAR_D);
-        SmartDashboard.getNumber("Fourbar F", Constants.FOURBAR_F);
-        SmartDashboard.getNumber("FourBar Encoder", (double) motor.getSelectedSensorPosition(0));
+        int err = (int) SmartDashboard.getNumber("Fourbar Allowable Error", Constants.FOURBAR_ALLOWABLE_ERROR);
+        motor.configAllowableClosedloopError(0, err, Constants.TALON_TIMEOUT);
+        double kP = SmartDashboard.getNumber("Fourbar P", Constants.FOURBAR_P);
+        motor.config_kP(0, kP, Constants.TALON_TIMEOUT);
+        double kI = SmartDashboard.getNumber("Fourbar I", Constants.FOURBAR_I);
+        motor.config_kI(0, kI, Constants.TALON_TIMEOUT);
+        double kD = SmartDashboard.getNumber("Fourbar D", Constants.FOURBAR_D);
+        motor.config_kD(0, kD, Constants.TALON_TIMEOUT);
+        double kF = SmartDashboard.getNumber("Fourbar F", Constants.FOURBAR_F);
+        motor.config_kF(0, kF, Constants.TALON_TIMEOUT);
+        SmartDashboard.putNumber("FourBar Encoder", motor.getSelectedSensorPosition(0));
     }
 
     // Put methods for controlling this subsystem

@@ -159,11 +159,11 @@ public class Constants extends ConstantsBase {
     /*FOURBAR*/
     //PID
     // TODO Calibrate
-    public static int FOURBAR_ALLOWABLE_ERROR = 0;
-    public static double FOURBAR_P = SmartDashboard.getNumber("Fourbar P",20);
-    public static double FOURBAR_I = SmartDashboard.getNumber("Fourbar I",0);
-    public static double FOURBAR_D = SmartDashboard.getNumber("Fourbar D",0);
-    public static double FOURBAR_F = SmartDashboard.getNumber("Fourbar F",0);
+    public static int FOURBAR_ALLOWABLE_ERROR = 10;
+    public static double FOURBAR_P = 20;
+    public static double FOURBAR_I = 0;
+    public static double FOURBAR_D = 0;
+    public static double FOURBAR_F = 0;
 
     // Positions in encoder ticks MAX: ~300
     public static final double FOURBAR_SCALE_POS = 290;
