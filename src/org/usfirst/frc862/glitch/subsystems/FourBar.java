@@ -13,6 +13,7 @@ package org.usfirst.frc862.glitch.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.RobotMap;
@@ -55,6 +56,7 @@ public class FourBar extends Subsystem {
 
         motor.configMotionAcceleration(24 * 2, Constants.TALON_TIMEOUT);
         motor.configMotionCruiseVelocity(24, Constants.TALON_TIMEOUT);
+
     }
 
     @Override

@@ -193,13 +193,13 @@ public class DriveTrain extends Subsystem {
             m.config_kD(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
             m.config_kF(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
             m.configAllowableClosedloopError(Constants.LOWGEAR_IDX, Constants.LOWGEAR_ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
-            m.setSelectedSensorPosition(0, Constants.LOWGEAR_IDX, Constants.TALON_TIMEOUT);
+            m.setSelectedSensorPosition(0,0, Constants.TALON_TIMEOUT);
 
             m.config_kP(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
             m.config_kI(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
             m.config_kD(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
             m.config_kF(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
-            m.setSelectedSensorPosition(0, Constants.HIGHGEAR_IDX, Constants.TALON_TIMEOUT);
+            m.setSelectedSensorPosition(0,0, Constants.TALON_TIMEOUT);
             m.configAllowableClosedloopError(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
 
             m.configOpenloopRamp(Constants.openLoopRamp, Constants.TALON_TIMEOUT);
