@@ -9,7 +9,8 @@ APA102<dataPin, clockPin> led;
 
 rgb_color colors[ledCount];
 
-int state = 0;
+int state = 0, rando = random(0, 100), randoShift = random(0, ledCount), spazzTime = random(20, 50);
+boolean spazzMode = false;
 
 void setup() {
 }
@@ -17,6 +18,7 @@ void setup() {
 void loop() {
   
   state = digitalRead(7) + 2 * digitalRead(8) + 4 * digitalRead(9);
+  state = 2;
   
   switch (state) {
     case 0:
@@ -90,26 +92,65 @@ void green(){
 int wow = 0, woah = ledCount;
 
 void orangeBlueChase(){
-  for (int i = 0; i < ledCount; i++)
-    colors[i] = rgb_color(255, 32, 0);
-  for (int i = wow; i < wow + ledCount/4; i++) {
-    if (i > ledCount)
-      colors[i - ledCount - 1] = rgb_color(0, 0, 255);
-    else
-      colors[i] = rgb_color(0, 0, 255);
+
+  if (!spazzMode) {
+    for (int i = 0; i < ledCount; i++)
+      colors[i] = rgb_color(255, 32, 0);
+      
+    for (int i = wow; i < wow + ledCount/4; i++) {
+      if (i > ledCount)
+        colors[i - ledCount - 1] = rgb_color(0, 0, 255);
+      else
+        colors[i] = rgb_color(0, 0, 255);
+    }
+    for (int i = woah; i < woah + ledCount/4; i++) {
+      if (i > ledCount)
+        colors[i - ledCount - 1] = rgb_color(0, 0, 255);
+      else
+        colors[i] = rgb_color(0, 0, 255);
+    }
+  } else {
+    for (int i = 0; i < ledCount; i++)
+      colors[i] = rgb_color(255, 32, 0);
+      
+    for (int i = wow; i < wow + ledCount/4; i++) {
+      if (i > ledCount)
+        colors[i - ledCount - 1] = rgb_color(0, 0, 255);
+      else
+        colors[i] = rgb_color(0, 0, 255);
+    }
+    for (int i = woah; i < woah + ledCount/4; i++) {
+      if (i > ledCount)
+        colors[i - ledCount - 1] = rgb_color(0, 0, 255);
+      else
+        colors[i] = rgb_color(0, 0, 255);
+    }
+
+    wow += randoShift;
+    woah += randoShift;
+    randoShift = random(0, ledCount);
+    
+    if (spazzTime == 0) {
+      spazzMode = false;
+      spazzTime = random(20, 50);
+    } else {
+      spazzTime --;
+    }
   }
-  for (int i = woah; i < woah + ledCount/4; i++) {
-    if (i > ledCount)
-      colors[i - ledCount - 1] = rgb_color(0, 0, 255);
-    else
-      colors[i] = rgb_color(0, 0, 255);
-  }
+  
   wow++;
   woah++;
+  
+  if (rando == 0) {
+    spazzMode = true;
+    rando = random(0, 100);
+  } else
+     rando--;
+  
   if (wow > ledCount)
-    wow = 0;
+    wow -= ledCount + 1;
   if (woah > ledCount)
-    woah = 0;
+    woah -= ledCount + 1;
   led.write(colors, ledCount, brightness);
   delay(15);
 }
