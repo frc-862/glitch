@@ -138,6 +138,8 @@ public class DriveTrain extends Subsystem {
         DataLogger.addDataElement("Right percent",() -> right1.getMotorOutputPercent());
         DataLogger.addDataElement("Ave Speed",() -> this.getAverageSpeed());
         DataLogger.addDataElement("Req Speed",() -> this.getRequestedVelocity());
+        DataLogger.addDataElement("Cmd Rotation", () ->
+                LightningMath.talon2ips(Robot.oi.getRotation() * Constants.PHYSICAL_MAX_LOW_SPEED_TICKS));
 
         eachMaster((m) -> m.selectProfileSlot(0, 0));
 
@@ -309,10 +311,14 @@ public class DriveTrain extends Subsystem {
     }
 
     public void setVelocity(double left, double right) {
+        SmartDashboard.putNumber("slowuntil", slowUntil);
+        SmartDashboard.putNumber("timer", Timer.getFPGATimestamp());
         if (Timer.getFPGATimestamp() < slowUntil) {
+            SmartDashboard.putString("slowing", "true");
             left1.set(getAverageSpeed() * Constants.slowDownRate);
             right1.set(getAverageSpeed() * Constants.slowDownRate);
         } else {
+            SmartDashboard.putString("slowing", "false");
             left1.set(ControlMode.Velocity, left);
             right1.set(ControlMode.Velocity, right);
         }

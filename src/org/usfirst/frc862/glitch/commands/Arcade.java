@@ -14,11 +14,14 @@ import com.team254.lib.util.CheesyDriveHelper;
 import com.team254.lib.util.DriveSignal;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.util.LightningMath;
 import org.usfirst.frc862.util.MovingAverageFilter;
+
+import static org.usfirst.frc862.util.LightningMath.limit;
 
 /**
  *
@@ -52,6 +55,61 @@ public class Arcade extends Command {
         drive = new CheesyDriveHelper();
     }
 
+    public static final double kDefaultQuickStopThreshold = 0.2;
+    public static final double kDefaultQuickStopAlpha = 0.1;
+    private double m_quickStopThreshold = kDefaultQuickStopThreshold;
+    private double m_quickStopAlpha = kDefaultQuickStopAlpha;
+
+    /**
+     * Curvature drive method for differential drive platform.
+     *
+     * <p>The rotation argument controls the curvature of the robot's path rather than its rate of
+     * heading change. This makes the robot more controllable at high speeds. Also handles the
+     * robot's quick turn functionality - "quick turn" overrides constant-curvature turning for
+     * turn-in-place maneuvers.
+     *
+     * @param xSpeed      The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
+     * @param zRotation   The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is
+     *                    positive.
+     * @param isQuickTurn If set, overrides constant-curvature turning for
+     *                    turn-in-place maneuvers.
+     */
+    @SuppressWarnings("ParameterName")
+    public DriveSignal curvatureDrive(double xSpeed, double zRotation, boolean isQuickTurn) {
+        double angularPower;
+        boolean overPower;
+
+        if (isQuickTurn) {
+            overPower = true;
+            angularPower = zRotation;
+        } else {
+            overPower = false;
+            angularPower = Math.abs(xSpeed) * zRotation;
+        }
+
+        double leftMotorOutput = xSpeed + angularPower;
+        double rightMotorOutput = xSpeed - angularPower;
+
+        // If rotation is overpowered, reduce both outputs to within acceptable range
+        if (overPower) {
+            if (leftMotorOutput > 1.0) {
+                rightMotorOutput -= leftMotorOutput - 1.0;
+                leftMotorOutput = 1.0;
+            } else if (rightMotorOutput > 1.0) {
+                leftMotorOutput -= rightMotorOutput - 1.0;
+                rightMotorOutput = 1.0;
+            } else if (leftMotorOutput < -1.0) {
+                rightMotorOutput -= leftMotorOutput + 1.0;
+                leftMotorOutput = -1.0;
+            } else if (rightMotorOutput < -1.0) {
+                leftMotorOutput -= rightMotorOutput + 1.0;
+                rightMotorOutput = -1.0;
+            }
+        }
+
+        return new DriveSignal(leftMotorOutput, rightMotorOutput);
+    }
+
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
@@ -81,7 +139,7 @@ public class Arcade extends Command {
         lastTime = start;
 
         double newHeading = Robot.core.getGyroAngle();
-        velocityAverage.filter((lastHeading - newHeading) / dt);
+        velocityAverage.filter(Math.abs(lastHeading - newHeading) / dt);
         lastHeading = newHeading;
 
         SmartDashboard.putNumber("angular velocity", velocityAverage.get());
@@ -91,6 +149,7 @@ public class Arcade extends Command {
                 if (Math.abs(rot) < Constants.NotStraight) {
                     state = State.turn_hysterisis;
                 }
+                heading = Robot.core.getGyroAngle();
 
                 if (Math.abs(pwr) < Constants.dead_band) {
                     quickTurn = true;
@@ -102,16 +161,17 @@ public class Arcade extends Command {
                     state = State.turning;
                 } else {
                     double err = LightningMath.boundThetaNeg180to180(heading - Robot.core.getGyroAngle());
+                    SmartDashboard.putNumber("Theta Error", err);
                     if (Math.abs(err) > Constants.StraightMarginOfError) {
-                        SmartDashboard.putNumber("Theta Error", err);
-
                         if (Robot.shifter.isHighGear()) {
-                            rot = err * Constants.StraightenKpHighGear;
+                            rot += err * Constants.StraightenKpHighGear;
                         } else {
-                            rot = err * Constants.StraightenKpLowGear;
+                            rot += err * Constants.StraightenKpLowGear;
                         }
                         SmartDashboard.putNumber("Theta Correct", rot);
-//                        quickTurn = true;
+                        quickTurn = true;
+                    } else {
+                        SmartDashboard.putNumber("Theta Correct", rot);
                     }
                 }
                 break;
@@ -119,8 +179,10 @@ public class Arcade extends Command {
             case turn_hysterisis:
                 if (Math.abs(velocityAverage.get()) < Constants.NotTurning) {
                     state = State.straight;
-                    heading = Robot.core.getGyroAngle();
+                } else if (Math.abs(rot) > Constants.NotStraight) {
+                    state = State.turning;
                 }
+                heading = Robot.core.getGyroAngle();
 
                 if (Math.abs(pwr) < Constants.dead_band) {
                     quickTurn = true;
@@ -128,9 +190,11 @@ public class Arcade extends Command {
                 break;
         }
 
+        SmartDashboard.putNumber("rot vel ave", velocityAverage.get());
         SmartDashboard.putBoolean("quickturn", quickTurn);
         SmartDashboard.putString("arcade mode", state.toString());
-        DriveSignal power = drive.cheesyDrive(pwr, rot, quickTurn, Robot.shifter.isHighGear());
+//        DriveSignal power = drive.cheesyDrive(pwr, rot, quickTurn, Robot.shifter.isHighGear());
+        DriveSignal power = curvatureDrive(pwr, rot, quickTurn);
         Robot.driveTrain.setVelocity(power);
     }
 
