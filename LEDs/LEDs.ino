@@ -3,13 +3,15 @@
 const uint8_t dataPin = 11;
 const uint8_t clockPin = 12;
 const uint8_t ledCount = 17;
-const uint8_t brightness = 31;
+const uint8_t brightness = 19;
 
 APA102<dataPin, clockPin> led;
 
 rgb_color colors[ledCount];
 
-int state = 0, rando = random(0, 100), randoShift = random(0, ledCount), spazzTime = random(20, 50);
+int state = 0, rando = random(0, 200), randoShift = random(0, ledCount), spazzTime = random(20, 50), randoColor = 0;
+int oBlueR = 0, oBlueG = 0, oBlueB = 255;
+int blueR = 0, blueG = 0, blueB = 255;
 boolean spazzMode = false;
 
 void setup() {
@@ -115,16 +117,16 @@ void orangeBlueChase(){
       
     for (int i = wow; i < wow + ledCount/4; i++) {
       if (i > ledCount)
-        colors[i - ledCount - 1] = rgb_color(0, 0, 255);
+        colors[i - ledCount - 1] = rgb_color(0, 255, 0);
       else
-        colors[i] = rgb_color(0, 0, 255);
+        colors[i] = rgb_color(0, 255, 0);
     }
     for (int i = woah; i < woah + ledCount/4; i++) {
       if (i > ledCount)
-        colors[i - ledCount - 1] = rgb_color(0, 0, 255);
+        colors[i - ledCount - 1] = rgb_color(0, 255, 0);
       else
-        colors[i] = rgb_color(0, 0, 255);
-    }
+        colors[i] = rgb_color(0, 255, 0);
+    }  
 
     wow += randoShift;
     woah += randoShift;
@@ -132,10 +134,12 @@ void orangeBlueChase(){
     
     if (spazzTime == 0) {
       spazzMode = false;
-      spazzTime = random(20, 50);
+      spazzTime = random(1, 30);
     } else {
       spazzTime --;
     }
+    
+    delay(100);
   }
   
   wow++;
@@ -143,7 +147,7 @@ void orangeBlueChase(){
   
   if (rando == 0) {
     spazzMode = true;
-    rando = random(0, 100);
+    rando = random(0, 200);
   } else
      rando--;
   
