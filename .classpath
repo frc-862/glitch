@@ -7,7 +7,12 @@
 	<classpathentry kind="var" path="wpiutil" sourcepath="wpiutil.sources"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRE_Phoenix-sources.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRE_Phoenix.jar"/>
-	<classpathentry kind="var" path="USERLIBS_DIR/CTRLib-javadoc.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRLib.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/navx_frc.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/Pathfinder-Java.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/RIOdroid.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/snakeyaml-1.18-SNAPSHOT-javadoc.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/snakeyaml-1.18-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/snakeyaml-1.18-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
