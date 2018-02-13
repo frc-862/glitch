@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc862.glitch.paths.SwitchCurveLeftPath;
-import org.usfirst.frc862.glitch.paths.SwitchCurveRightPath;
-import org.usfirst.frc862.glitch.paths.SwitchStraightPath;
+import org.usfirst.frc862.glitch.paths.CurveLeftSwitch;
+import org.usfirst.frc862.glitch.paths.CurveRightSwitch;
+import org.usfirst.frc862.glitch.paths.StraightSwitch;
 
 /**
  *
@@ -56,21 +56,21 @@ public class SwitchAuton extends Command {
 
         if(leftStart && fieldConfig.substring(0,1).equalsIgnoreCase("L"))
         {
-            cmd.addParallel(new SwitchStraightPath());
+            cmd.addParallel(new StraightSwitch());
         }
         else if(!leftStart && fieldConfig.substring(0,1).equalsIgnoreCase("R"))
         {
-            cmd.addParallel(new SwitchStraightPath());
+            cmd.addParallel(new StraightSwitch());
         }
         else if(leftStart)
         {
             //Curve right
-            cmd.addParallel(new SwitchCurveRightPath());
+            cmd.addParallel(new CurveRightSwitch());
         }
         else
         {
             //Curve left
-            cmd.addParallel(new SwitchCurveLeftPath());
+            cmd.addParallel(new CurveLeftSwitch());
         }
         cmd.addSequential(new EjectCube());
         cmd.start();
