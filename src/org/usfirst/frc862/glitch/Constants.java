@@ -27,6 +27,9 @@ public class Constants extends ConstantsBase {
     public static double dead_band = 0.05;
     public static int TALON_TIMEOUT = 10; //ms
 
+    //turnToDegrees
+    public static final double ANGLE_TOLERANCE_DEGREES = 3;
+
     // not currently functional
     public static final int LOWGEAR_IDX = 0;
     public static final int HIGHGEAR_IDX = 1;
@@ -171,6 +174,7 @@ public class Constants extends ConstantsBase {
     public static final double FOURBAR_SWITCH_POS = 100;
     public static final double FOURBAR_COLLECT_POS = 25;
     public static final double FOURBAR_BOTTOM_POS = 10;
+    public static final double ALERT_DURATION = 3;
 
     public String getFileName() {
         return "~/glitch.yaml";

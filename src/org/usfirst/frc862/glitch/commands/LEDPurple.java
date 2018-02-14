@@ -14,6 +14,7 @@ import com.ctre.phoenix.CANifier;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.RobotMap;
+import org.usfirst.frc862.glitch.subsystems.ShineBois;
 
 /**
  *
@@ -40,10 +41,7 @@ public class LEDPurple extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        RobotMap.shineBoisSeventh.set(false);
-        RobotMap.shineBoisEighth.set(false);
-        RobotMap.shineBoisNinth.set(false);
-        RobotMap.shineBoisNinth.set(true);
+        ShineBois.purple();
     }
 
     // Called repeatedly when this Command is scheduled to run

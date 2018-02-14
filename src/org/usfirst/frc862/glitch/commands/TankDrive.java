@@ -13,6 +13,7 @@ package org.usfirst.frc862.glitch.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
+import org.usfirst.frc862.glitch.subsystems.ShineBois;
 import org.usfirst.frc862.util.Logger;
 
 /**
@@ -40,6 +41,8 @@ public class TankDrive extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        ShineBois.chase();
+
         Robot.driveTrain.setVelocityMode();
         Logger.info("Start Tank");
     }
