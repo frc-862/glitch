@@ -10,9 +10,10 @@ compileJava {
     targetCompatibility = 1.8
 }
 
-//wpi {
+wpi {
     //wpilibVersion = "2018.2.2"
-//}
+    shuffleboardVersion = "1.2.0"
+}
 
 def TEAM = 862
 def ROBOT_CLASS = "org.usfirst.frc862.glitch.Robot"
