@@ -30,7 +30,9 @@ public class LogWriter implements Loop {
     public void setFileName(String file) {
         try {
             if (writer != null) {
+                drain();
                 writer.close();
+                buffer.clear();
             }
 
             writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
@@ -40,6 +42,10 @@ public class LogWriter implements Loop {
     }
 
     public void onLoop() {
+        drain();
+    }
+
+    public void drain() {
         try {
             buffer.drainTo(drain);
             for (String msg : drain) {

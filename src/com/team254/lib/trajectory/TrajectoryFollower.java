@@ -65,6 +65,10 @@ public class TrajectoryFollower {
     return current_heading;
   }
 
+  public double deltaHeading() {
+    return profile_.getSegment(current_segment).heading - current_heading;
+  }
+
   public boolean isFinishedTrajectory() {
     return current_segment >= profile_.getNumSegments();
   }
