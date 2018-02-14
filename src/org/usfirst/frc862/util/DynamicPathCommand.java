@@ -1,5 +1,8 @@
 package org.usfirst.frc862.util;
 
+import com.team254.lib.util.SmartDashboardUtil;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.util.FaultCode.Codes;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
@@ -63,12 +66,16 @@ public class DynamicPathCommand extends Command {
         logger.addDataElement("actual_left_vel");
         logger.addDataElement("projected_right_pos");
         logger.addDataElement("requested_right_pos");
+        logger.addDataElement("requested_right_vel");
         logger.addDataElement("actual_right_pos");
         logger.addDataElement("projected_right_vel");
         logger.addDataElement("actual_right_vel");
         logger.addDataElement("projected_heading");
         logger.addDataElement("actual_heading");
         logger.addDataElement("angle_diff");
+        logger.addDataElement("delta_heading");
+        logger.addDataElement("delta_feedf");
+        logger.addDataElement("delta_pgain");
 
         Robot.driveTrain.setVelocityMode();
 //        Robot.shifter.downshift();
@@ -91,6 +98,8 @@ public class DynamicPathCommand extends Command {
     }
 
     private void followPath() {
+        SmartDashboard.putNumber("followPathTime", Timer.getFPGATimestamp());
+        SmartDashboard.putNumber("theta_feedf", -42);
         DriveTrain drive = Robot.driveTrain;
         double distanceL = drive.getLeftDistanceInches();
         double distanceR = drive.getRightDistanceInches();
@@ -101,13 +110,24 @@ public class DynamicPathCommand extends Command {
         double speedLeft = followerLeft.calculate(distanceL);
         double speedRight = followerRight.calculate(distanceR);
         
-        double goalHeading = Math.toDegrees(followerLeft.getHeading());
+        double goalHeading = ChezyMath.boundAngleNeg180to180Degrees(Math.toDegrees(followerLeft.getHeading()));
+        double deltaHeading = Math.toDegrees(followerLeft.deltaHeading());
         double observedHeading = ChezyMath.getDifferenceInAngleDegrees(Robot.core.getGyroAngle(), starting_heading);
         double angleDiff = ChezyMath.getDifferenceInAngleDegrees(observedHeading, goalHeading);
+        double theta_sign = (deltaHeading < 0) ? -1 : 1;
+        double theta_feedf = deltaHeading * Constants.pathFeedF;
+//        double theta_feedf = Math.abs(Math.pow(deltaHeading, 1.25)) * theta_sign; // deltaHeading * Constants.pathFeedF;
+        SmartDashboard.putNumber("theta_feedf", theta_feedf);
 
-        double turn = Constants.pathTurn * angleDiff;
-        double requestedLeft = speedLeft + turn;
-        double requestedRight = speedRight - turn;
+        if (theta_feedf == Double.NaN) {
+            theta_feedf = 0;
+        }
+        double theta_pgain = Constants.pathTurn * angleDiff;
+
+//        double turn = Constants.pathTurn * angleDiff - Constants.pathFeedF * deltaHeading;
+        double turn = theta_pgain + theta_feedf;
+        double requestedLeft = speedLeft - turn;
+        double requestedRight = speedRight + turn;
         
         drive.setVelocityIPS(requestedLeft, requestedRight);
 
@@ -121,9 +141,12 @@ public class DynamicPathCommand extends Command {
         logger.set("actual_right_pos", distanceR);
         logger.set("projected_right_vel", right.vel);
         logger.set("actual_right_vel", drive.getRightVelocityInchesPerSec());
-        logger.set("projected_heading", ChezyMath.boundAngleNeg180to180Degrees(goalHeading));
+        logger.set("projected_heading", goalHeading);
         logger.set("actual_heading", observedHeading);
         logger.set("angle_diff", angleDiff);
+        logger.set("delta_heading", deltaHeading);
+        logger.set("delta_feedf", theta_feedf);
+        logger.set("delta_pgain", theta_pgain);
         logger.write();
     }
 
@@ -139,7 +162,6 @@ public class DynamicPathCommand extends Command {
         logger.flush();
         logger.close();
 
-        
         if (LightningMath.isZero(Robot.driveTrain.getLeftDistanceInches())) {
             FaultCode.write(Codes.LEFT_ENCODER_NOT_FOUND);
         }
@@ -147,6 +169,8 @@ public class DynamicPathCommand extends Command {
         if (LightningMath.isZero(Robot.driveTrain.getRightDistanceInches())) {
             FaultCode.write(Codes.RIGHT_ENCODER_NOT_FOUND);
         }
+
+        Robot.driveTrain.stop();
     }
 
     @Override

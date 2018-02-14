@@ -101,6 +101,7 @@ public class DataLogger implements Loop {
 
     public void reset_file() {
         writer.setFileName(logFileName().getAbsolutePath());
+        writeHeader();
     }
     
     public static void flush() {

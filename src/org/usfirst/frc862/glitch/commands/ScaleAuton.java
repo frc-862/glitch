@@ -66,18 +66,18 @@ public class ScaleAuton extends Command {
         TimedTriggers triggers = new TimedTriggers();
 
         if (leftStart && fieldConfig.substring(1,1).equalsIgnoreCase("L")) {
-            cmd.addParallel(new BlueLeftScaleClose());
+            cmd.addParallel(new LeftScaleNear());
             triggers.addAction(new MoveCollectorToScale(), 4.0);
         } else if (leftStart && fieldConfig.substring(1,1).equalsIgnoreCase("R")) {
-            cmd.addParallel(new BlueLeftScaleFar());
+            cmd.addParallel(new LeftScaleFar());
             triggers.addAction(new MoveCollectorToScale(), 6.0);
         } else if (fieldConfig.substring(1,1).equalsIgnoreCase("R")) {
             // If we made it this far, we have to be on the right side
-            cmd.addParallel(new BlueRightScaleClose());
+            cmd.addParallel(new RightScaleNear());
             triggers.addAction(new MoveCollectorToScale(), 4.0);
         } else {
             // Must be right far
-            cmd.addParallel(new BlueRightScaleFar());
+            cmd.addParallel(new RightScaleFar());
             triggers.addAction(new MoveCollectorToScale(), 6.0);
         }
 
@@ -93,18 +93,18 @@ public class ScaleAuton extends Command {
         TimedTriggers triggers = new TimedTriggers();
 
         if (leftStart && fieldConfig.substring(1,1).equalsIgnoreCase("L")) {
-            cmd.addParallel(new RedLeftScaleClose());
+            cmd.addParallel(new LeftScaleNear());
             triggers.addAction(new MoveCollectorToScale(), 4.0);
         } else if (leftStart && fieldConfig.substring(1,1).equalsIgnoreCase("R")) {
-            cmd.addParallel(new RedLeftScaleFar());
+            cmd.addParallel(new LeftScaleFar());
             triggers.addAction(new MoveCollectorToScale(), 6.0);
         } else if (fieldConfig.substring(1,1).equalsIgnoreCase("R")) {
             // If we made it this far, we have to be on the right side
-            cmd.addParallel(new RedRightScaleNear());
+            cmd.addParallel(new RightScaleNear());
             triggers.addAction(new MoveCollectorToScale(), 4.0);
         } else {
             // Must be right far
-            cmd.addParallel(new RedRightScaleFar());
+            cmd.addParallel(new RightScaleFar());
             triggers.addAction(new MoveCollectorToScale(), 6.0);
         }
 

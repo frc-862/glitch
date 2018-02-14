@@ -356,9 +356,10 @@ function update() {
   config.max_vel = parseFloat($("td.max_vel input").val());
   config.max_acc = parseFloat($("td.max_acc input").val());
   config.max_jerk = parseFloat($("td.max_jerk input").val());
+  var wheel_base = parseFloat($("td.wheel_base input").val());
 
   if (points.getNumWaypoints() > 1) {
-    path = PathGenerator.makePath(points, config, 18.0, "Curve");
+    path = PathGenerator.makePath(points, config, wheel_base, "Curve");
     drawPath();
     $("td.time").text("" + path.getLeftWheelTrajectory().getNumSegments()*0.02);
   } else {
@@ -478,6 +479,22 @@ function getPoint(i) {
 		return waypoints[i];
 }
 
+function lookup(s,name,def) {
+  var result = def;
+
+  try {
+    var re = "(?://\\s" + name + ":\\s*)(.*)"
+    re = new RegExp(re, "gm");
+    result = re.exec(s);
+    result = result[1];
+  } catch (error) {
+    console.log(error);
+    result = def
+  }
+
+  return result;
+}
+
 function importData() {
 	$('#upl').click();
 	let u = $('#upl')[0];
@@ -488,20 +505,28 @@ function importData() {
 			var c = fr.result;
 			let re = /(?:\/\/\sWAYPOINT_DATA:\s)(.*)/gm;
 			let reversed = /(?:\/\/\sIS_REVERSED:\s)(.*)/gm;
-			let title = /(?:\/\/\sFILE_NAME:\s)(.*)/gm;
-			let dt = (/(?:\/\/\sDT:\s)(.*)/gm).exec(c)[1];
-			let max_vel = (/(?:\/\/\sMAX_VEL:\s)(.*)/gm).exec(c)[1];
-			let max_acc = (/(?:\/\/\sMAX_ACC:\s)(.*)/gm).exec(c)[1];
-			let max_jerk = (/(?:\/\/\sMAX_JERK:\s)(.*)/gm).exec(c)[1];
-			let package = (/(?:\/\/\sPACKAGE:\s)(.*)/gm).exec(c)[1];
-			let parent = (/(?:\/\/\sPARENT:\s)(.*)/gm).exec(c)[1];
-			console.log();
+			let title = /(?:\/\/\sFILE_NAME:\s*)(.*)/gm;
+			let dt = lookup(c, "DT", 0.02);
+			let max_vel = lookup(c, "MAX_VEL", 72);
+			let max_acc = lookup(c, "MAX_ACC", 60);
+			let max_jerk = lookup(c, "MAX_JERK", 600);
+			let package = lookup(c, "PACKAGE", "org.usfirst.frc862.glitch.paths");
+			let parent = lookup(c, "PARENT", "org.usfirst.frc862.util.DynamicPathCommand");
+			let wheel_base = lookup(c, "WHEEL_BASE", 25);
+
+      // fixes
+      //max_vel = Math.min(max_vel, 108);
+      //max_acc = Math.min(max_acc, 60);
+      //max_jerk = Math.min(max_jerk, 600);
+      //parent = "org.usfirst.frc862.util.DynamicPathCommand";
+
 			$("#title").val(title.exec(c)[1]);
 			$("#isReversed").prop('checked', reversed.exec(c)[1].includes("true"));
       $("td.dt input").val(dt);
       $("td.max_vel input").val(max_vel);
       $("td.max_acc input").val(max_acc);
       $("td.max_jerk input").val(max_jerk);
+      $("td.wheel_base input").val(wheel_base);
       $("td.package input").val(package);
       $("td.parent input").val(parent);
 			let jde = re.exec(c)[1];
@@ -543,6 +568,7 @@ function getDataString() {
   var max_vel = parseFloat($("td.max_vel input").val());
   var max_acc = parseFloat($("td.max_acc input").val());
   var max_jerk = parseFloat($("td.max_jerk input").val());
+  var wheel_base = parseFloat($("td.wheel_base input").val());
   var package = $("td.package input").val();
   var parent = $("td.parent input").val();
   
@@ -615,6 +641,7 @@ ${func_bodies}
   // MAX_VEL: ${max_vel}
   // MAX_ACC: ${max_acc}
   // MAX_JERK: ${max_jerk}
+  // WHEEL_BASE: ${wheel_base}
   // PACKAGE: ${package}
   // PARENT: ${parent}
 }`

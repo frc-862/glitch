@@ -13,6 +13,7 @@ package org.usfirst.frc862.glitch.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.RobotMap;
@@ -41,11 +42,21 @@ public class FourBar extends Subsystem {
     public FourBar() {
         super();
         motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, Constants.TALON_TIMEOUT);
-        motor.configAllowableClosedloopError(0, Constants.ALLOWABLE_FOURBAR_ERROR, Constants.TALON_TIMEOUT);
+        motor.configAllowableClosedloopError(0, Constants.FOURBAR_ALLOWABLE_ERROR, Constants.TALON_TIMEOUT);
         motor.config_kP(0, Constants.FOURBAR_P, Constants.TALON_TIMEOUT);
         motor.config_kI(0, Constants.FOURBAR_I, Constants.TALON_TIMEOUT);
         motor.config_kD(0, Constants.FOURBAR_D, Constants.TALON_TIMEOUT);
         motor.config_kF(0, Constants.FOURBAR_F, Constants.TALON_TIMEOUT);
+
+        SmartDashboard.putNumber("Fourbar Allowable Error", Constants.FOURBAR_ALLOWABLE_ERROR);
+        SmartDashboard.putNumber("Fourbar P", Constants.FOURBAR_P);
+        SmartDashboard.putNumber("Fourbar I", Constants.FOURBAR_I);
+        SmartDashboard.putNumber("Fourbar D", Constants.FOURBAR_D);
+        SmartDashboard.putNumber("Fourbar F", Constants.FOURBAR_F);
+
+        motor.configMotionAcceleration(24 * 2, Constants.TALON_TIMEOUT);
+        motor.configMotionCruiseVelocity(24, Constants.TALON_TIMEOUT);
+
     }
 
     @Override
@@ -63,7 +74,17 @@ public class FourBar extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
-        SmartDashboard.putNumber("FourBar Encoder", (double) motor.getSelectedSensorPosition(0));
+        int err = (int) SmartDashboard.getNumber("Fourbar Allowable Error", Constants.FOURBAR_ALLOWABLE_ERROR);
+        motor.configAllowableClosedloopError(0, err, Constants.TALON_TIMEOUT);
+        double kP = SmartDashboard.getNumber("Fourbar P", Constants.FOURBAR_P);
+        motor.config_kP(0, kP, Constants.TALON_TIMEOUT);
+        double kI = SmartDashboard.getNumber("Fourbar I", Constants.FOURBAR_I);
+        motor.config_kI(0, kI, Constants.TALON_TIMEOUT);
+        double kD = SmartDashboard.getNumber("Fourbar D", Constants.FOURBAR_D);
+        motor.config_kD(0, kD, Constants.TALON_TIMEOUT);
+        double kF = SmartDashboard.getNumber("Fourbar F", Constants.FOURBAR_F);
+        motor.config_kF(0, kF, Constants.TALON_TIMEOUT);
+        SmartDashboard.putNumber("FourBar Encoder", motor.getSelectedSensorPosition(0));
     }
 
     // Put methods for controlling this subsystem
@@ -74,19 +95,19 @@ public class FourBar extends Subsystem {
     }
 
     public void moveToScale() {
-        RobotMap.fourBarmotor.set(ControlMode.Position, Constants.FOURBAR_SCALE_POS);
+        RobotMap.fourBarmotor.set(ControlMode.MotionMagic, Constants.FOURBAR_SCALE_POS);
     }
 
     public void moveToSwitch() {
-            RobotMap.fourBarmotor.set(ControlMode.Position, Constants.FOURBAR_SWITCH_POS);
+            RobotMap.fourBarmotor.set(ControlMode.MotionMagic, Constants.FOURBAR_SWITCH_POS);
     }
 
     public void moveToBottom() {
-        RobotMap.fourBarmotor.set(ControlMode.Position, Constants.FOURBAR_BOTTOM_POS);
+        RobotMap.fourBarmotor.set(ControlMode.MotionMagic, Constants.FOURBAR_BOTTOM_POS);
     }
 
     public void moveToCollect() {
-        RobotMap.fourBarmotor.set(ControlMode.Position, Constants.FOURBAR_COLLECT_POS);
+        RobotMap.fourBarmotor.set(ControlMode.MotionMagic, Constants.FOURBAR_COLLECT_POS);
     }
 }
 

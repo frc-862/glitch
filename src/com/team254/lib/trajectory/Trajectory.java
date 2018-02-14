@@ -88,6 +88,9 @@ public class Trajectory {
   }
 
   public Segment getSegment(int index) {
+    if (index >= getNumSegments())
+      index = getNumSegments() - 1;
+
     if (index < getNumSegments()) {
       if (!inverted_y_) {
         return segments_[index];

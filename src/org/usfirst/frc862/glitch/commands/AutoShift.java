@@ -35,7 +35,10 @@ public class AutoShift extends Command {
     private CommandLogger logger;
 
     @Override
-    protected void end() { logger.flush(); }
+    protected void end() {
+        logger.drain();
+        logger.flush();
+    }
 
     @Override
     protected void interrupted() {
@@ -72,9 +75,11 @@ public class AutoShift extends Command {
         logger = new CommandLogger(getName());
         logger.addDataElement("left_velocity");
         logger.addDataElement("right_velocity");
-        logger.addDataElement("left_encoder");
-        logger.addDataElement("right_encoder");
-        logger.addDataElement("straighten");
+        logger.addDataElement("ave_vel");
+        logger.addDataElement("ave_req");
+//        logger.addDataElement("left_encoder");
+//        logger.addDataElement("right_encoder");
+//        logger.addDataElement("straighten");
     }
 
     // Called just before this Command runs the first time
@@ -87,6 +92,12 @@ public class AutoShift extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        logger.set("left_velocity", Robot.driveTrain.getLeftVelocityInchesPerSec());
+        logger.set("right_velocity", Robot.driveTrain.getRightVelocityInchesPerSec());
+        logger.set("ave_vel", Robot.driveTrain.getAbsVelocity());
+        logger.set("ave_req", Robot.driveTrain.getRequestedVelocity());
+        logger.write();
+
         SmartDashboard.putString("auto shift state",state.toString());
         switch (state) {
             case HIGH_GEAR:
@@ -94,11 +105,6 @@ public class AutoShift extends Command {
                 break;
 
             case HYSTERESIS_DELAY:
-                logger.set("left_velocity", Robot.driveTrain.getLeftVelocityInchesPerSec());
-                logger.set("right_velocity", Robot.driveTrain.getRightVelocityInchesPerSec());
-                logger.set("left_encoder", Robot.driveTrain.getLeftDistanceInches() - originalLDistance);
-                logger.set("right_encoder", Robot.driveTrain.getRightDistanceInches() - originalRDistance);
-                logger.write();
                 if (lastShiftTimer.hasPeriodPassed(Constants.shiftHysteresis)) {
                     state = (Robot.shifter.isHighGear()) ? State.HIGH_GEAR : State.LOW_GEAR;
                     logger.drain();
@@ -112,7 +118,6 @@ public class AutoShift extends Command {
                 break;
 
             case UP_SHIFTING:
-                Robot.driveTrain.slowForSeconds(0.25);
                 originalRDistance = Robot.driveTrain.getRightDistanceInches();
                 originalLDistance = Robot.driveTrain.getLeftDistanceInches();
                 Robot.shifter.upshift();
@@ -186,5 +191,6 @@ public class AutoShift extends Command {
     protected boolean isFinished() {
         return false;
     }
+
 
 }
