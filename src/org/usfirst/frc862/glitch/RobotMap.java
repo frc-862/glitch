@@ -135,8 +135,8 @@ public class RobotMap {
         }
 
         if (navx == null) {
-            navx = new AHRS(edu.wpi.first.wpilibj.I2C.Port.kMXP);
-//            navx = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
+//            navx = new AHRS(edu.wpi.first.wpilibj.I2C.Port.kMXP);
+            navx = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
 //            navx = new AHRS(SerialPort.Port.kUSB, AHRS.SerialDataType.kProcessedData, (byte) 50);
         }
         Logger.debug("Navx: " + navx);
