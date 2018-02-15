@@ -33,14 +33,14 @@ public class VisionCollect extends Command {
             double angle = cube[0];
             double area = cube[1];
 
-            double pwr = Math.min(area * Constants.VisionSpeedP, 0.2);
+            double pwr = Math.min(area * Constants.VisionSpeedP, Constants.VisionMinSpeed);
             double rot;
             if (Robot.shifter.isHighGear()) {
                 rot = angle * Constants.StraightenKpHighGear;
             } else {
                 rot = angle * Constants.StraightenKpLowGear;
             }
-            boolean qturn = pwr < 0.2;
+            boolean qturn = pwr <= Constants.VisionMinSpeed;
 
             if (area > Constants.VisionCloseThreshold) {
                 close = true;
@@ -53,7 +53,8 @@ public class VisionCollect extends Command {
             DriveSignal power = CurvatureDrive.curvatureDrive(pwr, rot, qturn);
             Robot.driveTrain.setVelocity(power);
         } catch (CubeNotFoundException e) {
-            e.printStackTrace();
+            // TODO either do something smart - rotate?
+            // or quit
         }
     }
 

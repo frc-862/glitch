@@ -18,6 +18,7 @@ public class Constants extends ConstantsBase {
     public static int COLLECTOR_PIXELS_OFF_CENTER = 0;
     public static int VISION_ABORT_THRESHOLD = 100000; //If a cube hasn't been seen for this many frames, stop sending the last good frame and send an abort message
     public static double VisionSpeedP = 0.01;
+    public static double VisionMinSpeed = 0.2;
     public static double VisionCloseThreshold = 40;
 
 
