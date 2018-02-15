@@ -14,9 +14,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.paths.*;
 import org.usfirst.frc862.glitch.subsystems.ShineBois;
+import org.usfirst.frc862.util.DynamicPathCommand;
 import org.usfirst.frc862.util.TimedTriggers;
 
 /**
@@ -48,69 +50,68 @@ public class ScaleAuton extends Command {
         DriverStation.Alliance alliance=DriverStation.getInstance().getAlliance();
         CommandGroup cmd;
 
-        if (alliance == DriverStation.Alliance.Blue) {
-            cmd = blueAlliance();
-        } else {
-            cmd = redAlliance();
-        }
+//        if (alliance == DriverStation.Alliance.Blue) {
+//            cmd = blueAlliance();
+//        } else {
+//            cmd = redAlliance();
+//        }
+        cmd = buildScale();
 
         cmd.addSequential(new EjectCube());
         cmd.start();
     }
 
-    private CommandGroup blueAlliance() {
-        boolean leftStart = SmartDashboard.getBoolean("start side", false);
-        String fieldConfig = DriverStation.getInstance().getGameSpecificMessage();
+    private CommandGroup buildScale() {
+        boolean leftStart = Robot.startOnLeft();
+        boolean leftScale = Robot.scaleOnLeft();
 
         CommandGroup cmd = new CommandGroup();
-        TimedTriggers triggers = new TimedTriggers();
+        DynamicPathCommand path;
 
-        if (leftStart && fieldConfig.substring(1,1).equalsIgnoreCase("L")) {
-            cmd.addParallel(new LeftScaleNear());
-            triggers.addAction(new MoveCollectorToScale(), 4.0);
-        } else if (leftStart && fieldConfig.substring(1,1).equalsIgnoreCase("R")) {
-            cmd.addParallel(new LeftScaleFar());
-            triggers.addAction(new MoveCollectorToScale(), 6.0);
-        } else if (fieldConfig.substring(1,1).equalsIgnoreCase("R")) {
+        if (leftStart && leftScale) {
+            path = new LeftScaleNear();
+        } else if (leftStart && !leftScale) {
+            path = new LeftScaleFar();
+        } else if (!leftScale) {
             // If we made it this far, we have to be on the right side
-            cmd.addParallel(new RightScaleNear());
-            triggers.addAction(new MoveCollectorToScale(), 4.0);
+            path = new RightScaleNear();
         } else {
             // Must be right far
-            cmd.addParallel(new RightScaleFar());
-            triggers.addAction(new MoveCollectorToScale(), 6.0);
+            path = new RightScaleFar();
         }
 
+        cmd.addParallel(path);
+        TimedTriggers triggers = new TimedTriggers();
+        triggers.addAction(new MoveCollectorToGround(), path.duration() - 3);
+        triggers.addAction(new EjectCube(), path.duration() - 0.1);
         cmd.addParallel(triggers);
+
+        if (SmartDashboard.getBoolean("multi-cube auton", true)) {
+            cmd.addSequential(new MoveCollectorToGround());
+            cmd.addParallel(new turnToDegrees(180));
+            // TODO write VisionCollect
+            //cmd.addSequential(new VisionCollect());
+
+            boolean leftSwitch = Robot.switchOnLeft();
+            // TODO fix this, to use conditional command, because we should always have ~15 seconds here
+            if (leftScale == leftSwitch && Robot.autonTimeRemaining() < Constants.AutonScaleTime) {
+                // we are already on the same side as the switch, let's dump one in there
+                cmd.addSequential(new MoveCollectorToSwitch());
+                cmd.addSequential(new EjectCube());
+            } else {
+                // TODO use turn to absolute angle (and adjust for left/right scale)
+                cmd.addSequential(new turnToDegrees(0));
+                cmd.addParallel(new MoveCollectorToScale());
+                // TODO write this path
+                // cmd.addSequential(new CubeToScale());
+                cmd.addSequential(new EjectCube());
+            }
+        }
+
+
         return cmd;
     }
 
-    private CommandGroup redAlliance() {
-        boolean leftStart = SmartDashboard.getBoolean("start side", false);
-        String fieldConfig = DriverStation.getInstance().getGameSpecificMessage();
-
-        CommandGroup cmd = new CommandGroup();
-        TimedTriggers triggers = new TimedTriggers();
-
-        if (leftStart && fieldConfig.substring(1,1).equalsIgnoreCase("L")) {
-            cmd.addParallel(new LeftScaleNear());
-            triggers.addAction(new MoveCollectorToScale(), 4.0);
-        } else if (leftStart && fieldConfig.substring(1,1).equalsIgnoreCase("R")) {
-            cmd.addParallel(new LeftScaleFar());
-            triggers.addAction(new MoveCollectorToScale(), 6.0);
-        } else if (fieldConfig.substring(1,1).equalsIgnoreCase("R")) {
-            // If we made it this far, we have to be on the right side
-            cmd.addParallel(new RightScaleNear());
-            triggers.addAction(new MoveCollectorToScale(), 4.0);
-        } else {
-            // Must be right far
-            cmd.addParallel(new RightScaleFar());
-            triggers.addAction(new MoveCollectorToScale(), 6.0);
-        }
-
-        cmd.addParallel(triggers);
-        return cmd;
-    }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override

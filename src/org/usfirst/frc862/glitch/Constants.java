@@ -176,6 +176,7 @@ public class Constants extends ConstantsBase {
     public static final double ALERT_DURATION = 3;
     public static double PRotate = 1 / 30;
     public static double MinRotatePower = 0.07;
+    public static double AutonScaleTime = 5;
 
     public String getFileName() {
         return "~/glitch.yaml";

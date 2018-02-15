@@ -55,6 +55,12 @@ public class DynamicPathCommand extends Command {
         return path != null;
     }
 
+    public double duration() {
+        Trajectory left = path.getLeftWheelTrajectory();
+        Trajectory.Segment point = left.getSegment(left.getNumSegments() - 1);
+        return point.dt * left.getNumSegments();
+    }
+    
     @Override
     protected void initialize() {
         // move this to ensure that we get a new log for each run
