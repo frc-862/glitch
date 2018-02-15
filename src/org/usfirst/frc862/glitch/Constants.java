@@ -24,6 +24,11 @@ public class Constants extends ConstantsBase {
     public static double PHYSICAL_MAX_LOW_SPEED_TICKS = 700;
     public static double PHYSICAL_MAX_HIGH_SPEED_TICKS = 1300;
 
+    // Lowest input that moves the robot
+    public static double STICKTION_SPEED = 0.03;
+    public static double VEL_COMMAND_RAMP = 0.1 / (1.0 / 0.02);
+    public static double ROT_COMMAND_RAMP = 0.1 / (1.0 / 0.02);
+
     public static double dead_band = 0.025;
     public static int TALON_TIMEOUT = 10; //ms
 
@@ -133,7 +138,9 @@ public class Constants extends ConstantsBase {
     public static double slowLoopRate = 0.5;
     public static double fastLoopRate = 0.005;
     public static double openLoopRamp = 0.2;
-    public static double closedLoopRamp = 0.1;
+    // Note moving ramping to acrade/tank commands as this does not
+    // seem very smooth and impacts closed loop tracking
+    public static double closedLoopRamp = 0;
 
 
 

@@ -3,6 +3,7 @@ package org.usfirst.frc862.util;
 import static org.usfirst.frc862.util.LightningMath.scale;
 
 public class JoystickFilter {
+
     public enum Mode {
         LINEAR, SQUARED, CUBED
     }
@@ -11,12 +12,21 @@ public class JoystickFilter {
     private double deadband;
     private double minPower;
     private double maxPower;
+    private double rampDelta;
+    private double lastOutput;
 
     public JoystickFilter(double deadband, double minPower, double maxPower, Mode mode) {
         this.deadband = deadband;
         this.minPower = minPower;
         this.maxPower = maxPower;
         this.mode = mode;
+
+        lastOutput = 0;
+        rampDelta = maxPower * 2;
+    }
+
+    public void setRampDelta(double d) {
+        rampDelta = d;
     }
 
     public Mode getMode() {
@@ -75,7 +85,9 @@ public class JoystickFilter {
 
         if (negative)
             output = -output;
-        
+
+        output = LightningMath.constrain(output, lastOutput - rampDelta, lastOutput + rampDelta);
+        lastOutput = output;
         return output;
     }
 }

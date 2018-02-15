@@ -130,7 +130,7 @@ public class OI {
     }
 
     public double getThrust() {
-        return driver.getThrottleSquared();
+        return driver.getThrottle();
     }
 
     public boolean getQuickTurn() {

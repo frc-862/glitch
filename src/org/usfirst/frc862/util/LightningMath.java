@@ -89,6 +89,10 @@ public class LightningMath {
         return Math.abs(input) >= deadband ? input : 0;
     }
 
+    public static double constrain(double n, double min, double max) {
+        return Math.max(Math.min(n, max), min);
+    }
+
     public static boolean isInRange(double a, double b, double epsilon) {
 
         return Math.abs(a - b) < epsilon;
