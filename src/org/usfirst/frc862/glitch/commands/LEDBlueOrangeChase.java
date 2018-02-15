@@ -13,6 +13,7 @@ package org.usfirst.frc862.glitch.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.RobotMap;
+import org.usfirst.frc862.glitch.subsystems.ShineBois;
 
 /**
  *
@@ -39,10 +40,7 @@ public class LEDBlueOrangeChase extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        RobotMap.shineBoisSeventh.set(false);
-        RobotMap.shineBoisEighth.set(false);
-        RobotMap.shineBoisNinth.set(false);
-        RobotMap.shineBoisEighth.set(true);
+        ShineBois.chase();
     }
 
     // Called repeatedly when this Command is scheduled to run

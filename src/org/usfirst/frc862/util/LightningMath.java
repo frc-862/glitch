@@ -89,6 +89,12 @@ public class LightningMath {
         return Math.abs(input) >= deadband ? input : 0;
     }
 
+    public static boolean isInRange(double a, double b, double epsilon) {
+
+        return Math.abs(a - b) < epsilon;
+
+    }
+
     public static double rotations2feet(double rotations) {
         return rotations * Constants.WheelCircumference;
     }

@@ -117,9 +117,9 @@ void orangeBlueChase(){
       
     for (int i = wow; i < wow + ledCount/4; i++) {
       if (i > ledCount)
-        colors[i - ledCount - 1] = rgb_color(0, 255, 0);
+        colors[i - ledCount - 1] = rgb_color(255, 255, 255);
       else
-        colors[i] = rgb_color(0, 255, 0);
+        colors[i] = rgb_color(255, 255, 255);
     }
     for (int i = woah; i < woah + ledCount/4; i++) {
       if (i > ledCount)

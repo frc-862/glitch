@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
+import org.usfirst.frc862.glitch.subsystems.ShineBois;
 import org.usfirst.frc862.util.LightningMath;
 import org.usfirst.frc862.util.MovingAverageFilter;
 
@@ -113,6 +114,8 @@ public class Arcade extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        ShineBois.chase();
+
         Robot.driveTrain.setVelocityMode();
         lastHeading = Robot.core.getGyroAngle();
         state = State.turning;

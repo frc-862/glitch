@@ -85,6 +85,7 @@ public class Gripper extends Subsystem {
     }
 
     public boolean hasCube() {
+        ShineBois.green();
         return false;
     }
 

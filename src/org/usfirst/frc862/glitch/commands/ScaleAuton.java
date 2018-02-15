@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.paths.*;
+import org.usfirst.frc862.glitch.subsystems.ShineBois;
 import org.usfirst.frc862.util.TimedTriggers;
 
 /**
@@ -41,6 +43,8 @@ public class ScaleAuton extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        ShineBois.rainbow();
+
         DriverStation.Alliance alliance=DriverStation.getInstance().getAlliance();
         CommandGroup cmd;
 

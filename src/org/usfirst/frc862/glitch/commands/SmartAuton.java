@@ -13,6 +13,7 @@ package org.usfirst.frc862.glitch.commands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc862.glitch.subsystems.ShineBois;
 
 /**
  *
@@ -38,6 +39,8 @@ public class SmartAuton extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        ShineBois.rainbow();
+
         boolean leftStart= SmartDashboard.getBoolean("start side", false);
         int powerCubes= (int)Math.round(SmartDashboard.getNumber("auton powercubes",1));
         String mode=SmartDashboard.getString("select mode", "switch");

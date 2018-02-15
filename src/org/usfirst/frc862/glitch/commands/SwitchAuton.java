@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.paths.CurveLeftSwitch;
 import org.usfirst.frc862.glitch.paths.CurveRightSwitch;
 import org.usfirst.frc862.glitch.paths.StraightSwitch;
+import org.usfirst.frc862.glitch.subsystems.ShineBois;
 
 /**
  *
@@ -42,6 +43,8 @@ public class SwitchAuton extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        ShineBois.rainbow();
+
         boolean leftStart = SmartDashboard.getBoolean("start side", false);
         //int powerCubes= (int)Math.round(SmartDashboard.getNumber("auton powercubes",1));
         //String mode=SmartDashboard.getString("select mode", "switch");
