@@ -174,6 +174,8 @@ public class Constants extends ConstantsBase {
     public static final double FOURBAR_COLLECT_POS = 25;
     public static final double FOURBAR_BOTTOM_POS = 10;
     public static final double ALERT_DURATION = 3;
+    public static double PRotate = 1 / 30;
+    public static double MinRotatePower = 0.07;
 
     public String getFileName() {
         return "~/glitch.yaml";
