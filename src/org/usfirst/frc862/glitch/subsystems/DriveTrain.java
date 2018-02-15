@@ -310,6 +310,11 @@ public class DriveTrain extends Subsystem {
                 drive.getRight() * Constants.PHYSICAL_MAX_HIGH_SPEED_TICKS);
     }
 
+    public void setVelocityPercent(double left, double right) {
+        setVelocity(left * Constants.PHYSICAL_MAX_HIGH_SPEED_TICKS,
+                right * Constants.PHYSICAL_MAX_HIGH_SPEED_TICKS);
+    }
+
     public void setVelocity(double left, double right) {
         SmartDashboard.putNumber("slowuntil", slowUntil);
         SmartDashboard.putNumber("timer", Timer.getFPGATimestamp());
