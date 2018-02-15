@@ -89,8 +89,7 @@ public class ScaleAuton extends Command {
         if (Robot.attemptMultiCubeAuton()) {
             cmd.addSequential(new MoveCollectorToGround());
             cmd.addParallel(new turnToDegrees(180));
-            // TODO write VisionCollect
-            //cmd.addSequential(new VisionCollect());
+            cmd.addSequential(new VisionCollect());
 
             boolean leftSwitch = Robot.switchOnLeft();
             // TODO fix this, to use conditional command, because we should always have ~15 seconds here

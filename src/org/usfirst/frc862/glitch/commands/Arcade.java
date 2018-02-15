@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.subsystems.ShineBois;
+import org.usfirst.frc862.util.CurvatureDrive;
 import org.usfirst.frc862.util.JoystickFilter;
 import org.usfirst.frc862.util.LightningMath;
 import org.usfirst.frc862.util.MovingAverageFilter;
@@ -57,56 +58,6 @@ public class Arcade extends Command {
 
         thrustFilter.setRampDelta(Constants.VEL_COMMAND_RAMP);
         rotFilter.setRampDelta(Constants.ROT_COMMAND_RAMP);
-    }
-
-    /**
-     * Curvature drive method for differential drive platform.
-     *
-     * <p>The rotation argument controls the curvature of the robot's path rather than its rate of
-     * heading change. This makes the robot more controllable at high speeds. Also handles the
-     * robot's quick turn functionality - "quick turn" overrides constant-curvature turning for
-     * turn-in-place maneuvers.
-     *
-     * @param xSpeed      The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
-     * @param zRotation   The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is
-     *                    positive.
-     * @param isQuickTurn If set, overrides constant-curvature turning for
-     *                    turn-in-place maneuvers.
-     */
-    @SuppressWarnings("ParameterName")
-    public DriveSignal curvatureDrive(double xSpeed, double zRotation, boolean isQuickTurn) {
-        double angularPower;
-        boolean overPower;
-
-        if (isQuickTurn) {
-            overPower = true;
-            angularPower = zRotation;
-        } else {
-            overPower = false;
-            angularPower = Math.abs(xSpeed) * zRotation;
-        }
-
-        double leftMotorOutput = xSpeed + angularPower;
-        double rightMotorOutput = xSpeed - angularPower;
-
-        // If rotation is overpowered, reduce both outputs to within acceptable range
-        if (overPower) {
-            if (leftMotorOutput > 1.0) {
-                rightMotorOutput -= leftMotorOutput - 1.0;
-                leftMotorOutput = 1.0;
-            } else if (rightMotorOutput > 1.0) {
-                leftMotorOutput -= rightMotorOutput - 1.0;
-                rightMotorOutput = 1.0;
-            } else if (leftMotorOutput < -1.0) {
-                rightMotorOutput -= leftMotorOutput + 1.0;
-                leftMotorOutput = -1.0;
-            } else if (rightMotorOutput < -1.0) {
-                leftMotorOutput -= rightMotorOutput + 1.0;
-                rightMotorOutput = -1.0;
-            }
-        }
-
-        return new DriveSignal(leftMotorOutput, rightMotorOutput);
     }
 
     // Called just before this Command runs the first time
@@ -194,7 +145,7 @@ public class Arcade extends Command {
         SmartDashboard.putBoolean("quickturn", quickTurn);
         SmartDashboard.putString("arcade mode", state.toString());
 //        DriveSignal power = drive.cheesyDrive(pwr, rot, quickTurn, Robot.shifter.isHighGear());
-        DriveSignal power = curvatureDrive(pwr, rot, quickTurn);
+        DriveSignal power = CurvatureDrive.curvatureDrive(pwr, rot, quickTurn);
         Robot.driveTrain.setVelocity(power);
     }
 

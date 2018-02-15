@@ -1,5 +1,7 @@
 package org.usfirst.frc862.util;
 
+import com.team254.lib.util.DriveSignal;
+
 public class CurvatureDrive {
     public static final double kDefaultQuickStopThreshold = 0.2;
     public static final double kDefaultQuickStopAlpha = 0.1;
@@ -142,4 +144,54 @@ public class CurvatureDrive {
         left = leftMotorOutput * m_maxOutput;
         right = rightMotorOutput * m_maxOutput;
     }
+
+    /**
+     * Curvature drive method for differential drive platform.
+     *
+     * <p>The rotation argument controls the curvature of the robot's path rather than its rate of
+     * heading change. This makes the robot more controllable at high speeds. Also handles the
+     * robot's quick turn functionality - "quick turn" overrides constant-curvature turning for
+     * turn-in-place maneuvers.
+     *
+     * @param xSpeed      The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
+     * @param zRotation   The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is
+     *                    positive.
+     * @param isQuickTurn If set, overrides constant-curvature turning for
+     *                    turn-in-place maneuvers.
+     */
+    public static DriveSignal curvatureDrive(double xSpeed, double zRotation, boolean isQuickTurn) {
+        double angularPower;
+        boolean overPower;
+
+        if (isQuickTurn) {
+            overPower = true;
+            angularPower = zRotation;
+        } else {
+            overPower = false;
+            angularPower = Math.abs(xSpeed) * zRotation;
+        }
+
+        double leftMotorOutput = xSpeed + angularPower;
+        double rightMotorOutput = xSpeed - angularPower;
+
+        // If rotation is overpowered, reduce both outputs to within acceptable range
+        if (overPower) {
+            if (leftMotorOutput > 1.0) {
+                rightMotorOutput -= leftMotorOutput - 1.0;
+                leftMotorOutput = 1.0;
+            } else if (rightMotorOutput > 1.0) {
+                leftMotorOutput -= rightMotorOutput - 1.0;
+                rightMotorOutput = 1.0;
+            } else if (leftMotorOutput < -1.0) {
+                rightMotorOutput -= leftMotorOutput + 1.0;
+                leftMotorOutput = -1.0;
+            } else if (rightMotorOutput < -1.0) {
+                leftMotorOutput -= rightMotorOutput + 1.0;
+                rightMotorOutput = -1.0;
+            }
+        }
+
+        return new DriveSignal(leftMotorOutput, rightMotorOutput);
+    }
+
 }
