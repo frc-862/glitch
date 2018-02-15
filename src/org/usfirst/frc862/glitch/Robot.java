@@ -59,10 +59,12 @@ public class Robot extends TimedRobot {
     private static boolean autonStartOnLeft = true;
     private static boolean fmsSwitchOnLeft = true;
     private static boolean fmsScaleOnLeft = true;
+    private static boolean multiCubeAuton;
 
     Command autonomousCommand;
     SendableChooser<Command> chooser = new SendableChooser<>();
     SendableChooser<String> sideChooser = new SendableChooser<>();
+    SendableChooser<String> cubeChooser = new SendableChooser<>();
 
     private Looper fastLooper;
     private Looper slowLooper;
@@ -155,7 +157,11 @@ public class Robot extends TimedRobot {
         sideChooser.addDefault("Left", "left");
         sideChooser.addObject("Right", "right");
         SmartDashboard.putData(sideChooser);
-        
+
+        cubeChooser.addDefault("Single", "single");
+        cubeChooser.addObject("Mutli", "multi");
+        SmartDashboard.putData(cubeChooser);
+
         Robot.resetLoggingFiles();
 
         slowLooper = new Looper(Constants.slowLoopRate);
@@ -190,6 +196,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        autonomousCommand = (Command) chooser.getSelected();
+        autonStartOnLeft = sideChooser.getSelected().equals("left");
+        multiCubeAuton = cubeChooser.getSelected().equals("multi");
+
         String msg = DriverStation.getInstance().getGameSpecificMessage();
         while (msg == null || msg.length() < 2) {
             msg = DriverStation.getInstance().getGameSpecificMessage();
@@ -198,9 +208,7 @@ public class Robot extends TimedRobot {
         fmsSwitchOnLeft = msg.substring(0,1).equals("L");
         fmsScaleOnLeft = msg.substring(1,1).equals("L");
 
-        autonStartOnLeft = sideChooser.getSelected().equals("left");
-        autonomousCommand = (Command) chooser.getSelected();
-        // schedule the autonomous command (example)
+        // schedule the autonomous command
         if (autonomousCommand != null) autonomousCommand.start();
     }
 
@@ -252,5 +260,9 @@ public class Robot extends TimedRobot {
 
     public static double autonTimeRemaining() {
         return Math.max(0, 15 - DriverStation.getInstance().getMatchTime());
+    }
+
+    public static boolean attemptMultiCubeAuton() {
+        return multiCubeAuton;
     }
 }

@@ -86,7 +86,7 @@ public class ScaleAuton extends Command {
         triggers.addAction(new EjectCube(), path.duration() - 0.1);
         cmd.addParallel(triggers);
 
-        if (SmartDashboard.getBoolean("multi-cube auton", true)) {
+        if (Robot.attemptMultiCubeAuton()) {
             cmd.addSequential(new MoveCollectorToGround());
             cmd.addParallel(new turnToDegrees(180));
             // TODO write VisionCollect
