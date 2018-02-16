@@ -89,7 +89,7 @@ public class ScaleAuton extends Command {
         if (Robot.attemptMultiCubeAuton()) {
             cmd.addSequential(new MoveCollectorToGround());
             // TODO verify rotation angle (for correct side)
-            cmd.addParallel(new turnToDegrees(180));
+            cmd.addParallel(new TurnToAbsolutePosition(180));
             cmd.addSequential(new VisionCollect());
 
             boolean leftSwitch = Robot.switchOnLeft();
@@ -100,7 +100,7 @@ public class ScaleAuton extends Command {
                 cmd.addSequential(new EjectCube());
             } else {
                 // TODO use turn to absolute angle (and adjust for left/right scale)
-                cmd.addSequential(new turnToDegrees(0));
+                cmd.addSequential(new TurnToAbsolutePosition(0));
                 cmd.addParallel(new MoveCollectorToScale());
                 // TODO write this path
                 // cmd.addSequential(new CubeToScale());
