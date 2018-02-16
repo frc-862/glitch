@@ -183,15 +183,30 @@ public class Constants extends ConstantsBase {
     public static int FOURBAR_ACC = 24 / 2;
     public static int FOURBAR_VEL = 24;
 
+    public static int ELEVATOR_ALLOWABLE_ERROR = 10;
+    public static double ELEVATOR_P = 20;
+    public static double ELEVATOR_I = 0;
+    public static double ELEVATOR_D = 0;
+    public static double ELEVATOR_F = 0;
+    public static int ELEVATOR_ACC = 24 / 2;
+    public static int ELEVATOR_VEL = 24;
+
     // Positions in encoder ticks MAX: ~300
     public static final double FOURBAR_SCALE_POS = 290;
     public static final double FOURBAR_SWITCH_POS = 100;
     public static final double FOURBAR_COLLECT_POS = 25;
     public static final double FOURBAR_BOTTOM_POS = 10;
+
+    public static final double ELEVATOR_SCALE_POS = 290;
+    public static final double ELEVATOR_SWITCH_POS = 100;
+    public static final double ELEVATOR_COLLECT_POS = 25;
+    public static final double ELEVATOR_BOTTOM_POS = 10;
+
     public static final double ALERT_DURATION = 3;
     public static double PRotate = 1 / 30;
     public static double MinRotatePower = 0.07;
     public static double AutonScaleTime = 5;
+
 
     public String getFileName() {
         return "~/glitch.yaml";

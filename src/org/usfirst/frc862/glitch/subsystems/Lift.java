@@ -11,7 +11,10 @@
 
 package org.usfirst.frc862.glitch.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.RobotMap;
@@ -60,6 +63,19 @@ public class Lift extends Subsystem {
         fourbar.configMotionAcceleration(Constants.FOURBAR_ACC, Constants.TALON_TIMEOUT);
         fourbar.configMotionCruiseVelocity(Constants.FOURBAR_VEL, Constants.TALON_TIMEOUT);
 
+        elevator.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, Constants.TALON_TIMEOUT);
+        elevator.configForwardLimitSwitchSource(LimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen, Constants.TALON_TIMEOUT);
+        elevator.configReverseLimitSwitchSource(LimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen, Constants.TALON_TIMEOUT);
+
+        elevator.configAllowableClosedloopError(0, Constants.ELEVATOR_ALLOWABLE_ERROR, Constants.TALON_TIMEOUT);
+        elevator.config_kP(0, Constants.ELEVATOR_P, Constants.TALON_TIMEOUT);
+        elevator.config_kI(0, Constants.ELEVATOR_I, Constants.TALON_TIMEOUT);
+        elevator.config_kD(0, Constants.ELEVATOR_D, Constants.TALON_TIMEOUT);
+        elevator.config_kF(0, Constants.ELEVATOR_F, Constants.TALON_TIMEOUT);
+
+        elevator.configMotionAcceleration(Constants.ELEVATOR_ACC, Constants.TALON_TIMEOUT);
+        elevator.configMotionCruiseVelocity(Constants.ELEVATOR_VEL, Constants.TALON_TIMEOUT);
+
         SmartDashboard.putNumber("Fourbar Allowable Error", Constants.FOURBAR_ALLOWABLE_ERROR);
         SmartDashboard.putNumber("Fourbar P", Constants.FOURBAR_P);
         SmartDashboard.putNumber("Fourbar I", Constants.FOURBAR_I);
@@ -68,6 +84,15 @@ public class Lift extends Subsystem {
 
         SmartDashboard.putNumber("Fourbar ACC", Constants.FOURBAR_ACC);
         SmartDashboard.putNumber("Fourbar VEL", Constants.FOURBAR_VEL);
+
+        SmartDashboard.putNumber("Elevator Allowable Error", Constants.ELEVATOR_ALLOWABLE_ERROR);
+        SmartDashboard.putNumber("Elevator P", Constants.ELEVATOR_P);
+        SmartDashboard.putNumber("Elevator I", Constants.ELEVATOR_I);
+        SmartDashboard.putNumber("Elevator D", Constants.ELEVATOR_D);
+        SmartDashboard.putNumber("Elevator F", Constants.ELEVATOR_F);
+
+        SmartDashboard.putNumber("Elevator ACC", Constants.ELEVATOR_ACC);
+        SmartDashboard.putNumber("Elevator VEL", Constants.ELEVATOR_VEL);
     }
 
     @Override
@@ -90,6 +115,24 @@ public class Lift extends Subsystem {
 
         SmartDashboard.putNumber("FourBar Encoder", fourbar.getSelectedSensorPosition(0));
 
+        err = (int) SmartDashboard.getNumber("Elevator Allowable Error", Constants.ELEVATOR_ALLOWABLE_ERROR);
+        elevator.configAllowableClosedloopError(0, err, Constants.TALON_TIMEOUT);
+        kP = SmartDashboard.getNumber("Elevator P", Constants.ELEVATOR_P);
+        elevator.config_kP(0, kP, Constants.TALON_TIMEOUT);
+        kI = SmartDashboard.getNumber("Elevator I", Constants.ELEVATOR_I);
+        elevator.config_kI(0, kI, Constants.TALON_TIMEOUT);
+        kD = SmartDashboard.getNumber("Elevator D", Constants.ELEVATOR_D);
+        elevator.config_kD(0, kD, Constants.TALON_TIMEOUT);
+        kF = SmartDashboard.getNumber("Elevator F", Constants.ELEVATOR_F);
+        elevator.config_kF(0, kF, Constants.TALON_TIMEOUT);
+
+        acc = (int) Math.round(SmartDashboard.getNumber("Elevator Acc", Constants.ELEVATOR_ACC));
+        elevator.configMotionAcceleration(acc, Constants.TALON_TIMEOUT);
+        vel = (int) Math.round(SmartDashboard.getNumber("Elevator Vel", Constants.ELEVATOR_VEL));
+        elevator.configMotionCruiseVelocity(vel, Constants.TALON_TIMEOUT);
+
+        SmartDashboard.putNumber("Elevator Encoder", elevator.getSelectedSensorPosition(0));
+
     }
 
     // Put methods for controlling this subsystem
@@ -99,20 +142,25 @@ public class Lift extends Subsystem {
 //        return motor.getSelectedSensorPosition(0);
 //    }
 
+    // TODO add state engine and move out of "snug position safely...
     public void moveToScale() {
-//        RobotMap.fourBarmotor.set(ControlMode.MotionMagic, Constants.FOURBAR_SCALE_POS);
+        fourbar.set(ControlMode.MotionMagic, Constants.FOURBAR_SCALE_POS);
+        elevator.set(ControlMode.MotionMagic, Constants.ELEVATOR_SCALE_POS);
     }
 
     public void moveToSwitch() {
-//        RobotMap.fourBarmotor.set(ControlMode.MotionMagic, Constants.FOURBAR_SWITCH_POS);
+        fourbar.set(ControlMode.MotionMagic, Constants.FOURBAR_SWITCH_POS);
+        elevator.set(ControlMode.MotionMagic, Constants.ELEVATOR_SWITCH_POS);
     }
 
     public void moveToBottom() {
-//        RobotMap.fourBarmotor.set(ControlMode.MotionMagic, Constants.FOURBAR_BOTTOM_POS);
+        fourbar.set(ControlMode.MotionMagic, Constants.FOURBAR_BOTTOM_POS);
+        elevator.set(ControlMode.MotionMagic, Constants.ELEVATOR_BOTTOM_POS);
     }
 
     public void moveToCollect() {
-//        RobotMap.fourBarmotor.set(ControlMode.MotionMagic, Constants.FOURBAR_COLLECT_POS);
+        fourbar.set(ControlMode.MotionMagic, Constants.FOURBAR_COLLECT_POS);
+        elevator.set(ControlMode.MotionMagic, Constants.ELEVATOR_COLLECT_POS);
     }
 }
 
