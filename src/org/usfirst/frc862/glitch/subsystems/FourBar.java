@@ -48,15 +48,17 @@ public class FourBar extends Subsystem {
         motor.config_kD(0, Constants.FOURBAR_D, Constants.TALON_TIMEOUT);
         motor.config_kF(0, Constants.FOURBAR_F, Constants.TALON_TIMEOUT);
 
+        motor.configMotionAcceleration(Constants.FOURBAR_ACC, Constants.TALON_TIMEOUT);
+        motor.configMotionCruiseVelocity(Constants.FOURBAR_VEL, Constants.TALON_TIMEOUT);
+
         SmartDashboard.putNumber("Fourbar Allowable Error", Constants.FOURBAR_ALLOWABLE_ERROR);
         SmartDashboard.putNumber("Fourbar P", Constants.FOURBAR_P);
         SmartDashboard.putNumber("Fourbar I", Constants.FOURBAR_I);
         SmartDashboard.putNumber("Fourbar D", Constants.FOURBAR_D);
         SmartDashboard.putNumber("Fourbar F", Constants.FOURBAR_F);
 
-        motor.configMotionAcceleration(24 * 2, Constants.TALON_TIMEOUT);
-        motor.configMotionCruiseVelocity(24, Constants.TALON_TIMEOUT);
-
+        SmartDashboard.putNumber("Fourbar ACC", Constants.FOURBAR_ACC);
+        SmartDashboard.putNumber("Fourbar VEL", Constants.FOURBAR_VEL);
     }
 
     @Override
@@ -84,6 +86,12 @@ public class FourBar extends Subsystem {
         motor.config_kD(0, kD, Constants.TALON_TIMEOUT);
         double kF = SmartDashboard.getNumber("Fourbar F", Constants.FOURBAR_F);
         motor.config_kF(0, kF, Constants.TALON_TIMEOUT);
+
+        int acc = (int) Math.round(SmartDashboard.getNumber("Fourbar Acc", Constants.FOURBAR_ACC));
+        motor.configMotionAcceleration(acc, Constants.TALON_TIMEOUT);
+        int vel = (int) Math.round(SmartDashboard.getNumber("Fourbar Vel", Constants.FOURBAR_VEL));
+        motor.configMotionCruiseVelocity(vel, Constants.TALON_TIMEOUT);
+
         SmartDashboard.putNumber("FourBar Encoder", motor.getSelectedSensorPosition(0));
     }
 

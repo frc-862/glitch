@@ -180,6 +180,8 @@ public class Constants extends ConstantsBase {
     public static double FOURBAR_I = 0;
     public static double FOURBAR_D = 0;
     public static double FOURBAR_F = 0;
+    public static int FOURBAR_ACC = 24 / 2;
+    public static int FOURBAR_VEL = 24;
 
     // Positions in encoder ticks MAX: ~300
     public static final double FOURBAR_SCALE_POS = 290;

@@ -50,6 +50,18 @@ public class Elevator extends Subsystem {
 
     }
 
+    public void moveToBottom() {
+    }
+
+    public void moveToCollect() {
+    }
+
+    public void moveToSwitch() {
+    }
+
+    public void moveToScale() {
+    }
+
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
