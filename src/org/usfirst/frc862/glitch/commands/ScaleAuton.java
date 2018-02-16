@@ -82,12 +82,13 @@ public class ScaleAuton extends Command {
 
         cmd.addParallel(path);
         TimedTriggers triggers = new TimedTriggers();
-        triggers.addAction(new MoveCollectorToGround(), path.duration() - 3);
+        triggers.addAction(new MoveCollectorToScale(), path.duration() - 3);
         triggers.addAction(new EjectCube(), path.duration() - 0.1);
         cmd.addParallel(triggers);
 
         if (Robot.attemptMultiCubeAuton()) {
             cmd.addSequential(new MoveCollectorToGround());
+            // TODO verify rotation angle (for correct side)
             cmd.addParallel(new turnToDegrees(180));
             cmd.addSequential(new VisionCollect());
 
@@ -106,7 +107,6 @@ public class ScaleAuton extends Command {
                 cmd.addSequential(new EjectCube());
             }
         }
-
 
         return cmd;
     }
