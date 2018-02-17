@@ -56,6 +56,10 @@ public class VisionCollect extends Command {
             // TODO either do something smart - rotate?
             // or quit
         }
+
+        if (Robot.gripper.hasCube()) {
+            Robot.shineBois.cubeCollected();
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
