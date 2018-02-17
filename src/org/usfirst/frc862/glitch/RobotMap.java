@@ -86,10 +86,10 @@ public class RobotMap {
         gripperRightGripper = new PWMVictorSPX(1);
         LiveWindow.addActuator("Gripper", "RightGripper", (PWMVictorSPX) gripperRightGripper);
         gripperRightGripper.setInverted(false);
-        liftfourbar = new WPI_TalonSRX(28);
+        liftfourbar = new WPI_TalonSRX(29);
         
         
-        liftelevator = new WPI_TalonSRX(29);
+        liftelevator = new WPI_TalonSRX(28);
         
         
         shineBoisSeventh = new DigitalOutput(7);

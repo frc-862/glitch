@@ -195,7 +195,7 @@ Children:
           default: '2'
           name: CAN ID
           validators: *id002
-          value: '28'
+          value: '29'
       Base: Talon SRX
       Name: fourbar
     - Children: []
@@ -205,7 +205,7 @@ Children:
           default: '2'
           name: CAN ID
           validators: *id002
-          value: '29'
+          value: '28'
       Base: Talon SRX
       Name: elevator
     Properties:
@@ -892,10 +892,10 @@ Children:
       Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
         name: Requires, type: Subsystem, validators: null, value: ShineBois}
       Parameter presets: !!robotbuilder.data.properties.ParameterSetProperty
-        default: &id014 []
+        default: []
         name: Parameter presets
         validators: null
-        value: *id014
+        value: []
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
         name: Button on SmartDashboard, validators: null, value: true}
     Base: Command
