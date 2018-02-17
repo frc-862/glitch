@@ -19,6 +19,7 @@ import org.usfirst.frc862.glitch.paths.CurveLeftSwitch;
 import org.usfirst.frc862.glitch.paths.CurveRightSwitch;
 import org.usfirst.frc862.glitch.paths.StraightSwitch;
 import org.usfirst.frc862.glitch.paths.TestPath;
+import org.usfirst.frc862.util.TwoButtonTrigger;
 import org.usfirst.frc862.util.XBoxController;
 
 import static org.usfirst.frc862.glitch.JoystickConstants.JOYSTICK_LEFT_Y_AXIS;
@@ -115,6 +116,10 @@ public class OI {
         SmartDashboard.putData("Curve Right", new CurveRightSwitch());
         SmartDashboard.putData("Test Path", new TestPath());
 
+        JoystickButton trigger1 = new JoystickButton(driverLeft, 0);
+        JoystickButton trigger2 = new JoystickButton(driverRight, 0);
+        new TwoButtonTrigger(trigger1, trigger2).whileActive(new VisionCollect());
+        
         copilot = new XBoxController(copilotController.getPort());
     }
 
