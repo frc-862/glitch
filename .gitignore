@@ -1,5 +1,6 @@
 # Compiled class file
 build
+out
 *.class
 
 # Gradle Stuff
