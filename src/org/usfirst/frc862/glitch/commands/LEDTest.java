@@ -61,7 +61,7 @@ public class LEDTest extends Command {
     @Override
     protected void execute() {
 
-        if(Robot.oi.gamePad.getRawButtonReleased(7)) {
+        if(Robot.oi.getCopilotController().getRawButtonReleased(7)) {
             current = current.next();
         }
 

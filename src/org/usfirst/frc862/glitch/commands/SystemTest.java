@@ -81,7 +81,7 @@ public class SystemTest extends StatefulCommand {
     }
 
     boolean buttonReleased() {
-        boolean button = Robot.oi.getGamePad().getRawButton(1);
+        boolean button = Robot.oi.getCopilotController().getRawButton(1);
         if (ispressed && !button) {
             ispressed = false;
             return true;

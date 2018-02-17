@@ -303,7 +303,7 @@ Children:
     - Children: []
       Properties:
         Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
-          name: Joystick, validators: null, value: GamePad}
+          name: Joystick, validators: null, value: CopilotController}
         Parameters: !!robotbuilder.data.properties.ParametersProperty
           default: []
           name: Parameters
@@ -334,7 +334,7 @@ Children:
     - Children: []
       Properties:
         Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
-          name: Joystick, validators: null, value: GamePad}
+          name: Joystick, validators: null, value: CopilotController}
         Parameters: !!robotbuilder.data.properties.ParametersProperty
           default: []
           name: Parameters
@@ -363,7 +363,7 @@ Children:
     - Children: []
       Properties:
         Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
-          name: Joystick, validators: null, value: GamePad}
+          name: Joystick, validators: null, value: CopilotController}
         Parameters: !!robotbuilder.data.properties.ParametersProperty
           default: []
           name: Parameters
@@ -392,7 +392,7 @@ Children:
     - Children: []
       Properties:
         Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
-          name: Joystick, validators: null, value: GamePad}
+          name: Joystick, validators: null, value: CopilotController}
         Parameters: !!robotbuilder.data.properties.ParametersProperty
           default: []
           name: Parameters
@@ -421,7 +421,7 @@ Children:
     - Children: []
       Properties:
         Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
-          name: Joystick, validators: null, value: GamePad}
+          name: Joystick, validators: null, value: CopilotController}
         Parameters: !!robotbuilder.data.properties.ParametersProperty
           default: []
           name: Parameters
@@ -455,7 +455,7 @@ Children:
         validators: *id010
         value: '2'
     Base: Joystick
-    Name: GamePad
+    Name: CopilotController
   Properties: {}
   Base: OI
   Name: Operator Interface
