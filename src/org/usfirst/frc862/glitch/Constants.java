@@ -51,6 +51,7 @@ public class Constants extends ConstantsBase {
     public static double LOWGEAR_DRIVE_D = 0;
     public static double LOWGEAR_DRIVE_F = 1023 / PHYSICAL_MAX_LOW_SPEED_TICKS;
     public static final int LOWGEAR_ALLOWED_DRIVE_ERROR = 20;
+    public static final double DOWNSHIFT_SLOW_TIME_SECONDS = 0.04;
 
     // high gear
     public static double HIGHGEAR_DRIVE_P = 0.75;
@@ -59,6 +60,8 @@ public class Constants extends ConstantsBase {
     public static double HIGHGEAR_DRIVE_F = 1023 / PHYSICAL_MAX_HIGH_SPEED_TICKS;
     public static final int HIGHGEAR_ALLOWED_DRIVE_ERROR = 40;
     public static double TICS_PER_ROTATION = 360 * 4;
+    public static final double UPSHIFT_SLOW_TIME_SECONDS = 0.08;
+
 
     //PID
     public static double pathP = 7.5;

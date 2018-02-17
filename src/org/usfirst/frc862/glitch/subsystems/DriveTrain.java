@@ -237,7 +237,7 @@ public class DriveTrain extends Subsystem {
 
     public void upShiftBegin() {
         // reduce motor power...
-        slowForSeconds(0.08);
+        slowForSeconds(Constants.UPSHIFT_SLOW_TIME_SECONDS);
     }
 
     public void upShiftEnd() {
@@ -255,7 +255,7 @@ public class DriveTrain extends Subsystem {
 
     public void downShiftBegin() {
         // reduce motor power...
-        slowForSeconds(0.04);
+        slowForSeconds(Constants.DOWNSHIFT_SLOW_TIME_SECONDS);
     }
 
     public void downShiftEnd() {
