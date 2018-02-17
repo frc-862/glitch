@@ -11,6 +11,7 @@
 
 package org.usfirst.frc862.glitch.subsystems;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Timer;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
@@ -61,44 +62,35 @@ public class ShineBois extends Subsystem {
         // Put code here to be run every loop
 
         if (alertEnd > Timer.getFPGATimestamp()) {
-            switch (alert) {
-                case green:
-                    stateGreen();
-                    break;
-                case purple:
-                    statePurple();
-                    break;
-                case rainbow:
-                    stateRainbow();
-                    break;
-                case chase:
-                    stateChase();
-                    break;
-                case off:
-                    stateOff();
-                    break;
-            }
+            setLEDColor(alert);
         } else {
-            switch (current) {
-                case green:
-                    stateGreen();
-                    break;
-                case purple:
-                    statePurple();
-                    break;
-                case rainbow:
-                    stateRainbow();
-                    break;
-                case chase:
-                    stateChase();
-                    break;
-                case off:
-                    stateOff();
-                    break;
+            if (alert != states.off) {
+                alert = states.off;
+                Robot.oi.rumbleOff();
             }
-        }
-        //change to be smarter if
 
+            setLEDColor(current);
+        }
+    }
+
+    private void setLEDColor(states state) {
+        switch (state) {
+            case green:
+                stateGreen();
+                break;
+            case purple:
+                statePurple();
+                break;
+            case rainbow:
+                stateRainbow();
+                break;
+            case chase:
+                stateChase();
+                break;
+            case off:
+                stateOff();
+                break;
+        }
     }
 
     /*
@@ -123,6 +115,11 @@ public class ShineBois extends Subsystem {
       break;
   }
   */
+
+    public static void cubeCollected() {
+        green();
+        Robot.oi.rumbleOn();
+    }
 
     public static void green() {
         alert = states.green;

@@ -119,7 +119,7 @@ public class OI {
         JoystickButton trigger1 = new JoystickButton(driverLeft, 0);
         JoystickButton trigger2 = new JoystickButton(driverRight, 0);
         new TwoButtonTrigger(trigger1, trigger2).whileActive(new VisionCollect());
-        
+
         copilot = new XBoxController(copilotController.getPort());
     }
 
@@ -157,6 +157,15 @@ public class OI {
 
     public boolean getQuickTurn() {
         return copilot.leftStickButton.get() || copilot.startButton.get();
+    }
+
+    public void rumbleOff() {
+        copilot.rumbleOff();
+    }
+
+    public void rumbleOn() {
+        copilot.setLeftRumble(1);
+        copilot.setRightRumble(1);
     }
 }
 
