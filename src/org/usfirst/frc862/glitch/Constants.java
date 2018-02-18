@@ -179,31 +179,36 @@ public class Constants extends ConstantsBase {
     //PID
     // TODO Calibrate
     public static int FOURBAR_ALLOWABLE_ERROR = 10;
-    public static double FOURBAR_P = 2;
+    public static double FOURBAR_P = 0;
     public static double FOURBAR_I = 0;
     public static double FOURBAR_D = 0;
     public static double FOURBAR_F = 2;
     public static int FOURBAR_ACC = 24 / 2;
     public static int FOURBAR_VEL = 24;
+    public static double FOURBAR_VELOCITY_P = 4.0;
+    public static double FOURBAR_VELOCITY_F = 1023 * 0.125 / FOURBAR_F;
 
     public static int ELEVATOR_ALLOWABLE_ERROR = 10;
-    public static double ELEVATOR_P = 10;
+    public static double ELEVATOR_P = 0;
     public static double ELEVATOR_I = 0;
     public static double ELEVATOR_D = 0;
-    public static double ELEVATOR_F = 1;
+    public static double ELEVATOR_F = 2;
     public static int ELEVATOR_ACC = 24 / 2;
     public static int ELEVATOR_VEL = 24;
+    public static double ELEVATOR_VELOCITY_P = 0.5;
+    public static double ELEVATOR_VELOCITY_F = 1023 * 0.05 / ELEVATOR_F;
+    public static double ELEVATOR_VELOCITY_D = 0.0;
 
     // Positions in encoder ticks MAX: ~300
-    public static final double FOURBAR_SCALE_POS = 210;
-    public static final double FOURBAR_SWITCH_POS = 150;
-    public static final double FOURBAR_COLLECT_POS = 100;
-    public static final double FOURBAR_BOTTOM_POS = 85;
+    public static final double FOURBAR_SCALE_POS = 355;
+    public static final double FOURBAR_SWITCH_POS = 215;
+    public static final double FOURBAR_COLLECT_POS = 115;
+    public static final double FOURBAR_BOTTOM_POS = 60;
 
-    public static final double ELEVATOR_SCALE_POS = 1700;
-    public static final double ELEVATOR_SWITCH_POS = 1000;
-    public static final double ELEVATOR_COLLECT_POS = 500;
-    public static final double ELEVATOR_BOTTOM_POS = 100;
+    public static final double ELEVATOR_SCALE_POS = 2300;
+    public static final double ELEVATOR_SWITCH_POS = -5200;
+    public static final double ELEVATOR_COLLECT_POS = -5200;
+    public static final double ELEVATOR_BOTTOM_POS = 500;
 
     public static final double ALERT_DURATION = 3;
     public static double PRotate = 1 / 30;

@@ -113,6 +113,7 @@ public class OI {
         SmartDashboard.putData("Move to Bottom", new MoveCollectorToGround());
         SmartDashboard.putData("Move to Switch", new MoveCollectorToSwitch());
         SmartDashboard.putData("Move to Scale", new MoveCollectorToScale());
+        SmartDashboard.putData("Move to Collect", new MoveCollectorToCollect());
 
         SmartDashboard.putData("System Test", new SystemTest());
         SmartDashboard.putData("Switch Straight", new StraightSwitch());
