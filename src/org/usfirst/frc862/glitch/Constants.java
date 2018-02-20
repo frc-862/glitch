@@ -186,7 +186,8 @@ public class Constants extends ConstantsBase {
     public static int FOURBAR_ACC = 24 / 2;
     public static int FOURBAR_VEL = 24;
     public static double FOURBAR_VELOCITY_P = 4.0;
-    public static double FOURBAR_VELOCITY_F = 1023 * 0.125 / FOURBAR_F;
+    public static double FOURBAR_HOLD_POWER = 0.125;
+    public static double FOURBAR_VELOCITY_F = 1023 * FOURBAR_HOLD_POWER / FOURBAR_F;
 
     public static int ELEVATOR_ALLOWABLE_ERROR = 10;
     public static double ELEVATOR_P = 0;
@@ -196,25 +197,31 @@ public class Constants extends ConstantsBase {
     public static int ELEVATOR_ACC = 24 / 2;
     public static int ELEVATOR_VEL = 24;
     public static double ELEVATOR_VELOCITY_P = 0.5;
-    public static double ELEVATOR_VELOCITY_F = 1023 * 0.05 / ELEVATOR_F;
+    public static double ELEVATOR_HOLD_POWER = 0.05;
+    public static double ELEVATOR_VELOCITY_F = 1023 * ELEVATOR_HOLD_POWER / ELEVATOR_F;
     public static double ELEVATOR_VELOCITY_D = 0.0;
 
-    // Positions in encoder ticks MAX: ~300
-    public static final double FOURBAR_SCALE_POS = 355;
-    public static final double FOURBAR_SWITCH_POS = 215;
-    public static final double FOURBAR_COLLECT_POS = 115;
-    public static final double FOURBAR_BOTTOM_POS = 60;
+    public static final int FOURBAR_SCALE_POS = 354;
+    public static final int FOURBAR_SWITCH_POS = 215;
+    public static final int FOURBAR_COLLECT_POS = 115;
+    public static final int FOURBAR_BOTTOM_POS = 60;
+    public static final int FOURBAR_EPSILON = 5;
 
-    public static final double ELEVATOR_SCALE_POS = 2300;
-    public static final double ELEVATOR_SWITCH_POS = -5200;
-    public static final double ELEVATOR_COLLECT_POS = -5200;
-    public static final double ELEVATOR_BOTTOM_POS = 500;
+    public static final int ELEVATOR_SCALE_POS = 2300;
+    public static final int ELEVATOR_SWITCH_POS = -5200;
+    public static final int ELEVATOR_COLLECT_POS = -5200;
+    public static final int ELEVATOR_BOTTOM_POS = 500;
+    public static final int ELEVATOR_EPSILON = 50;
 
     public static final double ALERT_DURATION = 3;
     public static double PRotate = 1 / 30;
     public static double MinRotatePower = 0.07;
     public static double AutonScaleTime = 5;
 
+    //Collector
+    public static double DEFAULT_COLLECT_POWER = 0.862;
+    public static double DEFAULT_EJECT_POWER = -1.0;
+    public static final double COLLECT_TRIGGER_DEADZONE = 0;
 
     public String getFileName() {
         return "~/glitch.yaml";

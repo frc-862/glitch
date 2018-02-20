@@ -92,6 +92,11 @@ public class Gripper extends Subsystem {
         return false;
     }
 
+    public void setPower(double collectPower) {
+        leftGripper.set(collectPower);
+        rightGripper.set(collectPower * .8);
+    }
+
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
