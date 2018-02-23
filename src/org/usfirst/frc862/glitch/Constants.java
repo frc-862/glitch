@@ -16,10 +16,27 @@ public class Constants extends ConstantsBase {
 
     // Vision
     public static int COLLECTOR_PIXELS_OFF_CENTER = 0;
-    public static int VISION_ABORT_THRESHOLD = 100000; //If a cube hasn't been seen for this many frames, stop sending the last good frame and send an abort message
     public static double VisionSpeedP = 0.01;
     public static double VisionMinSpeed = 0.2;
     public static double VisionCloseThreshold = 40;
+
+    // Vision
+    public static int CAMERA_PIXELS_OFF_CENTER = 0;
+    public static int VISION_ABORT_THRESHOLD = 100000; //If a cube hasn't been seen for this many frames, stop sending the last good frame and send an abort message
+    public static double MAX_WIDTH_TO_HEIGHT_RATIO = 2.2;
+    public static double MAX_HEIGHT_TO_WIDTH_RATIO = 2.2;
+    public static int MAX_WIDTH = 320;
+    public static int MAX_HEIGHT = 250;
+    public static int MAX_AREA = 40000;
+    public static double MAX_MOMENT = 3.0;
+    public static double DEGREES_PER_PIXEL = .1846590;
+    public static int CAMERA_CENTER_X = 176;
+    public static double MAX_ANGLE_DISCREPANCY = 5.0;
+    public static double MAX_LATERAL_DISCREPANCY = 1.0;
+    public static double MAX_LONGITUDAL_DISCREPANCY = 1.0;
+    public static double MIN_CONFIDENCE_FOR_KEEP_CUBE = 0.5;
+    public static double MIN_CONFIDENCE_TO_CHASE = 0.8;
+
 
 
     /*DRIVE TRAIN*/
@@ -201,10 +218,22 @@ public class Constants extends ConstantsBase {
     public static double ELEVATOR_VELOCITY_F = 1023 * ELEVATOR_HOLD_POWER / ELEVATOR_F;
     public static double ELEVATOR_VELOCITY_D = 0.0;
 
+//    public static final int FOURBAR_SCALE_POS = 354;
+//    public static final int FOURBAR_SWITCH_POS = 215;
+//    public static final int FOURBAR_COLLECT_POS = 115;
+//    public static final int FOURBAR_BOTTOM_POS = 60;
+//    public static final int FOURBAR_EPSILON = 5;
+//
+//    public static final int ELEVATOR_SCALE_POS = 2300;
+//    public static final int ELEVATOR_SWITCH_POS = -5200;
+//    public static final int ELEVATOR_COLLECT_POS = -5200;
+//    public static final int ELEVATOR_BOTTOM_POS = 500;
+//    public static final int ELEVATOR_EPSILON = 50;
+
     public static final int FOURBAR_SCALE_POS = 354;
     public static final int FOURBAR_SWITCH_POS = 215;
-    public static final int FOURBAR_COLLECT_POS = 115;
-    public static final int FOURBAR_BOTTOM_POS = 60;
+    public static final int FOURBAR_COLLECT_POS = 160;
+    public static final int FOURBAR_BOTTOM_POS = 80;
     public static final int FOURBAR_EPSILON = 5;
 
     public static final int ELEVATOR_SCALE_POS = 2300;

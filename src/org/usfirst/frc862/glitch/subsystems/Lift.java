@@ -184,9 +184,9 @@ public class Lift extends Subsystem {
 
         SensorCollection elevatorInfo = elevator.getSensorCollection();
         if (elevatorInfo.isFwdLimitSwitchClosed()) {
-            elevator.setSelectedSensorPosition(Constants.ELEVATOR_SCALE_POS + Constants.ELEVATOR_EPSILON, 0, Constants.TALON_TIMEOUT);
-        } else if (elevatorInfo.isRevLimitSwitchClosed()) {
             elevator.setSelectedSensorPosition(Constants.ELEVATOR_COLLECT_POS - Constants.ELEVATOR_EPSILON, 0, Constants.TALON_TIMEOUT);
+        } else if (elevatorInfo.isRevLimitSwitchClosed()) {
+            elevator.setSelectedSensorPosition(Constants.ELEVATOR_SCALE_POS + Constants.ELEVATOR_EPSILON, 0, Constants.TALON_TIMEOUT);
         }
 
         boolean controlFourBar = false;

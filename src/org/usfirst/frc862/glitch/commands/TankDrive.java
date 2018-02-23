@@ -11,6 +11,7 @@
 
 package org.usfirst.frc862.glitch.commands;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.subsystems.ShineBois;
@@ -58,6 +59,9 @@ public class TankDrive extends Command {
     protected void execute() {
         double leftY = leftFilter.filter(Robot.oi.getLeftPower());
         double rightY = rightFilter.filter(Robot.oi.getRightPower());
+
+        SmartDashboard.putNumber("left joy", leftY);
+        SmartDashboard.putNumber("right joy", rightY);
 
         Robot.driveTrain.setVelocityPercent(leftY, rightY);
     }

@@ -149,7 +149,7 @@ public class DriveTrain extends Subsystem {
 
             right2.setInverted(true);
             right3.setInverted(true);
-        } else {
+        } else if (Robot.isEcho()){
             left1.setInverted(false);
             left1.setSensorPhase(false);
             left2.setInverted(true);
@@ -157,6 +157,16 @@ public class DriveTrain extends Subsystem {
 
             right1.setInverted(true);
             right1.setSensorPhase(true);
+            right2.setInverted(false);
+            right3.setInverted(true);
+        } else {
+            left1.setInverted(false);
+            left1.setSensorPhase(false);
+            left2.setInverted(true);
+            left3.setInverted(false);
+
+            right1.setInverted(true);
+            right1.setSensorPhase(false);
             right2.setInverted(false);
             right3.setInverted(true);
         }
@@ -320,10 +330,12 @@ public class DriveTrain extends Subsystem {
         SmartDashboard.putNumber("timer", Timer.getFPGATimestamp());
         if (Timer.getFPGATimestamp() < slowUntil) {
             SmartDashboard.putString("slowing", "true");
-            left1.set(getAverageSpeed() * Constants.slowDownRate);
-            right1.set(getAverageSpeed() * Constants.slowDownRate);
+            left1.set(ControlMode.Velocity, getAverageSpeed() * Constants.slowDownRate);
+            right1.set(ControlMode.Velocity, getAverageSpeed() * Constants.slowDownRate);
         } else {
             SmartDashboard.putString("slowing", "false");
+            SmartDashboard.putNumber("left target vel", left1.getClosedLoopTarget(0));
+            SmartDashboard.putNumber("right target vel", right1.getClosedLoopTarget(0));
             left1.set(ControlMode.Velocity, left);
             right1.set(ControlMode.Velocity, right);
         }
