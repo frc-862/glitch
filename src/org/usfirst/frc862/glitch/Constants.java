@@ -252,6 +252,20 @@ public class Constants extends ConstantsBase {
     public static double DEFAULT_EJECT_POWER = -1.0;
     public static final double COLLECT_TRIGGER_DEADZONE = 0;
 
+    // PDP Slots
+    public static int PDP_DRIVE_RIGHT_1 = 0;
+    public static int PDP_DRIVE_RIGHT_2 = 1;
+    public static int PDP_DRIVE_RIGHT_3 = 2;
+    public static int PDP_ARM = 3;
+    public static int PDP_COLLECTOR_RIGHT = 4;
+    public static int PDP_RAMP = 5;
+    public static int PDP_LEDS = 8;
+    public static int PDP_COLLECTOR_LEFT = 11;
+    public static int PDP_ELEVATOR = 12;
+    public static int PDP_DRIVE_LEFT_1 = 13;
+    public static int PDP_DRIVE_LEFT_2 = 14;
+    public static int PDP_DRIVE_LEFT_3 = 15;
+
     public String getFileName() {
         return "~/glitch.yaml";
     }

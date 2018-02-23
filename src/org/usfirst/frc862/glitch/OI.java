@@ -15,10 +15,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.usfirst.frc862.glitch.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc862.glitch.paths.CurveLeftSwitch;
-import org.usfirst.frc862.glitch.paths.CurveRightSwitch;
-import org.usfirst.frc862.glitch.paths.StraightSwitch;
-import org.usfirst.frc862.glitch.paths.TestPath;
+import org.usfirst.frc862.glitch.paths.*;
 import org.usfirst.frc862.util.TwoButtonTrigger;
 import org.usfirst.frc862.util.XBoxController;
 
@@ -111,6 +108,7 @@ public class OI {
         SmartDashboard.putData("Curve Left", new CurveLeftSwitch());
         SmartDashboard.putData("Curve Right", new CurveRightSwitch());
         SmartDashboard.putData("Test Path", new TestPath());
+        SmartDashboard.putData("Reverse Right", new ReverseRight());
 
         JoystickButton trigger1 = new JoystickButton(driverLeft, 0);
         JoystickButton trigger2 = new JoystickButton(driverRight, 0);
