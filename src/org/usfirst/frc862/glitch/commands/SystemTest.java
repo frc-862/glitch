@@ -26,7 +26,17 @@ public class SystemTest extends StatefulCommand {
 
         TEST_LEFT_ENCODER, TEST_RIGHT_ENCODER,
         TEST_NAVX,
-        
+
+        // TEST_FOURBAR,
+        // TEST_ELEVATOR,
+        // TEST_LEFT_COLLECTOR
+        // TEST_RIGHT_COLLECTOR
+        // TEST_POWER_CUBE_DETECTOR
+        // TEST_ELEVATOR_REV_SENSOR
+        // TEST_ELEVATOR_FWD_SENSOR
+        // TEST_LED_MODES
+        // TEST_LIFT_POSITION_SENSOR
+
         TESTS_ARE_DONE;
         
         public States next() {
@@ -246,7 +256,7 @@ public class SystemTest extends StatefulCommand {
         Robot.driveTrain.stop();        
         double encoderStop = Robot.driveTrain.getLeftDistanceInches();
         
-        if (Math.abs(encoderStop - encoderStart) > Constants.MotorTestDistance) {
+        if ((encoderStop - encoderStart) > Constants.MotorTestDistance) {
             success();
         } else {
             fail();
@@ -262,7 +272,7 @@ public class SystemTest extends StatefulCommand {
         Robot.driveTrain.stop();        
         double encoderStop = Robot.driveTrain.getRightDistanceInches();
         
-        if (Math.abs(encoderStop - encoderStart) > Constants.MotorTestDistance) {
+        if ((encoderStop - encoderStart) > Constants.MotorTestDistance) {
             success();
         } else {
             fail();

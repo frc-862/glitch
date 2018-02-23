@@ -85,7 +85,7 @@ public class OI {
         SmartDashboard.putData("Up Shift", new UpShift());
         SmartDashboard.putData("Down Shift", new DownShift());
         SmartDashboard.putData("AutoShift", new AutoShift());
-        SmartDashboard.putData("CalbratedRun", new CalbratedRun());
+        SmartDashboard.putData("CalibratedRun", new CalibratedRun());
         SmartDashboard.putData("TurnDegrees: right", new TurnDegrees(90));
         SmartDashboard.putData("TurnDegrees: reverse", new TurnDegrees(180));
         SmartDashboard.putData("TurnDegrees: left", new TurnDegrees(-90));
@@ -103,6 +103,8 @@ public class OI {
 
         SmartDashboard.putData("Vision Follow", new VisionFollow());
         SmartDashboard.putData("Vision Arcade", new VisionArcade());
+        SmartDashboard.putData("Stiction Test", new StictionTest());
+        SmartDashboard.putData("Joystick Test", new TestJoySticks());
 
         SmartDashboard.putData("System Test", new SystemTest());
         SmartDashboard.putData("Switch Straight", new StraightSwitch());

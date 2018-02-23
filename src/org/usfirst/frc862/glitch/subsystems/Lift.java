@@ -30,7 +30,7 @@ import org.usfirst.frc862.util.DataLogger;
  *
  */
 public class Lift extends Subsystem {
-    enum State { PowerUp, InitialFramePerimeter, InitialGroundCollect, Collect, Drive, Switch, Scale, ManualControl };
+    enum State { PowerUp, InitialFramePerimeter, InitialGroundCollect, Collect, Drive, Switch, Scale, ManualControl, ExitManualControl, DropMode };
     State previousState;
     State state;
 
@@ -46,7 +46,6 @@ public class Lift extends Subsystem {
 
     private final AnalogInput armPos = new AnalogInput(1);
     private double fourbarPosition, elevatorPosition;
-    private double elevatorError, elevatorErrorRate;
     private MovingAverage errorFilter = new MovingAverage(3);
 
     @Override
@@ -159,22 +158,10 @@ public class Lift extends Subsystem {
             double error = elevatorPosition - elevator.getSelectedSensorPosition(0);
             return error * Constants.ELEVATOR_VELOCITY_P + Constants.ELEVATOR_VELOCITY_F;
         });
-        DataLogger.addDataElement("ElevatorErrorRate", () -> {
-            double previousElevatorError = elevatorError;
-            elevatorError = elevatorPosition - elevator.getSelectedSensorPosition(0);
-            return elevatorError - previousElevatorError;
-        });
-        DataLogger.addDataElement("ElevatorErrorRateFiltered", () -> {
-            double previousElevatorError = elevatorError;
-            elevatorError = elevatorPosition - elevator.getSelectedSensorPosition(0);
-            errorFilter.addNumber(elevatorError - previousElevatorError);
-            return errorFilter.getAverage();
-        });
 
         fourbarPosition = fourbar.getSelectedSensorPosition(0);
         elevatorPosition = elevator.getSelectedSensorPosition(0);
 
-        elevatorError = 0;
     }
 
     @Override
@@ -210,6 +197,17 @@ public class Lift extends Subsystem {
                 controlFourBar = true;
                 break;
 
+            case DropMode:
+                controlElevator = true;
+                fourbar.set(ControlMode.PercentOutput, 0);
+                fourbarPosition = fourbar.getSelectedSensorPosition(0);
+                break;
+
+            case ExitManualControl:
+                controlElevator = true;
+                controlFourBar = true;
+                break;
+
             // do nothing states
             case InitialFramePerimeter:
             case InitialGroundCollect:
@@ -226,7 +224,7 @@ public class Lift extends Subsystem {
         }
 
         if (controlElevator) {
-            elevatorError = elevatorPosition - elevator.getSelectedSensorPosition(0);
+            double elevatorError = elevatorPosition - elevator.getSelectedSensorPosition(0);
             double elevatorVelocity = elevatorError * Constants.ELEVATOR_VELOCITY_P + Constants.ELEVATOR_VELOCITY_F;
             elevator.set(ControlMode.Velocity, elevatorVelocity);
         }
@@ -244,7 +242,6 @@ public class Lift extends Subsystem {
     }
 
     public void setElevatorPosition(double pos) {
-        elevatorError = elevatorPosition - pos;
         elevatorPosition = pos;
     }
 
@@ -273,6 +270,11 @@ public class Lift extends Subsystem {
         setElevatorPosition(Constants.ELEVATOR_COLLECT_POS);
     }
 
+    public void exitDropMode() {
+        state = State.Collect;
+        fourbar.setNeutralMode(NeutralMode.Brake);
+    }
+
     public void setElevatorPower(double power){
         elevator.set(ControlMode.PercentOutput, power);
     }
@@ -281,8 +283,23 @@ public class Lift extends Subsystem {
         fourbar.set(ControlMode.PercentOutput, power);
     }
 
+    public void exitManualPosition() {
+        setFourbarPosition(fourbar.getSelectedSensorPosition(0));
+        setElevatorPosition(elevator.getSelectedSensorPosition(0));
+        state = State.ExitManualControl;
+    }
+
     public void setManualPosition() {
         state = State.ManualControl;
+    }
+
+    public boolean setDropMode() {
+        if (state != State.Collect) {
+            return false;
+        }
+        fourbar.setNeutralMode(NeutralMode.Brake);
+        state = State.DropMode;
+        return true;
     }
 }
 
