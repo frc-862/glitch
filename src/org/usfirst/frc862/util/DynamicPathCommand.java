@@ -163,6 +163,7 @@ public class DynamicPathCommand extends Command {
 
     @Override
     protected void end() {
+        Logger.info("Stopping DynamicPath: " + getName());
         notifier.stop();
         logger.drain();
         logger.flush();

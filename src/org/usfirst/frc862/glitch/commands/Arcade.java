@@ -30,7 +30,7 @@ import static org.usfirst.frc862.util.LightningMath.limit;
  *
  */
 public class Arcade extends Command {
-    private JoystickFilter thrustFilter = new JoystickFilter(Constants.dead_band, Constants.STICKTION_SPEED, 1, JoystickFilter.Mode.SQUARED);
+    private JoystickFilter thrustFilter = new JoystickFilter(Constants.dead_band, Constants.STICKTION_SPEED_IPS, 1, JoystickFilter.Mode.SQUARED);
     private JoystickFilter rotFilter = new JoystickFilter(Constants.dead_band, 0, 1, JoystickFilter.Mode.CUBED);
     private double heading = 0;
     private double lastTime = 0;

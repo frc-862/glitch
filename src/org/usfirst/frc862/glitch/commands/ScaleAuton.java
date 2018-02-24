@@ -13,12 +13,14 @@ package org.usfirst.frc862.glitch.commands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.paths.*;
 import org.usfirst.frc862.glitch.subsystems.ShineBois;
 import org.usfirst.frc862.util.DynamicPathCommand;
+import org.usfirst.frc862.util.Logger;
 import org.usfirst.frc862.util.TimedTriggers;
 
 /**
@@ -55,9 +57,11 @@ public class ScaleAuton extends Command {
 //        } else {
 //            cmd = redAlliance();
 //        }
-        cmd = buildScale();
 
-        cmd.addSequential(new EjectCube());
+        cmd = buildScale();
+        cmd.addSequential(new Backup());
+        cmd.addSequential(new MoveCollectorToGround());
+
         cmd.start();
     }
 
@@ -66,47 +70,57 @@ public class ScaleAuton extends Command {
         boolean leftScale = Robot.scaleOnLeft();
 
         CommandGroup cmd = new CommandGroup();
+        cmd.addSequential(new DownShift());
+
+        cmd.addParallel(new HoldCube());
+
         DynamicPathCommand path;
 
         if (leftStart && leftScale) {
+            Logger.info("Using Left Scale Near");
             path = new LeftScaleNear();
         } else if (leftStart && !leftScale) {
+            Logger.info("Using Left Scale Far");
             path = new LeftScaleFar();
         } else if (!leftScale) {
+            Logger.info("Using Right Scale Near");
             // If we made it this far, we have to be on the right side
             path = new RightScaleNear();
         } else {
             // Must be right far
+            Logger.info("Using Right Scale Far");
             path = new RightScaleFar();
         }
 
-        cmd.addParallel(path);
-        TimedTriggers triggers = new TimedTriggers();
-        triggers.addAction(new MoveCollectorToScale(), path.duration() - 3);
-        triggers.addAction(new EjectCube(), path.duration() - 0.1);
-        cmd.addParallel(triggers);
+        CommandGroup riseUp = new CommandGroup();
+        riseUp.addSequential(new TimedCommand(path.duration() - 2.5));
+        riseUp.addSequential(new MoveCollectorToScale());
+        cmd.addParallel(riseUp);
 
-        if (Robot.attemptMultiCubeAuton()) {
-            cmd.addSequential(new MoveCollectorToGround());
-            // TODO verify rotation angle (for correct side)
-            cmd.addParallel(new TurnToAbsolutePosition(180));
-            cmd.addSequential(new VisionCollect());
+        cmd.addSequential(path);
+        cmd.addSequential(new EjectCube(), 1);
 
-            boolean leftSwitch = Robot.switchOnLeft();
-            // TODO fix this, to use conditional command, because we should always have ~15 seconds here
-            if (leftScale == leftSwitch && Robot.autonTimeRemaining() < Constants.AutonScaleTime) {
-                // we are already on the same side as the switch, let's dump one in there
-                cmd.addSequential(new MoveCollectorToSwitch());
-                cmd.addSequential(new EjectCube());
-            } else {
-                // TODO use turn to absolute angle (and adjust for left/right scale)
-                cmd.addSequential(new TurnToAbsolutePosition(0));
-                cmd.addParallel(new MoveCollectorToScale());
-                // TODO write this path
-                // cmd.addSequential(new CubeToScale());
-                cmd.addSequential(new EjectCube());
-            }
-        }
+//        if (Robot.attemptMultiCubeAuton()) {
+//            cmd.addSequential(new MoveCollectorToGround());
+//            // TODO verify rotation angle (for correct side)
+//            cmd.addParallel(new TurnToAbsolutePosition(180));
+//            cmd.addSequential(new VisionCollect());
+//
+//            boolean leftSwitch = Robot.switchOnLeft();
+//            // TODO fix this, to use conditional command, because we should always have ~15 seconds here
+//            if (leftScale == leftSwitch && Robot.autonTimeRemaining() < Constants.AutonScaleTime) {
+//                // we are already on the same side as the switch, let's dump one in there
+//                cmd.addSequential(new MoveCollectorToSwitch());
+//                cmd.addSequential(new EjectCube());
+//            } else {
+//                // TODO use turn to absolute angle (and adjust for left/right scale)
+//                cmd.addSequential(new TurnToAbsolutePosition(0));
+//                cmd.addParallel(new MoveCollectorToScale());
+//                // TODO write this path
+//                // cmd.addSequential(new CubeToScale());
+//                cmd.addSequential(new EjectCube());
+//            }
+//        }
 
         return cmd;
     }

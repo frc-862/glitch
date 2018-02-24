@@ -172,6 +172,7 @@ public class Robot extends TimedRobot {
 
         slowLooper.start();
         fastLooper.start();
+
     }
 
     /**
@@ -204,10 +205,16 @@ public class Robot extends TimedRobot {
             msg = DriverStation.getInstance().getGameSpecificMessage();
         }
 
+        Logger.info("FMS Auton Message: " + msg);
+
         fmsSwitchOnLeft = msg.substring(0,1).equals("L");
-        fmsScaleOnLeft = msg.substring(1,1).equals("L");
+        fmsScaleOnLeft = msg.substring(1,2).equals("L");
+
+        Logger.info("Switch on Left: " + fmsSwitchOnLeft);
+        Logger.info("Scale on Left: " + fmsScaleOnLeft);
 
         // schedule the autonomous command
+        Logger.info("autonomousCommnad: " + autonomousCommand);
         if (autonomousCommand != null) autonomousCommand.start();
     }
 
@@ -215,7 +222,9 @@ public class Robot extends TimedRobot {
      * This function is called periodically during autonomous
      */
     @Override
-    public void autonomousPeriodic() { Scheduler.getInstance().run(); }
+    public void autonomousPeriodic() {
+        Scheduler.getInstance().run();
+    }
 
     @Override
     public void teleopInit() {
@@ -224,10 +233,19 @@ public class Robot extends TimedRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+
+        // setup our default commands (which seemed to be causing
+        // trouble with our dynamic autons?
+        driveTrain.setDefaultCommand(new TankDrive());
+        lift.setDefaultCommand(new CoPilotAuto());
+        shifter.setDefaultCommand(new AutoShift());
     }
 
     @Override
-    public void teleopPeriodic() { Scheduler.getInstance().run(); }
+    public void teleopPeriodic() {
+        Scheduler.getInstance().run();
+        SmartDashboard.putData("Scheduler", Scheduler.getInstance());
+    }
 
     public static boolean isOBot() {
         return new File("/home/lvuser/obot").exists();

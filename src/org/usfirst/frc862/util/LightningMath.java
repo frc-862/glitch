@@ -131,4 +131,7 @@ public class LightningMath {
         return isZero(v1 - v2);
     }
 
+    public static boolean epsilonEqual(double v1, double v2, double epsilon) {
+        return Math.abs(v1 - v2) < epsilon;
+    }
 }

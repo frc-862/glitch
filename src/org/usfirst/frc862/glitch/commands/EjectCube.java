@@ -12,6 +12,7 @@
 package org.usfirst.frc862.glitch.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Robot;
+import org.usfirst.frc862.util.Logger;
 
 /**
  *
@@ -39,6 +40,7 @@ public class EjectCube extends Command {
     @Override
     protected void initialize() {
         Robot.gripper.ejectCube();
+        Logger.info("Begin eject");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -56,6 +58,7 @@ public class EjectCube extends Command {
     @Override
     protected void end() {
         Robot.gripper.stopIntake();
+        Logger.info("End eject");
     }
 
     // Called when another command which requires one or more of the same

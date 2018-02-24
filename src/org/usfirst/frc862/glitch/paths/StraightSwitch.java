@@ -873,7 +873,7 @@ public class StraightSwitch extends org.usfirst.frc862.util.DynamicPathCommand {
 
 
     public boolean isReversed() {
-        return false; 
+        return false;
     }
   
 	// WAYPOINT_DATA: [{"position":{"x":20,"y":104},"theta":0,"comment":""},{"position":{"x":127,"y":104},"theta":0,"comment":""}]

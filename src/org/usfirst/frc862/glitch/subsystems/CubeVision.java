@@ -83,13 +83,17 @@ public class CubeVision extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
-    	
-    	collectDataWithoutTracking();
-    	//collectData();
-    	//makePredictions();
-    	//updateCubeList();
-    	//checkConfidence();
-    	    	
+        if (serialIn != null) {
+			try {
+				collectDataWithoutTracking();
+				//collectData();
+				//makePredictions();
+				//updateCubeList();
+				//checkConfidence();
+			} catch (Exception err) {
+				Logger.error("Vision loop error: " + err);
+			}
+		}
     }
     
     private void collectDataWithoutTracking() {
