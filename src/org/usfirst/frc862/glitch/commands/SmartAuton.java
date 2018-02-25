@@ -12,8 +12,13 @@
 package org.usfirst.frc862.glitch.commands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc862.glitch.Robot;
+import org.usfirst.frc862.glitch.paths.*;
 import org.usfirst.frc862.glitch.subsystems.ShineBois;
+import org.usfirst.frc862.util.DynamicPathCommand;
 
 /**
  *
@@ -41,45 +46,53 @@ public class SmartAuton extends Command {
     protected void initialize() {
         ShineBois.rainbow();
 
-        boolean leftStart= SmartDashboard.getBoolean("start side", false);
-        int powerCubes= (int)Math.round(SmartDashboard.getNumber("auton powercubes",1));
-        String mode=SmartDashboard.getString("select mode", "switch");
-        String fieldConfig=DriverStation.getInstance().getGameSpecificMessage();
-        DriverStation.Alliance alliance=DriverStation.getInstance().getAlliance();
+        CommandGroup cmd = new CommandGroup();
+        cmd.addSequential(new DownShift());
 
-
-        //noinspection StatementWithEmptyBody
-        if(leftStart){
-            //todo support the left
-        }
-        else{
-            if(powerCubes==1){
-                if(mode.equalsIgnoreCase("switch")){
-                    (new SwitchAuton()).start();
-                }
+        if (Robot.startOnLeft()) {
+            if (Robot.switchOnLeft()) {
+                cmd.addSequential(new MoveCollectorToSwitch());
+                cmd.addSequential(new LeftPointsSwitch());
+            } else if (Robot.scaleOnLeft()) {
+                DynamicPathCommand path = new LeftScaleNear();
+                cmd.addSequential(path);
+                CommandGroup raiseUp = new CommandGroup();
+                raiseUp.addSequential(new TimedCommand(path.duration() - 2.8));
+                cmd.addParallel(raiseUp);
+            } else {
+                DynamicPathCommand path = new LeftScaleFar();
+                cmd.addSequential(path);
+                CommandGroup raiseUp = new CommandGroup();
+                raiseUp.addSequential(new TimedCommand(path.duration() - 2.8));
+                cmd.addParallel(raiseUp);
+            }
+        } else {
+            if (!Robot.switchOnLeft()) {
+                cmd.addSequential(new MoveCollectorToSwitch());
+                cmd.addSequential(new RightPointsSwitch());
+            } else if (!Robot.scaleOnLeft()) {
+                DynamicPathCommand path = new RightScaleNear();
+                cmd.addSequential(path);
+                CommandGroup raiseUp = new CommandGroup();
+                raiseUp.addSequential(new TimedCommand(path.duration() - 2.8));
+                cmd.addParallel(raiseUp);
+            } else {
+                DynamicPathCommand path = new RightScaleFar();
+                cmd.addSequential(path);
+                CommandGroup raiseUp = new CommandGroup();
+                raiseUp.addSequential(new TimedCommand(path.duration() - 2.8));
+                cmd.addParallel(raiseUp);
             }
         }
+        cmd.addSequential(new EjectCube(), 1);
+        cmd.addSequential(new Backup());
+        cmd.addSequential(new MoveCollectorToGround());
+
+        cmd.start();
     }
 
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
-    }
-
-    // Called once after isFinished returns true
-    @Override
-    protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
+        return true;
     }
 }
