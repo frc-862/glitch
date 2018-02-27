@@ -80,7 +80,7 @@ public class AdaFruitVL6180X {
     @returns True if chip found and initialized, False otherwise
 */
     /**************************************************************************/
-    boolean begin() {
+    public boolean begin() {
         if (read8(VL6180X_REG_IDENTIFICATION_MODEL_ID) != 0xB4) {
             return false;
         }
@@ -96,7 +96,7 @@ public class AdaFruitVL6180X {
 //    @brief  Load the settings for proximity/distance ranging
 //*/
 //    /**************************************************************************/
-    void loadSettings() {
+    private void loadSettings() {
         // load settings!
 
         // private settings from page 24 of app note
@@ -163,7 +163,7 @@ public class AdaFruitVL6180X {
 //    @return Distance in millimeters if valid
 //*/
 //    /**************************************************************************/
-    int readRange() {
+    public int readRange() {
         // wait for device to be ready for range measurement
         while ((read8(VL6180X_REG_RESULT_RANGE_STATUS) & 0x01) == 0) {
             //TODO be smarter?

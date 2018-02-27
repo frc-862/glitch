@@ -53,7 +53,11 @@ public class DataLogger implements Loop {
     private void writeValues() {
         StringBuilder values = new StringBuilder(Double.toString(Timer.getFPGATimestamp()));
         for (DoubleSupplier fld : fieldValues) {
-            values.append(",").append(Double.toString(fld.getAsDouble()));
+            try {
+                values.append(",").append(Double.toString(fld.getAsDouble()));
+            } catch (Exception err) {
+                values.append(",").append("0");
+            }
         }
         writer.logRawString(values.toString());
     }

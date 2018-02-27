@@ -164,6 +164,8 @@ public class Lift extends Subsystem {
         fourbarPosition = fourbar.getSelectedSensorPosition(0);
         elevatorPosition = elevator.getSelectedSensorPosition(0);
 
+        fourbar.set(ControlMode.Velocity, 0);
+        elevator.set(ControlMode.Velocity, 0);
     }
 
     @Override

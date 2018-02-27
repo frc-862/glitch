@@ -14,7 +14,8 @@ import org.usfirst.frc862.util.MovingAverageFilter;
  *
  */
 public class VisionCollect extends Command {
-    private boolean close;
+    private boolean close, qturn = true;
+    private double pwr = 0, rot = 0;
 
     public VisionCollect() {
         requires(Robot.driveTrain);
@@ -32,17 +33,17 @@ public class VisionCollect extends Command {
             double[] cube = Robot.cubeVision.getBestCube();
             double angle = cube[0];
             double area = cube[1];
+            double dist = cube[2];
 
-            double pwr = Math.min(area * Constants.VisionSpeedP, Constants.VisionMinSpeed);
-            double rot;
+            pwr = Math.min(dist * Constants.VisionSpeedP, Constants.VisionMinSpeed);
             if (Robot.shifter.isHighGear()) {
                 rot = angle * Constants.StraightenKpHighGear;
             } else {
                 rot = angle * Constants.StraightenKpLowGear;
             }
-            boolean qturn = pwr <= Constants.VisionMinSpeed;
+            qturn = pwr <= Constants.VisionMinSpeed;
 
-            if (area > Constants.VisionCloseThreshold) {
+            if (dist > Constants.VisionCloseThreshold) {
                 close = true;
             }
 
@@ -55,6 +56,12 @@ public class VisionCollect extends Command {
         } catch (CubeNotFoundException e) {
             // TODO either do something smart - rotate?
             // or quit
+        	
+        	//Do what we were doing before we lost the cube.
+        	//TODO Maybe do something different when we know tracking works.
+        	DriveSignal power = CurvatureDrive.curvatureDrive(pwr, rot, qturn);
+            Robot.driveTrain.setVelocity(power);
+        	
         }
 
         if (Robot.gripper.hasCube()) {

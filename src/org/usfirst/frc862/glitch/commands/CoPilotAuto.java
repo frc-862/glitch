@@ -49,18 +49,22 @@ public class CoPilotAuto extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double power = -copilot.getLeftTrigger() + copilot.getRightTrigger();
-        if (Math.abs(power) < Constants.COLLECT_TRIGGER_DEADZONE) {
-            power = 0;
-        }
+        if (copilot.getRightTrigger() > Constants.COLLECT_TRIGGER_DEADZONE) {
+            Robot.gripper.holdCube();
+        } else {
+            double power = -copilot.getLeftTrigger();
+            if (Math.abs(power) < Constants.COLLECT_TRIGGER_DEADZONE) {
+                power = 0;
+            }
 
-        if (copilot.leftBumper.get()) {
-            power = Constants.DEFAULT_EJECT_POWER;
+            if (copilot.leftBumper.get()) {
+                power = Constants.DEFAULT_EJECT_POWER;
+            }
+            else if(copilot.rightBumper.get()) {
+                power = Constants.DEFAULT_COLLECT_POWER;
+            }
+            Robot.gripper.setPower(power);
         }
-        else if(copilot.rightBumper.get()) {
-            power = Constants.DEFAULT_COLLECT_POWER;
-        }
-        Robot.gripper.setPower(power);
 
         // Y
         //X B

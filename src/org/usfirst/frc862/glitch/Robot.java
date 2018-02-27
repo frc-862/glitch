@@ -68,6 +68,7 @@ public class Robot extends TimedRobot {
 
     private Looper fastLooper;
     private Looper slowLooper;
+    private Looper reallySlowLooper;
 
     public static void resetLoggingFiles() {
         DriverStation ds = DriverStation.getInstance();
@@ -90,6 +91,7 @@ public class Robot extends TimedRobot {
         }
         Logger.setBaseFileName(fn);
         DataLogger.setBaseFileName(fn);
+        Logger.info("Setup filename " + fn);
     }
 
     @Override
@@ -163,12 +165,18 @@ public class Robot extends TimedRobot {
 
         Robot.resetLoggingFiles();
 
+        reallySlowLooper = new Looper(Constants.reallySlowLoopRate);
         slowLooper = new Looper(Constants.slowLoopRate);
         fastLooper = new Looper(Constants.fastLoopRate);
 
         slowLooper.register(Logger.getWriter());
         slowLooper.register(DataLogger.getLogger().getLogWriter());
         fastLooper.register(DataLogger.getLogger());
+
+        reallySlowLooper.register(() -> {
+            DataLogger.flush();
+            Logger.getWriter().flush();
+        });
 
         slowLooper.start();
         fastLooper.start();
@@ -236,9 +244,17 @@ public class Robot extends TimedRobot {
 
         // setup our default commands (which seemed to be causing
         // trouble with our dynamic autons?
-        driveTrain.setDefaultCommand(new TankDrive());
-        lift.setDefaultCommand(new CoPilotAuto());
-        shifter.setDefaultCommand(new AutoShift());
+
+        // Also wrapping these conditionally to reduce the amount
+        // of error logging when testing without controllers
+        if (oi.driverControlsAvailable()) {
+            driveTrain.setDefaultCommand(new TankDrive());
+            shifter.setDefaultCommand(new AutoShift());
+        }
+
+        if (oi.copilotControlsAvailable()) {
+            lift.setDefaultCommand(new CoPilotAuto());
+        }
     }
 
     @Override

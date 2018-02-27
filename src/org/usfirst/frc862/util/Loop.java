@@ -5,9 +5,9 @@ package org.usfirst.frc862.util;
  * code (such as periodic gyroscope calibration, etc.)
  */
 public interface Loop {
-    void onStart();
+    default void onStart() {}
 
     void onLoop();
 
-    void onStop();
+    default void onStop() {}
 }

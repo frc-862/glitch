@@ -16,9 +16,9 @@ public class Constants extends ConstantsBase {
 
     // Vision
     public static int COLLECTOR_PIXELS_OFF_CENTER = 0;
-    public static double VisionSpeedP = 0.01;
+    public static double VisionSpeedP = 0.2;
     public static double VisionMinSpeed = 0.2;
-    public static double VisionCloseThreshold = 40;
+    public static double VisionCloseThreshold = 2.7; //ft
 
     // Vision
     public static int CAMERA_PIXELS_OFF_CENTER = 0;
@@ -162,8 +162,9 @@ public class Constants extends ConstantsBase {
     public static double MotorTestPower = 0.3;
     public static double MotorTestDistance = 3;
 
+    public static double reallySlowLoopRate = 2;
     public static double slowLoopRate = 0.5;
-    public static double fastLoopRate = 0.005;
+    public static double fastLoopRate = 0.01;
     public static double openLoopRamp = 0.2;
     // Note moving ramping to acrade/tank commands as this does not
     // seem very smooth and impacts closed loop tracking
@@ -249,6 +250,7 @@ public class Constants extends ConstantsBase {
     public static double AutonScaleTime = 5;
 
     //Collector
+    public static final double DEFAULT_HOLD_POWER = 0.4;
     public static double DEFAULT_COLLECT_POWER = 0.862;
     public static double DEFAULT_EJECT_POWER = -0.862;
     public static final double COLLECT_TRIGGER_DEADZONE = 0;

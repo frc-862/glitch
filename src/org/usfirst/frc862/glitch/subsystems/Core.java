@@ -52,8 +52,8 @@ public class Core extends Subsystem {
 
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
+        navx.zeroYaw();
         headingOffset = navx.getYaw();
-
     }
 
     public Core() {
@@ -70,7 +70,7 @@ public class Core extends Subsystem {
         DataLogger.addDataElement("PDP_DRIVE_RIGHT_2", () -> powerDistributionPanel.getCurrent(Constants.PDP_DRIVE_RIGHT_2));
         DataLogger.addDataElement("PDP_DRIVE_RIGHT_3", () -> powerDistributionPanel.getCurrent(Constants.PDP_DRIVE_RIGHT_3));
         DataLogger.addDataElement("PDP_ARM", () -> powerDistributionPanel.getCurrent(Constants.PDP_ARM));
-        DataLogger.addDataElement("PDP_RAMP", () -> powerDistributionPanel.getCurrent(Constants.PDP_RAMP));
+//        DataLogger.addDataElement("PDP_RAMP", () -> powerDistributionPanel.getCurrent(Constants.PDP_RAMP));
         DataLogger.addDataElement("PDP_LEDS", () -> powerDistributionPanel.getCurrent(Constants.PDP_LEDS));
         DataLogger.addDataElement("PDP_ELEVATOR", () -> powerDistributionPanel.getCurrent(Constants.PDP_ELEVATOR));
         DataLogger.addDataElement("PDP_DRIVE_LEFT_1", () -> powerDistributionPanel.getCurrent(Constants.PDP_DRIVE_LEFT_1));

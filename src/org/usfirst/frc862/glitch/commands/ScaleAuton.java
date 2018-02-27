@@ -59,8 +59,10 @@ public class ScaleAuton extends Command {
 //        }
 
         cmd = buildScale();
-        cmd.addSequential(new Backup());
+//        cmd.addSequential(new Backup());
+        cmd.addParallel(new RotateAwayFromScale(200));
         cmd.addSequential(new MoveCollectorToGround());
+        cmd.addSequential(new VisionCollect());
 
         cmd.start();
     }
@@ -93,7 +95,7 @@ public class ScaleAuton extends Command {
         }
 
         CommandGroup riseUp = new CommandGroup();
-        riseUp.addSequential(new TimedCommand(path.duration() - 2.5));
+        riseUp.addSequential(new TimedCommand(path.duration() - 3));
         riseUp.addSequential(new MoveCollectorToScale());
         cmd.addParallel(riseUp);
 

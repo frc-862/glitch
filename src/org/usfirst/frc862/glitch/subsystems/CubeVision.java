@@ -45,7 +45,7 @@ public class CubeVision extends Subsystem {
 	private long lastGoodFrameNum;
 	private SerialPort serialIn;
 	private ArrayList<PowerCube> cubes, cubesIn;
-	private boolean visionInit = true;
+	private boolean visionInit = true, enableTracking = false;
 	private int idCounter = 0;
 	private double angle;
 	private double leftDist, rightDist;
@@ -66,6 +66,7 @@ public class CubeVision extends Subsystem {
 		angle = Robot.core.getGyroAngle() + 180;
 		leftDist = Robot.driveTrain.getLeftDistanceInches();
 		rightDist = Robot.driveTrain.getRightDistanceInches();
+		SmartDashboard.putBoolean("enable vision tracking", enableTracking);
 		
 	}
 
@@ -83,13 +84,19 @@ public class CubeVision extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
+//    	enableTracking = SmartDashboard.getBoolean("enable vision tracking", false);
         if (serialIn != null) {
+			SmartDashboard.putString("Vision Period is here", serialIn.toString());
 			try {
-				collectDataWithoutTracking();
-				//collectData();
-				//makePredictions();
-				//updateCubeList();
-				//checkConfidence();
+				if(enableTracking) {
+					collectData();
+					makePredictions();
+					updateCubeList();
+					checkConfidence();
+				}
+				else {
+					collectDataWithoutTracking();
+				}
 			} catch (Exception err) {
 				Logger.error("Vision loop error: " + err);
 			}
@@ -100,8 +107,8 @@ public class CubeVision extends Subsystem {
     	cubes = new ArrayList<PowerCube>();
     	String inData = serialIn.readString();
     	//Logger.info(inData);
+		SmartDashboard.putString("dataIn", inData);
     	if(inData.indexOf("=") != -1) {
-	    	SmartDashboard.putString("dataIn", inData);
 	    	SmartDashboard.putString("step", "dataIn");
 	    	String lastFrame = inData.substring(inData.lastIndexOf("Frame"));
 	    	SmartDashboard.putString("lastFrame", lastFrame);
