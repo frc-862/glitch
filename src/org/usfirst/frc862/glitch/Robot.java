@@ -66,9 +66,9 @@ public class Robot extends TimedRobot {
     SendableChooser<String> sideChooser = new SendableChooser<>();
     SendableChooser<String> cubeChooser = new SendableChooser<>();
 
-    private Looper fastLooper;
-    private Looper slowLooper;
-    private Looper reallySlowLooper;
+//    private Looper fastLooper;
+//    private Looper slowLooper;
+//    private Looper reallySlowLooper;
 
     public static void resetLoggingFiles() {
         DriverStation ds = DriverStation.getInstance();
@@ -165,22 +165,8 @@ public class Robot extends TimedRobot {
 
         Robot.resetLoggingFiles();
 
-        reallySlowLooper = new Looper(Constants.reallySlowLoopRate);
-        slowLooper = new Looper(Constants.slowLoopRate);
-        fastLooper = new Looper(Constants.fastLoopRate);
-
-        slowLooper.register(Logger.getWriter());
-        slowLooper.register(DataLogger.getLogger().getLogWriter());
-        fastLooper.register(DataLogger.getLogger());
-
-        reallySlowLooper.register(() -> {
-            DataLogger.flush();
-            Logger.getWriter().flush();
-        });
-
-        slowLooper.start();
-        fastLooper.start();
-
+        Logger.getWriter().onStart();
+        DataLogger.getLogger().onStart();
     }
 
     /**
@@ -194,8 +180,23 @@ public class Robot extends TimedRobot {
     }
 
     // get rid of overload me message
+    private int counter = 0;
     @Override
-    public void robotPeriodic() { }
+    public void robotPeriodic() {
+       DataLogger.getLogger().onLoop();
+
+       if (counter % 25 == 0) {
+           DataLogger.getLogger().getLogWriter().onLoop();
+           Logger.getWriter().onLoop();
+       }
+
+       if (counter % 100 == 0) {
+           DataLogger.flush();
+           Logger.getWriter().flush();
+       }
+
+       counter += 1;
+    }
 
     @Override
     public void disabledPeriodic() {
