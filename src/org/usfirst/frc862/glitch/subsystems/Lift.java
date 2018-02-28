@@ -378,5 +378,10 @@ public class Lift extends Subsystem {
                 LightningMath.epsilonEqual(elevatorPosition, Constants.ELEVATOR_SCALE_POS_LOW, Constants.ELEVATOR_EPSILON);
     }
 
+    public boolean atCollect() {
+        return (fourbarPosition <= Constants.FOURBAR_COLLECT_POS + Constants.FOURBAR_EPSILON) &&
+                (elevatorPosition <= Constants.ELEVATOR_COLLECT_POS + Constants.ELEVATOR_EPSILON);
+    }
+
 }
 

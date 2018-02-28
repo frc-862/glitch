@@ -16,7 +16,7 @@ public class RotateAwayFromScale extends Command {
     public RotateAwayFromScale(double degrees) {
         this.degrees=degrees;
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+        requires(Robot.driveTrain);
     }
 
 
@@ -62,8 +62,7 @@ public class RotateAwayFromScale extends Command {
         double rotpwr = degreeError() * Constants.PRotate;
         boolean isNeg = rotpwr < 0;
         SmartDashboard.putNumber("degree error: ", degreeError());
-        rotpwr = Math.abs(rotpwr);
-        rotpwr = Math.max(rotpwr, Constants.MinRotatePower);
+        rotpwr = Math.max(Math.abs(rotpwr), Constants.MinRotatePower);
         rotpwr = Math.min(rotpwr, 1);
         if (isNeg) {
             rotpwr = -rotpwr;

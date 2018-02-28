@@ -242,16 +242,24 @@ public class Constants extends ConstantsBase {
     public static final int FOURBAR_EPSILON = 5;
 
     public static final int ELEVATOR_SCALE_POS = 2100;
-    public static double ELEVATOR_SCALE_POS_HIGH = 2300;
-    public static double ELEVATOR_SCALE_POS_LOW = 1900;
+    public static int ELEVATOR_SCALE_POS_HIGH = 2300;
+    public static int ELEVATOR_SCALE_POS_LOW = 1900;
     public static final int ELEVATOR_SWITCH_POS = -5200;
     public static final int ELEVATOR_COLLECT_POS = -5200;
     public static final int ELEVATOR_BOTTOM_POS = 500;
     public static final int ELEVATOR_EPSILON = 50;
 
+    public static int ELEVATOR_INCREMENT = 10;
+    public static int MIN_ELEVATOR = ELEVATOR_COLLECT_POS;
+    public static int MAX_ELEVATOR = ELEVATOR_SCALE_POS_HIGH;
+
+    public static int FOURBAR_INCREMENT = 1;
+    public static int MIN_FOURBAR = FOURBAR_COLLECT_POS;
+    public static int MAX_FOURBAR = FOURBAR_SCALE_POS_HIGH;
+
     public static final double ALERT_DURATION = 3;
     public static double PRotate = 1 / 30;
-    public static double MinRotatePower = 0.1;
+    public static double MinRotatePower = 0.2;
     public static double AutonScaleTime = 5;
 
     //Collector
@@ -277,7 +285,6 @@ public class Constants extends ConstantsBase {
     public static double FOURBAR_UP_POWER = 2;
     public static double ELEVATOR_DOWN_POWER = -5;
     public static double FOURBAR_DOWN_POWER = -2;
-
 
   public String getFileName() {
         return "~/glitch.yaml";
