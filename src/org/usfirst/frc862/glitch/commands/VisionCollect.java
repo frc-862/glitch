@@ -37,9 +37,9 @@ public class VisionCollect extends Command {
 
             pwr = Math.min(dist * Constants.VisionSpeedP, Constants.VisionMinSpeed);
             if (Robot.shifter.isHighGear()) {
-                rot = angle * Constants.StraightenKpHighGear;
+                rot = (rot * .8 + angle * .2) * Constants.StraightenKpHighGear;
             } else {
-                rot = angle * Constants.StraightenKpLowGear;
+                rot = (rot * .8 + angle * .2) * Constants.StraightenKpLowGear;
             }
             qturn = pwr <= Constants.VisionMinSpeed;
 
@@ -56,10 +56,11 @@ public class VisionCollect extends Command {
         } catch (CubeNotFoundException e) {
             // TODO either do something smart - rotate?
             // or quit
-        	
-        	//Do what we were doing before we lost the cube.
+
+        	//Decrease angle on a decay curve.
         	//TODO Maybe do something different when we know tracking works.
         	DriveSignal power = CurvatureDrive.curvatureDrive(pwr, rot, qturn);
+        	rot *= .8;
             Robot.driveTrain.setVelocity(power);
         	
         }

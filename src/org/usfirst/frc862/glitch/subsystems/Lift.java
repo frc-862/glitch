@@ -15,6 +15,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.team254.lib.util.MovingAverage;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import javafx.scene.transform.Scale;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.RobotMap;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -33,6 +34,10 @@ import org.usfirst.frc862.util.Logger;
  */
 public class Lift extends Subsystem {
     enum State { PowerUp, InitialFramePerimeter, InitialGroundCollect, Collect, Drive, Switch, Scale, ManualControl, ExitManualControl, DropMode };
+    enum ScalePos { High, Default, Low };
+
+    ScalePos scalePos;
+
     State previousState;
     State state;
 
@@ -63,7 +68,6 @@ public class Lift extends Subsystem {
     }
 
     public Lift() {
-
         fourbar.setNeutralMode(NeutralMode.Brake);
         elevator.setNeutralMode(NeutralMode.Brake);
 
@@ -95,6 +99,8 @@ public class Lift extends Subsystem {
 
         fourbar.configMotionAcceleration(Constants.FOURBAR_ACC, Constants.TALON_TIMEOUT);
         fourbar.configMotionCruiseVelocity(Constants.FOURBAR_VEL, Constants.TALON_TIMEOUT);
+
+        scalePos = ScalePos.Default;
 
         previousState = State.PowerUp;
         if (fourbar.getSelectedSensorPosition(0) <= Constants.FOURBAR_COLLECT_POS * 0.8) {
@@ -170,6 +176,7 @@ public class Lift extends Subsystem {
 
     @Override
     public void periodic() {
+        SmartDashboard.putString("Scale State", scalePos.toString());
         SmartDashboard.putNumber("FourBar Set", fourbarPosition);
         SmartDashboard.putNumber("Elevator Set", elevatorPosition);
         SmartDashboard.putNumber("FourBar Encoder", fourbar.getSelectedSensorPosition(0));
@@ -256,8 +263,51 @@ public class Lift extends Subsystem {
     // TODO add state engine and move out of "snug position safely...
     public void moveToScale() {
         state = State.Scale;
+        scalePos = ScalePos.Default;
         setFourbarPosition(Constants.FOURBAR_SCALE_POS);
         setElevatorPosition(Constants.ELEVATOR_SCALE_POS);
+    }
+
+    public void moveScaleUp() {
+        switch(scalePos) {
+            case High:
+                break;
+            case Default:
+                moveToScaleHigh();
+                scalePos = ScalePos.Default;
+                break;
+            case Low:
+                moveToScaleLow();
+                scalePos = ScalePos.Low;
+                break;
+        }
+    }
+
+    public void moveScaleDown() {
+        switch(scalePos) {
+            case High:
+                moveToScale();
+                scalePos = ScalePos.Default;
+                break;
+            case Default:
+                moveToScaleLow();
+                scalePos = ScalePos.Low;
+                break;
+            case Low:
+                break;
+        }
+    }
+
+    public void moveToScaleHigh() {
+        state = State.Scale;
+        setFourbarPosition(Constants.FOURBAR_SCALE_POS_HIGH);
+        setElevatorPosition(Constants.ELEVATOR_SCALE_POS_HIGH);
+    }
+
+    public void moveToScaleLow() {
+        state = State.Scale;
+        setFourbarPosition(Constants.FOURBAR_SCALE_POS_LOW);
+        setElevatorPosition(Constants.ELEVATOR_SCALE_POS_LOW);
     }
 
     public void moveToSwitch() {
@@ -278,11 +328,6 @@ public class Lift extends Subsystem {
         setElevatorPosition(Constants.ELEVATOR_COLLECT_POS);
     }
 
-    public void exitDropMode() {
-        state = State.Collect;
-        fourbar.setNeutralMode(NeutralMode.Brake);
-    }
-
     public void setElevatorPower(double power){
         elevator.set(ControlMode.PercentOutput, power);
     }
@@ -301,13 +346,12 @@ public class Lift extends Subsystem {
         state = State.ManualControl;
     }
 
-    public boolean setDropMode() {
-        if (state != State.Collect) {
-            return false;
-        }
-        fourbar.setNeutralMode(NeutralMode.Brake);
-        state = State.DropMode;
-        return true;
+    public double getElevatorPosition() {
+        return this.elevatorPosition;
+    }
+
+    public double getFourbarPosition() {
+        return this.fourbarPosition;
     }
 
     public boolean atSwitch() {
@@ -316,8 +360,22 @@ public class Lift extends Subsystem {
     }
 
     public boolean atScale() {
+        return atScaleDefault() || atScaleHigh() || atScaleLow();
+    }
+
+    public boolean atScaleDefault() {
         return LightningMath.epsilonEqual(fourbarPosition, Constants.FOURBAR_SCALE_POS, Constants.FOURBAR_EPSILON) &&
                 LightningMath.epsilonEqual(elevatorPosition, Constants.ELEVATOR_SCALE_POS, Constants.ELEVATOR_EPSILON);
+    }
+
+    public boolean atScaleHigh() {
+        return LightningMath.epsilonEqual(fourbarPosition, Constants.FOURBAR_SCALE_POS_HIGH, Constants.FOURBAR_EPSILON) &&
+                LightningMath.epsilonEqual(elevatorPosition, Constants.ELEVATOR_SCALE_POS_HIGH, Constants.ELEVATOR_EPSILON);
+    }
+
+    public boolean atScaleLow() {
+        return LightningMath.epsilonEqual(fourbarPosition, Constants.FOURBAR_SCALE_POS_LOW, Constants.FOURBAR_EPSILON) &&
+                LightningMath.epsilonEqual(elevatorPosition, Constants.ELEVATOR_SCALE_POS_LOW, Constants.ELEVATOR_EPSILON);
     }
 
 }

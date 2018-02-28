@@ -309,7 +309,8 @@ public class CubeVision extends Subsystem {
     	vals[1] = cubes.get(bestCubeIndex).getArea();
     	vals[2] = cubes.get(bestCubeIndex).getLongitudal();
     	vals[3] = bestCubeIndex;
-    	
+
+    	SmartDashboard.putNumber("best cube angle", vals[0]);
     	return vals;
     	
     }

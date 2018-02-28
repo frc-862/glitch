@@ -117,6 +117,7 @@ public class OI {
         SmartDashboard.putData("Test Path", new TestPath());
         SmartDashboard.putData("Reverse Right", new ReverseRight());
         SmartDashboard.putData("Hold Power", new HoldCube());
+        SmartDashboard.putData("Rotate Away from Scale", new RotateAwayFromScale(210));
 
         SmartDashboard.putData("SwitchAuton", new SwitchAuton());
         SmartDashboard.putData("TestStatefulAuton", new TestStatefulAuton());

@@ -1,6 +1,7 @@
 package org.usfirst.frc862.glitch.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.util.LightningMath;
@@ -59,8 +60,14 @@ public class RotateAwayFromScale extends Command {
     @Override
     protected void execute() {
         double rotpwr = degreeError() * Constants.PRotate;
+        boolean isNeg = rotpwr < 0;
+        SmartDashboard.putNumber("degree error: ", degreeError());
+        rotpwr = Math.abs(rotpwr);
         rotpwr = Math.max(rotpwr, Constants.MinRotatePower);
         rotpwr = Math.min(rotpwr, 1);
+        if (isNeg) {
+            rotpwr = -rotpwr;
+        }
         Robot.driveTrain.setPower(rotpwr, -rotpwr);
     }
 
