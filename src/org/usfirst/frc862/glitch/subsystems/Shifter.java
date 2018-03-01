@@ -62,6 +62,11 @@ public class Shifter extends Subsystem {
     public void upshift() {
         state = 20;
         Robot.driveTrain.upShiftBegin();
+        forceUpShift();
+    }
+
+    public void forceUpShift() {
+        state = 20;
         shift.set(DoubleSolenoid.Value.kForward);
         Robot.driveTrain.upShiftEnd();
         state = 2;
@@ -71,6 +76,11 @@ public class Shifter extends Subsystem {
     public void downshift() {
         state = 10;
         Robot.driveTrain.downShiftBegin();
+        forceDownShift();
+    }
+
+    public void forceDownShift() {
+        state = 10;
         shift.set(DoubleSolenoid.Value.kReverse);
         Robot.driveTrain.downShiftEnd();
         state = 1;
