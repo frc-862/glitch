@@ -50,6 +50,9 @@ public class SwitchAuton extends Command {
     protected void initialize() {
         ShineBois.rainbow();
 
+        // TODO consider changing this, might be a problem for tight/slow turns
+        Robot.shifter.forceDownShift();
+
         boolean leftStart = Robot.startOnLeft();
         Logger.info("Left Start:" + leftStart);
         Logger.info("Left Switch: " + Robot.switchOnLeft());

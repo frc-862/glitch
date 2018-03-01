@@ -58,6 +58,8 @@ public class ScaleAuton extends Command {
 //            cmd = redAlliance();
 //        }
 
+        Robot.shifter.forceUpShift();
+
         cmd = buildScale();
         cmd.addSequential(new BackupSlow());
 //        cmd.addParallel(new RotateAwayFromScale(200));
@@ -94,7 +96,6 @@ public class ScaleAuton extends Command {
         boolean leftScale = Robot.scaleOnLeft();
 
         CommandGroup cmd = new CommandGroup();
-//        cmd.addSequential(new DownShift());
 
         cmd.addParallel(new HoldCube());
 
