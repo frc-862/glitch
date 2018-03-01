@@ -131,16 +131,17 @@ public class Gripper extends Subsystem {
 
     private boolean haveCube = false;
     public boolean hasCube() {
-        if (cubeSensor.get()) {
-            if (!haveCube) {
-                ShineBois.green();
-                haveCube = true;
-            }
-        } else {
-            haveCube = false;
-        }
-
-        return haveCube;
+//        if (cubeSensor.get()) {
+//            if (!haveCube) {
+//                ShineBois.green();
+//                haveCube = true;
+//            }
+//        } else {
+//            haveCube = false;
+//        }
+//
+//        return haveCube;
+        return false;
     }
 
     public void setPower(double collectPower) {

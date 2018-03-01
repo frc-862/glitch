@@ -13,6 +13,7 @@ package org.usfirst.frc862.glitch.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
+import org.usfirst.frc862.util.Logger;
 import org.usfirst.frc862.util.XBoxController;
 
 /**
@@ -77,14 +78,17 @@ public class CoPilotAuto extends Command {
         } else if(copilot.yButton.get()) {
             Robot.lift.moveToScale();
         } else if (copilot.isDPadUp()) {
+            Logger.info("DPadUps");
             Robot.lift.setElevatorPosition(Robot.lift.getElevatorPosition() + Constants.ELEVATOR_INCREMENT);
             Robot.lift.setFourbarPosition(Robot.lift.getFourbarPosition() + Constants.FOURBAR_INCREMENT);
         }
         else if (copilot.isDPadDown()) {
+            Logger.info("DPadDown");
             Robot.lift.setElevatorPosition(Robot.lift.getElevatorPosition() - Constants.ELEVATOR_INCREMENT);
             Robot.lift.setFourbarPosition(Robot.lift.getFourbarPosition() - Constants.FOURBAR_INCREMENT);
         }
         else if (Robot.lift.atScale()) {
+            Logger.info("atScale");
             if(copilot.getLeftStickY() > .5) {
                 Robot.lift.moveScaleUp();
             }
@@ -92,9 +96,10 @@ public class CoPilotAuto extends Command {
                 Robot.lift.moveScaleDown();
             }
         } else if (Robot.lift.atCollect()) {
-            if (copilot.getLeftStickY() < 0.5) {
-                Robot.lift.setManualPosition();
-            } else {
+            Logger.info("atCollect" + copilot.getLeftStickY());
+            if (copilot.getLeftStickY() < -0.5) {
+                Robot.lift.dropMode();
+            } else if (Robot.lift.isDropMode()){
                 Robot.lift.exitManualPosition();
             }
         }

@@ -21,21 +21,24 @@ public class SystemTest extends StatefulCommand {
         TEST_LEFT_MOTOR1, TEST_LEFT_MOTOR2, TEST_LEFT_MOTOR3,
         TEST_RIGHT_MOTOR1, TEST_RIGHT_MOTOR2, TEST_RIGHT_MOTOR3,
 
-        TEST_COMPRESSOR,
-        TEST_UPSHIFT, TEST_DOWNSHIFT, 
-
         TEST_LEFT_ENCODER, TEST_RIGHT_ENCODER,
+        TEST_UPSHIFT, TEST_DOWNSHIFT,
         TEST_NAVX,
 
-        // TEST_FOURBAR,
-        // TEST_ELEVATOR,
-        // TEST_LEFT_COLLECTOR
-        // TEST_RIGHT_COLLECTOR
-        // TEST_POWER_CUBE_DETECTOR
-        // TEST_ELEVATOR_REV_SENSOR
-        // TEST_ELEVATOR_FWD_SENSOR
-        // TEST_LED_MODES
-        // TEST_LIFT_POSITION_SENSOR
+        TEST_POWER_CUBE_DETECTOR,
+        TEST_LEFT_COLLECTOR,
+        TEST_RIGHT_COLLECTOR,
+
+        TEST_ELEVATOR_MOTOR,
+        TEST_FOUR_BAR_MOTOR,
+        TEST_EVELVATOR_BOTTOM_LIMIT, TEST_ELEVATOR_TOP_LIMIT,
+        TEST_FOUR_BAR_LOW_POS, TEST_FOUR_BAR_HIGH_POS,
+
+        TEST_START_POSITION,
+        TEST_VISION_SYSTEM,
+        TEST_LED_MODES,
+
+        TEST_COMPRESSOR,
 
         TESTS_ARE_DONE;
         
@@ -49,6 +52,10 @@ public class SystemTest extends StatefulCommand {
         super(States.TEST_LEFT_MOTOR1);
         requires(Robot.driveTrain);
         requires(Robot.shifter);
+        requires(Robot.gripper);
+        requires(Robot.lift);
+        requires(Robot.cubeVision);
+        requires(Robot.shineBois);
         requires(Robot.core);
 
         this.setDefaultAction(() -> next());

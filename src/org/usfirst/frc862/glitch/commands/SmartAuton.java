@@ -48,23 +48,30 @@ public class SmartAuton extends Command {
 
         CommandGroup cmd = new CommandGroup();
         cmd.addSequential(new DownShift());
+        cmd.addParallel(new HoldCube());
 
         if (Robot.startOnLeft()) {
             if (Robot.switchOnLeft()) {
-                cmd.addSequential(new MoveCollectorToSwitch());
+                cmd.addParallel(new MoveCollectorToSwitch());
                 cmd.addSequential(new LeftPointsSwitch());
             } else if (Robot.scaleOnLeft()) {
                 DynamicPathCommand path = new LeftScaleNear();
+
+                CommandGroup riseUp = new CommandGroup();
+                riseUp.addSequential(new TimedCommand(path.duration() - 2.8));
+                riseUp.addSequential(new MoveCollectorToScale());
+                cmd.addParallel(riseUp);
+
                 cmd.addSequential(path);
-                CommandGroup raiseUp = new CommandGroup();
-                raiseUp.addSequential(new TimedCommand(path.duration() - 2.8));
-                cmd.addParallel(raiseUp);
             } else {
                 DynamicPathCommand path = new LeftScaleFar();
+
+                CommandGroup riseUp = new CommandGroup();
+                riseUp.addSequential(new TimedCommand(path.duration() - 2.8));
+                riseUp.addSequential(new MoveCollectorToScale());
+
+                cmd.addParallel(riseUp);
                 cmd.addSequential(path);
-                CommandGroup raiseUp = new CommandGroup();
-                raiseUp.addSequential(new TimedCommand(path.duration() - 2.8));
-                cmd.addParallel(raiseUp);
             }
         } else {
             if (!Robot.switchOnLeft()) {

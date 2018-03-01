@@ -59,48 +59,10 @@ public class ScaleAuton extends Command {
 //        }
 
         cmd = buildScale();
-//        cmd.addSequential(new Backup());
-        cmd.addParallel(new RotateAwayFromScale(200));
+        cmd.addSequential(new BackupSlow());
+//        cmd.addParallel(new RotateAwayFromScale(200));
         cmd.addSequential(new MoveCollectorToGround());
-        cmd.addSequential(new VisionCollect());
-
-        cmd.start();
-    }
-
-    private CommandGroup buildScale() {
-        boolean leftStart = Robot.startOnLeft();
-        boolean leftScale = Robot.scaleOnLeft();
-
-        CommandGroup cmd = new CommandGroup();
-        cmd.addSequential(new DownShift());
-
-        cmd.addParallel(new HoldCube());
-
-        DynamicPathCommand path;
-
-        if (leftStart && leftScale) {
-            Logger.info("Using Left Scale Near");
-            path = new LeftScaleNear();
-        } else if (leftStart && !leftScale) {
-            Logger.info("Using Left Scale Far");
-            path = new LeftScaleFar();
-        } else if (!leftScale) {
-            Logger.info("Using Right Scale Near");
-            // If we made it this far, we have to be on the right side
-            path = new RightScaleNear();
-        } else {
-            // Must be right far
-            Logger.info("Using Right Scale Far");
-            path = new RightScaleFar();
-        }
-
-        CommandGroup riseUp = new CommandGroup();
-        riseUp.addSequential(new TimedCommand(path.duration() - 3));
-        riseUp.addSequential(new MoveCollectorToScale());
-        cmd.addParallel(riseUp);
-
-        cmd.addSequential(path);
-        cmd.addSequential(new EjectCube(), 1);
+//        cmd.addSequential(new VisionCollect());
 
 //        if (Robot.attemptMultiCubeAuton()) {
 //            cmd.addSequential(new MoveCollectorToGround());
@@ -123,6 +85,44 @@ public class ScaleAuton extends Command {
 //                cmd.addSequential(new EjectCube());
 //            }
 //        }
+
+        cmd.start();
+    }
+
+    private CommandGroup buildScale() {
+        boolean leftStart = Robot.startOnLeft();
+        boolean leftScale = Robot.scaleOnLeft();
+
+        CommandGroup cmd = new CommandGroup();
+//        cmd.addSequential(new DownShift());
+
+        cmd.addParallel(new HoldCube());
+
+        DynamicPathCommand path;
+
+        if (leftStart && leftScale) {
+            Logger.info("Using Left Scale Near");
+            path = new LeftScaleNear();
+        } else if (leftStart && !leftScale) {
+            Logger.info("Using Left Scale Far");
+            path = new LeftScaleFar();
+        } else if (!leftScale) {
+            Logger.info("Using Right Scale Near");
+            // If we made it this far, we have to be on the right side
+            path = new RightScaleNear();
+        } else {
+            // Must be right far
+            Logger.info("Using Right Scale Far");
+            path = new RightScaleFar();
+        }
+
+        CommandGroup riseUp = new CommandGroup();
+//        riseUp.addSequential(new TimedCommand(path.duration() - 4.5));
+        riseUp.addSequential(new MoveCollectorToScale());
+        cmd.addParallel(riseUp);
+
+        cmd.addSequential(path);
+        cmd.addSequential(new EjectCube(), 1);
 
         return cmd;
     }

@@ -233,7 +233,7 @@ public class Constants extends ConstantsBase {
 //    public static final int ELEVATOR_EPSILON = 50;
 
     public static final int FOURBAR_SCALE_POS = 300;
-    public static final int FOURBAR_SCALE_POS_HIGH = 330;
+    public static final int FOURBAR_SCALE_POS_HIGH = 335;
     public static final int FOURBAR_SCALE_POS_LOW = 250;
 
     public static final int FOURBAR_SWITCH_POS = 215;

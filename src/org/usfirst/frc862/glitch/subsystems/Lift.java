@@ -84,11 +84,8 @@ public class Lift extends Subsystem {
         fourbar.configForwardLimitSwitchSource(LimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.Disabled, Constants.TALON_TIMEOUT);
         fourbar.configReverseLimitSwitchSource(LimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.Disabled, Constants.TALON_TIMEOUT);
 
+        fourbar.configForwardSoftLimitEnable(false, Constants.TALON_TIMEOUT);
         fourbar.configReverseSoftLimitEnable(false, Constants.TALON_TIMEOUT);
-//        fourbar.configReverseSoftLimitThreshold(1133, Constants.TALON_TIMEOUT);
-//        fourbar.configForwardSoftLimitThreshold(1363, Constants.TALON_TIMEOUT);
-//        fourbar.configForwardSoftLimitEnable(true, Constants.TALON_TIMEOUT);
-//        fourbar.configReverseSoftLimitEnable(true, Constants.TALON_TIMEOUT);
 
         fourbar.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, Constants.TALON_TIMEOUT);
         fourbar.configAllowableClosedloopError(0, Constants.FOURBAR_ALLOWABLE_ERROR, Constants.TALON_TIMEOUT);
@@ -111,10 +108,7 @@ public class Lift extends Subsystem {
             state = State.InitialGroundCollect;
         }
 
-//        elevator.configReverseSoftLimitThreshold(-5500, Constants.TALON_TIMEOUT);
-//        elevator.configForwardSoftLimitThreshold(1800, Constants.TALON_TIMEOUT);
-//        elevator.configForwardSoftLimitEnable(true, Constants.TALON_TIMEOUT);
-//        elevator.configReverseSoftLimitEnable(true, Constants.TALON_TIMEOUT);
+        elevator.configForwardSoftLimitEnable(false, Constants.TALON_TIMEOUT);
         elevator.configReverseSoftLimitEnable(false, Constants.TALON_TIMEOUT);
 
         elevator.setInverted(true);
@@ -381,6 +375,14 @@ public class Lift extends Subsystem {
     public boolean atCollect() {
         return (fourbarPosition <= Constants.FOURBAR_COLLECT_POS + Constants.FOURBAR_EPSILON) &&
                 (elevatorPosition <= Constants.ELEVATOR_COLLECT_POS + Constants.ELEVATOR_EPSILON);
+    }
+
+    public void dropMode() {
+        state = State.DropMode;
+    }
+
+    public boolean isDropMode() {
+        return state == State.DropMode;
     }
 
 }

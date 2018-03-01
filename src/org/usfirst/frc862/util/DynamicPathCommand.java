@@ -71,7 +71,6 @@ public class DynamicPathCommand extends Command {
         logger.addDataElement("projected_left_vel");
         logger.addDataElement("actual_left_vel");
         logger.addDataElement("projected_right_pos");
-        logger.addDataElement("requested_right_pos");
         logger.addDataElement("requested_right_vel");
         logger.addDataElement("actual_right_pos");
         logger.addDataElement("projected_right_vel");

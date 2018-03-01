@@ -38,7 +38,7 @@ public class MoveCollectorToScale extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.lift.moveToScale();
+        Robot.lift.moveToScaleHigh();
     }
 
     // Called repeatedly when this Command is scheduled to run
