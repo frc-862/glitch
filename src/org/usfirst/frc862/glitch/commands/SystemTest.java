@@ -298,7 +298,68 @@ public class SystemTest extends StatefulCommand {
             fail();
         }
     }
-    
+
+    public void testPowerCubeDetectorEnter() {
+        if (Robot.gripper.hasCube()) {
+            fail();
+            next();
+        } else {
+            status("Place a cube into the collector");
+        }
+    }
+
+    public void testPowerCubeDetectorExit() {
+        if (Robot.gripper.hasCube()) {
+            success();
+        } else {
+            fail();
+        }
+    }
+
+    public void testLeftCollector() {
+
+    }
+
+    public void testRightCollector() {
+
+    }
+
+    public void testElevatorMotor() {
+
+    }
+
+    public void testFourBarMotor() {
+
+    }
+
+    public void testElevatorBottomLimit() {
+
+    }
+
+    public void testElevatorTopLimit() {
+
+    }
+
+    public void testFourBarLowPos() {
+
+    }
+
+    public void testFourBarHighPos() {
+
+    }
+
+    public void testStartPosition() {
+
+    }
+
+    public void testVisionSystem() {
+
+    }
+
+    public void testLedModes() {
+
+    }
+
     public void testsAreDone() {
         status("Tests complete");
         complete = true;

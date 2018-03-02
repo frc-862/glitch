@@ -49,6 +49,8 @@ public class CoPilotAuto extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        boolean cubed = Robot.gripper.hasCube();
+
         if (copilot.getRightTrigger() > Constants.COLLECT_TRIGGER_DEADZONE) {
             Robot.gripper.holdCube();
         } else {

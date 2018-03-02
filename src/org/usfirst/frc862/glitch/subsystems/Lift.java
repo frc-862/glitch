@@ -197,7 +197,7 @@ public class Lift extends Subsystem {
 
             case Drive:
                 controlElevator = true;
-                controlFourBar = elevator.getSelectedSensorPosition(0) >= Constants.ELEVATOR_COLLECT_POS - Constants.ELEVATOR_EPSILON;
+                controlFourBar = elevator.getSelectedSensorPosition(0) >= Constants.ELEVATOR_BOTTOM_POS - Constants.ELEVATOR_EPSILON;
                 break;
 
             case Switch:

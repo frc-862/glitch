@@ -205,7 +205,7 @@ public class Constants extends ConstantsBase {
     public static int FOURBAR_ACC = 24 / 2;
     public static int FOURBAR_VEL = 24;
     public static double FOURBAR_VELOCITY_P = 4.0;
-    public static double FOURBAR_HOLD_POWER = 0.125;
+    public static double FOURBAR_HOLD_POWER = 0.15;
     public static double FOURBAR_VELOCITY_F = 1023 * FOURBAR_HOLD_POWER / FOURBAR_F;
 
     public static int ELEVATOR_ALLOWABLE_ERROR = 10;
@@ -216,7 +216,7 @@ public class Constants extends ConstantsBase {
     public static int ELEVATOR_ACC = 24 / 2;
     public static int ELEVATOR_VEL = 24;
     public static double ELEVATOR_VELOCITY_P = 0.5;
-    public static double ELEVATOR_HOLD_POWER = 0.05;
+    public static double ELEVATOR_HOLD_POWER = 0.03;
     public static double ELEVATOR_VELOCITY_F = 1023 * ELEVATOR_HOLD_POWER / ELEVATOR_F;
     public static double ELEVATOR_VELOCITY_D = 0.0;
 
@@ -232,21 +232,21 @@ public class Constants extends ConstantsBase {
 //    public static final int ELEVATOR_BOTTOM_POS = 500;
 //    public static final int ELEVATOR_EPSILON = 50;
 
-    public static final int FOURBAR_SCALE_POS = 300;
-    public static final int FOURBAR_SCALE_POS_HIGH = 335;
-    public static final int FOURBAR_SCALE_POS_LOW = 250;
+    public static final int FOURBAR_SCALE_POS = 370;
+    public static final int FOURBAR_SCALE_POS_HIGH = 413;
+    public static final int FOURBAR_SCALE_POS_LOW = 300;
 
-    public static final int FOURBAR_SWITCH_POS = 215;
-    public static final int FOURBAR_COLLECT_POS = 160;
-    public static final int FOURBAR_BOTTOM_POS = 80;
+    public static final int FOURBAR_SWITCH_POS = 255;
+    public static final int FOURBAR_COLLECT_POS = 146;
+    public static final int FOURBAR_BOTTOM_POS = 73;
     public static final int FOURBAR_EPSILON = 5;
 
     public static final int ELEVATOR_SCALE_POS = 2100;
-    public static int ELEVATOR_SCALE_POS_HIGH = 2300;
+    public static int ELEVATOR_SCALE_POS_HIGH = 2200;
     public static int ELEVATOR_SCALE_POS_LOW = 1900;
-    public static final int ELEVATOR_SWITCH_POS = -5200;
-    public static final int ELEVATOR_COLLECT_POS = -5200;
-    public static final int ELEVATOR_BOTTOM_POS = 500;
+    public static final int ELEVATOR_SWITCH_POS = -5500;
+    public static final int ELEVATOR_COLLECT_POS = -5500;
+    public static final int ELEVATOR_BOTTOM_POS = 200;
     public static final int ELEVATOR_EPSILON = 50;
 
     public static int ELEVATOR_INCREMENT = 10;
