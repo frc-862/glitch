@@ -368,10 +368,12 @@ function update() {
 }
 
 function drawPath() {
-	color = "#000";
+	var color = "#000";
 	ctx.beginPath();
 	ctx.fillStyle = color;
 	ctx.strokeStyle = color;
+
+  var max_vel = 0;
 
   eachTimeSlice(function(left, right) {
     ctx.fillStyle = getColorForSpeed(left.vel);
@@ -380,11 +382,15 @@ function drawPath() {
     ctx.fillStyle = getColorForSpeed(right.vel);
     ctx.strokeStyle = getColorForSpeed(right.vel);
     (new Translation2d(right.x, right.y)).point();
+
+    max_vel = Math.max(max_vel, Math.abs(left.vel), Math.abs(right.vel));
   });
 
 	ctx.fill();
 	ctx.lineWidth = 0;
 	ctx.stroke();
+
+  $("td.max_path_vel").text("" + max_vel);
 }
 
 function eachTimeSlice(func) {
@@ -569,6 +575,7 @@ function getDataString() {
   var max_acc = parseFloat($("td.max_acc input").val());
   var max_jerk = parseFloat($("td.max_jerk input").val());
   var wheel_base = parseFloat($("td.wheel_base input").val());
+  var max_path_vel = parseFloat($("td.max_path_vel").text());
   var package = $("td.package input").val();
   var parent = $("td.parent input").val();
   
@@ -606,6 +613,7 @@ ${set_segments[i]}
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
+// max path velocity ${max_path_vel}
 public class ${title}${(parent.length > 0) ? " extends " + parent : ""} {
     private static Path path;
 

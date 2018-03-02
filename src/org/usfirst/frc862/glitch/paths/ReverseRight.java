@@ -3,6 +3,7 @@ package org.usfirst.frc862.glitch.paths;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
+// max path velocity 87.65303299535208
 public class ReverseRight extends org.usfirst.frc862.util.DynamicPathCommand {
     private static Path path;
 

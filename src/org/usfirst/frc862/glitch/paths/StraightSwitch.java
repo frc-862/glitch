@@ -3,6 +3,7 @@ package org.usfirst.frc862.glitch.paths;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
+// max path velocity 77.10000951116882
 public class StraightSwitch extends org.usfirst.frc862.util.DynamicPathCommand {
     private static Path path;
 
@@ -873,7 +874,7 @@ public class StraightSwitch extends org.usfirst.frc862.util.DynamicPathCommand {
 
 
     public boolean isReversed() {
-        return false;
+        return false; 
     }
   
 	// WAYPOINT_DATA: [{"position":{"x":20,"y":104},"theta":0,"comment":""},{"position":{"x":127,"y":104},"theta":0,"comment":""}]
@@ -885,5 +886,5 @@ public class StraightSwitch extends org.usfirst.frc862.util.DynamicPathCommand {
   // MAX_JERK: 600
   // WHEEL_BASE: 25
   // PACKAGE: org.usfirst.frc862.glitch.paths
-  // PARENT: org.usfirst.frc862.glitch.paths.DynamicPathCommand
+  // PARENT: org.usfirst.frc862.util.DynamicPathCommand
 }

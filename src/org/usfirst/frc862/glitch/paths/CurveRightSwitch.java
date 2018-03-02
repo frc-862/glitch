@@ -3,6 +3,7 @@ package org.usfirst.frc862.glitch.paths;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
+// max path velocity 111.40645781871252
 public class CurveRightSwitch extends org.usfirst.frc862.util.DynamicPathCommand {
     private static Path path;
 
