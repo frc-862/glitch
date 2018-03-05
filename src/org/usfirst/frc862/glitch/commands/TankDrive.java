@@ -57,6 +57,8 @@ public class TankDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        SmartDashboard.putString("VisionTest", "TankDrive");
+
         double leftY = leftFilter.filter(Robot.oi.getLeftPower());
         double rightY = rightFilter.filter(Robot.oi.getRightPower());
 

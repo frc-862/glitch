@@ -85,7 +85,7 @@ public class SwitchAuton extends Command {
 
         cmd.addSequential(new EjectCube(), 1);
         cmd.addSequential(new Backup());
-        cmd.addSequential(new MoveCollectorToGround());
+        cmd.addSequential(new MoveCollectorToCollect());
         cmd.start();
     }
 

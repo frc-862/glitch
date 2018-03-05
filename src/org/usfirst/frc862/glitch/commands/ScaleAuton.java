@@ -49,7 +49,7 @@ public class ScaleAuton extends Command {
     @Override
     protected void initialize() {
         ShineBois.rainbow();
-        go_for_it = false;
+        go_for_it = true;
 
         DriverStation.Alliance alliance=DriverStation.getInstance().getAlliance();
         CommandGroup cmd;

@@ -46,7 +46,7 @@ public class SmartAuton extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        go_for_it = false;
+        go_for_it = true;
         ShineBois.rainbow();
 
         Robot.shifter.forceDownShift();
@@ -104,7 +104,7 @@ public class SmartAuton extends Command {
         if (go_for_it) {
             cmd.addSequential(new EjectCube(), 1);
             cmd.addSequential(new BackupSlow());
-            cmd.addSequential(new MoveCollectorToGround());
+            cmd.addSequential(new MoveCollectorToCollect());
         }
 
         cmd.start();

@@ -1,79 +1,117 @@
 package org.usfirst.frc862.glitch.commands;
-import com.team254.lib.util.CheesyDriveHelper;
 import com.team254.lib.util.DriveSignal;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.vision.CubeNotFoundException;
 import org.usfirst.frc862.util.CurvatureDrive;
-import org.usfirst.frc862.util.MovingAverageFilter;
+import org.usfirst.frc862.util.ValueFilter;
+import org.usfirst.frc862.util.ExponentialSmoothingFilter;
+import org.usfirst.frc862.util.Logger;
 
 /**
  *
  */
-public class VisionCollect extends Command {
-    private boolean close, qturn = true;
-    private double pwr = 0, rot = 0;
-
+public class VisionCollect
+extends Command {
     public VisionCollect() {
         requires(Robot.driveTrain);
+//        requires(Robot.gripper);
     }
 
     @Override
     protected void initialize() {
-        close = false;
+        Logger.info("Enter vision collect");
+        Robot.driveTrain.setVelocityMode();
+        prevArea = 0;
     }
+
+    private ValueFilter angleFilter = new ExponentialSmoothingFilter(0.2);
+
+    private double angle = 0;
+    private double dist = 0;
+    private double area = 0;
+    private double prevArea = 0;
+    private double lastSeen = 0;
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
         try {
             double[] cube = Robot.cubeVision.getBestCube();
-            double angle = cube[0];
-            double area = cube[1];
-            double dist = cube[2];
+            angle = cube[0];
+            area = cube[1];
+            dist = cube[2];
 
-            pwr = Math.min(dist * Constants.VisionSpeedP, Constants.VisionMinSpeed);
+
+            boolean runThisCycle = false;
+
+            if (prevArea < 1)
+            {
+                runThisCycle = true;
+            }
+            else
+            {
+
+                double areadiff = Math.abs(prevArea - area) / prevArea;
+
+                if (areadiff < 0.3 )
+                {
+
+                    runThisCycle = true;
+                }
+                else
+                {
+                    //do not update
+                }
+            }
+
+
+            if (true == runThisCycle)
+            {
+                prevArea = area;
+                lastSeen = Timer.getFPGATimestamp();
+
+                angleFilter.filter(angle);
+                Logger.info("Have cube: " + angle + " -- " + dist);
+            }
+
+
+
+
+        } catch (CubeNotFoundException err) {
+            Logger.error("Cube not found: " + err);
+        }
+
+        double power = 0;
+        double rotation = 0;
+        boolean qturn = false;
+
+        double age = Timer.getFPGATimestamp() - lastSeen;
+        if (age < 2) {
             if (Robot.shifter.isHighGear()) {
-                rot = (rot * .8 + angle * .2) * Constants.StraightenKpHighGear;
+                rotation = angleFilter.get() * Constants.StraightenKpHighGear;
             } else {
-                rot = (rot * .8 + angle * .2) * Constants.StraightenKpLowGear;
+                rotation = angleFilter.get() * Constants.StraightenKpLowGear;
             }
-            qturn = pwr <= Constants.VisionMinSpeed;
+            power = 0.2;
+            qturn = Math.abs(angleFilter.get()) > 9;
 
-            if (dist > Constants.VisionCloseThreshold) {
-                close = true;
-            }
-
-            if (close) {
-                Robot.gripper.collectCube();
-            }
-
-            DriveSignal power = CurvatureDrive.curvatureDrive(pwr, rot, qturn);
-            Robot.driveTrain.setVelocity(power);
-        } catch (CubeNotFoundException e) {
-            // TODO either do something smart - rotate?
-            // or quit
-
-        	//Decrease angle on a decay curve.
-        	//TODO Maybe do something different when we know tracking works.
-        	DriveSignal power = CurvatureDrive.curvatureDrive(pwr, rot, qturn);
-        	rot *= .8;
-            Robot.driveTrain.setVelocity(power);
-        	
+            Logger.info("VisionCollect: " + rotation + ", " + power + ", " + qturn);
         }
 
-        if (Robot.gripper.hasCube()) {
-            Robot.shineBois.cubeCollected();
-        }
+        DriveSignal signal = CurvatureDrive.curvatureDrive(power, rotation, qturn);
+        Logger.info("VisionCollect drive: " + signal.toString());
+        Robot.driveTrain.setVelocity(signal);
+
+        // TODO run the collector
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return Robot.gripper.hasCube();
+        return false;
     }
 
     // Called once after isFinished returns true
@@ -81,12 +119,6 @@ public class VisionCollect extends Command {
     protected void end() {
     	Robot.driveTrain.stop();
     	Robot.gripper.stopIntake();
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
-        end();
+    	Logger.info("Exit vision collect");
     }
 }

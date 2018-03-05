@@ -189,8 +189,8 @@ public class Constants extends ConstantsBase {
     public static double NotTurning = 1;
     public static double NotStraight = 0.025;
     public static double StraightMarginOfError = 1.5;
-    public static double StraightenKpLowGear = 0.0075;
-    public static double StraightenKpHighGear = 0.01;
+    public static double StraightenKpLowGear = 0.9 / 30.0;
+    public static double StraightenKpHighGear = 0.9 / 30.0;
 
 
 
@@ -220,23 +220,11 @@ public class Constants extends ConstantsBase {
     public static double ELEVATOR_VELOCITY_F = 1023 * ELEVATOR_HOLD_POWER / ELEVATOR_F;
     public static double ELEVATOR_VELOCITY_D = 0.0;
 
-//    public static final int FOURBAR_SCALE_POS = 354;
-//    public static final int FOURBAR_SWITCH_POS = 215;
-//    public static final int FOURBAR_COLLECT_POS = 115;
-//    public static final int FOURBAR_BOTTOM_POS = 60;
-//    public static final int FOURBAR_EPSILON = 5;
-//
-//    public static final int ELEVATOR_SCALE_POS = 2300;
-//    public static final int ELEVATOR_SWITCH_POS = -5200;
-//    public static final int ELEVATOR_COLLECT_POS = -5200;
-//    public static final int ELEVATOR_BOTTOM_POS = 500;
-//    public static final int ELEVATOR_EPSILON = 50;
-
     public static final int FOURBAR_SCALE_POS = 370;
     public static final int FOURBAR_SCALE_POS_HIGH = 413;
     public static final int FOURBAR_SCALE_POS_LOW = 300;
 
-    public static final int FOURBAR_SWITCH_POS = 255;
+    public static final int FOURBAR_SWITCH_POS = 270;
     public static final int FOURBAR_COLLECT_POS = 146;
     public static final int FOURBAR_BOTTOM_POS = 73;
     public static final int FOURBAR_EPSILON = 5;
@@ -263,7 +251,7 @@ public class Constants extends ConstantsBase {
     public static double AutonScaleTime = 5;
 
     //Collector
-    public static final double DEFAULT_HOLD_POWER = 0.4;
+    public static final double DEFAULT_HOLD_POWER = 0.5;
     public static double DEFAULT_COLLECT_POWER = 0.862;
     public static double DEFAULT_EJECT_POWER = -0.862;
     public static final double COLLECT_TRIGGER_DEADZONE = 0;
