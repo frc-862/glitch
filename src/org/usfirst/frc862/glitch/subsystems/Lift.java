@@ -385,5 +385,11 @@ public class Lift extends Subsystem {
         return state == State.DropMode;
     }
 
+    public boolean isHighCG() {
+        return state == State.Scale ||
+                (fourbarPosition > Constants.FOURBAR_SCALE_POS_LOW - Constants.FOURBAR_EPSILON &&
+                elevatorPosition > Constants.ELEVATOR_SCALE_POS_LOW - Constants.ELEVATOR_EPSILON);
+    }
+
 }
 

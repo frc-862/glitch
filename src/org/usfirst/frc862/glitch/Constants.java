@@ -53,6 +53,7 @@ public class Constants extends ConstantsBase {
 //    public static double STICKTION_SPEED = 0.03;
     public static double STICKTION_SPEED_IPS = LightningMath.ips2talon(7) / PHYSICAL_MAX_HIGH_SPEED_TICKS;
     public static double VEL_COMMAND_RAMP = 6 / (1.0 / 0.02);  // in 1/3 of sec allow joystick to read full change
+    public static double VEL_COMMAND_RAMP_HIGH_CG = 3 / (1.0 / 0.02);  // in 1/3 of sec allow joystick to read full change
     public static double ROT_COMMAND_RAMP = 6 / (1.0 / 0.02);
 
     public static double dead_band = 0.025;

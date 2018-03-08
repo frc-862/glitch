@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
+import org.usfirst.frc862.glitch.subsystems.Lift;
 import org.usfirst.frc862.glitch.subsystems.ShineBois;
 import org.usfirst.frc862.util.JoystickFilter;
 import org.usfirst.frc862.util.Logger;
@@ -57,8 +58,14 @@ public class TankDrive extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        SmartDashboard.putString("VisionTest", "TankDrive");
-
+        if (Robot.lift.isHighCG())
+        {
+            leftFilter.setRampDelta(Constants.VEL_COMMAND_RAMP_HIGH_CG);
+            rightFilter.setRampDelta(Constants.VEL_COMMAND_RAMP_HIGH_CG);
+        } else {
+            leftFilter.setRampDelta(Constants.VEL_COMMAND_RAMP);
+            rightFilter.setRampDelta(Constants.VEL_COMMAND_RAMP);
+        }
         double leftY = leftFilter.filter(Robot.oi.getLeftPower());
         double rightY = rightFilter.filter(Robot.oi.getRightPower());
 
