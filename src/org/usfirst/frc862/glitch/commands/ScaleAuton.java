@@ -20,6 +20,7 @@ import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.paths.*;
 import org.usfirst.frc862.glitch.subsystems.ShineBois;
 import org.usfirst.frc862.util.DynamicPathCommand;
+import org.usfirst.frc862.util.DynamicPathCommandLowGear;
 import org.usfirst.frc862.util.Logger;
 import org.usfirst.frc862.util.TimedTriggers;
 
@@ -104,7 +105,7 @@ public class ScaleAuton extends Command {
 
         cmd.addParallel(new HoldCube());
 
-        DynamicPathCommand path;
+        DynamicPathCommandLowGear path;
 
         if (leftStart && leftScale) {
             Logger.info("Using Left Scale Near");
