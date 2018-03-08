@@ -83,7 +83,7 @@ public class DynamicPathCommand extends Command {
         logger.addDataElement("delta_pgain");
 
         Robot.driveTrain.setVelocityMode();
-//        Robot.shifter.downshift();
+        Robot.shifter.forceUpShift();
         
         if (!loadPath()) {
             Logger.error("Failed to load path");
