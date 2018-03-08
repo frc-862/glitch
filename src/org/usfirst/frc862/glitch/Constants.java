@@ -223,22 +223,22 @@ public class Constants extends ConstantsBase {
     public static double ELEVATOR_VELOCITY_F = 1023 * ELEVATOR_HOLD_POWER / ELEVATOR_F;
     public static double ELEVATOR_VELOCITY_D = 0.0;
 
-    public static final int FOURBAR_SCALE_POS = 370;
-    public static final int FOURBAR_SCALE_POS_HIGH = 413;
-    public static final int FOURBAR_SCALE_POS_LOW = 300;
+    public static int FOURBAR_SCALE_POS = 370;
+    public static int FOURBAR_SCALE_POS_HIGH = 413;
+    public static int FOURBAR_SCALE_POS_LOW = 300;
 
-    public static final int FOURBAR_SWITCH_POS = 270;
-    public static final int FOURBAR_COLLECT_POS = 146;
-    public static final int FOURBAR_BOTTOM_POS = 73;
-    public static final int FOURBAR_EPSILON = 5;
+    public static int FOURBAR_SWITCH_POS = 270;
+    public static int FOURBAR_COLLECT_POS = 146;
+    public static int FOURBAR_BOTTOM_POS = 73;
+    public static int FOURBAR_EPSILON = 5;
 
-    public static final int ELEVATOR_SCALE_POS = 2100;
+    public static int ELEVATOR_SCALE_POS = 2100;
     public static int ELEVATOR_SCALE_POS_HIGH = 2200;
     public static int ELEVATOR_SCALE_POS_LOW = 1900;
-    public static final int ELEVATOR_SWITCH_POS = -5500;
-    public static final int ELEVATOR_COLLECT_POS = -5500;
-    public static final int ELEVATOR_BOTTOM_POS = 200;
-    public static final int ELEVATOR_EPSILON = 50;
+    public static int ELEVATOR_SWITCH_POS = -5500;
+    public static int ELEVATOR_COLLECT_POS = -5500;
+    public static int ELEVATOR_BOTTOM_POS = 200;
+    public static int ELEVATOR_EPSILON = 50;
 
     public static int ELEVATOR_INCREMENT = 10;
     public static int MIN_ELEVATOR = ELEVATOR_COLLECT_POS;
@@ -290,6 +290,22 @@ public class Constants extends ConstantsBase {
         //noinspection StatementWithEmptyBody
         if (Robot.isEcho()) {
             // echo specific over-rides can go here
+            FOURBAR_SCALE_POS = 370;
+            FOURBAR_SCALE_POS_HIGH = 413;
+            FOURBAR_SCALE_POS_LOW = 300;
+
+            FOURBAR_SWITCH_POS = 270;
+            FOURBAR_COLLECT_POS = 146;
+            FOURBAR_BOTTOM_POS = 73;
+            FOURBAR_EPSILON = 5;
+
+            ELEVATOR_SCALE_POS = 2100;
+            ELEVATOR_SCALE_POS_HIGH = 2200;
+            ELEVATOR_SCALE_POS_LOW = 1900;
+            ELEVATOR_SWITCH_POS = -5500;
+            ELEVATOR_COLLECT_POS = -5500;
+            ELEVATOR_BOTTOM_POS = 200;
+            ELEVATOR_EPSILON = 50;
         }
 
         // new Constants().readFromFile();
