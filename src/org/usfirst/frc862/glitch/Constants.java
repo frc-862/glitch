@@ -44,7 +44,9 @@ public class Constants extends ConstantsBase {
     // at the very least a different feed forward...
     // in inches
     public static double WheelCircumference = (Robot.isOBot() ? 4 : 6.25) * Math.PI;
+    // ~ 95ips
     public static double PHYSICAL_MAX_LOW_SPEED_TICKS = 700;
+    // ~ 177ips
     public static double PHYSICAL_MAX_HIGH_SPEED_TICKS = 1300;
 
     // Lowest input that moves the robot
