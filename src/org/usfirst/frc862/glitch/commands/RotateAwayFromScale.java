@@ -60,10 +60,12 @@ public class RotateAwayFromScale extends Command {
     @Override
     protected void execute() {
         double rotpwr = degreeError() * Constants.PRotate;
+        SmartDashboard.putNumber("degreeError:", degreeError());
+        SmartDashboard.putNumber("rotpwr:", rotpwr);
         boolean isNeg = rotpwr < 0;
         SmartDashboard.putNumber("degree error: ", degreeError());
         rotpwr = Math.max(Math.abs(rotpwr), Constants.MinRotatePower);
-        rotpwr = Math.min(rotpwr, 1);
+        rotpwr = Math.min(rotpwr, 0.8);
         if (isNeg) {
             rotpwr = -rotpwr;
         }

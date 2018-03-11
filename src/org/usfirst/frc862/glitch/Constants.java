@@ -53,7 +53,7 @@ public class Constants extends ConstantsBase {
 //    public static double STICKTION_SPEED = 0.03;
     public static double STICKTION_SPEED_IPS = LightningMath.ips2talon(7) / PHYSICAL_MAX_HIGH_SPEED_TICKS;
     public static double VEL_COMMAND_RAMP = 6 / (1.0 / 0.02);  // in 1/3 of sec allow joystick to read full change
-    public static double VEL_COMMAND_RAMP_HIGH_CG = 3 / (1.0 / 0.02);  // in 1/3 of sec allow joystick to read full change
+    public static double VEL_COMMAND_RAMP_HIGH_CG = 0.1 / (1.0 / 0.02);  // in 1/3 of sec allow joystick to read full change
     public static double ROT_COMMAND_RAMP = 6 / (1.0 / 0.02);
 
     public static double dead_band = 0.025;
@@ -249,8 +249,8 @@ public class Constants extends ConstantsBase {
     public static int MAX_FOURBAR = FOURBAR_SCALE_POS_HIGH;
 
     public static final double ALERT_DURATION = 3;
-    public static double PRotate = 1 / 30;
-    public static double MinRotatePower = 0.2;
+    public static double PRotate = 0.3 / 10;
+    public static double MinRotatePower = 0.4;
     public static double AutonScaleTime = 5;
 
     //Collector
@@ -290,18 +290,18 @@ public class Constants extends ConstantsBase {
         //noinspection StatementWithEmptyBody
         if (Robot.isEcho()) {
             // echo specific over-rides can go here
-            FOURBAR_SCALE_POS = 370;
-            FOURBAR_SCALE_POS_HIGH = 413;
-            FOURBAR_SCALE_POS_LOW = 300;
+            FOURBAR_SCALE_POS = 300;
+            FOURBAR_SCALE_POS_HIGH = 355;
+            FOURBAR_SCALE_POS_LOW = 275;
 
-            FOURBAR_SWITCH_POS = 270;
-            FOURBAR_COLLECT_POS = 146;
-            FOURBAR_BOTTOM_POS = 73;
+            FOURBAR_SWITCH_POS = 208;
+            FOURBAR_COLLECT_POS = 114;
+            FOURBAR_BOTTOM_POS = 25;
             FOURBAR_EPSILON = 5;
 
-            ELEVATOR_SCALE_POS = 2100;
-            ELEVATOR_SCALE_POS_HIGH = 2200;
-            ELEVATOR_SCALE_POS_LOW = 1900;
+            ELEVATOR_SCALE_POS = 1900;
+            ELEVATOR_SCALE_POS_HIGH = 2000;
+            ELEVATOR_SCALE_POS_LOW = 1800;
             ELEVATOR_SWITCH_POS = -5500;
             ELEVATOR_COLLECT_POS = -5500;
             ELEVATOR_BOTTOM_POS = 200;
