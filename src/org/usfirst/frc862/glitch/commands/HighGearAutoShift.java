@@ -155,6 +155,15 @@ public class HighGearAutoShift extends Command {
         if (Robot.driveTrain.getAbsVelocity() > Constants.MinUpshiftVelocity &&
             Robot.driveTrain.getRequestedVelocity() > Constants.MinRequestedVelocityForUpshift) {
                 state = State.UP_SHIFTING;
+                return;
+        }
+
+        if (Robot.core.getTotalCurrent() < Constants.HighCurrentThreshold / 2) {
+            if (currentTimer.hasPeriodPassed(Constants.upshiftHighCurrentTimeout * 10)) {
+                state = State.UP_SHIFTING;
+            }
+        } else {
+            currentTimer.reset();
         }
     }
 

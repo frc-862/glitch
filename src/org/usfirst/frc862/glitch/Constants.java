@@ -181,6 +181,7 @@ public class Constants extends ConstantsBase {
     public static double shiftHysteresis = 1.0;
     public static double HighCurrentThreshold = 200;
     public static double highCurrentTimeout = 0.150;
+    public static double upshiftHighCurrentTimeout = 3.5;
     public static double CrashDeacceleration = -12;
     public static double CoastVelocity = LightningMath.talon2ips(400);
     public static double CoastTriggerTime = 0.1;
