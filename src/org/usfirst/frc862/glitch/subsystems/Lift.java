@@ -15,7 +15,6 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.team254.lib.util.MovingAverage;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import javafx.scene.transform.Scale;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.RobotMap;
 import edu.wpi.first.wpilibj.command.Subsystem;
