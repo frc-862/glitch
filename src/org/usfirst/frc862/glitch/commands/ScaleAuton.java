@@ -115,7 +115,8 @@ public class ScaleAuton extends Command {
             path = new LeftScaleNear();
         } else if (leftStart && !leftScale) {
             Logger.info("Using Left Scale Far");
-            path = new LeftScaleFar();
+//            path = new LeftScaleFar();
+            path = new RightScaleNear();
         } else if (!leftScale) {
             Logger.info("Using Right Scale Near");
             // If we made it this far, we have to be on the right side

@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.paths.*;
 import org.usfirst.frc862.glitch.subsystems.ShineBois;
+import org.usfirst.frc862.util.DynamicPathCommand;
 import org.usfirst.frc862.util.DynamicPathCommandLowGear;
 
 /**
@@ -70,7 +71,7 @@ public class SmartAuton extends Command {
 
                 cmd.addSequential(path);
             } else {
-                DynamicPathCommandLowGear path = new LeftScaleFar();
+                DynamicPathCommand path = new LeftScaleFar();
 
                 CommandGroup riseUp = new CommandGroup();
                 riseUp.addSequential(new TimedCommand(path.duration() - 3));
