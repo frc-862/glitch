@@ -102,7 +102,7 @@ public class VisionArcade extends Command {
                 } else {
                     double err = 0;
                     try {
-                    	err = Robot.cubeVision.getBestCube()[0];
+                    	err = Robot.cubeVision.getBestCube().getAngle();
                     	SmartDashboard.putString("VisionArcadeError", "None");
                     }
                     catch(CubeNotFoundException e) {

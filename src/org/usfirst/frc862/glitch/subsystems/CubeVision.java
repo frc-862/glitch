@@ -137,8 +137,13 @@ public class CubeVision extends Subsystem {
 	    			
 	    	    	SmartDashboard.putNumber("m", m);
 	    			if(!(w / h >= Constants.MAX_WIDTH_TO_HEIGHT_RATIO || h / w >= Constants.MAX_HEIGHT_TO_WIDTH_RATIO || w >= Constants.MAX_WIDTH || h >= Constants.MAX_HEIGHT || (w * h) >= Constants.MAX_AREA || m > Constants.MAX_MOMENT)) {
+	    				SmartDashboard.putString("step", "willPopulate");
 	    				cubes.add(new PowerCube(idCounter, x, y, w, h));
 	    				idCounter++;
+	    				SmartDashboard.putNumber("cube 0 angle", cubes.get(0).getAngle());
+	    				SmartDashboard.putNumber("cube 0 long", cubes.get(0).getLongitudal());
+	    				SmartDashboard.putNumber("cube 0 lat", cubes.get(0).getLateral());
+	    				SmartDashboard.putNumber("cubes.size()", cubes.size());
 	    			}
 	    	    	SmartDashboard.putString("step", "push");
 	    		}
@@ -286,14 +291,13 @@ public class CubeVision extends Subsystem {
     
     /**
      * 
-     * @return double[] {angle (degrees), area (pixels)}
+     * @return PowerCube object with index in cubes list defined ()
      * @throws CubeNotFoundException throws if no cubes have been seen for a number of frames
      */
-    public double[] getBestCube() throws CubeNotFoundException {
+    public PowerCube getBestCube() throws CubeNotFoundException {
     	//if(!visionInit) return null;
     	if(cubes.size() == 0) throw new CubeNotFoundException();
     	
-    	double[] vals = {0.0, 0.0, 0.0, -1.0};
     	double smallestAngle = 999;
     	int bestCubeIndex = -1;
     	for(int i = 0; i < cubes.size(); i++) {
@@ -304,14 +308,11 @@ public class CubeVision extends Subsystem {
     	}
     	
     	if(bestCubeIndex == -1) throw new CubeNotFoundException();
-    	
-    	vals[0] = cubes.get(bestCubeIndex).getAngle();
-    	vals[1] = cubes.get(bestCubeIndex).getArea();
-    	vals[2] = cubes.get(bestCubeIndex).getLongitudal();
-    	vals[3] = bestCubeIndex;
 
-    	SmartDashboard.putNumber("best cube angle", vals[0]);
-    	return vals;
+    	SmartDashboard.putNumber("best cube angle", cubes.get(bestCubeIndex).getAngle());
+    	//Index will only be stable if tracking is enabled, so leave it as -1 if tracking is off.
+    	if(enableTracking) return cubes.get(bestCubeIndex).returnCube(bestCubeIndex);
+    	return cubes.get(bestCubeIndex);
     	
     }
     
@@ -325,6 +326,10 @@ public class CubeVision extends Subsystem {
     
     public ArrayList<PowerCube> getCubeList() {
     	return cubes;
+    }
+    
+    public boolean isTracking() {
+    	return enableTracking;
     }
 
     // Put methods for controlling this subsystem

@@ -12,7 +12,7 @@ import org.usfirst.frc862.glitch.RobotMap;
  *
  */
 public class PowerCube {
-	private int x, y, id, height, width;
+	private int x, y, id, height, width, index = -1;
 	private double angle, area, lateral, longitudal, confidence;
 	/**
 	 * 
@@ -94,7 +94,7 @@ public class PowerCube {
 	}
 	
 	/**
-	 * Returns an APPROXOMATE area in feet 
+	 * Returns an Approximate area in feet 
 	 * .5in/px accuracy at 5 feet; .8ft/px accuracy at 10 feet.
 	 * @return double distance (feet)
 	 */
@@ -120,6 +120,15 @@ public class PowerCube {
 	
 	public double getConfidence() {
 		return confidence;
+	}
+	
+	public int getIndex() {
+		return index;
+	}
+	
+	public PowerCube returnCube(int index) {
+		this.index = index;
+		return this;
 	}
 
 }
