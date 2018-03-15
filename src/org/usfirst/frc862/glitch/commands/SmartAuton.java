@@ -59,7 +59,7 @@ public class SmartAuton extends Command {
                 cmd.addParallel(new MoveCollectorToSwitch());
                 cmd.addSequential(new LeftPointsSwitch());
             } else if (Robot.scaleOnLeft()) {
-                DynamicPathCommandBase path = new LeftScaleNear();
+                DynamicPathCommandBase path = new LeftScaleNearLG();
 
                 CommandGroup riseUp = new CommandGroup();
                 riseUp.addSequential(new TimedCommand(path.duration() - 3));
@@ -68,7 +68,7 @@ public class SmartAuton extends Command {
 
                 cmd.addSequential(path);
             } else {
-                DynamicPathCommandBase path = new LeftScaleFar();
+                DynamicPathCommandBase path = new LeftScaleFarLG();
 
                 CommandGroup riseUp = new CommandGroup();
                 riseUp.addSequential(new TimedCommand(path.duration() - 3));
@@ -84,14 +84,14 @@ public class SmartAuton extends Command {
                 cmd.addSequential(new RightPointsSwitch());
             } else if (!Robot.scaleOnLeft()) {
                 go_for_it = true;
-                DynamicPathCommandBase path = new RightScaleNear();
+                DynamicPathCommandBase path = new RightScaleNearLG();
                 cmd.addSequential(path);
                 CommandGroup raiseUp = new CommandGroup();
 //                raiseUp.addSequential(new TimedCommand(path.duration() - 3.5));
                 raiseUp.addSequential(new MoveCollectorToScale());
                 cmd.addParallel(raiseUp);
             } else {
-                DynamicPathCommandBase path = new RightScaleFar();
+                DynamicPathCommandBase path = new RightScaleFarLG();
                 cmd.addSequential(path);
                 CommandGroup raiseUp = new CommandGroup();
                 raiseUp.addSequential(new TimedCommand(path.duration() - 2.8));
