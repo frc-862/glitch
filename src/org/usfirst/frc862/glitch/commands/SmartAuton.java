@@ -10,15 +10,13 @@
 
 
 package org.usfirst.frc862.glitch.commands;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.paths.*;
 import org.usfirst.frc862.glitch.subsystems.ShineBois;
-import org.usfirst.frc862.util.DynamicPathCommand;
+import org.usfirst.frc862.util.DynamicPathCommandBase;
 
 /**
  *
@@ -61,7 +59,7 @@ public class SmartAuton extends Command {
                 cmd.addParallel(new MoveCollectorToSwitch());
                 cmd.addSequential(new LeftPointsSwitch());
             } else if (Robot.scaleOnLeft()) {
-                DynamicPathCommand path = new LeftScaleNear();
+                DynamicPathCommandBase path = new LeftScaleNear();
 
                 CommandGroup riseUp = new CommandGroup();
                 riseUp.addSequential(new TimedCommand(path.duration() - 3));
@@ -70,7 +68,7 @@ public class SmartAuton extends Command {
 
                 cmd.addSequential(path);
             } else {
-                DynamicPathCommand path = new LeftScaleFar();
+                DynamicPathCommandBase path = new LeftScaleFar();
 
                 CommandGroup riseUp = new CommandGroup();
                 riseUp.addSequential(new TimedCommand(path.duration() - 3));
@@ -86,14 +84,14 @@ public class SmartAuton extends Command {
                 cmd.addSequential(new RightPointsSwitch());
             } else if (!Robot.scaleOnLeft()) {
                 go_for_it = true;
-                DynamicPathCommand path = new RightScaleNear();
+                DynamicPathCommandBase path = new RightScaleNear();
                 cmd.addSequential(path);
                 CommandGroup raiseUp = new CommandGroup();
 //                raiseUp.addSequential(new TimedCommand(path.duration() - 3.5));
                 raiseUp.addSequential(new MoveCollectorToScale());
                 cmd.addParallel(raiseUp);
             } else {
-                DynamicPathCommand path = new RightScaleFar();
+                DynamicPathCommandBase path = new RightScaleFar();
                 cmd.addSequential(path);
                 CommandGroup raiseUp = new CommandGroup();
                 raiseUp.addSequential(new TimedCommand(path.duration() - 2.8));

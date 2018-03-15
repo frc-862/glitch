@@ -44,13 +44,16 @@ public class Constants extends ConstantsBase {
     // at the very least a different feed forward...
     // in inches
     public static double WheelCircumference = (Robot.isOBot() ? 4 : 6.25) * Math.PI;
+    // ~ 95ips
     public static double PHYSICAL_MAX_LOW_SPEED_TICKS = 700;
+    // ~ 177ips
     public static double PHYSICAL_MAX_HIGH_SPEED_TICKS = 1300;
 
     // Lowest input that moves the robot
 //    public static double STICKTION_SPEED = 0.03;
     public static double STICKTION_SPEED_IPS = LightningMath.ips2talon(7) / PHYSICAL_MAX_HIGH_SPEED_TICKS;
     public static double VEL_COMMAND_RAMP = 6 / (1.0 / 0.02);  // in 1/3 of sec allow joystick to read full change
+    public static double VEL_COMMAND_RAMP_HIGH_CG = 3 / (1.0 / 0.02);  // in 1/3 of sec allow joystick to read full change
     public static double ROT_COMMAND_RAMP = 6 / (1.0 / 0.02);
 
     public static double dead_band = 0.025;
@@ -87,8 +90,8 @@ public class Constants extends ConstantsBase {
     public static double pathD = 0;
     public static double pathV = 1;  // Velocity is in IPS, we command IPS
     public static double pathA = 0;
-    public static double pathTurn = 1; // 1; // 2; // 1.2; // 0.862;
-    public static double pathFeedF = 6; // 4;
+    public static double pathTurn = 10; // 1; // 2; // 1.2; // 0.862;
+    public static double pathFeedF = 4; // 4;
 
     // PID gains for drive velocity loop (HIGH GEAR)
     // Units: setpoint, error, and output are in inches per second.
@@ -178,6 +181,7 @@ public class Constants extends ConstantsBase {
     public static double shiftHysteresis = 1.0;
     public static double HighCurrentThreshold = 200;
     public static double highCurrentTimeout = 0.150;
+    public static double upshiftHighCurrentTimeout = 3.5;
     public static double CrashDeacceleration = -12;
     public static double CoastVelocity = LightningMath.talon2ips(400);
     public static double CoastTriggerTime = 0.1;
@@ -220,22 +224,23 @@ public class Constants extends ConstantsBase {
     public static double ELEVATOR_VELOCITY_F = 1023 * ELEVATOR_HOLD_POWER / ELEVATOR_F;
     public static double ELEVATOR_VELOCITY_D = 0.0;
 
-    public static final int FOURBAR_SCALE_POS = 370;
-    public static final int FOURBAR_SCALE_POS_HIGH = 413;
-    public static final int FOURBAR_SCALE_POS_LOW = 300;
+    public static int FOURBAR_SCALE_POS = 370;
+    public static int FOURBAR_SCALE_POS_HIGH = 413;
+    public static int FOURBAR_SCALE_POS_LOW = 300;
 
-    public static final int FOURBAR_SWITCH_POS = 270;
-    public static final int FOURBAR_COLLECT_POS = 146;
-    public static final int FOURBAR_BOTTOM_POS = 73;
-    public static final int FOURBAR_EPSILON = 5;
+    public static int FOURBAR_SWITCH_POS = 270;
+    public static int FOURBAR_COLLECT_POS = 156;
+    public static int FOURBAR_SAFE_TO_COLLECT_POS = 100;
+    public static int FOURBAR_BOTTOM_POS = 73;
+    public static int FOURBAR_EPSILON = 5;
 
-    public static final int ELEVATOR_SCALE_POS = 2100;
+    public static int ELEVATOR_SCALE_POS = 2100;
     public static int ELEVATOR_SCALE_POS_HIGH = 2200;
     public static int ELEVATOR_SCALE_POS_LOW = 1900;
-    public static final int ELEVATOR_SWITCH_POS = -5500;
-    public static final int ELEVATOR_COLLECT_POS = -5500;
-    public static final int ELEVATOR_BOTTOM_POS = 200;
-    public static final int ELEVATOR_EPSILON = 50;
+    public static int ELEVATOR_SWITCH_POS = -5800;
+    public static int ELEVATOR_COLLECT_POS = -5800;
+    public static int ELEVATOR_BOTTOM_POS = 700;
+    public static int ELEVATOR_EPSILON = 50;
 
     public static int ELEVATOR_INCREMENT = 10;
     public static int MIN_ELEVATOR = ELEVATOR_COLLECT_POS;
@@ -246,8 +251,8 @@ public class Constants extends ConstantsBase {
     public static int MAX_FOURBAR = FOURBAR_SCALE_POS_HIGH;
 
     public static final double ALERT_DURATION = 3;
-    public static double PRotate = 1 / 30;
-    public static double MinRotatePower = 0.2;
+    public static double PRotate = 0.3 / 10;
+    public static double MinRotatePower = 0.4;
     public static double AutonScaleTime = 5;
 
     //Collector
@@ -287,6 +292,22 @@ public class Constants extends ConstantsBase {
         //noinspection StatementWithEmptyBody
         if (Robot.isEcho()) {
             // echo specific over-rides can go here
+            FOURBAR_SCALE_POS = 300;
+            FOURBAR_SCALE_POS_HIGH = 355;
+            FOURBAR_SCALE_POS_LOW = 275;
+
+            FOURBAR_SWITCH_POS = 208;
+            FOURBAR_COLLECT_POS = 114;
+            FOURBAR_BOTTOM_POS = 25;
+            FOURBAR_EPSILON = 5;
+
+            ELEVATOR_SCALE_POS = 1900;
+            ELEVATOR_SCALE_POS_HIGH = 2000;
+            ELEVATOR_SCALE_POS_LOW = 1800;
+            ELEVATOR_SWITCH_POS = -5500;
+            ELEVATOR_COLLECT_POS = -5500;
+            ELEVATOR_BOTTOM_POS = 200;
+            ELEVATOR_EPSILON = 50;
         }
 
         // new Constants().readFromFile();

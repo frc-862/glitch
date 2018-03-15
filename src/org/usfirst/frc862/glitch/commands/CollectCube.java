@@ -1,39 +1,13 @@
 package org.usfirst.frc862.glitch.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
-import org.usfirst.frc862.util.LightningMath;
 
 
-public class RotateAwayFromScale extends Command {
-    private final double degrees;
-    private double start;
-    private boolean scaleOnLeft;
-    private double targetDegree;
-
-    public RotateAwayFromScale(double degrees) {
-        this.degrees=degrees;
+public class CollectCube extends Command {
+    public CollectCube() {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.driveTrain);
-    }
-
-
-    private double relativeTheta() {
-        double result = LightningMath.boundThetaNeg180to180(Robot.core.getGyroAngle() - start);
-
-        if (result > 0 && scaleOnLeft) {
-            result -= 360;
-        } else if (result < 0 && !scaleOnLeft) {
-            result += 360;
-        }
-
-        return result;
-    }
-
-    private double degreeError() {
-        return targetDegree - relativeTheta();
+        // eg. requires(chassis);
     }
 
 
@@ -43,13 +17,7 @@ public class RotateAwayFromScale extends Command {
      */
     @Override
     protected void initialize() {
-        scaleOnLeft = Robot.scaleOnLeft();
-        start = Robot.core.getGyroAngle();
-
-        if (scaleOnLeft)
-            targetDegree = -degrees;
-        else
-            targetDegree = degrees;
+        Robot.gripper.collectCube();
     }
 
 
@@ -58,19 +26,7 @@ public class RotateAwayFromScale extends Command {
      * scheduled to run until this Command either finishes or is canceled.
      */
     @Override
-    protected void execute() {
-        double rotpwr = degreeError() * Constants.PRotate;
-        SmartDashboard.putNumber("degreeError:", degreeError());
-        SmartDashboard.putNumber("rotpwr:", rotpwr);
-        boolean isNeg = rotpwr < 0;
-        SmartDashboard.putNumber("degree error: ", degreeError());
-        rotpwr = Math.max(Math.abs(rotpwr), Constants.MinRotatePower);
-        rotpwr = Math.min(rotpwr, 0.8);
-        if (isNeg) {
-            rotpwr = -rotpwr;
-        }
-        Robot.driveTrain.setPower(rotpwr, -rotpwr);
-    }
+    protected void execute() { }
 
 
     /**
@@ -92,8 +48,10 @@ public class RotateAwayFromScale extends Command {
      */
     @Override
     protected boolean isFinished() {
-        return Math.abs(degreeError()) < Constants.ANGLE_TOLERANCE_DEGREES;
+        // TODO: Make this return true when this Command no longer needs to run execute()
+        return Robot.gripper.hasCube();
     }
+
 
     /**
      * Called once when the command ended peacefully; that is it is called once
@@ -103,6 +61,6 @@ public class RotateAwayFromScale extends Command {
      */
     @Override
     protected void end() {
-        Robot.driveTrain.stop();
+        Robot.gripper.holdCube();
     }
 }
