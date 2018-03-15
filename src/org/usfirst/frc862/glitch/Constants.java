@@ -90,8 +90,8 @@ public class Constants extends ConstantsBase {
     public static double pathD = 0;
     public static double pathV = 1;  // Velocity is in IPS, we command IPS
     public static double pathA = 0;
-    public static double pathTurn = 1; // 1; // 2; // 1.2; // 0.862;
-    public static double pathFeedF = 6; // 4;
+    public static double pathTurn = 10; // 1; // 2; // 1.2; // 0.862;
+    public static double pathFeedF = 4; // 4;
 
     // PID gains for drive velocity loop (HIGH GEAR)
     // Units: setpoint, error, and output are in inches per second.
@@ -229,16 +229,17 @@ public class Constants extends ConstantsBase {
     public static int FOURBAR_SCALE_POS_LOW = 300;
 
     public static int FOURBAR_SWITCH_POS = 270;
-    public static int FOURBAR_COLLECT_POS = 146;
+    public static int FOURBAR_COLLECT_POS = 156;
+    public static int FOURBAR_SAFE_TO_COLLECT_POS = 100;
     public static int FOURBAR_BOTTOM_POS = 73;
     public static int FOURBAR_EPSILON = 5;
 
     public static int ELEVATOR_SCALE_POS = 2100;
     public static int ELEVATOR_SCALE_POS_HIGH = 2200;
     public static int ELEVATOR_SCALE_POS_LOW = 1900;
-    public static int ELEVATOR_SWITCH_POS = -5500;
-    public static int ELEVATOR_COLLECT_POS = -5500;
-    public static int ELEVATOR_BOTTOM_POS = 200;
+    public static int ELEVATOR_SWITCH_POS = -5800;
+    public static int ELEVATOR_COLLECT_POS = -5800;
+    public static int ELEVATOR_BOTTOM_POS = 700;
     public static int ELEVATOR_EPSILON = 50;
 
     public static int ELEVATOR_INCREMENT = 10;

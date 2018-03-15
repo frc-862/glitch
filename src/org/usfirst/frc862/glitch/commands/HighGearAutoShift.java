@@ -83,6 +83,7 @@ public class HighGearAutoShift extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        Robot.shifter.forceUpShift();
         state = (Robot.shifter.isHighGear()) ? State.HIGH_GEAR : State.LOW_GEAR;
         resetTimers();
         originalLDistance = Robot.driveTrain.getLeftDistanceInches();

@@ -12,7 +12,7 @@ import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.subsystems.DriveTrain;
 import org.usfirst.frc862.util.FaultCode.Codes;
 
-public class DynamicPathCommandLowGear extends Command {
+public class DynamicPathCommandLowGear extends DynamicPathCommandBase {
     private final static double pathP = 7.5;
     private final static double pathI = 0;
     private final static double pathD = 0;

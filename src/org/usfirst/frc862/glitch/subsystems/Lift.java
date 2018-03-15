@@ -32,7 +32,7 @@ import org.usfirst.frc862.util.Logger;
  *
  */
 public class Lift extends Subsystem {
-    enum State { PowerUp, InitialFramePerimeter, InitialGroundCollect, Collect, Drive, Switch, Scale, ManualControl, ExitManualControl, DropMode }
+    enum State { PowerUp, InitialFramePerimeter, InitialGroundCollect, Collect, Drive, Switch, Scale, ManualControl, ExitManualControl, SafeStart, SafeStartSwitch, SafeStartCollect, DropMode }
     enum ScalePos { High, Default, Low }
     enum Limit { Top, Bottom, Good }
 
@@ -67,6 +67,9 @@ public class Lift extends Subsystem {
     }
 
     public Lift() {
+        fourbar.setSubsystem("Lift");
+        elevator.setSubsystem("Lift");
+
         fourbar.setNeutralMode(NeutralMode.Brake);
         elevator.setNeutralMode(NeutralMode.Brake);
 
@@ -75,8 +78,8 @@ public class Lift extends Subsystem {
         fourbar.configClosedloopRamp(1.0, Constants.TALON_TIMEOUT);
         fourbar.configPeakCurrentDuration(0, Constants.TALON_TIMEOUT);
 
-        elevator.configPeakOutputForward(1, Constants.TALON_TIMEOUT);
-        elevator.configPeakOutputReverse(-1, Constants.TALON_TIMEOUT);
+        elevator.configPeakOutputForward(1.0, Constants.TALON_TIMEOUT);
+        elevator.configPeakOutputReverse(-1.0, Constants.TALON_TIMEOUT);
         elevator.configClosedloopRamp(0.1, Constants.TALON_TIMEOUT);
         elevator.configPeakCurrentDuration(700, Constants.TALON_TIMEOUT);
         elevator.configPeakCurrentLimit(150, Constants.TALON_TIMEOUT);
@@ -112,8 +115,8 @@ public class Lift extends Subsystem {
         elevator.configForwardSoftLimitEnable(false, Constants.TALON_TIMEOUT);
         elevator.configReverseSoftLimitEnable(false, Constants.TALON_TIMEOUT);
 
-        elevator.setInverted(true);
-        elevator.setSensorPhase(true);
+        elevator.setInverted(false);
+        elevator.setSensorPhase(false);
         elevator.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, Constants.TALON_TIMEOUT);
         elevator.configForwardLimitSwitchSource(LimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.Disabled, Constants.TALON_TIMEOUT);
         elevator.configReverseLimitSwitchSource(LimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.Disabled, Constants.TALON_TIMEOUT);
@@ -171,6 +174,7 @@ public class Lift extends Subsystem {
 
     @Override
     public void periodic() {
+        SmartDashboard.putString("Lift State", state.toString());
         SmartDashboard.putString("Scale State", scalePos.toString());
         SmartDashboard.putNumber("FourBar Set", fourbarPosition);
         SmartDashboard.putNumber("Elevator Set", elevatorPosition);
@@ -206,6 +210,10 @@ public class Lift extends Subsystem {
                 break;
 
             case Switch:
+                controlElevator = fourbar.getSelectedSensorPosition(0) >= Constants.FOURBAR_SAFE_TO_COLLECT_POS;
+                controlFourBar = true;
+                break;
+
             case Scale:
                 controlElevator = true;
                 controlFourBar = true;
@@ -220,6 +228,22 @@ public class Lift extends Subsystem {
             case ExitManualControl:
                 controlElevator = true;
                 controlFourBar = true;
+                break;
+
+            case SafeStartCollect:
+                controlElevator = true;
+                controlFourBar = false;
+                if (elevator.getSelectedSensorPosition(0) >= Constants.ELEVATOR_BOTTOM_POS - Constants.ELEVATOR_EPSILON) {
+                    this.moveToCollect();
+                }
+                break;
+
+            case SafeStartSwitch:
+                controlElevator = true;
+                controlFourBar = false;
+                if (elevator.getSelectedSensorPosition(0) >= Constants.ELEVATOR_BOTTOM_POS - Constants.ELEVATOR_EPSILON) {
+                   this.moveToSwitch();
+                }
                 break;
 
             // do nothing states
@@ -237,7 +261,7 @@ public class Lift extends Subsystem {
             fourbar.set(ControlMode.Velocity, fourbarVelocity);
         }
 
-        SmartDashboard.putString("Lift State", elevatorLimit.toString());
+        SmartDashboard.putString("Elevator Limit State", elevatorLimit.toString());
         if (controlElevator) {
             double elevatorError = elevatorPosition - elevator.getSelectedSensorPosition(0);
             double elevatorVelocity = elevatorError * Constants.ELEVATOR_VELOCITY_P + Constants.ELEVATOR_VELOCITY_F;
@@ -320,9 +344,14 @@ public class Lift extends Subsystem {
     }
 
     public void moveToSwitch() {
-        state = State.Switch;
-        setFourbarPosition(Constants.FOURBAR_SWITCH_POS);
-        setElevatorPosition(Constants.ELEVATOR_SWITCH_POS);
+        if (state == State.InitialFramePerimeter) {
+            state = State.SafeStartSwitch;
+            setElevatorPosition(Constants.ELEVATOR_BOTTOM_POS);
+        } else {
+            state = State.Switch;
+            setFourbarPosition(Constants.FOURBAR_SWITCH_POS);
+            setElevatorPosition(Constants.ELEVATOR_SWITCH_POS);
+        }
     }
 
     public void moveToBottom() {
@@ -332,9 +361,14 @@ public class Lift extends Subsystem {
     }
 
     public void moveToCollect() {
-        state = State.Collect;
-        setFourbarPosition(Constants.FOURBAR_COLLECT_POS);
-        setElevatorPosition(Constants.ELEVATOR_COLLECT_POS);
+        if (state == State.InitialFramePerimeter) {
+            state = State.SafeStartCollect;
+            setElevatorPosition(Constants.ELEVATOR_BOTTOM_POS);
+        } else {
+            state = State.Collect;
+            setFourbarPosition(Constants.FOURBAR_COLLECT_POS);
+            setElevatorPosition(Constants.ELEVATOR_COLLECT_POS);
+        }
     }
 
     public void setElevatorPower(double power){

@@ -254,9 +254,9 @@ public class Robot extends TimedRobot {
         // Also wrapping these conditionally to reduce the amount
         // of error logging when testing without controllers
         if (oi.driverControlsAvailable()) {
-            driveTrain.setDefaultCommand(new TankDrive());
-//            shifter.setDefaultCommand(new HighGearAutoShift());
-            shifter.setDefaultCommand(new AutoShift());
+//            driveTrain.setDefaultCommand(new TankDrive());
+            shifter.setDefaultCommand(new HighGearAutoShift());
+//            shifter.setDefaultCommand(new AutoShift());
 
         }
 

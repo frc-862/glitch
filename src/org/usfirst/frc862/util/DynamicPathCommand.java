@@ -16,7 +16,7 @@ import com.team254.lib.util.ChezyMath;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Command;
 
-public class DynamicPathCommand extends Command {
+public class DynamicPathCommand extends DynamicPathCommandBase {
     private CommandLogger logger;
     private TrajectoryFollower followerLeft = new TrajectoryFollower();
     private TrajectoryFollower followerRight = new TrajectoryFollower();
@@ -45,11 +45,7 @@ public class DynamicPathCommand extends Command {
         }
     }
 
-    public Path getPath() {
-        return null;
-    }
-
-    private boolean loadPath() {
+    protected boolean loadPath() {
         path = getPath();
 
         return path != null;
@@ -60,7 +56,7 @@ public class DynamicPathCommand extends Command {
         Trajectory.Segment point = left.getSegment(left.getNumSegments() - 1);
         return point.dt * left.getNumSegments();
     }
-    
+
     @Override
     protected void initialize() {
         // move this to ensure that we get a new log for each run
