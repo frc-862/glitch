@@ -61,21 +61,21 @@ public class Core extends Subsystem {
         exitTestMode();
         DataLogger.addDataElement("heading", () -> navx.getFusedHeading());
         //DataLogger.addDataElement("current", () -> powerDistributionPanel.getTotalCurrent());
-        DataLogger.addDataElement("voltage", () -> powerDistributionPanel.getVoltage());
+//        DataLogger.addDataElement("voltage", () -> powerDistributionPanel.getVoltage());
         DataLogger.addDataElement("pressure", () -> getPressure());
 
-        DataLogger.addDataElement("left_collect_current", () -> powerDistributionPanel.getCurrent(Constants.PDP_COLLECTOR_LEFT));
-        DataLogger.addDataElement("right_collect_current", () -> powerDistributionPanel.getCurrent(Constants.PDP_COLLECTOR_RIGHT));
-        DataLogger.addDataElement("PDP_DRIVE_RIGHT_1", () -> powerDistributionPanel.getCurrent(Constants.PDP_DRIVE_RIGHT_1));
-        DataLogger.addDataElement("PDP_DRIVE_RIGHT_2", () -> powerDistributionPanel.getCurrent(Constants.PDP_DRIVE_RIGHT_2));
-        DataLogger.addDataElement("PDP_DRIVE_RIGHT_3", () -> powerDistributionPanel.getCurrent(Constants.PDP_DRIVE_RIGHT_3));
-        DataLogger.addDataElement("PDP_ARM", () -> powerDistributionPanel.getCurrent(Constants.PDP_ARM));
+//        DataLogger.addDataElement("left_collect_current", () -> powerDistributionPanel.getCurrent(Constants.PDP_COLLECTOR_LEFT));
+//        DataLogger.addDataElement("right_collect_current", () -> powerDistributionPanel.getCurrent(Constants.PDP_COLLECTOR_RIGHT));
+//        DataLogger.addDataElement("PDP_DRIVE_RIGHT_1", () -> powerDistributionPanel.getCurrent(Constants.PDP_DRIVE_RIGHT_1));
+//        DataLogger.addDataElement("PDP_DRIVE_RIGHT_2", () -> powerDistributionPanel.getCurrent(Constants.PDP_DRIVE_RIGHT_2));
+//        DataLogger.addDataElement("PDP_DRIVE_RIGHT_3", () -> powerDistributionPanel.getCurrent(Constants.PDP_DRIVE_RIGHT_3));
+//        DataLogger.addDataElement("PDP_ARM", () -> powerDistributionPanel.getCurrent(Constants.PDP_ARM));
 //        DataLogger.addDataElement("PDP_RAMP", () -> powerDistributionPanel.getCurrent(Constants.PDP_RAMP));
-        DataLogger.addDataElement("PDP_LEDS", () -> powerDistributionPanel.getCurrent(Constants.PDP_LEDS));
-        DataLogger.addDataElement("PDP_ELEVATOR", () -> powerDistributionPanel.getCurrent(Constants.PDP_ELEVATOR));
-        DataLogger.addDataElement("PDP_DRIVE_LEFT_1", () -> powerDistributionPanel.getCurrent(Constants.PDP_DRIVE_LEFT_1));
-        DataLogger.addDataElement("PDP_DRIVE_LEFT_2", () -> powerDistributionPanel.getCurrent(Constants.PDP_DRIVE_LEFT_2));
-        DataLogger.addDataElement("PDP_DRIVE_LEFT_3", () -> powerDistributionPanel.getCurrent(Constants.PDP_DRIVE_LEFT_3));
+//        DataLogger.addDataElement("PDP_LEDS", () -> powerDistributionPanel.getCurrent(Constants.PDP_LEDS));
+//        DataLogger.addDataElement("PDP_ELEVATOR", () -> powerDistributionPanel.getCurrent(Constants.PDP_ELEVATOR));
+//        DataLogger.addDataElement("PDP_DRIVE_LEFT_1", () -> powerDistributionPanel.getCurrent(Constants.PDP_DRIVE_LEFT_1));
+//        DataLogger.addDataElement("PDP_DRIVE_LEFT_2", () -> powerDistributionPanel.getCurrent(Constants.PDP_DRIVE_LEFT_2));
+//        DataLogger.addDataElement("PDP_DRIVE_LEFT_3", () -> powerDistributionPanel.getCurrent(Constants.PDP_DRIVE_LEFT_3));
     }
 
     @Override
