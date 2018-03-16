@@ -260,6 +260,8 @@ public class Constants extends ConstantsBase {
     public static double DEFAULT_COLLECT_POWER = 0.862;
     public static double DEFAULT_EJECT_POWER = -0.862;
     public static final double COLLECT_TRIGGER_DEADZONE = 0;
+    public static double EJECT_MAX_FEATHER = .7;
+
 
     // PDP Slots
     public static int PDP_DRIVE_RIGHT_1 = 0;
