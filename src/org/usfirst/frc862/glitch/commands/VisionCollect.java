@@ -2,9 +2,13 @@ package org.usfirst.frc862.glitch.commands;
 import com.team254.lib.util.DriveSignal;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
+import org.usfirst.frc862.glitch.subsystems.Gripper;
 import org.usfirst.frc862.glitch.vision.CubeNotFoundException;
+import org.usfirst.frc862.glitch.vision.PowerCube;
 import org.usfirst.frc862.util.CurvatureDrive;
 import org.usfirst.frc862.util.ValueFilter;
 import org.usfirst.frc862.util.ExponentialSmoothingFilter;
@@ -13,8 +17,11 @@ import org.usfirst.frc862.util.Logger;
 /**
  *
  */
-public class VisionCollect
-extends Command {
+public class VisionCollect extends Command {
+	
+	private double toggleTime = 0;
+	private boolean collecting = false;
+	
     public VisionCollect() {
         requires(Robot.driveTrain);
 //        requires(Robot.gripper);
@@ -27,7 +34,7 @@ extends Command {
         prevArea = 0;
     }
 
-    private ValueFilter angleFilter = new ExponentialSmoothingFilter(0.2);
+    private ValueFilter angleFilter = new ExponentialSmoothingFilter(0.4);
 
     private double angle = 0;
     private double dist = 0;
@@ -38,38 +45,34 @@ extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+    	
         try {
-            double[] cube = Robot.cubeVision.getBestCube();
-            angle = cube[0];
-            area = cube[1];
-            dist = cube[2];
+        	SmartDashboard.putString("vision collect step", "try start");
+            PowerCube cube = Robot.cubeVision.getBestCube();
+            angle = cube.getAngle();
+            area = cube.getArea();
+            dist = cube.getLongitudal();
 
+
+        	SmartDashboard.putString("vision collect step", "got cube data");
 
             boolean runThisCycle = false;
 
-            if (prevArea < 1)
-            {
+            double areadiff = .1;
+            if(prevArea != 0) areadiff = Math.abs(prevArea - area) / prevArea;
+
+            if (areadiff < 0.3) {
                 runThisCycle = true;
             }
-            else
-            {
-
-                double areadiff = Math.abs(prevArea - area) / prevArea;
-
-                if (areadiff < 0.3 )
-                {
-
-                    runThisCycle = true;
-                }
-                else
-                {
-                    //do not update
-                }
+            else {
+                //do not update
             }
 
+            SmartDashboard.putBoolean("runCycle", runThisCycle);
+            SmartDashboard.putNumber("area", area);
+            SmartDashboard.putNumber("prevArea", prevArea);
 
-            if (true == runThisCycle)
-            {
+            if (runThisCycle) {
                 prevArea = area;
                 lastSeen = Timer.getFPGATimestamp();
 
@@ -82,6 +85,7 @@ extends Command {
 
         } catch (CubeNotFoundException err) {
             Logger.error("Cube not found: " + err);
+            angleFilter.filter(0);
         }
 
         double power = 0;
@@ -90,18 +94,39 @@ extends Command {
 
         double age = Timer.getFPGATimestamp() - lastSeen;
         if (age < 2) {
+        	if(toggleTime == 0) {
+        		toggleTime = Timer.getFPGATimestamp();
+        		collecting = true;
+        		Robot.gripper.collectCube();
+        	}
+        	double time = Timer.getFPGATimestamp();
+        	if(time - toggleTime >= .1) {
+        		if(collecting) Robot.gripper.stopIntake();
+        		else Robot.gripper.collectCube();
+        		collecting = !collecting;
+        		toggleTime = time;
+        	}
             if (Robot.shifter.isHighGear()) {
-                rotation = angleFilter.get() * Constants.StraightenKpHighGear;
+               // rotation = angleFilter.get() * Constants.StraightenKpHighGear;
+            	rotation = angle * Constants.StraightenKpHighGear;
             } else {
-                rotation = angleFilter.get() * Constants.StraightenKpLowGear;
+                //rotation = angleFilter.get() * Constants.StraightenKpLowGear;
+            	rotation = angle * Constants.StraightenKpLowGear;
             }
             power = 0.2;
-            qturn = Math.abs(angleFilter.get()) > 9;
+            //qturn = Math.abs(angleFilter.get()) > 9;
+            SmartDashboard.putNumber("angleFilter.get()", angleFilter.get());
 
             Logger.info("VisionCollect: " + rotation + ", " + power + ", " + qturn);
         }
-
-        DriveSignal signal = CurvatureDrive.curvatureDrive(power, rotation, qturn);
+        else {
+        	Robot.gripper.stopIntake();
+        	collecting = false;
+        	toggleTime = 0;
+        }
+        //qturn = true;
+        SmartDashboard.putNumber("rotation", rotation);
+        DriveSignal signal = CurvatureDrive.curvatureDrive(power, rotation / 2, qturn);
         Logger.info("VisionCollect drive: " + signal.toString());
         Robot.driveTrain.setVelocity(signal);
 

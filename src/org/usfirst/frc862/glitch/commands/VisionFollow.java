@@ -21,6 +21,7 @@ import javax.naming.TimeLimitExceededException;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.vision.CubeNotFoundException;
+import org.usfirst.frc862.glitch.vision.PowerCube;
 import org.usfirst.frc862.util.MovingAverageFilter;
 
 /**
@@ -115,27 +116,27 @@ public class VisionFollow extends Command {
                 } else {
                     double err = 0;
                     try {
-                    	double[] cube = Robot.cubeVision.getBestCube();
+                    	PowerCube cube = Robot.cubeVision.getBestCube();
                         if(cubeStartTime == 0) {
                         	cubeStartTime = timer.get();
-                        	if(cube[2] > 14) ramp = Ramp.long_range;
-                        	else if(cube[2] < 6) ramp = Ramp.short_range;
+                        	if(cube.getLongitudal() > 14) ramp = Ramp.long_range;
+                        	else if(cube.getLongitudal() < 6) ramp = Ramp.short_range;
                         	else ramp = Ramp.medium_range;
                         }
-                    	err = cube[0];
-                    	SmartDashboard.putNumber("Cube area", cube[1]);
+                    	err = cube.getAngle();
+                    	SmartDashboard.putNumber("Cube area", cube.getArea());
                     	SmartDashboard.putString("VisionArcadeError", "None");
                     	switch(ramp) {
                     		case long_range:
-                    			pwr = Math.pow(9, cube[2] - 9);
+                    			pwr = Math.pow(9, cube.getLongitudal() - 9);
                     			ramp_time = 1.0;
                             	break;
                     		case medium_range:
-                    			pwr = Math.pow(6, cube[2] - 6);
+                    			pwr = Math.pow(6, cube.getLongitudal() - 6);
                     			ramp_time = 1.0;
                     			break;
                     		case short_range:
-                    			pwr = cube[2] / 5;
+                    			pwr = cube.getLongitudal() / 5;
                     			//pwr = Math.pow(2, cube[2] - 2);
                     			ramp_time = 1.0;
                     			break;
