@@ -90,8 +90,18 @@ public class ScaleAuton extends Command {
             });
             cmd.addSequential(new EjectCube());
             scaleDeploy.addSequential(new TurnToAbsolutePosition(Robot.scaleOnLeft() ? 245 : 30));
-            cmd.addSequential(new MoveCollectorToGround());
-            cmd.addSequential(new VisionCollect());
+            cmd.addSequential(new MoveCollectorToCollect());
+            cmd.addSequential(new VisionCollect(), 3);
+            cmd.addSequential(new TurnToAbsolutePosition(0));
+            if (Robot.scaleOnLeft()) {
+                cmd.addSequential(new LeftSecondCube());
+            } else {
+                cmd.addSequential(new RightSecondCube());
+            }
+
+            cmd.addSequential(new EjectCube(), 1);
+            cmd.addSequential(new TurnToAbsolutePosition(Robot.scaleOnLeft() ? 265 : 15));
+            cmd.addSequential(new MoveCollectorToScale());
         }
 
         cmd.start();

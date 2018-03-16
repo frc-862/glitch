@@ -238,9 +238,10 @@ public class Constants extends ConstantsBase {
     public static int ELEVATOR_SCALE_POS_HIGH = 2200;
     public static int ELEVATOR_SCALE_POS_LOW = 1900;
     public static int ELEVATOR_SWITCH_POS = -5800;
-    public static int ELEVATOR_COLLECT_POS = -5800;
-    public static int ELEVATOR_BOTTOM_POS = 700;
-    public static int ELEVATOR_EPSILON = 75;
+    public static int ELEVATOR_COLLECT_POS = -5500;
+    public static int ELEVATOR_CAN_DROP_COLLECT_POS = ELEVATOR_COLLECT_POS + 200;
+    public static int ELEVATOR_BOTTOM_POS = 900;
+    public static int ELEVATOR_EPSILON = 100;
 
     public static int ELEVATOR_INCREMENT = 10;
     public static int MIN_ELEVATOR = ELEVATOR_COLLECT_POS;

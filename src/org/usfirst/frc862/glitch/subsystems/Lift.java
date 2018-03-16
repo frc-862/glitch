@@ -221,11 +221,19 @@ public class Lift extends Subsystem {
                 break;
 
             case DropMode:
-                controlElevator = true;
-                fourbar.set(ControlMode.PercentOutput, 0);
-                fourbarPosition = fourbar.getSelectedSensorPosition(0);
+                if(getElevatorPosition() >= Constants.ELEVATOR_CAN_DROP_COLLECT_POS) {
+                    controlElevator = true;
+                    controlFourBar = true;
+                }
+                else {
+                    controlElevator = false;
+                    controlFourBar = false;
+                    fourbar.set(ControlMode.PercentOutput, 0);
+                    elevator.set(ControlMode.PercentOutput, 0);
+                    elevatorPosition = elevator.getSelectedSensorPosition(0);
+                    fourbarPosition = fourbar.getSelectedSensorPosition(0);
+                }
                 break;
-
             case ExitManualControl:
                 controlElevator = true;
                 controlFourBar = true;
@@ -425,7 +433,7 @@ public class Lift extends Subsystem {
 
     public boolean atCollect() {
         return (fourbarPosition <= Constants.FOURBAR_COLLECT_POS + Constants.FOURBAR_EPSILON) &&
-                (elevatorPosition <= Constants.ELEVATOR_COLLECT_POS + Constants.ELEVATOR_EPSILON);
+                (Math.abs(elevatorPosition - Constants.ELEVATOR_COLLECT_POS) <= Constants.ELEVATOR_EPSILON);
     }
 
     public boolean atGround() {
