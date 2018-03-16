@@ -43,7 +43,7 @@ public class Constants extends ConstantsBase {
     // NOTE we are going to want to tune for high/low gear with
     // at the very least a different feed forward...
     // in inches
-    public static double WheelCircumference = (Robot.isOBot() ? 4 : 6.25) * Math.PI;
+    public static double WheelCircumference = (Robot.isOBot() ? 4 : 6.23) * Math.PI;
     // ~ 95ips
     public static double PHYSICAL_MAX_LOW_SPEED_TICKS = 700;
     // ~ 177ips
@@ -219,7 +219,7 @@ public class Constants extends ConstantsBase {
     public static double ELEVATOR_F = 2;
     public static int ELEVATOR_ACC = 24 / 2;
     public static int ELEVATOR_VEL = 24;
-    public static double ELEVATOR_VELOCITY_P = 0.5;
+    public static double ELEVATOR_VELOCITY_P = 0.4;
     public static double ELEVATOR_HOLD_POWER = 0.03;
     public static double ELEVATOR_VELOCITY_F = 1023 * ELEVATOR_HOLD_POWER / ELEVATOR_F;
     public static double ELEVATOR_VELOCITY_D = 0.0;
@@ -240,7 +240,7 @@ public class Constants extends ConstantsBase {
     public static int ELEVATOR_SWITCH_POS = -5800;
     public static int ELEVATOR_COLLECT_POS = -5800;
     public static int ELEVATOR_BOTTOM_POS = 700;
-    public static int ELEVATOR_EPSILON = 50;
+    public static int ELEVATOR_EPSILON = 75;
 
     public static int ELEVATOR_INCREMENT = 10;
     public static int MIN_ELEVATOR = ELEVATOR_COLLECT_POS;
@@ -251,7 +251,7 @@ public class Constants extends ConstantsBase {
     public static int MAX_FOURBAR = FOURBAR_SCALE_POS_HIGH;
 
     public static final double ALERT_DURATION = 3;
-    public static double PRotate = 0.3 / 10;
+    public static double PRotate = 0.02;
     public static double MinRotatePower = 0.4;
     public static double AutonScaleTime = 5;
 

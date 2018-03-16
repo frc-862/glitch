@@ -58,7 +58,7 @@ public class SwitchAuton extends Command {
         Logger.info("Left Switch: " + Robot.switchOnLeft());
 
         CommandGroup cmd = new LightningGroup("Dynamically Built Switch Auton");
-        cmd.addSequential(new DownShift());
+        cmd.addSequential(new MoveCollectorToGround(), 0.5);
 
         cmd.addParallel(new HoldCube());
         cmd.addParallel(new MoveCollectorToSwitch());

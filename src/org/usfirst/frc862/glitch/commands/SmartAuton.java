@@ -47,29 +47,30 @@ public class SmartAuton extends Command {
         go_for_it = true;
         ShineBois.rainbow();
 
-        Robot.shifter.forceDownShift();
+//        Robot.shifter.forceDownShift();
 
         CommandGroup cmd = new CommandGroup();
-        cmd.addSequential(new DownShift());
+  //      cmd.addSequential(new DownShift());
+        cmd.addSequential(new MoveCollectorToGround(), 1);
+
         cmd.addParallel(new HoldCube());
 
         if (Robot.startOnLeft()) {
             if (Robot.switchOnLeft()) {
                 go_for_it = true;
-                cmd.addSequential(new LeftPointsSwitch());
                 cmd.addParallel(new MoveCollectorToSwitch());
-                cmd.addParallel(new HoldCube());
+                cmd.addSequential(new LeftPointsSwitch());
             } else if (Robot.scaleOnLeft()) {
-                DynamicPathCommandBase path = new LeftScaleNear();
-                cmd.addSequential(path);
+                DynamicPathCommandBase path = new LeftScaleNearLG();
 
                 CommandGroup riseUp = new CommandGroup();
                 riseUp.addSequential(new TimedCommand(path.duration() - 3));
                 riseUp.addSequential(new MoveCollectorToScale());
                 cmd.addParallel(riseUp);
+                cmd.addSequential(path);
 
             } else {
-                DynamicPathCommandBase path = new LeftScaleFar();
+                DynamicPathCommandBase path = new LeftScaleFarLG();
 
                 CommandGroup riseUp = new CommandGroup();
                 riseUp.addSequential(new TimedCommand(path.duration() - 3));
@@ -81,30 +82,30 @@ public class SmartAuton extends Command {
         } else {
             if (!Robot.switchOnLeft()) {
                 go_for_it = true;
-                cmd.addSequential(new RightPointsSwitch());
+                DynamicPathCommandBase path = new RightPointsSwitch();
                 cmd.addParallel(new MoveCollectorToSwitch());
+                cmd.addSequential(path);
+                //cmd.addParallel(new HoldCube());
             } else if (!Robot.scaleOnLeft()) {
                 go_for_it = true;
-                DynamicPathCommandBase path = new RightScaleNear();
-                cmd.addSequential(path);
+                DynamicPathCommandBase path = new RightScaleNearLG();
                 CommandGroup raiseUp = new CommandGroup();
 //                raiseUp.addSequential(new TimedCommand(path.duration() - 3.5));
                 raiseUp.addSequential(new MoveCollectorToScale());
                 cmd.addParallel(raiseUp);
-            } else {
-                DynamicPathCommandBase path = new RightScaleFar();
                 cmd.addSequential(path);
+            } else {
+                DynamicPathCommandBase path = new RightScaleFarLG();
                 CommandGroup raiseUp = new CommandGroup();
                 raiseUp.addSequential(new TimedCommand(path.duration() - 2.8));
                 cmd.addParallel(raiseUp);
+                cmd.addSequential(path);
             }
         }
 
-        if (go_for_it) {
-            cmd.addSequential(new EjectCube(), 1);
-            cmd.addSequential(new BackupSlow());
-            cmd.addSequential(new MoveCollectorToCollect());
-        }
+        cmd.addSequential(new EjectCube(), 1);
+        cmd.addSequential(new BackupSlow());
+        cmd.addSequential(new MoveCollectorToCollect());
 
         cmd.start();
     }

@@ -32,6 +32,7 @@ import org.usfirst.frc862.util.Logger;
  *
  */
 public class Lift extends Subsystem {
+
     enum State { PowerUp, InitialFramePerimeter, InitialGroundCollect, Collect, Drive, Switch, Scale, ManualControl, ExitManualControl, SafeStart, SafeStartSwitch, SafeStartCollect, DropMode }
     enum ScalePos { High, Default, Low }
     enum Limit { Top, Bottom, Good }
@@ -425,6 +426,11 @@ public class Lift extends Subsystem {
     public boolean atCollect() {
         return (fourbarPosition <= Constants.FOURBAR_COLLECT_POS + Constants.FOURBAR_EPSILON) &&
                 (elevatorPosition <= Constants.ELEVATOR_COLLECT_POS + Constants.ELEVATOR_EPSILON);
+    }
+
+    public boolean atGround() {
+        return (fourbarPosition <= Constants.FOURBAR_BOTTOM_POS + Constants.FOURBAR_EPSILON) &&
+                (elevatorPosition <= Constants.ELEVATOR_BOTTOM_POS + Constants.ELEVATOR_EPSILON);
     }
 
     public void dropMode() {
