@@ -5,11 +5,14 @@ import edu.wpi.first.wpilibj.Timer;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.paths.*;
 import org.usfirst.frc862.glitch.vision.CubeNotFoundException;
+import org.usfirst.frc862.glitch.vision.PowerCube;
 import org.usfirst.frc862.util.DynamicPathCommand;
 
 import java.util.TreeMap;
 
 public class VisionPathSelectCommand extends DynamicPathCommand {
+
+    private final double VisionTimeOut;
 
     enum State { waiting_for_vision, start_path, following_path };
     private State state;
@@ -34,10 +37,19 @@ public class VisionPathSelectCommand extends DynamicPathCommand {
 
     public VisionPathSelectCommand() {
         super();
+        VisionTimeOut = 1.5;
+    }
+
+    public VisionPathSelectCommand(double timeout) {
+        super();
+        VisionTimeOut = timeout;
     }
 
     @Override
     public Path getPath() {
+        if(path == null) {
+            return null;
+        }
         return path.getPath();
     }
 
@@ -49,6 +61,9 @@ public class VisionPathSelectCommand extends DynamicPathCommand {
 
     protected DynamicPathCommand getClosestPath(double angle) {
         TreeMap<Double, DynamicPathCommand> paths = Robot.scaleOnLeft() ? leftPaths : rightPaths;
+
+        if (Math.abs(angle) >= 30) angle = 0;
+
         DynamicPathCommand path = paths.get(angle);
         if (path == null) {
             Double topBound = paths.ceilingKey(angle);
@@ -77,7 +92,7 @@ public class VisionPathSelectCommand extends DynamicPathCommand {
     protected  void execute() {
         switch (state) {
             case waiting_for_vision:
-                double[] cube = null;
+                PowerCube cube = null;
 
                 if (Robot.cubeVision.getLastVisionRead() > startTime) {
                     try {
@@ -88,9 +103,9 @@ public class VisionPathSelectCommand extends DynamicPathCommand {
                 }
 
                 if (cube != null) {
-                    path = getClosestPath(cube[0]);
+                    path = getClosestPath(cube.getAngle());
                     state = State.start_path;
-                } else if (Timer.getFPGATimestamp() - startTime > 1.5) {
+                } else if (Timer.getFPGATimestamp() - startTime > VisionTimeOut) {
                     // The the expected path
                     path = getClosestPath(0.0);
                     state = State.start_path;

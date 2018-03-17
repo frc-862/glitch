@@ -14,6 +14,7 @@ package org.usfirst.frc862.glitch;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 import org.usfirst.frc862.glitch.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.paths.*;
@@ -130,7 +131,8 @@ public class OI {
         if (driverControlsAvailable()) {
             JoystickButton trigger1 = new JoystickButton(driverLeft, 1);
             JoystickButton trigger2 = new JoystickButton(driverRight,1);
-            new TwoButtonTrigger(trigger1, trigger2).whileActive(new VisionCollect());
+            trigger1.whileHeld(new VisionCollect());
+            trigger2.whileHeld(new VisionCollect());
         }
 
         copilot = new XBoxController(copilotController.getPort());

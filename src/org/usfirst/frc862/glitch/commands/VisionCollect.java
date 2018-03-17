@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.subsystems.Gripper;
+import org.usfirst.frc862.glitch.subsystems.ShineBois;
 import org.usfirst.frc862.glitch.vision.CubeNotFoundException;
 import org.usfirst.frc862.glitch.vision.PowerCube;
 import org.usfirst.frc862.util.CurvatureDrive;
@@ -30,6 +31,7 @@ public class VisionCollect extends Command {
     @Override
     protected void initialize() {
         Logger.info("Enter vision collect");
+        ShineBois.purple();
         Robot.driveTrain.setVelocityMode();
         prevArea = 0;
     }
@@ -100,7 +102,7 @@ public class VisionCollect extends Command {
         		Robot.gripper.collectCube();
         	}
         	double time = Timer.getFPGATimestamp();
-        	if(time - toggleTime >= .1) {
+        	if(time - toggleTime >= .3) {
         		if(collecting) Robot.gripper.stopIntake();
         		else Robot.gripper.collectCube();
         		collecting = !collecting;
@@ -124,7 +126,6 @@ public class VisionCollect extends Command {
         	collecting = false;
         	toggleTime = 0;
         }
-        //qturn = true;
         SmartDashboard.putNumber("rotation", rotation);
         DriveSignal signal = CurvatureDrive.curvatureDrive(power, rotation / 2, qturn);
         Logger.info("VisionCollect drive: " + signal.toString());
@@ -144,6 +145,7 @@ public class VisionCollect extends Command {
     protected void end() {
     	Robot.driveTrain.stop();
     	Robot.gripper.stopIntake();
+    	ShineBois.chase();
     	Logger.info("Exit vision collect");
     }
 }

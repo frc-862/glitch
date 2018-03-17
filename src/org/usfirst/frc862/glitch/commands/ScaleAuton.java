@@ -58,50 +58,55 @@ public class ScaleAuton extends Command {
 
         Robot.shifter.forceDownShift();
 
+        // CUBE 1: deposit at scale
         cmd = buildScale();
 
+        // Rotate toward cubes and get ready to collect
         // TODO verify rotation angle (for correct side)
-        cmd.addParallel(new RotateAwayFromScale(Robot.scaleOnLeft() ? 160 : 200));
-        cmd.addSequential(new MoveCollectorToGround());
+        cmd.addParallel(new RotateAwayFromScale(Robot.scaleOnLeft() ? 180 : 180));
+        cmd.addSequential(new MoveCollectorToCollect());
+        // TODO move forward a bit?
+
 
         if (Robot.attemptMultiCubeAuton()) {
-            cmd.addSequential(new VisionCollect());
+            //cmd.addSequential(new VisionCollect());
 
-            boolean leftSwitch = Robot.switchOnLeft();
+//            CommandGroup switchDeploy = new CommandGroup();
+//            switchDeploy.addSequential(new MoveCollectorToSwitch());
 
-            CommandGroup switchDeploy = new CommandGroup();
-            switchDeploy.addSequential(new MoveCollectorToSwitch());
-            // TODO move forward a bit?
-
-            CommandGroup scaleDeploy = new CommandGroup();
+            CommandGroup scaleDeploy = new CommandGroup(); // collect+deploy cube 2
             // TODO use turn to absolute angle (and adjust for left/right scale)
-            scaleDeploy.addSequential(new TurnToAbsolutePosition(Robot.scaleOnLeft() ? 265 : 15));
-            scaleDeploy.addParallel(new MoveCollectorToScale());
+//            scaleDeploy.addSequential(new TurnToAbsolutePosition(Robot.scaleOnLeft() ? 265 : 15));
+//            scaleDeploy.addParallel(new MoveCollectorToCollect());
             // TODO write this path
-            scaleDeploy.addSequential(new VisionPathSelectCommand());
-            scaleDeploy.addParallel(new CollectCube());
+            scaleDeploy.addSequential(new VisionCollect());
+            //scaleDeploy.addParallel(new CollectCube()); // TODO pulse collect
+            scaleDeploy.addSequential(new TurnToAbsolutePosition(Robot.scaleOnLeft() ? -45 : 45));
             scaleDeploy.addSequential(Robot.scaleOnLeft() ? new SecondCubeLeft() : new SecondCubeRight());
 
-            cmd.addSequential(new ConditionalCommand(switchDeploy, scaleDeploy) {
-                @Override
-                protected boolean condition() {
-                    return Robot.switchOnLeft() == Robot.scaleOnLeft() && Robot.autonTimeRemaining() < Constants.AutonScaleTime;
-                }
-            });
+//            cmd.addSequential(new ConditionalCommand(switchDeploy, scaleDeploy) {
+//                @Override
+//                protected boolean condition() {
+//                    return Robot.switchOnLeft() == Robot.scaleOnLeft() && Robot.autonTimeRemaining() < Constants.AutonScaleTime;
+//                }
+//            });
+            cmd.addSequential(scaleDeploy); // Collect and prepare
             cmd.addSequential(new EjectCube());
-            scaleDeploy.addSequential(new TurnToAbsolutePosition(Robot.scaleOnLeft() ? 245 : 30));
-            cmd.addSequential(new MoveCollectorToCollect());
-            cmd.addSequential(new VisionCollect(), 3);
-            cmd.addSequential(new TurnToAbsolutePosition(0));
-            if (Robot.scaleOnLeft()) {
-                cmd.addSequential(new LeftSecondCube());
-            } else {
-                cmd.addSequential(new RightSecondCube());
-            }
 
-            cmd.addSequential(new EjectCube(), 1);
-            cmd.addSequential(new TurnToAbsolutePosition(Robot.scaleOnLeft() ? 265 : 15));
-            cmd.addSequential(new MoveCollectorToScale());
+            // Prepare another collect for the driver
+            cmd.addSequential(new TurnToAbsolutePosition(Robot.scaleOnLeft() ? 180 : 30));
+            cmd.addSequential(new MoveCollectorToCollect());
+//            cmd.addSequential(new VisionCollect(), 3);
+//            cmd.addSequential(new TurnToAbsolutePosition(0));
+//            if (Robot.scaleOnLeft()) {
+//                cmd.addSequential(new LeftSecondCube());
+//            } else {
+//                cmd.addSequential(new RightSecondCube());
+//            }
+//
+//            cmd.addSequential(new EjectCube(), 1);
+//            cmd.addSequential(new TurnToAbsolutePosition(Robot.scaleOnLeft() ? 265 : 15));
+//            cmd.addSequential(new MoveCollectorToScale());
         }
 
         cmd.start();
@@ -142,7 +147,7 @@ public class ScaleAuton extends Command {
 
         cmd.addSequential(path);
 
-        cmd.addSequential(new EjectCube(), 1);
+        cmd.addSequential(new EjectCube(), 1.5);
 
         return cmd;
     }

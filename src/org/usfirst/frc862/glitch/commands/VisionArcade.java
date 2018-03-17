@@ -23,7 +23,8 @@ import org.usfirst.frc862.util.MovingAverageFilter;
 /**
  *
  */
-public class VisionArcade extends Command {
+public class
+VisionArcade extends Command {
 	private final CheesyDriveHelper drive;
     private double heading = 0;
     private double lastTime = 0;

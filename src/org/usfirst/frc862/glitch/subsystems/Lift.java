@@ -221,13 +221,17 @@ public class Lift extends Subsystem {
                 break;
 
             case DropMode:
-                if(getElevatorPosition() >= Constants.ELEVATOR_CAN_DROP_COLLECT_POS) {
+                if(readyToDrop()) {
+                    // We shouldn't drop yet, we're too high
                     controlElevator = true;
                     controlFourBar = true;
                 }
                 else {
+                    // Cut power to "drop"
+
                     controlElevator = false;
                     controlFourBar = false;
+
                     fourbar.set(ControlMode.PercentOutput, 0);
                     elevator.set(ControlMode.PercentOutput, 0);
                     elevatorPosition = elevator.getSelectedSensorPosition(0);
@@ -453,6 +457,10 @@ public class Lift extends Subsystem {
         return state == State.Scale ||
                 (fourbarPosition > Constants.FOURBAR_SCALE_POS_LOW - Constants.FOURBAR_EPSILON &&
                 elevatorPosition > Constants.ELEVATOR_SCALE_POS_LOW - Constants.ELEVATOR_EPSILON);
+    }
+
+    public boolean readyToDrop() {
+        return getElevatorPosition() >= Constants.ELEVATOR_CAN_DROP_COLLECT_POS;
     }
 
 }

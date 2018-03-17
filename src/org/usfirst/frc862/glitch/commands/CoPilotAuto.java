@@ -74,22 +74,12 @@ public class CoPilotAuto extends Command {
         // A
         if(copilot.aButton.get()) {
             Robot.lift.moveToCollect();
-            Robot.lift.moveToCollect();
         } else if(copilot.xButton.get()) {
             Robot.lift.moveToBottom();
         } else if(copilot.bButton.get()) {
             Robot.lift.moveToSwitch();
         } else if(copilot.yButton.get()) {
-            Robot.lift.moveToScale();
-        } else if (copilot.isDPadUp()) {
-            Logger.info("DPadUps");
-            Robot.lift.setElevatorPosition(Robot.lift.getElevatorPosition() + Constants.ELEVATOR_INCREMENT);
-            Robot.lift.setFourbarPosition(Robot.lift.getFourbarPosition() + Constants.FOURBAR_INCREMENT);
-        }
-        else if (copilot.isDPadDown()) {
-            Logger.info("DPadDown");
-            Robot.lift.setElevatorPosition(Robot.lift.getElevatorPosition() - Constants.ELEVATOR_INCREMENT);
-            Robot.lift.setFourbarPosition(Robot.lift.getFourbarPosition() - Constants.FOURBAR_INCREMENT);
+          Robot.lift.moveToScale();
         }
         else if (Robot.lift.atScale()) {
             Logger.info("atScale");
@@ -103,7 +93,7 @@ public class CoPilotAuto extends Command {
             Logger.info("atCollect" + copilot.getLeftStickY());
             if (copilot.getLeftStickY() < -0.5) {
                 Robot.lift.dropMode();
-            } else if (Robot.lift.isDropMode()){
+            } else if (Robot.lift.isDropMode() && Robot.lift.readyToDrop()){
                 Robot.lift.exitManualPosition();
             }
         }
