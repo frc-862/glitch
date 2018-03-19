@@ -15,12 +15,6 @@ public class Constants extends ConstantsBase {
     public static int logDepth = 1000;
 
     // Vision
-    public static int COLLECTOR_PIXELS_OFF_CENTER = 0;
-    public static double VisionSpeedP = 0.2;
-    public static double VisionMinSpeed = 0.2;
-    public static double VisionCloseThreshold = 2.7; //ft
-
-    // Vision
     public static int CAMERA_PIXELS_OFF_CENTER = 0;
     public static int VISION_ABORT_THRESHOLD = 100000; //If a cube hasn't been seen for this many frames, stop sending the last good frame and send an abort message
     public static double MAX_WIDTH_TO_HEIGHT_RATIO = 2.2;
@@ -42,8 +36,6 @@ public class Constants extends ConstantsBase {
     /*DRIVE TRAIN*/
     // NOTE we are going to want to tune for high/low gear with
     // at the very least a different feed forward...
-    // in inches
-    public static double WheelCircumference = (Robot.isOBot() ? 4 : 6.2715) * Math.PI; // 6.2715 END OF GAYLORD NEW WHEELS
     // ~ 95ips
     public static double PHYSICAL_MAX_LOW_SPEED_TICKS = 700;
     // ~ 177ips
@@ -110,7 +102,10 @@ public class Constants extends ConstantsBase {
     //TODO tune for glitch
 
     // Wheels
-    public static double kDriveWheelDiameterInches = 3.419;
+    // in inches
+    public static double WheelDiameter = 6.2715;  // 6.2715 END OF GAYLORD NEW WHEELS
+    public static double WheelCircumference = (Robot.isOBot() ? 4 : WheelDiameter) * Math.PI;
+    public static double kDriveWheelDiameterInches = WheelDiameter;
     public static double kTrackWidthInches = 26.655;
     public static double kTrackScrubFactor = 0.924;
 
@@ -242,14 +237,6 @@ public class Constants extends ConstantsBase {
     public static int ELEVATOR_CAN_DROP_COLLECT_POS = ELEVATOR_COLLECT_POS + 200;
     public static int ELEVATOR_BOTTOM_POS = 900;
     public static int ELEVATOR_EPSILON = 100;
-
-    public static int ELEVATOR_INCREMENT = 10;
-    public static int MIN_ELEVATOR = ELEVATOR_COLLECT_POS;
-    public static int MAX_ELEVATOR = ELEVATOR_SCALE_POS_HIGH;
-
-    public static int FOURBAR_INCREMENT = 1;
-    public static int MIN_FOURBAR = FOURBAR_COLLECT_POS;
-    public static int MAX_FOURBAR = FOURBAR_SCALE_POS_HIGH;
 
     public static final double ALERT_DURATION = 3;
     public static double PRotate = 0.02;

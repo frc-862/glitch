@@ -25,7 +25,6 @@ public class VisionCollect extends Command {
 	
     public VisionCollect() {
         requires(Robot.driveTrain);
-//        requires(Robot.gripper);
     }
 
     @Override
@@ -116,7 +115,6 @@ public class VisionCollect extends Command {
             	rotation = angle * Constants.StraightenKpLowGear;
             }
             power = 0.2;
-            //qturn = Math.abs(angleFilter.get()) > 9;
             SmartDashboard.putNumber("angleFilter.get()", angleFilter.get());
 
             Logger.info("VisionCollect: " + rotation + ", " + power + ", " + qturn);
