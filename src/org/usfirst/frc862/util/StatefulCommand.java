@@ -9,19 +9,19 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class StatefulCommand extends Command {
     private Enum<?> state;
-    protected Runnable default_action = () -> {};
+    private Runnable default_action = () -> {};
     private Enum<?> previous_state = null;
     private Enum<?> calling_state = null;
     
-    public void setState(Enum<?> new_state) {
+    protected void setState(Enum<?> new_state) {
         state = new_state;
     }
     
-    public Enum<?> getState() {
+    protected Enum<?> getState() {
         return state;
     }
     
-    public Enum<?> getCallingState() {
+    protected Enum<?> getCallingState() {
         return calling_state;
     }
     
@@ -29,7 +29,7 @@ public class StatefulCommand extends Command {
         default_action = action;
     }
 
-    public StatefulCommand(Enum<?> state) {
+    protected StatefulCommand(Enum<?> state) {
         this.state = state;
     }
 
@@ -58,7 +58,7 @@ public class StatefulCommand extends Command {
         return true;
     }
     
-    protected String methodName(Enum<?> state) {
+    private String methodName(Enum<?> state) {
         String state_name = state.name().toLowerCase();
         String method_name = Stream.of(state_name.split("[^a-zA-Z0-9]"))
                 .map(v -> v.substring(0, 1).toUpperCase() + v.substring(1).toLowerCase())

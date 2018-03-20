@@ -46,7 +46,8 @@ public class CubeVision extends Subsystem {
 	private long lastGoodFrameNum;
 	private SerialPort serialIn;
 	private ArrayList<PowerCube> cubes, cubesIn;
-	private boolean visionInit = true, enableTracking = false;
+	private boolean visionInit = true;
+  private final boolean enableTracking = false;
 	private int idCounter = 0;
 	private double angle;
 	private double leftDist, rightDist;
@@ -244,8 +245,8 @@ public class CubeVision extends Subsystem {
     }
     
     private void updateCubeList() {
-    	PowerCube best = null;
-    	int bestIndex = -1;
+    	PowerCube best;
+    	int bestIndex;
     	for(PowerCube cubeIn : cubesIn) {
     		best = null;
     		bestIndex = -1;

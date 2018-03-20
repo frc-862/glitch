@@ -9,11 +9,11 @@ public class Logger {
 
 	private static String baseFileName = "robot";
 
-    public static final int TRACE = 0;
-    public static final int DEBUG = 10;
-    public static final int INFO = 20;
-    public static final int WARN = 30;
-    public static final int ERROR = 40;
+    private static final int TRACE = 0;
+    private static final int DEBUG = 10;
+    private static final int INFO = 20;
+    private static final int WARN = 30;
+    private static final int ERROR = 40;
 
     private static int level = DEBUG;
     private static Logger logger;
@@ -146,7 +146,7 @@ public class Logger {
         getLogger().writer.flush();
     }
     
-    public void reset_file() {
+    private void reset_file() {
         writer.setFileName(logFileName().getAbsolutePath());
     }
 }

@@ -25,27 +25,27 @@ public class Spline {
 
   // Cubic spline where positions and first derivatives (angle) constraints will
   // be met but second derivatives may be discontinuous.
-  public static final Type CubicHermite = new Type("CubicHermite");
+  private static final Type CubicHermite = new Type("CubicHermite");
 
   // Quintic spline where positions and first derivatives (angle) constraints
   // will be met, and all second derivatives at knots = 0.
   public static final Type QuinticHermite = new Type("QuinticHermite");
 
-  Type type_;
-  double a_;  // ax^5
-  double b_;  // + bx^4
-  double c_;  // + cx^3
-  double d_;  // + dx^2
-  double e_;  // + ex
+  private Type type_;
+  private double a_;  // ax^5
+  private double b_;  // + bx^4
+  private double c_;  // + cx^3
+  private double d_;  // + dx^2
+  private double e_;  // + ex
   // f is always 0 for the spline formulation we support.
 
   // The offset from the world frame to the spline frame.
   // Add these to the output of the spline to obtain world coordinates.
-  double y_offset_;
-  double x_offset_;
-  double knot_distance_;
-  double theta_offset_;
-  double arc_length_;
+  private double y_offset_;
+  private double x_offset_;
+  private double knot_distance_;
+  private double theta_offset_;
+  private double arc_length_;
 
   Spline() {
     // All splines should be made via the static interface
@@ -62,8 +62,8 @@ public class Spline {
             goal.theta, result, type);
   }
 
-  public static boolean reticulateSplines(double x0, double y0, double theta0,
-          double x1, double y1, double theta1, Spline result, Type type) {
+  private static boolean reticulateSplines(double x0, double y0, double theta0,
+                                           double x1, double y1, double theta1, Spline result, Type type) {
     System.out.println("Reticulating splines...");
     result.type_ = type;
 

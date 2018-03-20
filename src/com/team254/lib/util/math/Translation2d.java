@@ -8,14 +8,14 @@ import java.text.DecimalFormat;
  * A translation in a 2d coordinate frame. Translations are simply shifts in an (x, y) plane.
  */
 public class Translation2d implements Interpolable<Translation2d> {
-    protected static final Translation2d kIdentity = new Translation2d();
+    private static final Translation2d kIdentity = new Translation2d();
 
     public static final Translation2d identity() {
         return kIdentity;
     }
 
-    protected double x_;
-    protected double y_;
+    private double x_;
+    private double y_;
 
     public Translation2d() {
         x_ = 0;
@@ -111,7 +111,7 @@ public class Translation2d implements Interpolable<Translation2d> {
         return extrapolate(other, x);
     }
 
-    public Translation2d extrapolate(Translation2d other, double x) {
+    private Translation2d extrapolate(Translation2d other, double x) {
         return new Translation2d(x * (other.x_ - x_) + x_, x * (other.y_ - y_) + y_);
     }
 
@@ -125,7 +125,7 @@ public class Translation2d implements Interpolable<Translation2d> {
         return "(" + fmt.format(x_) + "," + fmt.format(y_) + ")";
     }
 
-    public static double dot(Translation2d a, Translation2d b) {
+    private static double dot(Translation2d a, Translation2d b) {
         return a.x_ * b.x_ + a.y_ * b.y_;
     }
 

@@ -26,7 +26,7 @@ public class MotionProfileGoal {
      * VIOLATE_MAX_ABS_VEL - If the max velocity is just a general guideline and not a hard performance limit, it's
      * better to slightly exceed it to avoid skidding wheels.
      */
-    public static enum CompletionBehavior {
+    public enum CompletionBehavior {
         // Overshoot the goal if necessary (at a velocity greater than max_abs_vel) and come back.
         // Only valid if the goal velocity is 0.0 (otherwise VIOLATE_MAX_ACCEL will be used).
         OVERSHOOT,
@@ -37,11 +37,11 @@ public class MotionProfileGoal {
         VIOLATE_MAX_ABS_VEL
     }
 
-    protected double pos;
-    protected double max_abs_vel;
-    protected CompletionBehavior completion_behavior = CompletionBehavior.OVERSHOOT;
-    protected double pos_tolerance = 1E-3;
-    protected double vel_tolerance = 1E-2;
+    private double pos;
+    private double max_abs_vel;
+    private CompletionBehavior completion_behavior = CompletionBehavior.OVERSHOOT;
+    private double pos_tolerance = 1E-3;
+    private double vel_tolerance = 1E-2;
 
     public MotionProfileGoal() {
     }
@@ -111,14 +111,14 @@ public class MotionProfileGoal {
                 || completion_behavior == CompletionBehavior.VIOLATE_MAX_ABS_VEL);
     }
 
-    public boolean atGoalPos(double pos) {
+    private boolean atGoalPos(double pos) {
         return epsilonEquals(pos, this.pos, pos_tolerance);
     }
 
     /**
      * This method makes sure that the completion behavior is compatible with the max goal velocity.
      */
-    protected void sanityCheck() {
+    private void sanityCheck() {
         if (max_abs_vel > vel_tolerance && completion_behavior == CompletionBehavior.OVERSHOOT) {
             completion_behavior = CompletionBehavior.VIOLATE_MAX_ACCEL;
         }

@@ -25,13 +25,13 @@ public class WaypointSequence {
       this.theta = tocopy.theta;
     }
 
-    public double x;
+    public final double x;
     public double y;
     public double theta;
   }
 
-  Waypoint[] waypoints_;
-  int num_waypoints_;
+  private final Waypoint[] waypoints_;
+  private int num_waypoints_;
 
   public WaypointSequence(int max_size) {
     waypoints_ = new Waypoint[max_size];

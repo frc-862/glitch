@@ -7,7 +7,7 @@ package com.team254.lib.util;
  */
 public class InterpolatingDouble implements Interpolable<InterpolatingDouble>, InverseInterpolable<InterpolatingDouble>,
         Comparable<InterpolatingDouble> {
-    public Double value = 0.0;
+    private Double value;
 
     public InterpolatingDouble(Double val) {
         value = val;

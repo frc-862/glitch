@@ -10,9 +10,9 @@ public class DataLogger implements Loop {
     private static DataLogger logger;
     private static String baseFName = "data";
     
-    private LogWriter writer;
-    private ArrayList<String> fieldNames = new ArrayList<>();
-    private ArrayList<DoubleSupplier> fieldValues = new ArrayList<>();
+    private final LogWriter writer;
+    private final ArrayList<String> fieldNames = new ArrayList<>();
+    private final ArrayList<DoubleSupplier> fieldValues = new ArrayList<>();
     private boolean first_time = true;
     
     public static DataLogger getLogger() {
@@ -103,7 +103,7 @@ public class DataLogger implements Loop {
         return result;
     }
 
-    public void reset_file() {
+    private void reset_file() {
         writer.setFileName(logFileName().getAbsolutePath());
         writeHeader();
     }

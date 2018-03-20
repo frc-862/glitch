@@ -15,7 +15,7 @@ public class TimedTriggers extends Command {
             this.at = at;
         }
 
-        public boolean check(double elapsed) {
+        boolean check(double elapsed) {
             if (elapsed >= at) {
                 command.start();
                 return true;
@@ -32,7 +32,7 @@ public class TimedTriggers extends Command {
         }
     }
 
-    SortedSet<TimedCommandEntry> actions = new TreeSet<>();
+    private final SortedSet<TimedCommandEntry> actions = new TreeSet<>();
 
     public void addAction(Command cmd, double at) {
         actions.add(new TimedCommandEntry(cmd, at));

@@ -16,7 +16,7 @@ public class FaultCode {
         NAVX_ERROR, INTERNAL_ERROR
     }
 
-    private static HashSet<Codes> faults = new HashSet<>();
+    private static final HashSet<Codes> faults = new HashSet<>();
     private static boolean first_time = true;
     private static boolean dummy_light = false;
 

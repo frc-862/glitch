@@ -14,25 +14,25 @@ import org.usfirst.frc862.glitch.Constants;
  * 
  * @see GoalTrack
  */
-public class GoalTracker {
+class GoalTracker {
     /**
      * Track reports contain all of the relevant information about a given goal track.
      */
     public static class TrackReport {
         // Translation from the field frame to the goal
-        public Translation2d field_to_goal;
+        public final Translation2d field_to_goal;
 
         // The timestamp of the latest time that the goal has been observed
-        public double latest_timestamp;
+        final double latest_timestamp;
 
         // The percentage of the goal tracking time during which this goal has
         // been observed (0 to 1)
-        public double stability;
+        final double stability;
 
         // The track id
-        public int id;
+        final int id;
 
-        public TrackReport(GoalTrack track) {
+        TrackReport(GoalTrack track) {
             this.field_to_goal = track.getSmoothedPosition();
             this.latest_timestamp = track.getLatestTimestamp();
             this.stability = track.getStability();
@@ -45,16 +45,16 @@ public class GoalTracker {
      * multiple goals). They contain heuristics used to pick which track we should aim at by calculating a score for
      * each track (highest score wins).
      */
-    public static class TrackReportComparator implements Comparator<TrackReport> {
+    static class TrackReportComparator implements Comparator<TrackReport> {
         // Reward tracks for being more stable (seen in more frames)
-        double mStabilityWeight;
+        final double mStabilityWeight;
         // Reward tracks for being recently observed
-        double mAgeWeight;
-        double mCurrentTimestamp;
+        final double mAgeWeight;
+        final double mCurrentTimestamp;
         // Reward tracks for being continuations of tracks that we are already
         // tracking
-        double mSwitchingWeight;
-        int mLastTrackId;
+        final double mSwitchingWeight;
+        final int mLastTrackId;
 
         public TrackReportComparator(double stability_weight, double age_weight, double switching_weight,
                 int last_track_id, double current_timestamp) {
@@ -88,8 +88,8 @@ public class GoalTracker {
         }
     }
 
-    List<GoalTrack> mCurrentTracks = new ArrayList<>();
-    int mNextId = 0;
+    private final List<GoalTrack> mCurrentTracks = new ArrayList<>();
+    private int mNextId = 0;
 
     public GoalTracker() {
     }

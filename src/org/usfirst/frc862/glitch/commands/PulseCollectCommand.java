@@ -7,7 +7,7 @@ import org.usfirst.frc862.glitch.Robot;
 /**
  * Collects a cube by toggling the collector on and off repeatedly
  */
-public class PulseCollectCommand extends Command {
+class PulseCollectCommand extends Command {
   public PulseCollectCommand() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -32,9 +32,9 @@ public class PulseCollectCommand extends Command {
     // We'll have to do something fancier if we want more than a second to work with
     double inSecond = Timer.getFPGATimestamp() - Math.floor(Timer.getFPGATimestamp());
     if(inSecond < 0.75) {
-      Robot.gripper.collectCube();
+      Robot.collector.collectCube();
     } else {
-      Robot.gripper.stopIntake(); // TODO should this be holdCube?
+      Robot.collector.stopIntake(); // TODO should this be holdCube?
     }
   }
 
@@ -58,7 +58,7 @@ public class PulseCollectCommand extends Command {
    */
   @Override
   protected boolean isFinished() {
-    return Robot.gripper.hasCube();
+    return Robot.collector.hasCube();
   }
 
 
@@ -70,6 +70,6 @@ public class PulseCollectCommand extends Command {
    */
   @Override
   protected void end() {
-    Robot.gripper.holdCube();
+    Robot.collector.holdCube();
   }
 }

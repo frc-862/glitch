@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * Created by phurley on 12/7/16.
  */
-public class FaultCommand extends Command {
-    final FaultCode.Codes code;
+class FaultCommand extends Command {
+    private final FaultCode.Codes code;
 
     public FaultCommand(FaultCode.Codes code) {
         this.code = code;

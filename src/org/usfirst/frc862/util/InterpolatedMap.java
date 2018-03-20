@@ -3,7 +3,7 @@ package org.usfirst.frc862.util;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class InterpolatedMap extends TreeMap<Double, Double> {
+class InterpolatedMap extends TreeMap<Double, Double> {
     private static final long serialVersionUID = 8077601264655543291L;
 
     public InterpolatedMap() {

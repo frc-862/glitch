@@ -11,7 +11,7 @@ public class SecondCubeRight extends org.usfirst.frc862.util.DynamicPathCommand 
         return SecondCubeRight.generatePath();
     }
 
-    public static Path generatePath() {
+    private static Path generatePath() {
         if (path != null) {
             return path;
         }

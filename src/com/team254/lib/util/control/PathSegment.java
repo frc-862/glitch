@@ -15,14 +15,14 @@ import java.util.Optional;
  * Class representing a segment of the robot's autonomous path.
  */
 
-public class PathSegment {
-    private Translation2d start;
-    private Translation2d end;
+class PathSegment {
+    private final Translation2d start;
+    private final Translation2d end;
     private Translation2d center;
-    private Translation2d deltaStart;
+    private final Translation2d deltaStart;
     private Translation2d deltaEnd;
-    private double maxSpeed;
-    private boolean isLine;
+    private final double maxSpeed;
+    private final boolean isLine;
     private MotionProfile speedController;
     private boolean extrapolateLookahead;
     private String marker;
@@ -220,7 +220,7 @@ public class PathSegment {
     /**
      * Gets the remaining distance left on the segment from point <code>point</code>
      * 
-     * @param point
+     * @param position
      *            result of <code>getClosestPoint()</code>
      * @return distance remaining
      */

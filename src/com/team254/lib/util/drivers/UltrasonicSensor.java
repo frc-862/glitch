@@ -7,14 +7,14 @@ import java.util.LinkedList;
 /**
  * Driver for an analog Ultrasonic Sensor (mainly to help smooth out noise).
  */
-public class UltrasonicSensor {
-    protected AnalogInput mAnalogInput;
-    private LinkedList<Double> cache;
-    protected double mScalingFactor = 512.0 / 5.0;
+class UltrasonicSensor {
+    private final AnalogInput mAnalogInput;
+    private final LinkedList<Double> cache;
+    double mScalingFactor = 512.0 / 5.0;
 
     private static final int kCacheSize = 5;
 
-    public UltrasonicSensor(int port) {
+    UltrasonicSensor(int port) {
         mAnalogInput = new AnalogInput(port);
         cache = new LinkedList<Double>();
         cache.add(getRawDistance());
@@ -26,11 +26,11 @@ public class UltrasonicSensor {
             cache.removeFirst();
     }
 
-    public double getRawDistance() {
+    private double getRawDistance() {
         return mAnalogInput.getVoltage() * mScalingFactor;
     }
 
-    public double getAverageDistance() {
+    double getAverageDistance() {
         double total = 0;
         for (Double d : cache) {
             total += d;
@@ -38,7 +38,7 @@ public class UltrasonicSensor {
         return total / cache.size();
     }
 
-    public double getLatestDistance() {
+    double getLatestDistance() {
         return cache.getLast();
     }
 }

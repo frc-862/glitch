@@ -2,10 +2,10 @@ package org.usfirst.frc862.util;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class ToggleCommand extends Command {
-    Command cmdA;
-    Command cmdB;
-    boolean a = true;
+class ToggleCommand extends Command {
+    private final Command cmdA;
+    private final Command cmdB;
+    private boolean a = true;
 
     public ToggleCommand(Command a, Command b) {
         cmdA = a;

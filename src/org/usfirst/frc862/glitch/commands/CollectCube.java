@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Robot;
 
 
-public class CollectCube extends Command {
+class CollectCube extends Command {
     public CollectCube() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -17,7 +17,7 @@ public class CollectCube extends Command {
      */
     @Override
     protected void initialize() {
-        Robot.gripper.collectCube();
+        Robot.collector.collectCube();
     }
 
 
@@ -49,7 +49,7 @@ public class CollectCube extends Command {
     @Override
     protected boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return Robot.gripper.hasCube();
+        return Robot.collector.hasCube();
     }
 
 
@@ -61,6 +61,6 @@ public class CollectCube extends Command {
      */
     @Override
     protected void end() {
-        Robot.gripper.holdCube();
+        Robot.collector.holdCube();
     }
 }

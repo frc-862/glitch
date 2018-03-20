@@ -11,7 +11,7 @@ public class RightPointsSwitch extends org.usfirst.frc862.util.DynamicPathComman
         return RightPointsSwitch.generatePath();
     }
 
-    public static Path generatePath() {
+    private static Path generatePath() {
         if (path != null) {
             return path;
         }

@@ -7,7 +7,7 @@ import org.usfirst.frc862.glitch.Robot;
 public class HoldCube extends Command {
     public HoldCube() {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.gripper);
+        requires(Robot.collector);
     }
 
 
@@ -17,7 +17,7 @@ public class HoldCube extends Command {
      */
     @Override
     protected void initialize() {
-        Robot.gripper.holdCube();
+        Robot.collector.holdCube();
     }
 
 
@@ -29,6 +29,6 @@ public class HoldCube extends Command {
 
     @Override
     protected void end() {
-        Robot.gripper.stopIntake();
+        Robot.collector.stopIntake();
     }
 }

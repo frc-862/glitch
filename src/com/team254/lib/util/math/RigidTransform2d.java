@@ -10,9 +10,9 @@ import com.team254.lib.util.Interpolable;
  * Inspired by Sophus (https://github.com/strasdat/Sophus/tree/master/sophus)
  */
 public class RigidTransform2d implements Interpolable<RigidTransform2d> {
-    protected static final double kEpsilon = 1E-9;
+    private static final double kEpsilon = 1E-9;
 
-    protected static final RigidTransform2d kIdentity = new RigidTransform2d();
+    private static final RigidTransform2d kIdentity = new RigidTransform2d();
 
     public static final RigidTransform2d identity() {
         return kIdentity;
@@ -20,8 +20,8 @@ public class RigidTransform2d implements Interpolable<RigidTransform2d> {
 
     private final static double kEps = 1E-9;
 
-    protected Translation2d translation_;
-    protected Rotation2d rotation_;
+    private Translation2d translation_;
+    private Rotation2d rotation_;
 
     public RigidTransform2d() {
         translation_ = new Translation2d();
@@ -33,7 +33,7 @@ public class RigidTransform2d implements Interpolable<RigidTransform2d> {
         rotation_ = rotation;
     }
 
-    public RigidTransform2d(RigidTransform2d other) {
+    private RigidTransform2d(RigidTransform2d other) {
         translation_ = new Translation2d(other.translation_);
         rotation_ = new Rotation2d(other.rotation_);
     }
@@ -68,7 +68,7 @@ public class RigidTransform2d implements Interpolable<RigidTransform2d> {
     /**
      * Logical inverse of the above.
      */
-    public static Twist2d log(RigidTransform2d transform) {
+    private static Twist2d log(RigidTransform2d transform) {
         final double dtheta = transform.getRotation().getRadians();
         final double half_dtheta = 0.5 * dtheta;
         final double cos_minus_one = transform.getRotation().cos() - 1.0;
@@ -117,7 +117,7 @@ public class RigidTransform2d implements Interpolable<RigidTransform2d> {
      * 
      * @return The opposite of this transform.
      */
-    public RigidTransform2d inverse() {
+    private RigidTransform2d inverse() {
         Rotation2d rotation_inverted = rotation_.inverse();
         return new RigidTransform2d(translation_.inverse().rotateBy(rotation_inverted), rotation_inverted);
     }

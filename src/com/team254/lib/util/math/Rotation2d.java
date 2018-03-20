@@ -12,16 +12,16 @@ import java.text.DecimalFormat;
  * Inspired by Sophus (https://github.com/strasdat/Sophus/tree/master/sophus)
  */
 public class Rotation2d implements Interpolable<Rotation2d> {
-    protected static final Rotation2d kIdentity = new Rotation2d();
+    private static final Rotation2d kIdentity = new Rotation2d();
 
     public static final Rotation2d identity() {
         return kIdentity;
     }
 
-    protected static final double kEpsilon = 1E-9;
+    private static final double kEpsilon = 1E-9;
 
-    protected double cos_angle_;
-    protected double sin_angle_;
+    private double cos_angle_;
+    private double sin_angle_;
 
     public Rotation2d() {
         this(1, 0, false);
@@ -56,7 +56,7 @@ public class Rotation2d implements Interpolable<Rotation2d> {
      * From trig, we know that sin^2 + cos^2 == 1, but as we do math on this object we might accumulate rounding errors.
      * Normalizing forces us to re-scale the sin and cos to reset rounding errors.
      */
-    public void normalize() {
+    private void normalize() {
         double magnitude = Math.hypot(cos_angle_, sin_angle_);
         if (magnitude > kEpsilon) {
             sin_angle_ /= magnitude;

@@ -7,8 +7,8 @@ import java.util.ArrayList;
  */
 public class MovingAverage {
 
-    ArrayList<Double> numbers = new ArrayList<Double>();
-    int maxSize;
+    private final ArrayList<Double> numbers = new ArrayList<Double>();
+    private final int maxSize;
 
     public MovingAverage(int maxSize) {
         this.maxSize = maxSize;
@@ -31,7 +31,7 @@ public class MovingAverage {
         return total / numbers.size();
     }
 
-    public int getSize() {
+    private int getSize() {
         return numbers.size();
     }
 

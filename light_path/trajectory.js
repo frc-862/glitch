@@ -23,10 +23,8 @@ var Spline = (function () {
     }
     Spline.CubicHermite_$LI$ = function () { if (Spline.CubicHermite == null)
         Spline.CubicHermite = new Spline.Type("CubicHermite"); return Spline.CubicHermite; };
-    ;
     Spline.QuinticHermite_$LI$ = function () { if (Spline.QuinticHermite == null)
         Spline.QuinticHermite = new Spline.Type("QuinticHermite"); return Spline.QuinticHermite; };
-    ;
     Spline.almostEqual = function (x, y) {
         return Math.abs(x - y) < 1.0E-6;
     };
@@ -97,7 +95,6 @@ var Spline = (function () {
             arc_length += (integrand + last_integrand) / 2;
             last_integrand = integrand;
         }
-        ;
         this.arc_length_ = this.knot_distance_ * arc_length;
         return this.arc_length_;
     };
@@ -121,7 +118,6 @@ var Spline = (function () {
             last_integrand = integrand;
             last_arc_length = arc_length;
         }
-        ;
         var interpolated = t;
         if (arc_length !== last_arc_length) {
             interpolated += ((distance - last_arc_length) / (arc_length - last_arc_length) - 1) / kNumSamples;
@@ -197,7 +193,6 @@ var ChezyMath = (function () {
     }
     ChezyMath.nan_$LI$ = function () { if (ChezyMath.nan == null)
         ChezyMath.nan = (0.0 / 0.0); return ChezyMath.nan; };
-    ;
     /*private*/ ChezyMath.mxatan = function (arg) {
         var argsq;
         var value;
@@ -292,44 +287,36 @@ var ChezyMath = (function () {
         while ((angle >= 360.0)) {
             angle -= 360.0;
         }
-        ;
         while ((angle < 0.0)) {
             angle += 360.0;
         }
-        ;
         return angle;
     };
     ChezyMath.boundAngleNeg180to180Degrees = function (angle) {
         while ((angle >= 180.0)) {
             angle -= 360.0;
         }
-        ;
         while ((angle < -180.0)) {
             angle += 360.0;
         }
-        ;
         return angle;
     };
     ChezyMath.boundAngle0to2PiRadians = function (angle) {
         while ((angle >= 2.0 * Math.PI)) {
             angle -= 2.0 * Math.PI;
         }
-        ;
         while ((angle < 0.0)) {
             angle += 2.0 * Math.PI;
         }
-        ;
         return angle;
     };
     ChezyMath.boundAngleNegPiToPiRadians = function (angle) {
         while ((angle >= Math.PI)) {
             angle -= 2.0 * Math.PI;
         }
-        ;
         while ((angle < -Math.PI)) {
             angle += 2.0 * Math.PI;
         }
-        ;
         return angle;
     };
     return ChezyMath;
@@ -359,22 +346,16 @@ var TrajectoryGenerator = (function () {
     }
     TrajectoryGenerator.StepStrategy_$LI$ = function () { if (TrajectoryGenerator.StepStrategy == null)
         TrajectoryGenerator.StepStrategy = new TrajectoryGenerator.Strategy("StepStrategy"); return TrajectoryGenerator.StepStrategy; };
-    ;
     TrajectoryGenerator.TrapezoidalStrategy_$LI$ = function () { if (TrajectoryGenerator.TrapezoidalStrategy == null)
         TrajectoryGenerator.TrapezoidalStrategy = new TrajectoryGenerator.Strategy("TrapezoidalStrategy"); return TrajectoryGenerator.TrapezoidalStrategy; };
-    ;
     TrajectoryGenerator.SCurvesStrategy_$LI$ = function () { if (TrajectoryGenerator.SCurvesStrategy == null)
         TrajectoryGenerator.SCurvesStrategy = new TrajectoryGenerator.Strategy("SCurvesStrategy"); return TrajectoryGenerator.SCurvesStrategy; };
-    ;
     TrajectoryGenerator.AutomaticStrategy_$LI$ = function () { if (TrajectoryGenerator.AutomaticStrategy == null)
         TrajectoryGenerator.AutomaticStrategy = new TrajectoryGenerator.Strategy("AutomaticStrategy"); return TrajectoryGenerator.AutomaticStrategy; };
-    ;
     TrajectoryGenerator.RectangularIntegration_$LI$ = function () { if (TrajectoryGenerator.RectangularIntegration == null)
         TrajectoryGenerator.RectangularIntegration = new TrajectoryGenerator.IntegrationMethod("RectangularIntegration"); return TrajectoryGenerator.RectangularIntegration; };
-    ;
     TrajectoryGenerator.TrapezoidalIntegration_$LI$ = function () { if (TrajectoryGenerator.TrapezoidalIntegration == null)
         TrajectoryGenerator.TrapezoidalIntegration = new TrajectoryGenerator.IntegrationMethod("TrapezoidalIntegration"); return TrajectoryGenerator.TrapezoidalIntegration; };
-    ;
     /**
      * Generate a trajectory from a start state to a goal state.
      *
@@ -431,7 +412,6 @@ var TrajectoryGenerator = (function () {
         for (var i = 0; i < traj.getNumSegments(); ++i) {
             traj.segments_[i].heading = start_heading + total_heading_change * (traj.segments_[i].pos) / traj.segments_[traj.getNumSegments() - 1].pos;
         }
-        ;
         return traj;
     };
     TrajectoryGenerator.secondOrderFilter = function (f1_length, f2_length, dt, start_vel, max_vel, total_impulse, length, integration) {
@@ -473,7 +453,6 @@ var TrajectoryGenerator = (function () {
                 }
                 f2 += f1[i - j];
             }
-            ;
             f2 = f2 / f1_length;
             traj.segments_[i].vel = f2 / f2_length * max_vel;
             if (integration === TrajectoryGenerator.RectangularIntegration_$LI$()) {
@@ -489,7 +468,6 @@ var TrajectoryGenerator = (function () {
             traj.segments_[i].dt = dt;
             last = traj.segments_[i];
         }
-        ;
         return traj;
     };
     TrajectoryGenerator.chooseStrategy = function (start_vel, goal_vel, max_vel) {
@@ -576,7 +554,6 @@ var Trajectory = (function () {
                 for (var i = 0; i < length_1; ++i) {
                     _this.segments_[i] = new Trajectory.Segment();
                 }
-                ;
             })();
         }
         else
@@ -616,18 +593,15 @@ var Trajectory = (function () {
             this.segments_[i].acc *= scaling_factor;
             this.segments_[i].jerk *= scaling_factor;
         }
-        ;
     };
     Trajectory.prototype.append = function (to_append) {
         var temp = new Array(this.getNumSegments() + to_append.getNumSegments());
         for (var i = 0; i < this.getNumSegments(); ++i) {
             temp[i] = new Trajectory.Segment(this.segments_[i]);
         }
-        ;
         for (var i = 0; i < to_append.getNumSegments(); ++i) {
             temp[i + this.getNumSegments()] = new Trajectory.Segment(to_append.getSegment(i));
         }
-        ;
         this.segments_ = temp;
     };
     Trajectory.prototype.copy = function () {
@@ -649,7 +623,6 @@ var Trajectory = (function () {
             copied[i].reverse();
             copied[i].pos -= start_pos;
         }
-        ;
         return copied;
     };
     Trajectory.prototype.copySegments = function (tocopy) {
@@ -657,7 +630,6 @@ var Trajectory = (function () {
         for (var i = 0; i < tocopy.length; ++i) {
             copied[i] = new Trajectory.Segment(tocopy[i]);
         }
-        ;
         return copied;
     };
     Trajectory.prototype.toString = function () {
@@ -672,7 +644,6 @@ var Trajectory = (function () {
             str += segment.heading + "\t";
             str += "\n";
         }
-        ;
         return str;
     };
     Trajectory.prototype.toStringProfile = function () {
@@ -688,7 +659,6 @@ var Trajectory = (function () {
             str += segment.heading + "\t";
             str += "\n";
         }
-        ;
         return str;
     };
     return Trajectory;
@@ -917,7 +887,6 @@ var WaypointSequence = (function () {
             inverted.waypoints_[i].y *= -1;
             inverted.waypoints_[i].theta = ChezyMath.boundAngle0to2PiRadians(2 * Math.PI - inverted.waypoints_[i].theta);
         }
-        ;
         return inverted;
     };
     return WaypointSequence;
@@ -999,7 +968,6 @@ var PathGenerator = (function () {
             spline_lengths[i] = splines[i].calculateLength();
             total_distance += spline_lengths[i];
         }
-        ;
         var traj = TrajectoryGenerator.generate(config, TrajectoryGenerator.SCurvesStrategy_$LI$(), 0.0, path.getWaypoint(0).theta, total_distance, 0.0, path.getWaypoint(0).theta);
         var cur_spline = 0;
         var cur_spline_start_pos = 0;
@@ -1030,9 +998,7 @@ var PathGenerator = (function () {
                     found_spline = true;
                 }
             }
-            ;
         }
-        ;
         return traj;
     };
     /**
@@ -1074,7 +1040,6 @@ var PathGenerator = (function () {
                 s_right.jerk = (s_right.acc - right.getSegment(i - 1).acc) / s_right.dt;
             }
         }
-        ;
         return new Trajectory.Pair(output[0], output[1]);
     };
     return PathGenerator;

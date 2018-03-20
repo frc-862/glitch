@@ -19,7 +19,7 @@ import org.usfirst.frc862.util.DataLogger;
 /**
  *
  */
-public class CalibratedRun extends Command {
+class CalibratedRun extends Command {
 
     private double kP = 0;
 	private double kI = 0;

@@ -8,10 +8,10 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 /**
  * Writes data to a CSV file
  */
-public class ReflectingCSVWriter<T> {
-    ConcurrentLinkedDeque<String> mLinesToWrite = new ConcurrentLinkedDeque<>();
-    PrintWriter mOutput = null;
-    Field[] mFields;
+class ReflectingCSVWriter<T> {
+    private final ConcurrentLinkedDeque<String> mLinesToWrite = new ConcurrentLinkedDeque<>();
+    private PrintWriter mOutput = null;
+    private final Field[] mFields;
 
     public ReflectingCSVWriter(String fileName, Class<T> typeClass) {
         mFields = typeClass.getFields();
@@ -48,14 +48,14 @@ public class ReflectingCSVWriter<T> {
         mLinesToWrite.add(line.toString());
     }
 
-    protected synchronized void writeLine(String line) {
+    private synchronized void writeLine(String line) {
         if (mOutput != null) {
             mOutput.println(line);
         }
     }
 
     // Call this periodically from any thread to write to disk.
-    public void write() {
+    private void write() {
         while (true) {
             String val = mLinesToWrite.pollFirst();
             if (val == null) {

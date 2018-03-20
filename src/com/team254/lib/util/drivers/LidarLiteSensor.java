@@ -9,9 +9,9 @@ import java.util.TimerTask;
 /**
  * Driver for a Lidar Lite sensor
  */
-public class LidarLiteSensor {
-    private I2C mI2C;
-    private byte[] mDistance;
+class LidarLiteSensor {
+    private final I2C mI2C;
+    private final byte[] mDistance;
     private java.util.Timer mUpdater;
     private boolean mHasSignal;
 
@@ -51,7 +51,7 @@ public class LidarLiteSensor {
     /**
      * Start polling for period in milliseconds
      */
-    public void start(int period) {
+    private void start(int period) {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {

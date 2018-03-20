@@ -11,7 +11,7 @@ public class RightSwitch0Degree extends org.usfirst.frc862.util.DynamicPathComma
         return RightSwitch0Degree.generatePath();
     }
 
-    public static Path generatePath() {
+    private static Path generatePath() {
         if (path != null) {
             return path;
         }

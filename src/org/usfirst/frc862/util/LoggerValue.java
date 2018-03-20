@@ -2,7 +2,7 @@ package org.usfirst.frc862.util;
 
 import java.util.function.DoubleSupplier;
 
-public class LoggerValue implements DoubleSupplier {
+class LoggerValue implements DoubleSupplier {
     private double value;
     
     public LoggerValue() {

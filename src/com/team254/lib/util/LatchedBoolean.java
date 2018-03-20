@@ -5,7 +5,7 @@ package com.team254.lib.util;
  * 
  * Returns true once if and only if the value of newValue changes from false to true.
  */
-public class LatchedBoolean {
+class LatchedBoolean {
     private boolean mLast = false;
 
     public boolean update(boolean newValue) {

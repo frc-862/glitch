@@ -5,10 +5,10 @@ import java.util.LinkedList;
 /**
  * Implements a simple circular buffer.
  */
-public class CircularBuffer {
-    int mWindowSize;
-    LinkedList<Double> mSamples;
-    double mSum;
+class CircularBuffer {
+    private final int mWindowSize;
+    private final LinkedList<Double> mSamples;
+    private double mSum;
 
     public CircularBuffer(int window_size) {
         mWindowSize = window_size;

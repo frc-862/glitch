@@ -9,12 +9,12 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
  * Created by phurley on 12/7/16.
  */
 
-public class MonitorTrigger extends Trigger {
-    final BooleanSupplier test;
-    final double duration;
-    final Timer timer = new Timer();
+class MonitorTrigger extends Trigger {
+    private final BooleanSupplier test;
+    private final double duration;
+    private final Timer timer = new Timer();
 
-    public MonitorTrigger(double duration, BooleanSupplier test) {
+    private MonitorTrigger(double duration, BooleanSupplier test) {
         this.test = test;
         this.duration = duration;
         timer.start();

@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
-import org.usfirst.frc862.glitch.subsystems.Gripper;
 import org.usfirst.frc862.glitch.subsystems.ShineBois;
 import org.usfirst.frc862.glitch.vision.CubeNotFoundException;
 import org.usfirst.frc862.glitch.vision.PowerCube;
@@ -35,7 +34,7 @@ public class VisionCollect extends Command {
         prevArea = 0;
     }
 
-    private ValueFilter angleFilter = new ExponentialSmoothingFilter(0.4);
+    private final ValueFilter angleFilter = new ExponentialSmoothingFilter(0.4);
 
     private double angle = 0;
     private double dist = 0;
@@ -64,9 +63,6 @@ public class VisionCollect extends Command {
 
             if (areadiff < 0.3) {
                 runThisCycle = true;
-            }
-            else {
-                //do not update
             }
 
             SmartDashboard.putBoolean("runCycle", runThisCycle);
@@ -98,12 +94,12 @@ public class VisionCollect extends Command {
         	if(toggleTime == 0) {
         		toggleTime = Timer.getFPGATimestamp();
         		collecting = true;
-        		Robot.gripper.collectCube();
+        		Robot.collector.collectCube();
         	}
         	double time = Timer.getFPGATimestamp();
         	if(time - toggleTime >= .3) {
-        		if(collecting) Robot.gripper.stopIntake();
-        		else Robot.gripper.collectCube();
+        		if(collecting) Robot.collector.stopIntake();
+        		else Robot.collector.collectCube();
         		collecting = !collecting;
         		toggleTime = time;
         	}
@@ -120,7 +116,7 @@ public class VisionCollect extends Command {
             Logger.info("VisionCollect: " + rotation + ", " + power + ", " + qturn);
         }
         else {
-        	Robot.gripper.stopIntake();
+        	Robot.collector.stopIntake();
         	collecting = false;
         	toggleTime = 0;
         }
@@ -135,14 +131,14 @@ public class VisionCollect extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return Robot.gripper.hasCube();
+        return Robot.collector.hasCube();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
     	Robot.driveTrain.stop();
-    	Robot.gripper.stopIntake();
+    	Robot.collector.stopIntake();
     	ShineBois.chase();
     	Logger.info("Exit vision collect");
     }

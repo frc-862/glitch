@@ -45,7 +45,7 @@ public class LogWriter implements Loop {
         drain();
     }
 
-    public void drain() {
+    private void drain() {
         try {
             buffer.drainTo(drain);
             for (String msg : drain) {

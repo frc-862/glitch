@@ -12,7 +12,6 @@
 package org.usfirst.frc862.glitch.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import org.usfirst.frc862.glitch.subsystems.*;
 
 /**
  *

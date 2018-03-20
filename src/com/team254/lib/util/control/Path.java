@@ -17,9 +17,9 @@ import java.util.List;
  */
 
 public class Path {
-    List<PathSegment> segments;
-    PathSegment prevSegment;
-    HashSet<String> mMarkersCrossed = new HashSet<String>();
+    private final List<PathSegment> segments;
+    private PathSegment prevSegment;
+    private final HashSet<String> mMarkersCrossed = new HashSet<String>();
 
     public void extrapolateLast() {
         PathSegment last = segments.get(segments.size() - 1);
@@ -77,16 +77,16 @@ public class Path {
     }
 
     public static class TargetPointReport {
-        public Translation2d closest_point;
+        Translation2d closest_point;
         public double closest_point_distance;
-        public double closest_point_speed;
+        double closest_point_speed;
         public Translation2d lookahead_point;
         public double max_speed;
         public double lookahead_point_speed;
-        public double remaining_segment_distance;
+        double remaining_segment_distance;
         public double remaining_path_distance;
 
-        public TargetPointReport() {
+        TargetPointReport() {
         }
     }
 
@@ -157,7 +157,7 @@ public class Path {
      * @param robotPos
      *            robot position
      */
-    public void checkSegmentDone(Translation2d robotPos) {
+    private void checkSegmentDone(Translation2d robotPos) {
         PathSegment currentSegment = segments.get(0);
         double remainingDist = currentSegment.getRemainingDistance(currentSegment.getClosestPoint(robotPos));
         if (remainingDist < Constants.kSegmentCompletionTolerance) {
@@ -165,7 +165,7 @@ public class Path {
         }
     }
 
-    public void removeCurrentSegment() {
+    private void removeCurrentSegment() {
         prevSegment = segments.remove(0);
         String marker = prevSegment.getMarker();
         if (marker != null)

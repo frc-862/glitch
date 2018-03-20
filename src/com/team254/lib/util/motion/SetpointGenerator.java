@@ -20,15 +20,15 @@ public class SetpointGenerator {
         public MotionState motion_state;
         public boolean final_setpoint;
 
-        public Setpoint(MotionState motion_state, boolean final_setpoint) {
+        Setpoint(MotionState motion_state, boolean final_setpoint) {
             this.motion_state = motion_state;
             this.final_setpoint = final_setpoint;
         }
     }
 
-    protected MotionProfile mProfile = null;
-    protected MotionProfileGoal mGoal = null;
-    protected MotionProfileConstraints mConstraints = null;
+    private MotionProfile mProfile = null;
+    private MotionProfileGoal mGoal = null;
+    private MotionProfileConstraints mConstraints = null;
 
     public SetpointGenerator() {
     }

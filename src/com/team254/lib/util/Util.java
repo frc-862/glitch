@@ -17,7 +17,7 @@ public class Util {
         return limit(v, -maxMagnitude, maxMagnitude);
     }
 
-    public static double limit(double v, double min, double max) {
+    private static double limit(double v, double min, double max) {
         return Math.min(max, Math.max(min, v));
     }
 

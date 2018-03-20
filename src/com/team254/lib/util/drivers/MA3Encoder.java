@@ -11,22 +11,22 @@ import com.team254.lib.util.math.Rotation2d;
 /**
  * A 12-bit PWM MA3 absolute encoder. http://cdn.usdigital.com/assets/datasheets/MA3_datasheet.pdf
  */
-public class MA3Encoder {
-    static final double kNominalPeriodS = 4098 * 1E-6;
-    static final double kPeriodToleranceS = 200 * 1E-6;
+class MA3Encoder {
+    private static final double kNominalPeriodS = 4098 * 1E-6;
+    private static final double kPeriodToleranceS = 200 * 1E-6;
 
-    protected DigitalInput digital_input_;
-    protected Counter high_counter_; // access only from inner class after
+    private final DigitalInput digital_input_;
+    private final Counter high_counter_; // access only from inner class after
                                      // construction
-    protected Counter period_counter_; // access only from inner class after
+                                     private final Counter period_counter_; // access only from inner class after
                                        // construction
-    protected Notifier notifier_;
-    protected Rotation2d rotation_ = new Rotation2d();
-    protected Rotation2d home_ = new Rotation2d();
-    protected int num_rotations_ = 0;
-    protected boolean error_ = false;
+                                       private final Notifier notifier_;
+    private Rotation2d rotation_ = new Rotation2d();
+    private Rotation2d home_ = new Rotation2d();
+    private int num_rotations_ = 0;
+    private boolean error_ = false;
 
-    private CrashTrackingRunnable read_thread_ = new CrashTrackingRunnable() {
+    private final CrashTrackingRunnable read_thread_ = new CrashTrackingRunnable() {
         @Override
         public void runCrashTracked() {
             if (high_counter_.getStopped()) {
@@ -84,7 +84,7 @@ public class MA3Encoder {
         home_ = rotation_.inverse();
     }
 
-    public synchronized Rotation2d getRawAngle() {
+    private synchronized Rotation2d getRawAngle() {
         return rotation_;
     }
 

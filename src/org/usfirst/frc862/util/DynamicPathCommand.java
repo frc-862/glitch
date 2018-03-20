@@ -1,6 +1,5 @@
 package org.usfirst.frc862.util;
 
-import com.team254.lib.util.SmartDashboardUtil;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.util.FaultCode.Codes;
@@ -14,17 +13,16 @@ import com.team254.lib.trajectory.TrajectoryFollower;
 import com.team254.lib.util.ChezyMath;
 
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.command.Command;
 
 public class DynamicPathCommand extends DynamicPathCommandBase {
     private CommandLogger logger;
-    private TrajectoryFollower followerLeft = new TrajectoryFollower();
-    private TrajectoryFollower followerRight = new TrajectoryFollower();
+    private final TrajectoryFollower followerLeft = new TrajectoryFollower();
+    private final TrajectoryFollower followerRight = new TrajectoryFollower();
     private Notifier notifier;
     private double starting_heading;
     private Path path;
 
-    public DynamicPathCommand() {
+    protected DynamicPathCommand() {
         super();
         setup();
     }
@@ -45,7 +43,7 @@ public class DynamicPathCommand extends DynamicPathCommandBase {
         }
     }
 
-    protected boolean loadPath() {
+    private boolean loadPath() {
         path = getPath();
 
         return path != null;

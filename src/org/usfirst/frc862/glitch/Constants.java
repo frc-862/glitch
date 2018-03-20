@@ -1,11 +1,10 @@
 package org.usfirst.frc862.glitch;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.util.ConstantsBase;
 import org.usfirst.frc862.util.LightningMath;
 
 public class Constants extends ConstantsBase {
-    // Note this is final, it will not be
+    // Note this is, it will not be
     // in the config file, and if you put
     // it there, the value will be ignored
     // as the value here in the code is 
@@ -52,28 +51,28 @@ public class Constants extends ConstantsBase {
     public static int TALON_TIMEOUT = 10; //ms
 
     //turnToDegrees
-    public static final double ANGLE_TOLERANCE_DEGREES = 3;
+    public static double ANGLE_TOLERANCE_DEGREES = 3;
 
     // not currently functional
-    public static final int LOWGEAR_IDX = 0;
-    public static final int HIGHGEAR_IDX = 1;
+    public static int LOWGEAR_IDX = 0;
+    public static int HIGHGEAR_IDX = 1;
 
     // low gear
     public static double LOWGEAR_DRIVE_P = 1.55;  // 2 oscillated a little in testing
     public static double LOWGEAR_DRIVE_I = 0;
     public static double LOWGEAR_DRIVE_D = 0;
     public static double LOWGEAR_DRIVE_F = 1023 / PHYSICAL_MAX_LOW_SPEED_TICKS;
-    public static final int LOWGEAR_ALLOWED_DRIVE_ERROR = 20;
-    public static final double DOWNSHIFT_SLOW_TIME_SECONDS = 0.04;
+    public static int LOWGEAR_ALLOWED_DRIVE_ERROR = 20;
+    public static double DOWNSHIFT_SLOW_TIME_SECONDS = 0.04;
 
     // high gear
     public static double HIGHGEAR_DRIVE_P = 0.75;
     public static double HIGHGEAR_DRIVE_I = 0;
     public static double HIGHGEAR_DRIVE_D = 0;
     public static double HIGHGEAR_DRIVE_F = 1023 / PHYSICAL_MAX_HIGH_SPEED_TICKS;
-    public static final int HIGHGEAR_ALLOWED_DRIVE_ERROR = 40;
+    public static int HIGHGEAR_ALLOWED_DRIVE_ERROR = 40;
     public static double TICS_PER_ROTATION = 360 * 4;
-    public static final double UPSHIFT_SLOW_TIME_SECONDS = 0.08;
+    public static double UPSHIFT_SLOW_TIME_SECONDS = 0.08;
 
 
     //PID
@@ -103,7 +102,7 @@ public class Constants extends ConstantsBase {
 
     // Wheels
     // in inches
-    public static double WheelDiameter = 6.2715;  // 6.2715 END OF GAYLORD NEW WHEELS
+    private static double WheelDiameter = 6.2715;  // 6.2715 END OF GAYLORD NEW WHEELS
     public static double WheelCircumference = (Robot.isOBot() ? 4 : WheelDiameter) * Math.PI;
     public static double kDriveWheelDiameterInches = WheelDiameter;
     public static double kTrackWidthInches = 26.655;
@@ -124,10 +123,10 @@ public class Constants extends ConstantsBase {
     public static double kCameraDeadband = 0.0;
 
     // Path following constants
-    public static double kMinLookAhead = 12.0; // inches
-    public static double kMinLookAheadSpeed = 9.0; // inches per second
-    public static double kMaxLookAhead = 24.0; // inches
-    public static double kMaxLookAheadSpeed = 120.0; // inches per second
+    private static double kMinLookAhead = 12.0; // inches
+    private static double kMinLookAheadSpeed = 9.0; // inches per second
+    private static double kMaxLookAhead = 24.0; // inches
+    private static double kMaxLookAheadSpeed = 120.0; // inches per second
     public static double kDeltaLookAhead = kMaxLookAhead - kMinLookAhead;
     public static double kDeltaLookAheadSpeed = kMaxLookAheadSpeed - kMinLookAheadSpeed;
 
@@ -238,16 +237,16 @@ public class Constants extends ConstantsBase {
     public static int ELEVATOR_BOTTOM_POS = 900;
     public static int ELEVATOR_EPSILON = 100;
 
-    public static final double ALERT_DURATION = 3;
+    public static double ALERT_DURATION = 3;
     public static double PRotate = 0.02;
     public static double MinRotatePower = 0.4;
     public static double AutonScaleTime = 5;
 
     //Collector
-    public static final double DEFAULT_HOLD_POWER = 0.5;
+    public static double DEFAULT_HOLD_POWER = 0.5;
     public static double DEFAULT_COLLECT_POWER = 0.862;
     public static double DEFAULT_EJECT_POWER = -0.862;
-    public static final double COLLECT_TRIGGER_DEADZONE = 0;
+    public static double COLLECT_TRIGGER_DEADZONE = 0;
     public static double EJECT_MAX_FEATHER = .7;
 
 

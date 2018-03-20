@@ -1,8 +1,6 @@
 package org.usfirst.frc862.glitch.vision;
 
 import org.usfirst.frc862.glitch.Constants;
-import org.usfirst.frc862.glitch.Robot;
-import org.usfirst.frc862.glitch.RobotMap;
 
 /**
  * 
@@ -12,7 +10,12 @@ import org.usfirst.frc862.glitch.RobotMap;
  *
  */
 public class PowerCube {
-	private int x, y, id, height, width, index = -1;
+	private int x;
+  private int y;
+  private final int id;
+  private int height;
+  private int width;
+  private int index = -1;
 	private double angle, area, lateral, longitudal, confidence;
 	/**
 	 * 

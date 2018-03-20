@@ -9,15 +9,15 @@ public class XBoxController extends Joystick {
         super(port);
     }
 
-    public JoystickButton aButton = new JoystickButton(this, 1);
-    public JoystickButton bButton = new JoystickButton(this, 2);
-    public JoystickButton xButton = new JoystickButton(this, 3);
-    public JoystickButton yButton = new JoystickButton(this, 4);
-    public JoystickButton leftBumper = new JoystickButton(this, 5);
-    public JoystickButton rightBumper = new JoystickButton(this, 6);
+    public final JoystickButton aButton = new JoystickButton(this, 1);
+    public final JoystickButton bButton = new JoystickButton(this, 2);
+    public final JoystickButton xButton = new JoystickButton(this, 3);
+    public final JoystickButton yButton = new JoystickButton(this, 4);
+    public final JoystickButton leftBumper = new JoystickButton(this, 5);
+    public final JoystickButton rightBumper = new JoystickButton(this, 6);
     public JoystickButton selectButton = new JoystickButton(this, 7);
-    public JoystickButton startButton = new JoystickButton(this, 8);
-    public JoystickButton leftStickButton = new JoystickButton(this, 9);
+    public final JoystickButton startButton = new JoystickButton(this, 8);
+    public final JoystickButton leftStickButton = new JoystickButton(this, 9);
     public JoystickButton rightStickButton = new JoystickButton(this, 10);
 
     // public DPadUp dPadUp = new DPadUp(this);

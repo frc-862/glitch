@@ -16,7 +16,7 @@ public class InterpolatingTreeMap<K extends InverseInterpolable<K> & Comparable<
         extends TreeMap<K, V> {
     private static final long serialVersionUID = 8347275262778054124L;
 
-    int max_;
+    private final int max_;
 
     public InterpolatingTreeMap(int maximumSize) {
         max_ = maximumSize;

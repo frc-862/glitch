@@ -11,7 +11,7 @@ public class RightScaleNearOutsideLG extends org.usfirst.frc862.util.DynamicPath
         return RightScaleNearOutsideLG.generatePath();
     }
 
-    public static Path generatePath() {
+    private static Path generatePath() {
         if (path != null) {
             return path;
         }

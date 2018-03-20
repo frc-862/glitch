@@ -3,7 +3,7 @@ package org.usfirst.frc862.util;
 /**
  * Runnable class with reports all uncaught throws to CrashTracker
  */
-public abstract class CrashTrackingRunnable implements Runnable {
+abstract class CrashTrackingRunnable implements Runnable {
 
     @Override
     public final void run() {
@@ -15,5 +15,5 @@ public abstract class CrashTrackingRunnable implements Runnable {
         }
     }
 
-    public abstract void runCrashTracked();
+    protected abstract void runCrashTracked();
 }

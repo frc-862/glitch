@@ -11,8 +11,8 @@ import com.team254.lib.trajectory.io.TextFileSerializer;
  *
  * @author Jared341
  */
-public class Main {
-  public static String joinPath(String path1, String path2)
+class Main {
+  private static String joinPath(String path1, String path2)
   {
       File file1 = new File(path1);
       File file2 = new File(file1, path2);

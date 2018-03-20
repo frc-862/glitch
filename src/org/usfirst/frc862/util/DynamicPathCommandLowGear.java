@@ -6,7 +6,6 @@ import com.team254.lib.trajectory.TrajectoryFollower;
 import com.team254.lib.util.ChezyMath;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.subsystems.DriveTrain;
@@ -22,13 +21,13 @@ public class DynamicPathCommandLowGear extends DynamicPathCommandBase {
     private final static double pathFeedF = 6; // 4;
 
     private CommandLogger logger;
-    private TrajectoryFollower followerLeft = new TrajectoryFollower();
-    private TrajectoryFollower followerRight = new TrajectoryFollower();
+    private final TrajectoryFollower followerLeft = new TrajectoryFollower();
+    private final TrajectoryFollower followerRight = new TrajectoryFollower();
     private Notifier notifier;
     private double starting_heading;
     private Path path;
 
-    public DynamicPathCommandLowGear() {
+    protected DynamicPathCommandLowGear() {
         super();
         setup();
     }

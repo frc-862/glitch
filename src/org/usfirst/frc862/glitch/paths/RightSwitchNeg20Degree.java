@@ -11,7 +11,7 @@ public class RightSwitchNeg20Degree extends org.usfirst.frc862.util.DynamicPathC
         return RightSwitchNeg20Degree.generatePath();
     }
 
-    public static Path generatePath() {
+    private static Path generatePath() {
         if (path != null) {
             return path;
         }

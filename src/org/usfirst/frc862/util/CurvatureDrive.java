@@ -3,11 +3,12 @@ package org.usfirst.frc862.util;
 import com.team254.lib.util.DriveSignal;
 
 public class CurvatureDrive {
-    public static final double kDefaultQuickStopThreshold = 0.2;
-    public static final double kDefaultQuickStopAlpha = 0.1;
-    public static final double kDeadBand = 0.1;
+    private static final double kDefaultQuickStopThreshold = 0.2;
+    private static final double kDefaultQuickStopAlpha = 0.1;
+    private static final double kDeadBand = 0.1;
 
-    double left, right;
+    private double left;
+    private double right;
     private double dead_band = kDeadBand;
     private double m_quickStopThreshold = kDefaultQuickStopThreshold;
     private double m_quickStopAccumulator = 0.0;
@@ -62,7 +63,7 @@ public class CurvatureDrive {
     /**
      * Limit motor values to the -1.0 to +1.0 range.
      */
-    protected double limit(double value) {
+    private double limit(double value) {
         if (value > 1.0) {
             return 1.0;
         }
@@ -79,7 +80,7 @@ public class CurvatureDrive {
      * @param value    value to clip
      * @param deadband range around zero
      */
-    protected double applyDeadband(double value, double deadband) {
+    private double applyDeadband(double value, double deadband) {
         if (Math.abs(value) > deadband) {
             if (value > 0.0) {
                 return (value - deadband) / (1.0 - deadband);

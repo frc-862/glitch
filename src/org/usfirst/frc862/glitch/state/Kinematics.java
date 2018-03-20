@@ -26,8 +26,8 @@ public class Kinematics {
     /**
      * Forward kinematics using encoders and explicitly measured rotation (ex. from gyro)
      */
-    public static Twist2d forwardKinematics(double left_wheel_delta, double right_wheel_delta,
-            double delta_rotation_rads) {
+    private static Twist2d forwardKinematics(double left_wheel_delta, double right_wheel_delta,
+                                             double delta_rotation_rads) {
         final double dx = (left_wheel_delta + right_wheel_delta) / 2.0;
         return new Twist2d(dx, 0, delta_rotation_rads);
     }
@@ -61,10 +61,10 @@ public class Kinematics {
      * Class that contains left and right wheel velocities
      */
     public static class DriveVelocity {
-        public final double left;
-        public final double right;
+        final double left;
+        final double right;
 
-        public DriveVelocity(double left, double right) {
+        DriveVelocity(double left, double right) {
             this.left = left;
             this.right = right;
         }

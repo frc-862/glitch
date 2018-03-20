@@ -8,24 +8,24 @@ import com.team254.lib.util.motion.MotionProfileGoal.CompletionBehavior;
  * position.
  */
 public class ProfileFollower {
-    protected double mKp;
-    protected double mKi;
-    protected double mKv;
-    protected double mKffv;
-    protected double mKffa;
+    private double mKp;
+    private double mKi;
+    private double mKv;
+    private double mKffv;
+    private double mKffa;
 
-    protected double mMinOutput = Double.NEGATIVE_INFINITY;
-    protected double mMaxOutput = Double.POSITIVE_INFINITY;
-    protected MotionState mLatestActualState;
-    protected MotionState mInitialState;
-    protected double mLatestPosError;
-    protected double mLatestVelError;
-    protected double mTotalError;
+    private double mMinOutput = Double.NEGATIVE_INFINITY;
+    private double mMaxOutput = Double.POSITIVE_INFINITY;
+    private MotionState mLatestActualState;
+    private MotionState mInitialState;
+    private double mLatestPosError;
+    private double mLatestVelError;
+    private double mTotalError;
 
-    protected MotionProfileGoal mGoal = null;
-    protected MotionProfileConstraints mConstraints = null;
-    protected SetpointGenerator mSetpointGenerator = new SetpointGenerator();
-    protected SetpointGenerator.Setpoint mLatestSetpoint = null;
+    MotionProfileGoal mGoal = null;
+    private MotionProfileConstraints mConstraints = null;
+    private final SetpointGenerator mSetpointGenerator = new SetpointGenerator();
+    SetpointGenerator.Setpoint mLatestSetpoint = null;
 
     /**
      * Create a new ProfileFollower.
@@ -47,7 +47,7 @@ public class ProfileFollower {
         setGains(kp, ki, kv, kffv, kffa);
     }
 
-    public void setGains(double kp, double ki, double kv, double kffv, double kffa) {
+    private void setGains(double kp, double ki, double kv, double kffv, double kffa) {
         mKp = kp;
         mKi = ki;
         mKv = kv;
@@ -58,7 +58,7 @@ public class ProfileFollower {
     /**
      * Completely clear all state related to the current profile (min and max outputs are maintained).
      */
-    public void resetProfile() {
+    private void resetProfile() {
         mTotalError = 0.0;
         mInitialState = MotionState.kInvalidState;
         mLatestActualState = MotionState.kInvalidState;
@@ -106,11 +106,11 @@ public class ProfileFollower {
      * forward the previous setpoint the next time update() is called. This almost always forces a MotionProfile update,
      * and may be warranted if tracking error gets very large.
      */
-    public void resetSetpoint() {
+    private void resetSetpoint() {
         mLatestSetpoint = null;
     }
 
-    public void resetIntegral() {
+    void resetIntegral() {
         mTotalError = 0.0;
     }
 

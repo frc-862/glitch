@@ -15,5 +15,5 @@ public abstract class CrashTrackingRunnable implements Runnable {
         }
     }
 
-    public abstract void runCrashTracked();
+    protected abstract void runCrashTracked();
 }

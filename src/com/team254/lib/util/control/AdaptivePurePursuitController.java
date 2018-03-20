@@ -28,7 +28,7 @@ public class AdaptivePurePursuitController {
         public Command() {
         }
 
-        public Command(Twist2d delta, double cross_track_error, double max_velocity, double end_velocity,
+        Command(Twist2d delta, double cross_track_error, double max_velocity, double end_velocity,
                 Translation2d lookahead_point, double remaining_path_length) {
             this.delta = delta;
             this.cross_track_error = cross_track_error;
@@ -39,10 +39,10 @@ public class AdaptivePurePursuitController {
         }
     }
 
-    Path mPath;
-    boolean mAtEndOfPath = false;
-    final boolean mReversed;
-    final Lookahead mLookahead;
+    private final Path mPath;
+    private boolean mAtEndOfPath = false;
+    private final boolean mReversed;
+    private final Lookahead mLookahead;
 
     public AdaptivePurePursuitController(Path path, boolean reversed, Lookahead lookahead) {
         mPath = path;
@@ -95,12 +95,12 @@ public class AdaptivePurePursuitController {
         return mPath.hasPassedMarker(marker);
     }
 
-    public static class Arc {
-        public Translation2d center;
-        public double radius;
-        public double length;
+    static class Arc {
+        final Translation2d center;
+        final double radius;
+        final double length;
 
-        public Arc(RigidTransform2d pose, Translation2d point) {
+        Arc(RigidTransform2d pose, Translation2d point) {
             center = getCenter(pose, point);
             radius = new Translation2d(center, point).norm();
             length = getLength(pose, point, center, radius);
@@ -116,7 +116,7 @@ public class AdaptivePurePursuitController {
      *            lookahead point
      * @return center of the circle joining the lookahead point and robot pose
      */
-    public static Translation2d getCenter(RigidTransform2d pose, Translation2d point) {
+    private static Translation2d getCenter(RigidTransform2d pose, Translation2d point) {
         final Translation2d poseToPointHalfway = pose.getTranslation().interpolate(point, 0.5);
         final Rotation2d normal = pose.getTranslation().inverse().translateBy(poseToPointHalfway).direction().normal();
         final RigidTransform2d perpendicularBisector = new RigidTransform2d(poseToPointHalfway, normal);
@@ -138,7 +138,7 @@ public class AdaptivePurePursuitController {
      *            lookahead point
      * @return radius of the circle joining the lookahead point and robot pose
      */
-    public static double getRadius(RigidTransform2d pose, Translation2d point) {
+    private static double getRadius(RigidTransform2d pose, Translation2d point) {
         Translation2d center = getCenter(pose, point);
         return new Translation2d(center, point).norm();
     }
@@ -158,7 +158,7 @@ public class AdaptivePurePursuitController {
         return getLength(pose, point, center, radius);
     }
 
-    public static double getLength(RigidTransform2d pose, Translation2d point, Translation2d center, double radius) {
+    private static double getLength(RigidTransform2d pose, Translation2d point, Translation2d center, double radius) {
         if (radius < kReallyBigNumber) {
             final Translation2d centerToPoint = new Translation2d(center, point);
             final Translation2d centerToPose = new Translation2d(center, pose.getTranslation());
@@ -183,7 +183,7 @@ public class AdaptivePurePursuitController {
      *            lookahead point
      * @return the direction the robot should turn: -1 is left, +1 is right
      */
-    public static int getDirection(RigidTransform2d pose, Translation2d point) {
+    private static int getDirection(RigidTransform2d pose, Translation2d point) {
         Translation2d poseToPoint = new Translation2d(pose.getTranslation(), point);
         Translation2d robot = pose.getRotation().toTranslation();
         double cross = robot.x() * poseToPoint.y() - robot.y() * poseToPoint.x();

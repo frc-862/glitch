@@ -13,7 +13,7 @@ import java.util.Optional;
  * MotionSegments from which the desired state of motion at any given distance or time can be calculated.
  */
 public class MotionProfile {
-    protected List<MotionSegment> mSegments;
+    private final List<MotionSegment> mSegments;
 
     /**
      * Create an empty MotionProfile.
@@ -163,7 +163,7 @@ public class MotionProfile {
     /**
      * Remove all segments.
      */
-    public void clear() {
+    private void clear() {
         mSegments.clear();
     }
 

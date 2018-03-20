@@ -18,8 +18,8 @@ public class Trajectory {
       return new Pair(left.reverse(), right.reverse());
     }
 
-    public Trajectory left;
-    public Trajectory right;
+    public final Trajectory left;
+    public final Trajectory right;
   }
 
   public static class Segment {
@@ -41,7 +41,7 @@ public class Trajectory {
       this.y = y;
     }
 
-    public Segment(Segment to_copy) {
+    Segment(Segment to_copy) {
       pos = to_copy.pos;
       vel = to_copy.vel;
       acc = to_copy.acc;
@@ -52,7 +52,7 @@ public class Trajectory {
       y = to_copy.y;
     }
 
-    public void reverse() {
+    void reverse() {
         vel = -vel;
         acc = -acc;
         jerk = -jerk;
@@ -65,8 +65,8 @@ public class Trajectory {
     }
   }
 
-  Segment[] segments_ = null;
-  boolean inverted_y_ = false;
+  Segment[] segments_;
+  private boolean inverted_y_ = false;
 
   public Trajectory(int length) {
     segments_ = new Segment[length];
@@ -141,7 +141,7 @@ public class Trajectory {
     return cloned;
   }
   
-  public Trajectory reverse() {
+  private Trajectory reverse() {
       Trajectory cloned = new Trajectory(1);
       cloned.segments_ = reverseSegments(this.segments_);      
       return cloned;

@@ -11,7 +11,7 @@ public class Backup extends org.usfirst.frc862.util.DynamicPathCommandLowGear {
         return Backup.generatePath();
     }
 
-    public static Path generatePath() {
+    private static Path generatePath() {
         if (path != null) {
             return path;
         }

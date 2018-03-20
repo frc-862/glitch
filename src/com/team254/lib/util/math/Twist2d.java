@@ -7,7 +7,7 @@ package com.team254.lib.util.math;
  * A Twist can be used to represent a difference between two poses, a velocity, an acceleration, etc.
  */
 public class Twist2d {
-    protected static final Twist2d kIdentity = new Twist2d(0.0, 0.0, 0.0);
+    private static final Twist2d kIdentity = new Twist2d(0.0, 0.0, 0.0);
 
     public static final Twist2d identity() {
         return kIdentity;

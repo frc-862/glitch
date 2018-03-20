@@ -7,14 +7,13 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc862.glitch.state.Kinematics;
 import org.usfirst.frc862.glitch.state.RobotState;
-import org.usfirst.frc862.util.DataLogger;
 
 public class RobotStateEstimator extends Subsystem {
-    RobotState robot_state_ = RobotState.getInstance();
-    DriveTrain drive_;
-    Core core_;
-    double left_encoder_prev_distance_;
-    double right_encoder_prev_distance_;
+    private final RobotState robot_state_ = RobotState.getInstance();
+    private final DriveTrain drive_;
+    private final Core core_;
+    private double left_encoder_prev_distance_;
+    private double right_encoder_prev_distance_;
 
     public RobotStateEstimator(DriveTrain drive, Core core) {
         drive_ = drive;

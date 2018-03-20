@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * Created by phurley on 12/7/16.
  */
-public class LogCommand extends Command {
-    final Supplier<String> msg;
+class LogCommand extends Command {
+    private final Supplier<String> msg;
 
     public LogCommand(Supplier<String> msg) {
         this.msg = msg;

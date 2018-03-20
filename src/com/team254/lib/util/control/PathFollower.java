@@ -17,40 +17,40 @@ public class PathFollower {
     private static final double kReallyBigNumber = 1E6;
 
     public static class DebugOutput {
-        public double t;
-        public double pose_x;
-        public double pose_y;
-        public double pose_theta;
-        public double linear_displacement;
-        public double linear_velocity;
-        public double profile_displacement;
-        public double profile_velocity;
-        public double velocity_command_dx;
-        public double velocity_command_dy;
-        public double velocity_command_dtheta;
-        public double steering_command_dx;
-        public double steering_command_dy;
-        public double steering_command_dtheta;
-        public double cross_track_error;
-        public double along_track_error;
-        public double lookahead_point_x;
-        public double lookahead_point_y;
-        public double lookahead_point_velocity;
+        double t;
+        double pose_x;
+        double pose_y;
+        double pose_theta;
+        double linear_displacement;
+        double linear_velocity;
+        double profile_displacement;
+        double profile_velocity;
+        double velocity_command_dx;
+        double velocity_command_dy;
+        double velocity_command_dtheta;
+        double steering_command_dx;
+        double steering_command_dy;
+        double steering_command_dtheta;
+        double cross_track_error;
+        double along_track_error;
+        double lookahead_point_x;
+        double lookahead_point_y;
+        double lookahead_point_velocity;
     }
 
-    public static class Parameters {
-        public final Lookahead lookahead;
-        public final double inertia_gain;
-        public final double profile_kp;
-        public final double profile_ki;
-        public final double profile_kv;
-        public final double profile_kffv;
-        public final double profile_kffa;
-        public final double profile_max_abs_vel;
-        public final double profile_max_abs_acc;
-        public final double goal_pos_tolerance;
-        public final double goal_vel_tolerance;
-        public final double stop_steering_distance;
+    static class Parameters {
+        final Lookahead lookahead;
+        final double inertia_gain;
+        final double profile_kp;
+        final double profile_ki;
+        final double profile_kv;
+        final double profile_kffv;
+        final double profile_kffa;
+        final double profile_max_abs_vel;
+        final double profile_max_abs_acc;
+        final double goal_pos_tolerance;
+        final double goal_vel_tolerance;
+        final double stop_steering_distance;
 
         public Parameters(Lookahead lookahead, double inertia_gain, double profile_kp, double profile_ki,
                 double profile_kv, double profile_kffv, double profile_kffa, double profile_max_abs_vel,
@@ -71,21 +71,21 @@ public class PathFollower {
         }
     }
 
-    AdaptivePurePursuitController mSteeringController;
-    Twist2d mLastSteeringDelta;
-    ProfileFollower mVelocityController;
-    final double mInertiaGain;
-    boolean overrideFinished = false;
-    boolean doneSteering = false;
-    DebugOutput mDebugOutput = new DebugOutput();
+    private final AdaptivePurePursuitController mSteeringController;
+    private Twist2d mLastSteeringDelta;
+    private final ProfileFollower mVelocityController;
+    private final double mInertiaGain;
+    private boolean overrideFinished = false;
+    private boolean doneSteering = false;
+    private final DebugOutput mDebugOutput = new DebugOutput();
 
-    double mMaxProfileVel;
-    double mMaxProfileAcc;
-    final double mGoalPosTolerance;
-    final double mGoalVelTolerance;
-    final double mStopSteeringDistance;
-    double mCrossTrackError = 0.0;
-    double mAlongTrackError = 0.0;
+    private final double mMaxProfileVel;
+    private final double mMaxProfileAcc;
+    private final double mGoalPosTolerance;
+    private final double mGoalVelTolerance;
+    private final double mStopSteeringDistance;
+    private double mCrossTrackError = 0.0;
+    private double mAlongTrackError = 0.0;
 
     /**
      * Create a new PathFollower for a given path.

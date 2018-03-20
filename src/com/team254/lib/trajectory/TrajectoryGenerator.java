@@ -48,11 +48,11 @@ public class TrajectoryGenerator {
   // Move from the start to the goal at a constant velocity.  Acceleration and
   // jerk limits are ignored, and start and goal vel are ignored (since the
   // velocity at all times will be max_vel).
-  public static final Strategy StepStrategy = new Strategy("StepStrategy");
+  private static final Strategy StepStrategy = new Strategy("StepStrategy");
 
   // Move from the start to the goal with a trapezoidal speed profile.
   // Jerk limits are ignored.
-  public static final Strategy TrapezoidalStrategy
+  private static final Strategy TrapezoidalStrategy
           = new Strategy("TrapezoidalStrategy");
 
   // Move from the start tot he goal with a S-curve speed profile.  All limits
@@ -62,7 +62,7 @@ public class TrajectoryGenerator {
           = new Strategy("SCurvesStrategy");
 
   // Choose one of the above strategies based on the inputs.
-  public static final Strategy AutomaticStrategy
+  private static final Strategy AutomaticStrategy
           = new Strategy("AutomaticStrategy");
 
   private static final IntegrationMethod RectangularIntegration
@@ -258,8 +258,8 @@ public class TrajectoryGenerator {
     return traj;
   }
 
-  public static Strategy chooseStrategy(double start_vel, double goal_vel,
-          double max_vel) {
+  private static Strategy chooseStrategy(double start_vel, double goal_vel,
+                                         double max_vel) {
     Strategy strategy;
     if (start_vel == goal_vel && start_vel == max_vel) {
       strategy = StepStrategy;

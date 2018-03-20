@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj.Counter;
 /**
  * Driver for an analog Sharp IR sensor (or any distance sensor where output voltage is a function of range, really).
  */
-public class IRSensor {
-    protected final AnalogInput mAnalogInput;
-    protected final AnalogTrigger mAnalogTrigger;
-    protected final Counter mCounter;
+class IRSensor {
+    private final AnalogInput mAnalogInput;
+    private final AnalogTrigger mAnalogTrigger;
+    private final Counter mCounter;
 
     public IRSensor(int port, double min_trigger_voltage, double max_trigger_voltage) {
         mAnalogInput = new AnalogInput(port);

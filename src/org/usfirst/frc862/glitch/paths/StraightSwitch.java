@@ -11,7 +11,7 @@ public class StraightSwitch extends org.usfirst.frc862.util.DynamicPathCommandLo
         return StraightSwitch.generatePath();
     }
 
-    public static Path generatePath() {
+    private static Path generatePath() {
         if (path != null) {
             return path;
         }

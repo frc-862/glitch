@@ -7,7 +7,7 @@ package com.team254.lib.trajectory;
  * @author Stephen Pinkerton
  * @author Jared341
  */
-public class PathGenerator {
+class PathGenerator {
   /**
    * Generate a path for autonomous driving. 
    * 
@@ -25,14 +25,14 @@ public class PathGenerator {
             generateLeftAndRightFromSeq(waypoints, config, wheelbase_width));
   }
 
-  static Trajectory.Pair generateLeftAndRightFromSeq(WaypointSequence path,
-          TrajectoryGenerator.Config config, double wheelbase_width) {
+  private static Trajectory.Pair generateLeftAndRightFromSeq(WaypointSequence path,
+                                                             TrajectoryGenerator.Config config, double wheelbase_width) {
     return makeLeftAndRightTrajectories(generateFromPath(path, config),
             wheelbase_width);
   }
 
-   public static Trajectory generateFromPath(WaypointSequence path,
-          TrajectoryGenerator.Config config) {
+   private static Trajectory generateFromPath(WaypointSequence path,
+                                              TrajectoryGenerator.Config config) {
     if (path.getNumWaypoints() < 2) {
       return null;
     }
@@ -100,8 +100,8 @@ public class PathGenerator {
    * right sides.
    * @return [0] is left, [1] is right
    */
-  public static Trajectory.Pair makeLeftAndRightTrajectories(Trajectory input,
-          double wheelbase_width) {
+  private static Trajectory.Pair makeLeftAndRightTrajectories(Trajectory input,
+                                                              double wheelbase_width) {
     Trajectory[] output = new Trajectory[2];
     output[0] = input.copy();
     output[1] = input.copy();

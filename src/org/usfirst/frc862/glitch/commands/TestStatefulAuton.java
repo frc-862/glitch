@@ -19,7 +19,7 @@ import org.usfirst.frc862.util.StatefulCommand;
  *
  */
 public class TestStatefulAuton extends StatefulCommand {
-    Command cmd;
+    private Command cmd;
 
     enum States {
         Position, Drive, Eject, Finished

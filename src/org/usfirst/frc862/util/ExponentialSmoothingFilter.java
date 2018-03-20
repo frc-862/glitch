@@ -3,8 +3,8 @@ package org.usfirst.frc862.util;
 public class ExponentialSmoothingFilter implements ValueFilter {
     private boolean first_time = true;
     private double previous;
-    private double smoothing_factor;
-    private double reverse_factor;
+    private final double smoothing_factor;
+    private final double reverse_factor;
     
     public ExponentialSmoothingFilter(double smoothing_factor) {
         this.smoothing_factor = smoothing_factor;

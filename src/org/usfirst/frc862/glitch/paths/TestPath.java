@@ -11,7 +11,7 @@ public class TestPath extends org.usfirst.frc862.util.DynamicPathCommand {
         return TestPath.generatePath();
     }
 
-    public static Path generatePath() {
+    private static Path generatePath() {
         if (path != null) {
             return path;
         }

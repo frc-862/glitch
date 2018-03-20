@@ -5,7 +5,7 @@ import MathTest.Tester;
 
 public class ElevatorTest {
 
-	Tester elevator = new Tester();
+	private final Tester elevator = new Tester();
 	
 	@Test
 	public void testMan() {

@@ -11,7 +11,7 @@ public class LeftScaleNear extends org.usfirst.frc862.util.DynamicPathCommandLow
         return LeftScaleNear.generatePath();
     }
 
-    public static Path generatePath() {
+    private static Path generatePath() {
         if (path != null) {
             return path;
         }

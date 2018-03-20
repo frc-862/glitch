@@ -18,9 +18,9 @@ import org.usfirst.frc862.glitch.Constants;
  * @see GoalTracker
  */
 public class GoalTrack {
-    Map<Double, Translation2d> mObservedPositions = new TreeMap<>();
-    Translation2d mSmoothedPosition = null;
-    int mId;
+    private final Map<Double, Translation2d> mObservedPositions = new TreeMap<>();
+    private Translation2d mSmoothedPosition = null;
+    private int mId;
 
     private GoalTrack() {
     }
@@ -69,7 +69,7 @@ public class GoalTrack {
      * 
      * @see Constants
      */
-    void pruneByTime() {
+    private void pruneByTime() {
         double delete_before = Timer.getFPGATimestamp() - Constants.kMaxGoalTrackAge;
         mObservedPositions.entrySet().removeIf(entry -> entry.getKey() < delete_before);
         if (mObservedPositions.isEmpty()) {
@@ -82,7 +82,7 @@ public class GoalTrack {
     /**
      * Averages out the observed positions based on an set of observed positions
      */
-    void smooth() {
+    private void smooth() {
         if (isAlive()) {
             double x = 0;
             double y = 0;

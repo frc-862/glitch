@@ -9,16 +9,16 @@ import com.team254.lib.util.math.Rotation2d;
 /**
  * A 10-bit analog MA3 absolute encoder. http://cdn.usdigital.com/assets/datasheets/MA3_datasheet.pdf
  */
-public class MA3AnalogEncoder {
+class MA3AnalogEncoder {
 
     private final AnalogInput mAnalogInput;
 
-    protected Notifier notifier_;
-    protected Rotation2d rotation_ = new Rotation2d();
-    protected Rotation2d home_ = new Rotation2d();
-    protected int num_rotations_ = 0;
+    private final Notifier notifier_;
+    private Rotation2d rotation_ = new Rotation2d();
+    private Rotation2d home_ = new Rotation2d();
+    private int num_rotations_ = 0;
 
-    private CrashTrackingRunnable read_thread_ = new CrashTrackingRunnable() {
+    private final CrashTrackingRunnable read_thread_ = new CrashTrackingRunnable() {
         @Override
         public void runCrashTracked() {
             Rotation2d new_rotation = Rotation2d.fromRadians(2 * Math.PI * mAnalogInput.getVoltage() / 5.0);
@@ -52,7 +52,7 @@ public class MA3AnalogEncoder {
         home_ = rotation_.inverse();
     }
 
-    public synchronized Rotation2d getRawAngle() {
+    private synchronized Rotation2d getRawAngle() {
         return rotation_;
     }
 

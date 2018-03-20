@@ -11,7 +11,7 @@ public class CurveLeftSwitch extends org.usfirst.frc862.util.DynamicPathCommandL
         return CurveLeftSwitch.generatePath();
     }
 
-    public static Path generatePath() {
+    private static Path generatePath() {
         if (path != null) {
             return path;
         }

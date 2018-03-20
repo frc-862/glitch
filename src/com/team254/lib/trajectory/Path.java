@@ -6,9 +6,9 @@ package com.team254.lib.trajectory;
  * @author Jared341
  */
 public class Path {
-  protected Trajectory.Pair go_left_pair_;
-  protected String name_;
-  protected boolean go_left_;
+  private Trajectory.Pair go_left_pair_;
+  private String name_;
+  private boolean go_left_;
   
   public Path(String name, Trajectory.Pair go_left_pair) {
     name_ = name;

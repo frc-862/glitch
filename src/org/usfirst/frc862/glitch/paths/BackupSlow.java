@@ -11,7 +11,7 @@ public class BackupSlow extends org.usfirst.frc862.util.DynamicPathCommandLowGea
         return BackupSlow.generatePath();
     }
 
-    public static Path generatePath() {
+    private static Path generatePath() {
         if (path != null) {
             return path;
         }

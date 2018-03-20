@@ -12,7 +12,7 @@ public class LightningTimer {
         reset();
     }
 
-    public double get() {
+    private double get() {
         if (stopped) {
             return stoppedAt - startedAt;
         } else {

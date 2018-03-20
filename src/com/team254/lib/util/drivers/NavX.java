@@ -10,8 +10,8 @@ import com.team254.lib.util.math.Rotation2d;
 /**
  * Driver for a NavX board. Basically a wrapper for the {@link AHRS} class
  */
-public class NavX {
-    protected class Callback implements ITimestampedDataSubscriber {
+class NavX {
+    class Callback implements ITimestampedDataSubscriber {
         @Override
         public void timestampedDataReceived(long system_timestamp, long sensor_timestamp, AHRSUpdateBase update,
                 Object context) {
@@ -27,13 +27,13 @@ public class NavX {
         }
     }
 
-    protected AHRS mAHRS;
+    private final AHRS mAHRS;
 
-    protected Rotation2d mAngleAdjustment = Rotation2d.identity();
-    protected double mYawDegrees;
-    protected double mYawRateDegreesPerSecond;
-    protected final long kInvalidTimestamp = -1;
-    protected long mLastSensorTimestampMs;
+    private Rotation2d mAngleAdjustment = Rotation2d.identity();
+    private double mYawDegrees;
+    private double mYawRateDegreesPerSecond;
+    private final long kInvalidTimestamp = -1;
+    private long mLastSensorTimestampMs;
 
     public NavX(SPI.Port spi_port_id) {
         mAHRS = new AHRS(spi_port_id, (byte) 200);
@@ -61,7 +61,7 @@ public class NavX {
         mAngleAdjustment = adjustment;
     }
 
-    protected synchronized double getRawYawDegrees() {
+    private synchronized double getRawYawDegrees() {
         return mYawDegrees;
     }
 
@@ -69,7 +69,7 @@ public class NavX {
         return mAngleAdjustment.rotateBy(Rotation2d.fromDegrees(getRawYawDegrees()));
     }
 
-    public double getYawRateDegreesPerSec() {
+    private double getYawRateDegreesPerSec() {
         return mYawRateDegreesPerSecond;
     }
 

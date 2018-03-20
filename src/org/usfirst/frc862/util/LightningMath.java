@@ -14,7 +14,7 @@ public class LightningMath {
         return inches2ticks(ip100ms);
     }
 
-    public static double inches2ticks(double inches) {
+    private static double inches2ticks(double inches) {
         return inches / Constants.WheelCircumference * Constants.TICS_PER_ROTATION;
     }
 
@@ -30,7 +30,7 @@ public class LightningMath {
 		return feet * 3.28084;
 	}
 
-    public static double limit(double v, double low, double high) {
+    private static double limit(double v, double low, double high) {
         return (v < low) ? low : ((v > high) ? high : v);
     }
 
@@ -42,7 +42,7 @@ public class LightningMath {
         return limit(input, -1, 1);
     }
 
-    public static double boundThetaNegPiToPi(double theta) {
+    private static double boundThetaNegPiToPi(double theta) {
         return theta - (Math.ceil((theta + Math.PI) / (Math.PI * 2)) - 1) * (Math.PI * 2); // (-π;π]
     }
 

@@ -1,13 +1,13 @@
 package org.usfirst.frc862.util;
 
 public class KalmanFilter implements ValueFilter {
-    private double kQ;
-    private double kR;
+    private final double kQ;
+    private final double kR;
     private double prevP;
     private double prevEstimate;
     private boolean first_time;
 
-    public KalmanFilter(double kQ, double kR)
+    private KalmanFilter(double kQ, double kR)
     {
         this.kQ = kQ;
         this.kR = kR;

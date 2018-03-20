@@ -7,9 +7,9 @@ package com.team254.lib.util;
  */
 public class InterpolatingLong implements Interpolable<InterpolatingLong>, InverseInterpolable<InterpolatingLong>,
         Comparable<InterpolatingLong> {
-    public Long value = 0L;
+    private Long value;
 
-    public InterpolatingLong(Long val) {
+    private InterpolatingLong(Long val) {
         value = val;
     }
 

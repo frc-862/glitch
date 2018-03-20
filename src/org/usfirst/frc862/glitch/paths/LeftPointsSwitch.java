@@ -11,7 +11,7 @@ public class LeftPointsSwitch extends org.usfirst.frc862.util.DynamicPathCommand
         return LeftPointsSwitch.generatePath();
     }
 
-    public static Path generatePath() {
+    private static Path generatePath() {
         if (path != null) {
             return path;
         }

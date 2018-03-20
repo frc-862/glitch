@@ -11,7 +11,7 @@ public class RightSwitch10Degree extends org.usfirst.frc862.util.DynamicPathComm
         return RightSwitch10Degree.generatePath();
     }
 
-    public static Path generatePath() {
+    private static Path generatePath() {
         if (path != null) {
             return path;
         }

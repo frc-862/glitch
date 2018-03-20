@@ -10,11 +10,8 @@
 
 
 package org.usfirst.frc862.glitch.commands;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.InstantCommand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.paths.Backup;
 import org.usfirst.frc862.glitch.paths.CurveLeftSwitch;

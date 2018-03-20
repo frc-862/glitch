@@ -11,8 +11,8 @@ public class MotionProfileGenerator {
     private MotionProfileGenerator() {
     }
 
-    protected static MotionProfile generateFlippedProfile(MotionProfileConstraints constraints,
-            MotionProfileGoal goal_state, MotionState prev_state) {
+    private static MotionProfile generateFlippedProfile(MotionProfileConstraints constraints,
+                                                        MotionProfileGoal goal_state, MotionState prev_state) {
         MotionProfile profile = generateProfile(constraints, goal_state.flipped(), prev_state.flipped());
         for (MotionSegment s : profile.segments()) {
             s.setStart(s.start().flipped());

@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
  *
  * http://www.revrobotics.com/wp-content/uploads/2015/11/REV-11-1107-DS-00.pdf
  */
-public class RevRoboticsAirPressureSensor {
+class RevRoboticsAirPressureSensor {
     private final AnalogInput mAnalogInput;
 
     public RevRoboticsAirPressureSensor(int analogInputNumber) {

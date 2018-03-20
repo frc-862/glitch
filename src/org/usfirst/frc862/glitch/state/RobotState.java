@@ -41,7 +41,7 @@ import java.util.Map;
  */
 
 public class RobotState {
-    private static RobotState instance_ = new RobotState();
+    private static final RobotState instance_ = new RobotState();
 
     public static RobotState getInstance() {
         return instance_;
@@ -87,11 +87,11 @@ public class RobotState {
      * Returns the robot's position on the field at a certain time. Linearly interpolates between stored robot positions
      * to fill in the gaps.
      */
-    public synchronized RigidTransform2d getFieldToVehicle(double timestamp) {
+    private synchronized RigidTransform2d getFieldToVehicle(double timestamp) {
         return field_to_vehicle_.getInterpolated(new InterpolatingDouble(timestamp));
     }
 
-    public synchronized Map.Entry<InterpolatingDouble, RigidTransform2d> getLatestFieldToVehicle() {
+    private synchronized Map.Entry<InterpolatingDouble, RigidTransform2d> getLatestFieldToVehicle() {
         return field_to_vehicle_.lastEntry();
     }
 
@@ -100,11 +100,11 @@ public class RobotState {
                 .transformBy(RigidTransform2d.exp(vehicle_velocity_predicted_.scaled(lookahead_time)));
     }
 
-    public synchronized RigidTransform2d getFieldToCamera(double timestamp) {
+    private synchronized RigidTransform2d getFieldToCamera(double timestamp) {
         return getFieldToVehicle(timestamp).transformBy(kVehicleToCamera);
     }
 
-    public synchronized List<RigidTransform2d> getCaptureTimeFieldToGoal() {
+    private synchronized List<RigidTransform2d> getCaptureTimeFieldToGoal() {
         List<RigidTransform2d> rv = new ArrayList<>();
         for (GoalTracker.TrackReport report : goal_tracker_.getTracks()) {
             rv.add(RigidTransform2d.fromTranslation(report.field_to_goal));
@@ -112,7 +112,7 @@ public class RobotState {
         return rv;
     }
 
-    public synchronized void addFieldToVehicleObservation(double timestamp, RigidTransform2d observation) {
+    private synchronized void addFieldToVehicleObservation(double timestamp, RigidTransform2d observation) {
         field_to_vehicle_.put(new InterpolatingDouble(timestamp), observation);
     }
 

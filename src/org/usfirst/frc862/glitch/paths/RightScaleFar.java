@@ -11,7 +11,7 @@ public class RightScaleFar extends org.usfirst.frc862.util.DynamicPathCommandLow
         return RightScaleFar.generatePath();
     }
 
-    public static Path generatePath() {
+    private static Path generatePath() {
         if (path != null) {
             return path;
         }

@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
  * if you run out of buttons.
  *
  */
-public class TwoButtonTrigger extends Trigger {
-    JoystickButton button1;
-    JoystickButton button2;
+class TwoButtonTrigger extends Trigger {
+    private final JoystickButton button1;
+    private final JoystickButton button2;
 
     public TwoButtonTrigger(JoystickButton b1, JoystickButton b2) {
         button1 = b1;

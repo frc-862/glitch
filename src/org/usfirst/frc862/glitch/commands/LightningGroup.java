@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.usfirst.frc862.util.Logger;
 
 
-public class LightningGroup extends CommandGroup {
+class LightningGroup extends CommandGroup {
     public LightningGroup() {
         super();
         Logger.info("Lightning Group - Construct");

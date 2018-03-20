@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * object. They are started when the robot powers up and stopped after the
  * match.
  */
-public class Looper {
-    public double period;
+class Looper {
+    private final double period;
 
     private boolean looperRunning;
 

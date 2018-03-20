@@ -14,11 +14,12 @@ public class VisionPathSelectCommand extends DynamicPathCommand {
 
     private final double VisionTimeOut;
 
-    enum State { waiting_for_vision, start_path, following_path };
-    private State state;
+    enum State { waiting_for_vision, start_path, following_path }
+
+  private State state;
     private double startTime;
-    private static TreeMap<Double, DynamicPathCommand> leftPaths = new TreeMap<>();
-    private static TreeMap<Double, DynamicPathCommand> rightPaths = new TreeMap<>();
+    private static final TreeMap<Double, DynamicPathCommand> leftPaths = new TreeMap<>();
+    private static final TreeMap<Double, DynamicPathCommand> rightPaths = new TreeMap<>();
     private DynamicPathCommand path;
 
     static {
@@ -59,7 +60,7 @@ public class VisionPathSelectCommand extends DynamicPathCommand {
        startTime = Timer.getFPGATimestamp();
     }
 
-    protected DynamicPathCommand getClosestPath(double angle) {
+    private DynamicPathCommand getClosestPath(double angle) {
         TreeMap<Double, DynamicPathCommand> paths = Robot.scaleOnLeft() ? leftPaths : rightPaths;
 
         if (Math.abs(angle) >= 30) angle = 0;
@@ -125,6 +126,6 @@ public class VisionPathSelectCommand extends DynamicPathCommand {
 
     @Override
     protected boolean isFinished() {
-        return super.isFinished() || Robot.gripper.hasCube();
+        return super.isFinished() || Robot.collector.hasCube();
     }
 }

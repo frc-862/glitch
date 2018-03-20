@@ -7,7 +7,7 @@ import com.team254.lib.trajectory.Path;
  * 
  * @author Jared341
  */
-public interface IPathDeserializer {
+interface IPathDeserializer {
   
-  public Path deserialize(String serialized);
+  Path deserialize(String serialized);
 }

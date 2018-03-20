@@ -6,9 +6,9 @@ import static com.team254.lib.util.motion.MotionUtil.kEpsilon;
 /**
  * A MotionSegment is a movement from a start MotionState to an end MotionState with a constant acceleration.
  */
-public class MotionSegment {
-    protected MotionState mStart;
-    protected MotionState mEnd;
+class MotionSegment {
+    private MotionState mStart;
+    private MotionState mEnd;
 
     public MotionSegment(MotionState start, MotionState end) {
         mStart = start;

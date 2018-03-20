@@ -7,12 +7,12 @@ import static com.team254.lib.util.motion.MotionUtil.kEpsilon;
  * A MotionState is a completely specified state of 1D motion through time.
  */
 public class MotionState {
-    protected final double t;
-    protected final double pos;
-    protected final double vel;
-    protected final double acc;
+    private final double t;
+    private final double pos;
+    private final double vel;
+    private final double acc;
 
-    public static MotionState kInvalidState = new MotionState(Double.NaN, Double.NaN, Double.NaN, Double.NaN);
+    public static final MotionState kInvalidState = new MotionState(Double.NaN, Double.NaN, Double.NaN, Double.NaN);
 
     public MotionState(double t, double pos, double vel, double acc) {
         this.t = t;
@@ -68,7 +68,7 @@ public class MotionState {
      * @return A MotionState that is a valid predecessor (if t<=0) or successor (if t>=0) of this state (with the
      *         specified accel).
      */
-    public MotionState extrapolate(double t, double acc) {
+    private MotionState extrapolate(double t, double acc) {
         final double dt = t - this.t;
         return new MotionState(t, pos + vel * dt + .5 * acc * dt * dt, vel + acc * dt, acc);
     }
@@ -136,7 +136,7 @@ public class MotionState {
     /**
      * Checks if two MotionStates are epsilon-equals (all fields are equal within a specified tolerance).
      */
-    public boolean equals(MotionState other, double epsilon) {
+    private boolean equals(MotionState other, double epsilon) {
         return coincident(other, epsilon) && epsilonEquals(acc, other.acc, epsilon);
     }
 
@@ -152,7 +152,7 @@ public class MotionState {
      * Checks if two MotionStates are coincident (t, pos, and vel are equal within a specified tolerance, but
      * acceleration may be different).
      */
-    public boolean coincident(MotionState other, double epsilon) {
+    private boolean coincident(MotionState other, double epsilon) {
         return epsilonEquals(t, other.t, epsilon) && epsilonEquals(pos, other.pos, epsilon)
                 && epsilonEquals(vel, other.vel, epsilon);
     }

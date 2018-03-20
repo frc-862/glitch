@@ -231,7 +231,7 @@ class Arc {
 function init() { 
 	$("#field").css("width", (width / 1.5) + "px");
 	$("#field").css("height", (height / 1.5) + "px");
-	ctx = document.getElementById('field').getContext('2d')
+	ctx = document.getElementById('field').getContext('2d');
     ctx.canvas.width = width;
     ctx.canvas.height = height;
     ctx.clearRect(0, 0, width, height);
@@ -241,7 +241,7 @@ function init() {
     image.onload = function(){
         ctx.drawImage(image, 0, 0, width, height);
         update();
-    }
+    };
     imageFlipped = new Image();
     imageFlipped.src = 'fieldflipped.png';
     $('input').bind("change paste keyup", function() {
@@ -259,8 +259,8 @@ function init() {
 
     var x = e.pageX - offset.left;
     var y = imgHeight - (e.pageY - offset.top);
-    x = x / imgWidth
-    y = y / imgHeight
+    x = x / imgWidth;
+    y = y / imgHeight;
     x = Math.floor(x * fieldWidth);
     y = Math.floor(y * fieldHeight);
 
@@ -281,9 +281,9 @@ function clear() {
 
 var f;
 function create() {
-	var a = new Waypoint(new Translation2d(30,30), 0,0)
-	var b = new Waypoint(new Translation2d(230,30), 0,0)
-	var c = new Waypoint(new Translation2d(230,230), 0,0)
+	var a = new Waypoint(new Translation2d(30,30), 0,0);
+	var b = new Waypoint(new Translation2d(230,30), 0,0);
+	var c = new Waypoint(new Translation2d(230,230), 0,0);
 	var d = new Line(a, b);
 	var e = new Line(b, c);
 	f = new Arc(d, e);
@@ -389,7 +389,7 @@ function eachPoint(func) {
       theta = 0.0;
     }
     theta = degrees2radians(theta);
-    var comment = ( $($($(this).children()).children()[3]).val() )
+    var comment = ( $($($(this).children()).children()[3]).val() );
     func(x,y,theta,comment);
   });
 }
@@ -471,7 +471,7 @@ function importData() {
 			let jde = re.exec(c)[1];
 			let jd = JSON.parse(jde);
 			// console.log(jd);
-			waypoints = []
+			waypoints = [];
 			$("tbody#points").empty();
 			jd.forEach((wpd) => {
 				let wp = new Waypoint(new Translation2d(wpd.position.x, wpd.position.y), wpd.speed, wpd.radius, wpd.comment);
@@ -494,9 +494,9 @@ function importData() {
 					update();
 				}, 500);
 			});
-		}
+		};
 		fr.readAsText(file);
-	});
+})
 }
 
 function getDataString() {
@@ -553,7 +553,7 @@ public class ${title} extends DynamicPathCommand {
 	// ${importStr}
 	// IS_REVERSED: ${isReversed}
 	// FILE_NAME: ${title}
-}`
+}`;
 	return str;
 }
 

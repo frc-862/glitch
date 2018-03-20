@@ -9,7 +9,7 @@ package com.team254.lib.util;
  *            The Type of InverseInterpolable
  * @see InterpolatingTreeMap
  */
-public interface InverseInterpolable<T> {
+interface InverseInterpolable<T> {
     /**
      * Given this point (lower), a query point (query), and an upper point (upper), estimate how far (on [0, 1]) between
      * 'lower' and 'upper' the query point lies.
@@ -19,5 +19,5 @@ public interface InverseInterpolable<T> {
      * @return The interpolation parameter on [0, 1] representing how far between this point and the upper point the
      *         query point lies.
      */
-    public double inverseInterpolate(T upper, T query);
+    double inverseInterpolate(T upper, T query);
 }

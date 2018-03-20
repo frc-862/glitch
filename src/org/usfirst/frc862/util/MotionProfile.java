@@ -1,6 +1,6 @@
 package org.usfirst.frc862.util;
 
-public class MotionProfile {            
+class MotionProfile {
     public static final int kNumPoints =280;        
     // Position (rotations) Velocity (RPM)  Duration (ms)
     public static double [][]Points = new double[][]{       

@@ -29,7 +29,7 @@ public class CommandLogger {
         reset();
     }
 
-    public void reset() {
+    private void reset() {
         File file = logFileName(prefix);
         try {
             if (writer != null) {
@@ -78,7 +78,7 @@ public class CommandLogger {
         overflow |= !buffer.offer(s);
     }
     
-    public void writeValues() {
+    private void writeValues() {
         StringBuilder line = new StringBuilder(Double.toString(Timer.getFPGATimestamp()));
         for (String fld : fieldNames) {
             line.append(",").append(values.get(fld));

@@ -298,11 +298,11 @@ public class Lift extends Subsystem {
 //        return motor.getSelectedSensorPosition(0);
 //    }
 
-    public void setFourbarPosition(double pos) {
+    private void setFourbarPosition(double pos) {
         fourbarPosition = pos;
     }
 
-    public void setElevatorPosition(double pos) {
+    private void setElevatorPosition(double pos) {
         elevatorPosition = pos;
     }
 
@@ -350,7 +350,7 @@ public class Lift extends Subsystem {
         setElevatorPosition(Constants.ELEVATOR_SCALE_POS_HIGH);
     }
 
-    public void moveToScaleLow() {
+    private void moveToScaleLow() {
         state = State.Scale;
         setFourbarPosition(Constants.FOURBAR_SCALE_POS_LOW);
         setElevatorPosition(Constants.ELEVATOR_SCALE_POS_LOW);
@@ -403,7 +403,7 @@ public class Lift extends Subsystem {
         state = State.ManualControl;
     }
 
-    public double getElevatorPosition() {
+    private double getElevatorPosition() {
         return this.elevatorPosition;
     }
 
@@ -425,12 +425,12 @@ public class Lift extends Subsystem {
                 LightningMath.epsilonEqual(elevatorPosition, Constants.ELEVATOR_SCALE_POS, Constants.ELEVATOR_EPSILON);
     }
 
-    public boolean atScaleHigh() {
+    private boolean atScaleHigh() {
         return LightningMath.epsilonEqual(fourbarPosition, Constants.FOURBAR_SCALE_POS_HIGH, Constants.FOURBAR_EPSILON) &&
                 LightningMath.epsilonEqual(elevatorPosition, Constants.ELEVATOR_SCALE_POS_HIGH, Constants.ELEVATOR_EPSILON);
     }
 
-    public boolean atScaleLow() {
+    private boolean atScaleLow() {
         return LightningMath.epsilonEqual(fourbarPosition, Constants.FOURBAR_SCALE_POS_LOW, Constants.FOURBAR_EPSILON) &&
                 LightningMath.epsilonEqual(elevatorPosition, Constants.ELEVATOR_SCALE_POS_LOW, Constants.ELEVATOR_EPSILON);
     }

@@ -4,8 +4,8 @@ package com.team254.lib.util.motion;
  * Constraints for constructing a MotionProfile.
  */
 public class MotionProfileConstraints {
-    protected double max_abs_vel = Double.POSITIVE_INFINITY;
-    protected double max_abs_acc = Double.POSITIVE_INFINITY;
+    private double max_abs_vel;
+    private double max_abs_acc = Double.POSITIVE_INFINITY;
 
     public MotionProfileConstraints(double max_vel, double max_acc) {
         this.max_abs_vel = Math.abs(max_vel);

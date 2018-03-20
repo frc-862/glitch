@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class SystemTest extends StatefulCommand {
-    boolean complete = false;
+    private boolean complete = false;
     private boolean ispressed = false;
     private double encoderStart;
     private double startingValue;
@@ -42,7 +42,7 @@ public class SystemTest extends StatefulCommand {
 
         TESTS_ARE_DONE;
         
-        public States next() {
+        States next() {
             // No bounds checking required here, because the last instance overrides
             return values()[ordinal() + 1];
         }
@@ -52,7 +52,7 @@ public class SystemTest extends StatefulCommand {
         super(States.TEST_LEFT_MOTOR1);
         requires(Robot.driveTrain);
         requires(Robot.shifter);
-        requires(Robot.gripper);
+        requires(Robot.collector);
         requires(Robot.lift);
         requires(Robot.cubeVision);
         requires(Robot.shineBois);
@@ -97,7 +97,7 @@ public class SystemTest extends StatefulCommand {
         end();
     }
 
-    boolean buttonReleased() {
+    private boolean buttonReleased() {
         boolean button = Robot.oi.getCopilotController().getRawButton(1);
         if (ispressed && !button) {
             ispressed = false;
@@ -109,7 +109,7 @@ public class SystemTest extends StatefulCommand {
         return false;
     }
 
-    public boolean next() {
+    private boolean next() {
         if (buttonReleased()) {
             setState(((States) getState()).next());
             return true;
@@ -118,13 +118,13 @@ public class SystemTest extends StatefulCommand {
         return false;
     }
     
-    public void success() {
+    private void success() {
         SmartDashboard.putBoolean(getCallingState().toString(), true);
     }
-    public void fail() {
+    private void fail() {
         SmartDashboard.putBoolean(getCallingState().toString(), false);
     }
-    public double nextWithValue(double fValue, double tValue) {
+    private double nextWithValue(double fValue, double tValue) {
         return next() ? tValue : fValue;
     }
     
@@ -300,7 +300,7 @@ public class SystemTest extends StatefulCommand {
     }
 
     public void testPowerCubeDetectorEnter() {
-        if (Robot.gripper.hasCube()) {
+        if (Robot.collector.hasCube()) {
             fail();
             next();
         } else {
@@ -309,7 +309,7 @@ public class SystemTest extends StatefulCommand {
     }
 
     public void testPowerCubeDetectorExit() {
-        if (Robot.gripper.hasCube()) {
+        if (Robot.collector.hasCube()) {
             success();
         } else {
             fail();
@@ -365,7 +365,7 @@ public class SystemTest extends StatefulCommand {
         complete = true;
     }
 
-    public void status(String msg) {
+    private void status(String msg) {
         SmartDashboard.putString("System Test Instruction", msg);    
     }
     
