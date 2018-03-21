@@ -106,13 +106,6 @@ public class DriveTrain extends Subsystem {
         func.accept(right1);
     }
 
-//    protected void eachSlave(Consumer<BaseMotorController> func) {
-//        func.accept(left2);
-//        func.accept(left3);
-//        func.accept(right2);
-//        func.accept(right3);
-//    }
-
     private void eachSlave(BiConsumer<TalonSRX, BaseMotorController> func) {
         func.accept(left1, left2);
         func.accept(left1, left3);
@@ -252,14 +245,6 @@ public class DriveTrain extends Subsystem {
     public void upShiftEnd() {
         left1.selectProfileSlot(Constants.HIGHGEAR_IDX, 0);
         right1.selectProfileSlot(Constants.HIGHGEAR_IDX, 0);
-//        SmartDashboard.putString("DT PID", "upshifted");
-//        eachMaster((m) -> {
-//            m.config_kP(Constants.LOWGEAR_IDX, Constants.HIGHGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
-//            m.config_kI(Constants.LOWGEAR_IDX, Constants.HIGHGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
-//            m.config_kD(Constants.LOWGEAR_IDX, Constants.HIGHGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
-//            m.config_kF(Constants.LOWGEAR_IDX, Constants.HIGHGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
-//            m.configAllowableClosedloopError(Constants.LOWGEAR_IDX, Constants.HIGHGEAR_ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
-//        });
     }
 
     public void downShiftBegin() {
@@ -270,14 +255,6 @@ public class DriveTrain extends Subsystem {
     public void downShiftEnd() {
         left1.selectProfileSlot(Constants.LOWGEAR_IDX, 0);
         right1.selectProfileSlot(Constants.LOWGEAR_IDX, 0);
-//        SmartDashboard.putString("DT PID", "downshifted");
-//        eachMaster((m) -> {
-//            m.config_kP(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
-//            m.config_kI(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
-//            m.config_kD(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
-//            m.config_kF(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
-//            m.configAllowableClosedloopError(Constants.LOWGEAR_IDX, Constants.LOWGEAR_ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
-//        });
     }
 
     public void setPower(double left, double right) {
@@ -286,13 +263,6 @@ public class DriveTrain extends Subsystem {
         SmartDashboard.putNumber("drive left", left);
         SmartDashboard.putNumber("drive right", right);
     }
-
-//    public void set(double left, double right) {
-//        left1.set(mode == Mode.velocity ? ControlMode.Velocity : ControlMode.PercentOutput, left);
-//        right1.set(mode == Mode.velocity ? ControlMode.Velocity : ControlMode.PercentOutput, right);
-//        SmartDashboard.putNumber("drive left", left);
-//        SmartDashboard.putNumber("drive right", right);
-//    }
 
     public double getLeftDistanceInches() {
         return LightningMath.ticks2inches(left1.getSelectedSensorPosition(0));

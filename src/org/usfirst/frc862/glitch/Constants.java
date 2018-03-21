@@ -14,8 +14,6 @@ public class Constants extends ConstantsBase {
     public static int logDepth = 1000;
 
     // Vision
-    public static int CAMERA_PIXELS_OFF_CENTER = 0;
-    public static int VISION_ABORT_THRESHOLD = 100000; //If a cube hasn't been seen for this many frames, stop sending the last good frame and send an abort message
     public static double MAX_WIDTH_TO_HEIGHT_RATIO = 2.2;
     public static double MAX_HEIGHT_TO_WIDTH_RATIO = 2.2;
     public static int MAX_WIDTH = 320;
@@ -28,7 +26,6 @@ public class Constants extends ConstantsBase {
     public static double MAX_LATERAL_DISCREPANCY = 1.0;
     public static double MAX_LONGITUDAL_DISCREPANCY = 1.0;
     public static double MIN_CONFIDENCE_FOR_KEEP_CUBE = 0.5;
-    public static double MIN_CONFIDENCE_TO_CHASE = 0.8;
 
 
 
@@ -41,7 +38,6 @@ public class Constants extends ConstantsBase {
     public static double PHYSICAL_MAX_HIGH_SPEED_TICKS = 1300;
 
     // Lowest input that moves the robot
-//    public static double STICKTION_SPEED = 0.03;
     public static double STICKTION_SPEED_IPS = LightningMath.ips2talon(7) / PHYSICAL_MAX_HIGH_SPEED_TICKS;
     public static double VEL_COMMAND_RAMP = 6 / (1.0 / 0.02);  // in 1/3 of sec allow joystick to read full change
     public static double VEL_COMMAND_RAMP_HIGH_CG = 3 / (1.0 / 0.02);  // in 1/3 of sec allow joystick to read full change
@@ -75,7 +71,7 @@ public class Constants extends ConstantsBase {
     public static double UPSHIFT_SLOW_TIME_SECONDS = 0.08;
 
 
-    //PID
+    //Drive PID
     public static double pathP = 7.5;
     public static double pathI = 0;
     public static double pathD = 0;
@@ -84,20 +80,7 @@ public class Constants extends ConstantsBase {
     public static double pathTurn = 10; // 1; // 2; // 1.2; // 0.862;
     public static double pathFeedF = 4; // 4;
 
-    // PID gains for drive velocity loop (HIGH GEAR)
-    // Units: setpoint, error, and output are in inches per second.
-    public static double kDriveHighGearVelocityKp = 1.2;
-    public static double kDriveHighGearVelocityKi = 0.0;
-    public static double kDriveHighGearVelocityKd = 6.0;
-    public static double kDriveHighGearVelocityKf = .15;
-    public static int kDriveHighGearVelocityIZone = 0;
-    public static double kDriveHighGearVelocityRampRate = 240.0;
-    public static double kDriveHighGearNominalOutput = 0.5;
-    public static double kDriveHighGearMaxSetpoint = 17.0 * 12.0; // 17 fps
-
-
-
-    /* ROBOT PHYSICAL CONSTANTS */
+  /* ROBOT PHYSICAL CONSTANTS */
     //TODO tune for glitch
 
     // Wheels
@@ -108,52 +91,22 @@ public class Constants extends ConstantsBase {
     public static double kTrackWidthInches = 26.655;
     public static double kTrackScrubFactor = 0.924;
 
-    // Geometry
-    public static double kCenterToFrontBumperDistance = 16.33;
-    public static double kCenterToIntakeDistance = 23.11;
-    public static double kCenterToRearBumperDistance = 16.99;
-    public static double kCenterToSideBumperDistance = 17.225;
-
     // Pose of the camera frame w.r.t. the robot frame
     public static double kCameraXOffset = -3.3211;
     public static double kCameraYOffset = 0.0;
-    public static double kCameraZOffset = 20.9;
     public static double kCameraPitchAngleDegrees = 29.56; // Measured on 4/26
     public static double kCameraYawAngleDegrees = 0.0;
     public static double kCameraDeadband = 0.0;
 
-    // Path following constants
-    private static double kMinLookAhead = 12.0; // inches
-    private static double kMinLookAheadSpeed = 9.0; // inches per second
-    private static double kMaxLookAhead = 24.0; // inches
-    private static double kMaxLookAheadSpeed = 120.0; // inches per second
-    public static double kDeltaLookAhead = kMaxLookAhead - kMinLookAhead;
-    public static double kDeltaLookAheadSpeed = kMaxLookAheadSpeed - kMinLookAheadSpeed;
-
-    public static double kInertiaSteeringGain = 0.0; // angular velocity command is multiplied by this gain *
-                                                    // our speed in inches per second
-
-
-
     /*PATH FOLLOWER*/
     public static double kSegmentCompletionTolerance = 0.1; // inches
     public static double kPathFollowingMaxAccel = 120.0; // inches per second^2
-    public static double kPathFollowingMaxVel = 120.0; // inches per second
-    public static double kPathFollowingProfileKp = 5.00;
-    public static double kPathFollowingProfileKi = 0.03;
-    public static double kPathFollowingProfileKv = 0.02;
-    public static double kPathFollowingProfileKffv = 1.0;
-    public static double kPathFollowingProfileKffa = 0.05;
-    public static double kPathFollowingGoalPosTolerance = 0.75;
-    public static double kPathFollowingGoalVelTolerance = 12.0;
-    public static double kPathStopSteeringDistance = 9.0;
+
 
     // Goal tracker constants
     public static double kMaxGoalTrackAge = 1.0;
     public static double kMaxTrackerDistance = 18.0;
     public static double kCameraFrameRate = 30.0;
-    public static double kTrackReportComparatorStablityWeight = 1.0;
-    public static double kTrackReportComparatorAgeWeight = 1.0;
 
     // Self test values
     public static double MotorTestPower = 0.3;
@@ -248,9 +201,11 @@ public class Constants extends ConstantsBase {
     public static double DEFAULT_EJECT_POWER = -0.862;
     public static double COLLECT_TRIGGER_DEADZONE = 0;
     public static double EJECT_MAX_FEATHER = .7;
+    public static double COLLECTOR_SMOOTHING_FACTOR = 0.09;
 
 
-    // PDP Slots
+
+  // PDP Slots
     public static int PDP_DRIVE_RIGHT_1 = 0;
     public static int PDP_DRIVE_RIGHT_2 = 1;
     public static int PDP_DRIVE_RIGHT_3 = 2;
@@ -273,12 +228,6 @@ public class Constants extends ConstantsBase {
     }
 
     static {
-//        Constants.lookupTable = new InterpolatedMap();
-//        Constants.lookupTable.put(1.0, 1.0);
-//        Constants.lookupTable.put(50.0, 2500.0);
-//        Constants.lookupTable.put(100.0, 10000.0);
-
-        //noinspection StatementWithEmptyBody
         if (Robot.isEcho()) {
             // echo specific over-rides can go here
             FOURBAR_SCALE_POS = 300;

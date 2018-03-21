@@ -69,13 +69,6 @@ public class Arcade extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-//        double left= Robot.oi.getThrust();
-//        double right = Robot.oi.getThrust();
-//        left-=Robot.oi.getRotation();
-//        right+=Robot.oi.getRotation();
-//        left= LightningMath.limit(left,-1,1);
-//        right = LightningMath.limit(right,-1,1);
-//        Robot.driveTrain.setPower(left,right);
 
         double start = Timer.getFPGATimestamp();
         double rot = rotFilter.filter(Robot.oi.getRotation());
@@ -140,7 +133,6 @@ public class Arcade extends Command {
         SmartDashboard.putNumber("rot vel ave", velocityAverage.get());
         SmartDashboard.putBoolean("quickturn", quickTurn);
         SmartDashboard.putString("arcade mode", state.toString());
-//        DriveSignal power = drive.cheesyDrive(pwr, rot, quickTurn, Robot.shifter.isHighGear());
         DriveSignal power = CurvatureDrive.curvatureDrive(pwr, rot, quickTurn);
         Robot.driveTrain.setVelocity(power);
     }

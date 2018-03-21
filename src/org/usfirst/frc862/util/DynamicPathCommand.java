@@ -115,7 +115,6 @@ public class DynamicPathCommand extends DynamicPathCommandBase {
         double angleDiff = ChezyMath.getDifferenceInAngleDegrees(observedHeading, goalHeading);
         double theta_sign = (deltaHeading < 0) ? -1 : 1;
         double theta_feedf = deltaHeading * Constants.pathFeedF;
-//        double theta_feedf = Math.abs(Math.pow(deltaHeading, 1.25)) * theta_sign; // deltaHeading * Constants.pathFeedF;
         SmartDashboard.putNumber("theta_feedf", theta_feedf);
 
         if (theta_feedf == Double.NaN) {
@@ -123,7 +122,6 @@ public class DynamicPathCommand extends DynamicPathCommandBase {
         }
         double theta_pgain = Constants.pathTurn * angleDiff;
 
-//        double turn = Constants.pathTurn * angleDiff - Constants.pathFeedF * deltaHeading;
         double turn = theta_pgain + theta_feedf;
         double requestedLeft = speedLeft - turn;
         double requestedRight = speedRight + turn;

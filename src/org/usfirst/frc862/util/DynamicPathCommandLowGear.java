@@ -86,8 +86,7 @@ public class DynamicPathCommandLowGear extends DynamicPathCommandBase {
         logger.addDataElement("delta_pgain");
 
         Robot.driveTrain.setVelocityMode();
-//        Robot.shifter.downshift();
-        
+
         if (!loadPath()) {
             Logger.error("Failed to load path");
         }
@@ -124,7 +123,6 @@ public class DynamicPathCommandLowGear extends DynamicPathCommandBase {
         double angleDiff = ChezyMath.getDifferenceInAngleDegrees(observedHeading, goalHeading);
         double theta_sign = (deltaHeading < 0) ? -1 : 1;
         double theta_feedf = deltaHeading * pathFeedF;
-//        double theta_feedf = Math.abs(Math.pow(deltaHeading, 1.25)) * theta_sign; // deltaHeading * pathFeedF;
         SmartDashboard.putNumber("theta_feedf", theta_feedf);
 
         if (theta_feedf == Double.NaN) {
@@ -132,7 +130,6 @@ public class DynamicPathCommandLowGear extends DynamicPathCommandBase {
         }
         double theta_pgain = pathTurn * angleDiff;
 
-//        double turn = pathTurn * angleDiff - pathFeedF * deltaHeading;
         double turn = theta_pgain + theta_feedf;
         double requestedLeft = speedLeft - turn;
         double requestedRight = speedRight + turn;

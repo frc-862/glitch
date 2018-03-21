@@ -104,10 +104,8 @@ public class VisionCollect extends Command {
         		toggleTime = time;
         	}
             if (Robot.shifter.isHighGear()) {
-               // rotation = angleFilter.get() * Constants.StraightenKpHighGear;
             	rotation = angle * Constants.StraightenKpHighGear;
             } else {
-                //rotation = angleFilter.get() * Constants.StraightenKpLowGear;
             	rotation = angle * Constants.StraightenKpLowGear;
             }
             power = 0.2;

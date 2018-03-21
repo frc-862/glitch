@@ -48,14 +48,7 @@ public class VisionTestAuton extends Command {
     protected void initialize() {
         ShineBois.rainbow();
 
-        DriverStation.Alliance alliance=DriverStation.getInstance().getAlliance();
         CommandGroup cmd;
-
-//        if (alliance == DriverStation.Alliance.Blue) {
-//            cmd = blueAlliance();
-//        } else {
-//            cmd = redAlliance();
-//        }
 
         Robot.shifter.forceDownShift();
 
@@ -67,8 +60,6 @@ public class VisionTestAuton extends Command {
 
         if (Robot.attemptMultiCubeAuton()) {
             cmd.addSequential(new VisionCollect());
-
-            boolean leftSwitch = Robot.switchOnLeft();
 
             CommandGroup switchDeploy = new CommandGroup();
             switchDeploy.addSequential(new MoveCollectorToSwitch());
