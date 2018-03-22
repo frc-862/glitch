@@ -66,7 +66,12 @@ public class CoPilotAuto extends Command {
             else if(copilot.rightBumper.get()) {
                 power = Constants.DEFAULT_COLLECT_POWER;
             }
-            Robot.gripper.setPower(power);
+
+//            if (copilot.getRightStickY() < -0.5) {
+//                Robot.gripper.setPulsePower(1);
+//            } else {
+                Robot.gripper.setPower(power);
+//            }
         }
 
         // Y

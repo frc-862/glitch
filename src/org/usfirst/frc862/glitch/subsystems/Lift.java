@@ -171,6 +171,7 @@ public class Lift extends Subsystem {
 
         fourbar.set(ControlMode.Velocity, 0);
         elevator.set(ControlMode.Velocity, 0);
+        elevatorLimit = Limit.Good;
     }
 
     @Override
@@ -183,14 +184,18 @@ public class Lift extends Subsystem {
         SmartDashboard.putNumber("Elevator Encoder", elevator.getSelectedSensorPosition(0));
 
         SensorCollection elevatorInfo = elevator.getSensorCollection();
+        SmartDashboard.putBoolean("Fwd Limit", elevatorInfo.isFwdLimitSwitchClosed());
+        SmartDashboard.putBoolean("Rev Limit", elevatorInfo.isRevLimitSwitchClosed());
+        SmartDashboard.putString("Elevator limit", elevatorLimit.toString());
+
         if (elevatorInfo.isFwdLimitSwitchClosed()) {
             Logger.info("Fwd Limit" + elevator.getSelectedSensorPosition(0));
             elevatorLimit = Limit.Bottom;
-//            elevator.setSelectedSensorPosition(Constants.ELEVATOR_COLLECT_POS - Constants.ELEVATOR_EPSILON, 0, Constants.TALON_TIMEOUT);
+            elevator.setSelectedSensorPosition(Constants.ELEVATOR_COLLECT_POS + Constants.ELEVATOR_EPSILON, 0, Constants.TALON_TIMEOUT);
         } else if (elevatorInfo.isRevLimitSwitchClosed()) {
             Logger.info("Rev Limit" + elevator.getSelectedSensorPosition(0));
             elevatorLimit = Limit.Top;
-//            elevator.setSelectedSensorPosition(Constants.ELEVATOR_SCALE_POS + Constants.ELEVATOR_EPSILON, 0, Constants.TALON_TIMEOUT);
+            elevator.setSelectedSensorPosition(Constants.ELEVATOR_SCALE_POS_HIGH - Constants.ELEVATOR_EPSILON, 0, Constants.TALON_TIMEOUT);
         } else {
             elevatorLimit = Limit.Good;
         }

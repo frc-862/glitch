@@ -107,8 +107,8 @@ public class Gripper extends Subsystem {
         SmartDashboard.putNumber("timer", Timer.getFPGATimestamp());
 
         // Put code here to be run every loop
-        double voltage = (leftGripper.getMotorOutputVoltage() + rightGripper.getMotorOutputVoltage() / 2.0);
-        if (powerFilter.filter(voltage) > 6.0) {
+        double current = Math.max(leftGripper.getOutputCurrent(), rightGripper.getOutputCurrent());
+        if (powerFilter.filter(current) > 25) {
            // 0.5 is 6V which appears to be safe on the bag motor.
            powerReduce = 0.5;
         } else {
@@ -154,6 +154,22 @@ public class Gripper extends Subsystem {
     public void setPower(double collectPower) {
         leftGripper.set(collectPower * powerReduce);
         rightGripper.set(collectPower * powerReduce);
+    }
+
+    private boolean pulse = false;
+    private double pulseTime = 0;
+    public void setPulsePower(double collectPower) {
+        if (Timer.getFPGATimestamp() - pulseTime > 0.2) {
+            if (pulse) {
+                leftGripper.set(collectPower * powerReduce);
+                rightGripper.set(-0.2 * powerReduce);
+            } else {
+                leftGripper.set(-0.2 * powerReduce);
+                rightGripper.set(collectPower * powerReduce);
+            }
+            pulse = !pulse;
+            pulseTime = Timer.getFPGATimestamp();
+        }
     }
 
     // Put methods for controlling this subsystem
