@@ -51,7 +51,7 @@ public class ShineBois extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
-    private enum states {green, purple, rainbow, chase, off}
+    private enum states {green, purple, rainbow, chase, off, yellow}
     private static states current = states.off;
     private static states alert = states.off;
 
@@ -87,13 +87,16 @@ public class ShineBois extends Subsystem {
             case chase:
                 stateChase();
                 break;
+            case yellow:
+            	stateYellow();
+            	break;
             case off:
                 stateOff();
                 break;
         }
     }
 
-    /*
+	/*
     switch (state) {
     case 0:
       reset();
@@ -131,6 +134,11 @@ public class ShineBois extends Subsystem {
         alert = states.purple;
         alertEnd = Timer.getFPGATimestamp() + Constants.ALERT_DURATION;
     }
+    
+    public static void yellow() {
+    	alert = states.yellow;
+        alertEnd = Timer.getFPGATimestamp() + Constants.ALERT_DURATION;    	
+    }
 
     public static void rainbow() {
         current = states.rainbow;
@@ -167,6 +175,12 @@ public class ShineBois extends Subsystem {
         RobotMap.shineBoisNinth.set(false);
         RobotMap.shineBoisSeventh.set(true);
         RobotMap.shineBoisEighth.set(true);
+    }
+    
+    private static void stateYellow() {
+    	RobotMap.shineBoisNinth.set(true);
+    	RobotMap.shineBoisEighth.set(false);
+    	RobotMap.shineBoisSeventh.set(true);
     }
 
     private static void stateOff() {

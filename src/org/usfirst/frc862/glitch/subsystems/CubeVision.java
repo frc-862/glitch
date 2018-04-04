@@ -97,6 +97,12 @@ public class CubeVision extends Subsystem {
 				else {
 					collectDataWithoutTracking();
 				}
+				
+				if (cubes.size() > 0)
+				{
+					ShineBois.yellow();
+				}
+				
 			} catch (Exception err) {
 				Logger.error("Vision loop error: " + err);
 			}

@@ -38,6 +38,9 @@ void loop() {
     case 4:
       purple();
       break;
+    case 5:
+      yellow();
+      break;
     default:
       reset();
       break;
@@ -78,6 +81,15 @@ void purple(){
   
   for(int i=0;i<ledCount;i++){
     colors[i]=rgb_color(140,8,205);
+  }
+  
+ led.write(colors, ledCount, brightness);
+}
+
+void yellow(){
+  
+  for(int i=0;i<ledCount;i++){
+    colors[i]=rgb_color(255,255,10);
   }
   
  led.write(colors, ledCount, brightness);
