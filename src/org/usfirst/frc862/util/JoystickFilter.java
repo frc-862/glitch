@@ -67,7 +67,7 @@ public class JoystickFilter {
         
         input = Math.abs(input);
         if (input < deadband)
-            return 0;
+            input = 0;
 
         switch (mode) {
         case LINEAR:

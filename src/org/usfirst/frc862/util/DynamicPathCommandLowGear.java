@@ -1,22 +1,26 @@
 package org.usfirst.frc862.util;
 
-import com.team254.lib.util.SmartDashboardUtil;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc862.util.FaultCode.Codes;
-import org.usfirst.frc862.glitch.Constants;
-import org.usfirst.frc862.glitch.Robot;
-import org.usfirst.frc862.glitch.subsystems.DriveTrain;
-
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 import com.team254.lib.trajectory.TrajectoryFollower;
 import com.team254.lib.util.ChezyMath;
-
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc862.glitch.Robot;
+import org.usfirst.frc862.glitch.subsystems.DriveTrain;
+import org.usfirst.frc862.util.FaultCode.Codes;
 
-public class DynamicPathCommand extends DynamicPathCommandBase {
+public class DynamicPathCommandLowGear extends DynamicPathCommandBase {
+    private final static double pathP = 7.5;
+    private final static double pathI = 0;
+    private final static double pathD = 0;
+    private final static double pathV = 1;  // Velocity is in IPS, we command IPS
+    private final static double pathA = 0;
+    private final static double pathTurn = 1; // 1; // 2; // 1.2; // 0.862;
+    private final static double pathFeedF = 6; // 4;
+
     private CommandLogger logger;
     private TrajectoryFollower followerLeft = new TrajectoryFollower();
     private TrajectoryFollower followerRight = new TrajectoryFollower();
@@ -24,12 +28,12 @@ public class DynamicPathCommand extends DynamicPathCommandBase {
     private double starting_heading;
     private Path path;
 
-    public DynamicPathCommand() {
+    public DynamicPathCommandLowGear() {
         super();
         setup();
     }
-        
-    public DynamicPathCommand(String name) {
+
+    public DynamicPathCommandLowGear(String name) {
         super(name);
         setup();
     }
@@ -45,7 +49,11 @@ public class DynamicPathCommand extends DynamicPathCommandBase {
         }
     }
 
-    protected boolean loadPath() {
+    public Path getPath() {
+        return null;
+    }
+
+    private boolean loadPath() {
         path = getPath();
 
         return path != null;
@@ -56,7 +64,7 @@ public class DynamicPathCommand extends DynamicPathCommandBase {
         Trajectory.Segment point = left.getSegment(left.getNumSegments() - 1);
         return point.dt * left.getNumSegments();
     }
-
+    
     @Override
     protected void initialize() {
         // move this to ensure that we get a new log for each run
@@ -79,7 +87,7 @@ public class DynamicPathCommand extends DynamicPathCommandBase {
         logger.addDataElement("delta_pgain");
 
         Robot.driveTrain.setVelocityMode();
-        Robot.shifter.forceUpShift();
+//        Robot.shifter.downshift();
         
         if (!loadPath()) {
             Logger.error("Failed to load path");
@@ -87,8 +95,8 @@ public class DynamicPathCommand extends DynamicPathCommandBase {
 
         Robot.driveTrain.resetDistance();
         starting_heading = Robot.core.getGyroAngle();
-        followerLeft.configure(Constants.pathP, Constants.pathI, Constants.pathD, Constants.pathV, Constants.pathA);        
-        followerRight.configure(Constants.pathP, Constants.pathI, Constants.pathD, Constants.pathV, Constants.pathA);
+        followerLeft.configure(pathP, pathI, pathD, pathV, pathA);
+        followerRight.configure(pathP, pathI, pathD, pathV, pathA);
 
         followerLeft.setTrajectory(path.getLeftWheelTrajectory());
         followerLeft.reset();
@@ -116,16 +124,16 @@ public class DynamicPathCommand extends DynamicPathCommandBase {
         double observedHeading = ChezyMath.getDifferenceInAngleDegrees(Robot.core.getGyroAngle(), starting_heading);
         double angleDiff = ChezyMath.getDifferenceInAngleDegrees(observedHeading, goalHeading);
         double theta_sign = (deltaHeading < 0) ? -1 : 1;
-        double theta_feedf = deltaHeading * Constants.pathFeedF;
-//        double theta_feedf = Math.abs(Math.pow(deltaHeading, 1.25)) * theta_sign; // deltaHeading * Constants.pathFeedF;
+        double theta_feedf = deltaHeading * pathFeedF;
+//        double theta_feedf = Math.abs(Math.pow(deltaHeading, 1.25)) * theta_sign; // deltaHeading * pathFeedF;
         SmartDashboard.putNumber("theta_feedf", theta_feedf);
 
         if (theta_feedf == Double.NaN) {
             theta_feedf = 0;
         }
-        double theta_pgain = Constants.pathTurn * angleDiff;
+        double theta_pgain = pathTurn * angleDiff;
 
-//        double turn = Constants.pathTurn * angleDiff - Constants.pathFeedF * deltaHeading;
+//        double turn = pathTurn * angleDiff - pathFeedF * deltaHeading;
         double turn = theta_pgain + theta_feedf;
         double requestedLeft = speedLeft - turn;
         double requestedRight = speedRight + turn;

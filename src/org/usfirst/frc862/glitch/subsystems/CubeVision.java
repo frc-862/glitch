@@ -13,6 +13,7 @@ package org.usfirst.frc862.glitch.subsystems;
 
 import java.util.ArrayList;
 
+import edu.wpi.first.wpilibj.Timer;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.vision.CubeNotFoundException;
@@ -50,7 +51,8 @@ public class CubeVision extends Subsystem {
 	private double angle;
 	private double leftDist, rightDist;
 	private long numUpdates = 0;
-	
+	private double lastVisionRead;
+
 	public CubeVision() {
 		super();
 		cubes = new ArrayList<PowerCube>();
@@ -125,6 +127,7 @@ public class CubeVision extends Subsystem {
 	    	SmartDashboard.putNumber("numObjects", numObjects);
 	    	SmartDashboard.putString("step", "getNums");
 	    	if(numObjects > 0 && lastFrame.endsWith("]\r\n")) {
+	    		lastVisionRead = Timer.getFPGATimestamp();
 	    		SmartDashboard.putString("step", "enteredDataInIf");
 	    		framesSinceContact = 0;
 	    		String currentCube;
@@ -181,6 +184,7 @@ public class CubeVision extends Subsystem {
 	    	SmartDashboard.putString("step", "getNums");
 	    	if(numObjects > 0 && lastFrame.endsWith("]\r\n")) {
 	    		SmartDashboard.putString("step", "enteredDataInIf");
+				lastVisionRead = Timer.getFPGATimestamp();
 	    		framesSinceContact = 0;
 	    		String currentCube;
 	    		for(int i = 0; i < numObjects; i++) {
@@ -342,5 +346,8 @@ public class CubeVision extends Subsystem {
     // here. Call these from Commands.
     
 
+	public double getLastVisionRead() {
+    	return lastVisionRead;
+	}
 }
 

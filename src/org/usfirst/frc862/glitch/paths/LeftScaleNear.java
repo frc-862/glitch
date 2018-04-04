@@ -4,7 +4,7 @@ import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
 // max path velocity 110.30305862237766
-public class LeftScaleNear extends org.usfirst.frc862.util.DynamicPathCommand {
+public class LeftScaleNear extends org.usfirst.frc862.util.DynamicPathCommandLowGear {
     private static Path path;
 
     public Path getPath() {
