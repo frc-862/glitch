@@ -46,8 +46,8 @@ public class CubeVision extends Subsystem {
 	private long lastGoodFrameNum;
 	private SerialPort serialIn;
 	private ArrayList<PowerCube> cubes, cubesIn;
-	private boolean visionInit = true, enableTracking = false;
-	private int idCounter = 0;
+	private boolean visionInit = true, enableTracking = true;
+	private long idCounter = 0;
 	private double angle;
 	private double leftDist, rightDist;
 	private long numUpdates = 0;
@@ -257,9 +257,9 @@ public class CubeVision extends Subsystem {
     					&& Math.abs(cubeIn.getLateral() - current.getLateral()) < Constants.MAX_LATERAL_DISCREPANCY 
     					&& Math.abs(cubeIn.getLongitudal() - current.getLongitudal()) < Constants.MAX_LONGITUDAL_DISCREPANCY) 
     					
-    					|| (bestIndex != -1 && Math.abs(cubeIn.getAngle() - current.getAngle()) < best.getAngle() 
-    					&& Math.abs(cubeIn.getLateral() - current.getLateral()) < best.getLateral() 
-    					&& Math.abs(cubeIn.getLongitudal() - current.getLongitudal()) < best.getLongitudal())) {
+    					|| (bestIndex != -1 && Math.abs(cubeIn.getAngle() - current.getAngle()) < Math.abs(best.getAngle() - current.getAngle()) 
+    					&& Math.abs(cubeIn.getLateral() - current.getLateral()) < Math.abs(best.getLateral() - current.getLateral()) 
+    					&& Math.abs(cubeIn.getLongitudal() - current.getLongitudal()) < Math.abs(best.getLongitudal() - current.getLongitudal()))) {
     				best = current;
     				bestIndex = j;
     			}
@@ -314,8 +314,6 @@ public class CubeVision extends Subsystem {
     	if(bestCubeIndex == -1) throw new CubeNotFoundException();
 
     	SmartDashboard.putNumber("best cube angle", cubes.get(bestCubeIndex).getAngle());
-    	//Index will only be stable if tracking is enabled, so leave it as -1 if tracking is off.
-    	if(enableTracking) return cubes.get(bestCubeIndex).returnCube(bestCubeIndex);
     	return cubes.get(bestCubeIndex);
     	
     }
@@ -324,8 +322,56 @@ public class CubeVision extends Subsystem {
     	return cubes.size();
     }
     
-    public PowerCube getCubeFromIndex(int index) {
-    	return cubes.get(index);
+    public PowerCube getCubeByID(long id) throws CubeNotFoundException {
+    	PowerCube cube = null;
+    	for(PowerCube current : cubes) {
+    		if(current.getId() == id) cube = current;
+    	}
+    	if(cube == null) throw new CubeNotFoundException();
+    	return cube;
+    }
+    
+    /**
+	 * Searches for cubes close to an angle
+	 * @param angle - angle to search for cubes at
+	 * @return <code>PowerCube</code> closest to the passed angle
+	 * @throws CubeNotFoundException
+	 */
+    public PowerCube getCubeClosestToAngle(double angle) throws CubeNotFoundException {
+    	if(cubes.size() == 0) throw new CubeNotFoundException();
+    	
+    	double smallestAngle = 999;
+    	int bestCubeIndex = -1;
+    	for(int i = 0; i < cubes.size(); i++) {
+    		if(Math.abs(cubes.get(i).getAngle() - angle) < smallestAngle) {
+    			bestCubeIndex = i;
+    			smallestAngle = Math.abs(cubes.get(i).getAngle() - angle);
+    		}
+    	}
+    	return cubes.get(bestCubeIndex);
+    }
+    
+	/**
+	 * Searches for cubes close to an angle within a given range
+	 * @param angle - angle to search for cubes at
+	 * @param threshold - largest acceptable difference between passed and actual angle
+	 * @return <code>PowerCube</code> closest to the passed angle
+	 * @throws CubeNotFoundException
+	 */
+    public PowerCube getCubeClosestToAngle(double angle, double threshold) throws CubeNotFoundException {
+    	if(cubes.size() == 0) throw new CubeNotFoundException();
+    	
+    	double smallestAngle = 999;
+    	int bestCubeIndex = -1;
+    	for(int i = 0; i < cubes.size(); i++) {
+    		if(Math.abs(cubes.get(i).getAngle() - angle) < smallestAngle && Math.abs(cubes.get(i).getAngle() - angle) < threshold) {
+    			bestCubeIndex = i;
+    			smallestAngle = Math.abs(cubes.get(i).getAngle() - angle);
+    		}
+    	}
+    	
+    	if(bestCubeIndex == -1) throw new CubeNotFoundException();
+    	return cubes.get(bestCubeIndex);
     }
     
     public ArrayList<PowerCube> getCubeList() {

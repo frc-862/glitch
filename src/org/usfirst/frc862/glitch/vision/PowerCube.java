@@ -12,7 +12,8 @@ import org.usfirst.frc862.glitch.RobotMap;
  *
  */
 public class PowerCube {
-	private int x, y, id, height, width, index = -1;
+	private int x, y, height, width, index = -1;
+	private long id;
 	private double angle, area, lateral, longitudal, confidence;
 	/**
 	 * 
@@ -21,7 +22,7 @@ public class PowerCube {
 	 * @param width - width in pixels (pass directly from camera)
 	 * @param height - height in pixels (pass directly from camera)
 	 */
-	public PowerCube(int id, int x, int y, int width, int height) {
+	public PowerCube(long id, int x, int y, int width, int height) {
 		this.id = id;
 		this.x = x;
 		this.y = y;
@@ -102,7 +103,7 @@ public class PowerCube {
 		return longitudal;
 	}
 	
-	public double getId() {
+	public long getId() {
 		return id;
 	}
 	
@@ -124,11 +125,6 @@ public class PowerCube {
 	
 	public int getIndex() {
 		return index;
-	}
-	
-	public PowerCube returnCube(int index) {
-		this.index = index;
-		return this;
 	}
 
 }

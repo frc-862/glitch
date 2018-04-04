@@ -15,7 +15,6 @@ package org.usfirst.frc862.glitch;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -47,7 +46,6 @@ public class RobotMap {
     public static DoubleSolenoid shifterShift;
     public static WPI_VictorSPX gripperLeftGripper;
     public static WPI_VictorSPX gripperRightGripper;
-    public static DigitalInput gripperCubeSensor;
     public static WPI_TalonSRX liftfourbar;
     public static WPI_TalonSRX liftelevator;
     public static DigitalOutput shineBoisSeventh;
@@ -86,9 +84,6 @@ public class RobotMap {
         
         gripperRightGripper = new WPI_VictorSPX(20);
         
-        
-        gripperCubeSensor = new DigitalInput(1);
-        LiveWindow.addSensor("Gripper", "CubeSensor", gripperCubeSensor);
         
         liftfourbar = new WPI_TalonSRX(29);
         
