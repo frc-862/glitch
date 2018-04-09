@@ -50,21 +50,34 @@ public class ScaleAuton extends Command {
 
         Robot.shifter.forceUpShift();
 
-        DriverStation.Alliance alliance = DriverStation.getInstance().getAlliance();
-//        CommandGroup cmd = buildScale();
-        CommandGroup cmd = new CommandGroup();
+        CommandGroup cmd = buildScale();
 
+        CommandGroup readyToCollect = new CommandGroup();
+        readyToCollect.addSequential(new TimedCommand(0.5));
+        readyToCollect.addSequential(new MoveCollectorToCollect());
+        cmd.addParallel(readyToCollect);
+        cmd.addSequential(new TurnToAbsolutePosition(180));
 
-        cmd.addSequential(new TurnToAbsolutePosition(179));
-//        cmd.addSequential(new MoveCollectorToCollect(), 2);
+        if (Robot.attemptMultiCubeAuton()) {
+            cmd.addParallel(new MoveCollectorToCollect());
+            if (Robot.scaleOnLeft()) {
+                cmd.addSequential(new LeftSecondCube());
+            } else {
+                cmd.addSequential(new RightSecondCube());
+            }
 
-        cmd.addParallel(new CollectCube(), 2);
-        if (Robot.scaleOnLeft()) {
-            cmd.addSequential(new LeftSecondCube());
-        } else {
-            cmd.addSequential(new RightSecondCube());
+            cmd.addSequential(new GentleCollectCube());
+
+            cmd.addSequential(new TurnToAbsolutePosition(0));
+            if (Robot.scaleOnLeft()) {
+//            cmd.addSequential(new LeftSecondCube());
+            } else {
+                cmd.addSequential(new RightSecondCubeDeploy());
+            }
+            cmd.addSequential(new EjectCube(), 0.5);
+            cmd.addSequential(new TurnToAbsolutePosition(180));
+            cmd.addSequential(new MoveCollectorToCollect());
         }
-
         cmd.start();
     }
 
@@ -74,16 +87,16 @@ public class ScaleAuton extends Command {
 
         CommandGroup cmd = new CommandGroup();
 
-//        cmd.addParallel(new HoldCube());
+        cmd.addParallel(new HoldCube());
 
         DynamicPathCommandBase path;
 
         if (leftStart && leftScale) {
             Logger.info("Using Left Scale Near");
-            path = new LeftScaleNearLG();
+            path = new LeftScaleNear();
         } else if (leftStart && !leftScale) {
             Logger.info("Using Left Scale Far");
-            path = new RightScaleNearLG();
+            path = new LeftScaleNear();
         } else if (!leftScale) {
             Logger.info("Using Right Scale Near");
             // If we made it this far, we have to be on the right side
@@ -98,7 +111,6 @@ public class ScaleAuton extends Command {
         if (path.duration() > 4) {
             riseUp.addSequential(new TimedCommand(path.duration() - 4));
         }
-        riseUp.addSequential(new HoldCube(), 0.5);
         riseUp.addSequential(new MoveCollectorToScale());
         cmd.addParallel(riseUp);
 

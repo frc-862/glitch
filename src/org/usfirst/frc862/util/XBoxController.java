@@ -64,7 +64,7 @@ public class XBoxController extends Joystick {
 
     public boolean isDPadUp() {
         int pos = getPOV();
-        return pos > 270 || pos < 90;
+        return pos != -1 && (pos > 270 || pos < 90);
     }
 
     public boolean isDPadRight() {

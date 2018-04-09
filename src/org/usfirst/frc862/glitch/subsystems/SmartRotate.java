@@ -54,8 +54,8 @@ public class SmartRotate extends Command {
     @Override
     protected void execute() {
         final double error = getError();
-        final double estimatedWheelDistance = error * Constants.angleToTick;
-        Robot.driveTrain.updateMotionMagic(estimatedWheelDistance, -estimatedWheelDistance);
+//        final double estimatedWheelDistance = error * Constants.angleToTick;
+//        Robot.driveTrain.updateMotionMagic(estimatedWheelDistance, -estimatedWheelDistance);
 
         // TODO done should probably also verify that velocity is below some threshold too...
         done = Math.abs(error) < Constants.ANGLE_TOLERANCE_DEGREES;

@@ -257,11 +257,11 @@ public class Constants extends ConstantsBase {
     public static double AutonScaleTime = 5;
 
     //Collector
-    public static final double DEFAULT_HOLD_POWER = 0.5;
+    public static final double DEFAULT_HOLD_POWER = 0.3;
     public static double DEFAULT_COLLECT_POWER = 0.862;
     public static double DEFAULT_EJECT_POWER = -0.862;
     public static final double COLLECT_TRIGGER_DEADZONE = 0;
-    public static double EJECT_MAX_FEATHER = .7;
+    public static double EJECT_MAX_FEATHER = 0.7;
 
 
     // PDP Slots
