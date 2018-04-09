@@ -88,9 +88,9 @@ public class Constants extends ConstantsBase {
     public static double pathP = 7.5;
     public static double pathI = 0;
     public static double pathD = 0;
-    public static double pathV = 1;  // Velocity is in IPS, we command IPS
+    public static double pathV = 2;  // Velocity is in IPS, we command IPS
     public static double pathA = 0;
-    public static double pathTurn = 10; // 1; // 2; // 1.2; // 0.862;
+    public static double pathTurn = 8; // 1; // 2; // 1.2; // 0.862;
     public static double pathFeedF = 4; // 4;
 
     // PID gains for drive velocity loop (HIGH GEAR)
@@ -282,7 +282,9 @@ public class Constants extends ConstantsBase {
     public static double ELEVATOR_DOWN_POWER = -5;
     public static double FOURBAR_DOWN_POWER = -2;
 
-  public String getFileName() {
+    public static double angleToTick = 7100 / 360.0;
+
+    public String getFileName() {
         return "~/glitch.yaml";
     }
 

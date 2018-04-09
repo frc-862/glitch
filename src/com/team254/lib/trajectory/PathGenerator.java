@@ -116,34 +116,28 @@ public class PathGenerator {
       Trajectory.Segment s_left = left.getSegment(i);
       s_left.x = current.x - wheelbase_width / 2 * sin_angle;
       s_left.y = current.y + wheelbase_width / 2 * cos_angle;
-      if (i > 0) {
-        // Get distance between current and last segment
-        double dist = Math.sqrt((s_left.x - left.getSegment(i - 1).x)
-                * (s_left.x - left.getSegment(i - 1).x)
-                + (s_left.y - left.getSegment(i - 1).y)
-                * (s_left.y - left.getSegment(i - 1).y));
-        s_left.pos = left.getSegment(i - 1).pos + dist;
-        s_left.vel = dist / s_left.dt;
-        s_left.acc = (s_left.vel - left.getSegment(i - 1).vel) / s_left.dt;
-        s_left.jerk = (s_left.acc - left.getSegment(i - 1).acc) / s_left.dt;
-      }
+      adjustSide(left, i, s_left);
 
       Trajectory.Segment s_right = right.getSegment(i);
       s_right.x = current.x + wheelbase_width / 2 * sin_angle;
       s_right.y = current.y - wheelbase_width / 2 * cos_angle;
-      if (i > 0) {
-        // Get distance between current and last segment
-        double dist = Math.sqrt((s_right.x - right.getSegment(i - 1).x)
-                * (s_right.x - right.getSegment(i - 1).x)
-                + (s_right.y - right.getSegment(i - 1).y)
-                * (s_right.y - right.getSegment(i - 1).y));
-        s_right.pos = right.getSegment(i - 1).pos + dist;
-        s_right.vel = dist / s_right.dt;
-        s_right.acc = (s_right.vel - right.getSegment(i - 1).vel) / s_right.dt;
-        s_right.jerk = (s_right.acc - right.getSegment(i - 1).acc) / s_right.dt;
-      }
+      adjustSide(right, i, s_right);
     }
 
     return new Trajectory.Pair(output[0], output[1]);
+  }
+
+  private static void adjustSide(Trajectory trajectory, int index, Trajectory.Segment segment) {
+    if (index > 0) {
+      // Get distance between current and last segment
+      double dist = Math.sqrt((segment.x - trajectory.getSegment(index - 1).x)
+              * (segment.x - trajectory.getSegment(index - 1).x)
+              + (segment.y - trajectory.getSegment(index - 1).y)
+              * (segment.y - trajectory.getSegment(index - 1).y));
+      segment.pos = trajectory.getSegment(index - 1).pos + dist;
+      segment.vel = dist / segment.dt;
+      segment.acc = (segment.vel - trajectory.getSegment(index - 1).vel) / segment.dt;
+      segment.jerk = (segment.acc - trajectory.getSegment(index - 1).acc) / segment.dt;
+    }
   }
 }

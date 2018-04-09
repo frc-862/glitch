@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
 import org.usfirst.frc862.glitch.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.paths.*;
+import org.usfirst.frc862.glitch.subsystems.SmartRotate;
 import org.usfirst.frc862.util.TwoButtonTrigger;
 import org.usfirst.frc862.util.XBoxController;
 
@@ -108,10 +109,13 @@ public class OI {
         SmartDashboard.putData("Stiction Test", new StictionTest());
         SmartDashboard.putData("Joystick Test", new TestJoySticks());
 
-        SmartDashboard.putData("Left Scale Near", new LeftScaleNear());
-        SmartDashboard.putData("Left Scale Far", new LeftScaleFar());
+        SmartDashboard.putData("Right Scale Near", new RightScaleNear());
+        SmartDashboard.putData("Right Scale Far", new RightScaleFar());
 
         SmartDashboard.putData("Rotator", new Rotator());
+        SmartDashboard.putData("Rotate to 180", new TurnToAbsolutePosition(180));
+        SmartDashboard.putData("Rotate to 0", new TurnToAbsolutePosition(0));
+        SmartDashboard.putData("Second Cube Right", new SecondCubeRight());
         SmartDashboard.putData("Copilot", new CoPilotAuto());
         SmartDashboard.putData("Copilot Manual", new CoPilotManual());
         SmartDashboard.putData("System Test", new SystemTest());
@@ -127,6 +131,7 @@ public class OI {
 
         SmartDashboard.putData("SwitchAuton", new SwitchAuton());
         SmartDashboard.putData("TestStatefulAuton", new TestStatefulAuton());
+        SmartDashboard.putData("TestSmartRotate", new SmartRotate(180));
 
         if (driverControlsAvailable()) {
             JoystickButton trigger1 = new JoystickButton(driverLeft, 1);

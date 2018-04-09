@@ -42,7 +42,7 @@ public class DriveTrain extends Subsystem {
 
     private double slowUntil = 0;
 
-    enum Mode { voltage, velocity, test }
+    enum Mode { voltage, velocity, magic, test }
 
     Mode mode;
 
@@ -197,35 +197,10 @@ public class DriveTrain extends Subsystem {
 
     public void setVelocityMode(final Mode vmode) {
         setFollowMode(ControlMode.Velocity);
-        eachMaster((m) -> {
-            m.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, Constants.TALON_TIMEOUT);
-
-            m.config_kP(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
-            m.config_kI(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
-            m.config_kD(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
-            m.config_kF(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
-            m.configAllowableClosedloopError(Constants.LOWGEAR_IDX, Constants.LOWGEAR_ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
-            m.setSelectedSensorPosition(0,0, Constants.TALON_TIMEOUT);
-
-            m.config_kP(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
-            m.config_kI(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
-            m.config_kD(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
-            m.config_kF(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
-            m.setSelectedSensorPosition(0,0, Constants.TALON_TIMEOUT);
-            m.configAllowableClosedloopError(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
-
-            m.configOpenloopRamp(Constants.openLoopRamp, Constants.TALON_TIMEOUT);
-            m.configClosedloopRamp(Constants.closedLoopRamp, Constants.TALON_TIMEOUT);
-        });
+        configureVelocityPID();
 
         // select slot based on current gear..
-        if (Robot.shifter == null || !Robot.shifter.isHighGear()) {
-            left1.selectProfileSlot(Constants.LOWGEAR_IDX, 0);
-            right1.selectProfileSlot(Constants.LOWGEAR_IDX, 0);
-        } else {
-            left1.selectProfileSlot(Constants.HIGHGEAR_IDX, 0);
-            right1.selectProfileSlot(Constants.HIGHGEAR_IDX, 0);
-        }
+        setSlotBasedOnGear();
 
         mode = vmode;
     }
@@ -384,6 +359,58 @@ public class DriveTrain extends Subsystem {
     public void resetDistance() {
         left1.setSelectedSensorPosition(0, 0, Constants.TALON_TIMEOUT);
         right1.setSelectedSensorPosition(0, 0, Constants.TALON_TIMEOUT);
+    }
+
+    public void setMotionMagic(double left, double right) {
+        setFollowMode(ControlMode.MotionMagic);
+        configureVelocityPID();
+
+        // select slot based on current gear..
+        setSlotBasedOnGear();
+
+        left1.set(ControlMode.MotionMagic, left);
+        right1.set(ControlMode.MotionMagic, right);
+        mode = Mode.magic;
+    }
+
+    private void setSlotBasedOnGear() {
+        if (Robot.shifter == null || !Robot.shifter.isHighGear()) {
+            left1.selectProfileSlot(Constants.LOWGEAR_IDX, 0);
+            right1.selectProfileSlot(Constants.LOWGEAR_IDX, 0);
+        } else {
+            left1.selectProfileSlot(Constants.HIGHGEAR_IDX, 0);
+            right1.selectProfileSlot(Constants.HIGHGEAR_IDX, 0);
+        }
+    }
+
+    private void configureVelocityPID() {
+        eachMaster((m) -> {
+            m.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, Constants.TALON_TIMEOUT);
+
+            m.config_kP(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
+            m.config_kI(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
+            m.config_kD(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
+            m.config_kF(Constants.LOWGEAR_IDX, Constants.LOWGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
+            m.configAllowableClosedloopError(Constants.LOWGEAR_IDX, Constants.LOWGEAR_ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
+            m.setSelectedSensorPosition(0,0, Constants.TALON_TIMEOUT);
+
+            m.config_kP(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_P,Constants.TALON_TIMEOUT);
+            m.config_kI(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_I, Constants.TALON_TIMEOUT);
+            m.config_kD(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_D,Constants.TALON_TIMEOUT);
+            m.config_kF(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_DRIVE_F,Constants.TALON_TIMEOUT);
+            m.setSelectedSensorPosition(0,0, Constants.TALON_TIMEOUT);
+            m.configAllowableClosedloopError(Constants.HIGHGEAR_IDX, Constants.HIGHGEAR_ALLOWED_DRIVE_ERROR, Constants.TALON_TIMEOUT);
+
+            m.configOpenloopRamp(Constants.openLoopRamp, Constants.TALON_TIMEOUT);
+            m.configClosedloopRamp(Constants.closedLoopRamp, Constants.TALON_TIMEOUT);
+            m.configMotionAcceleration((int)Constants.PHYSICAL_MAX_LOW_SPEED_TICKS, Constants.TALON_TIMEOUT);
+            m.configMotionCruiseVelocity((int) Constants.PHYSICAL_MAX_LOW_SPEED_TICKS * 30, Constants.TALON_TIMEOUT);
+        });
+    }
+
+    public void updateMotionMagic(double left, double right) {
+        left1.set(ControlMode.MotionMagic, left);
+        right1.set(ControlMode.MotionMagic, right);
     }
 
 }

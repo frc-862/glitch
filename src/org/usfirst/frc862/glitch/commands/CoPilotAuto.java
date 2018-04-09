@@ -53,6 +53,8 @@ public class CoPilotAuto extends Command {
 
         if (copilot.getRightTrigger() > Constants.COLLECT_TRIGGER_DEADZONE) {
             Robot.gripper.holdCube();
+        } else if (copilot.startButton.get() || copilot.isDPadUp()) {
+            Robot.gripper.setPower(Constants.DEFAULT_COLLECT_POWER, -Constants.DEFAULT_COLLECT_POWER * 0.5);
         } else {
             double power = -copilot.getLeftTrigger() * Constants.EJECT_MAX_FEATHER;
 
