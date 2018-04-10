@@ -12,6 +12,7 @@
 package org.usfirst.frc862.glitch.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Robot;
+import org.usfirst.frc862.util.Logger;
 
 /**
  *
@@ -43,6 +44,8 @@ public class MoveCollectorToCollect extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        Logger.debug("MoveCollectorToCollect: " + Robot.lift.getElevatorPosition() + " -- " + Robot.lift.getFourbarPosition());
+        Logger.debug("atCollect: " + Robot.lift.atCollect());
     }
 
     // Make this return true when this Command no longer needs to run execute()

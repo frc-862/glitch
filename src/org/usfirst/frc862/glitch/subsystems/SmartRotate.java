@@ -43,6 +43,8 @@ public class SmartRotate extends Command {
 
         final double estimatedWheelDistance = getGoal() * Constants.angleToTick;
         Robot.driveTrain.setMotionMagic(estimatedWheelDistance, -estimatedWheelDistance);
+
+        Logger.debug("SmartRotate to " + getGoal());
         done = false;
     }
 
@@ -58,6 +60,7 @@ public class SmartRotate extends Command {
 //        Robot.driveTrain.updateMotionMagic(estimatedWheelDistance, -estimatedWheelDistance);
 
         // TODO done should probably also verify that velocity is below some threshold too...
+        Logger.debug("SmartRotate Error " + getError() + " driveMode " + Robot.driveTrain.getMode());
         done = Math.abs(error) < Constants.ANGLE_TOLERANCE_DEGREES;
     }
 

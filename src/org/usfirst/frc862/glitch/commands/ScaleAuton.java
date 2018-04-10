@@ -56,24 +56,36 @@ public class ScaleAuton extends Command {
         readyToCollect.addSequential(new TimedCommand(0.5));
         readyToCollect.addSequential(new MoveCollectorToCollect());
         cmd.addParallel(readyToCollect);
-        cmd.addSequential(new TurnToAbsolutePosition(180));
+
+        if (Robot.startOnLeft()) {
+            if (Robot.scaleOnLeft()) {
+               cmd.addSequential(new TurnToAbsolutePosition(160));
+            } else {
+                cmd.addSequential(new TurnToAbsolutePosition(-160));
+            }
+        } else {
+            if (Robot.scaleOnLeft()) {
+                cmd.addSequential(new TurnToAbsolutePosition(-160));
+            } else {
+                cmd.addSequential(new TurnToAbsolutePosition(160));
+            }
+        }
 
         if (Robot.attemptMultiCubeAuton()) {
-            cmd.addParallel(new MoveCollectorToCollect());
-            if (Robot.scaleOnLeft()) {
-                cmd.addSequential(new LeftSecondCube());
-            } else {
-                cmd.addSequential(new RightSecondCube());
-            }
-
+            cmd.addSequential(new MoveCollectorToCollect(), 1);
+            cmd.addParallel(new HoldCube());
+            cmd.addSequential(new DriveForwardToCube());
             cmd.addSequential(new GentleCollectCube());
 
-            cmd.addSequential(new TurnToAbsolutePosition(0));
             if (Robot.scaleOnLeft()) {
-//            cmd.addSequential(new LeftSecondCube());
+                cmd.addSequential(new TurnToAbsolutePosition(0));
             } else {
-                cmd.addSequential(new RightSecondCubeDeploy());
+                cmd.addSequential(new TurnToAbsolutePosition(0));
             }
+
+            cmd.addSequential(new MoveCollectorToScale(), 1);
+            cmd.addSequential(new DriveForwardToScale());
+
             cmd.addSequential(new EjectCube(), 0.5);
             cmd.addSequential(new TurnToAbsolutePosition(180));
             cmd.addSequential(new MoveCollectorToCollect());

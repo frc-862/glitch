@@ -189,11 +189,11 @@ public class Lift extends Subsystem {
         SmartDashboard.putString("Elevator limit", elevatorLimit.toString());
 
         if (elevatorInfo.isFwdLimitSwitchClosed()) {
-            Logger.info("Fwd Limit" + elevator.getSelectedSensorPosition(0));
+//            Logger.info("Fwd Limit" + elevator.getSelectedSensorPosition(0));
             elevatorLimit = Limit.Bottom;
             elevator.setSelectedSensorPosition(Constants.ELEVATOR_COLLECT_POS + Constants.ELEVATOR_EPSILON, 0, Constants.TALON_TIMEOUT);
         } else if (elevatorInfo.isRevLimitSwitchClosed()) {
-            Logger.info("Rev Limit" + elevator.getSelectedSensorPosition(0));
+//            Logger.info("Rev Limit" + elevator.getSelectedSensorPosition(0));
             elevatorLimit = Limit.Top;
             elevator.setSelectedSensorPosition(Constants.ELEVATOR_SCALE_POS_HIGH - Constants.ELEVATOR_EPSILON, 0, Constants.TALON_TIMEOUT);
         } else {
@@ -372,6 +372,17 @@ public class Lift extends Subsystem {
         }
     }
 
+    public void moveToPortal() {
+        if (state == State.InitialFramePerimeter) {
+            state = State.SafeStartSwitch;
+            setElevatorPosition(Constants.ELEVATOR_BOTTOM_POS);
+        } else {
+            state = State.Switch;
+            setFourbarPosition(Constants.FOURBAR_PORTAL_POS);
+            setElevatorPosition(Constants.ELEVATOR_SWITCH_POS);
+        }
+    }
+
     public void moveToBottom() {
         state = State.Drive;
         setFourbarPosition(Constants.FOURBAR_BOTTOM_POS);
@@ -421,6 +432,11 @@ public class Lift extends Subsystem {
                 LightningMath.epsilonEqual(elevatorPosition, Constants.ELEVATOR_SWITCH_POS, Constants.ELEVATOR_EPSILON);
     }
 
+    public boolean atPortal() {
+        return LightningMath.epsilonEqual(fourbarPosition, Constants.FOURBAR_PORTAL_POS, Constants.FOURBAR_EPSILON) &&
+                LightningMath.epsilonEqual(elevatorPosition, Constants.ELEVATOR_SWITCH_POS, Constants.ELEVATOR_EPSILON);
+    }
+
     public boolean atScale() {
         return atScaleDefault() || atScaleHigh() || atScaleLow();
     }
@@ -441,7 +457,7 @@ public class Lift extends Subsystem {
     }
 
     public boolean atCollect() {
-        return (fourbarPosition <= Constants.FOURBAR_COLLECT_POS + Constants.FOURBAR_EPSILON) &&
+        return (fourbar.getSelectedSensorPosition(0) <= Constants.FOURBAR_COLLECT_POS + Constants.FOURBAR_EPSILON) &&
                 (Math.abs(elevatorPosition - Constants.ELEVATOR_COLLECT_POS) <= Constants.ELEVATOR_EPSILON);
     }
 

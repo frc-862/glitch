@@ -87,9 +87,13 @@ public class CoPilotAuto extends Command {
             Robot.lift.moveToSwitch();
         } else if(copilot.yButton.get()) {
           Robot.lift.moveToScale();
-        }
-        else if (Robot.lift.atScale()) {
-            Logger.info("atScale");
+        } else if (Robot.lift.atSwitch() || Robot.lift.atPortal()) {
+            if (copilot.getLeftStickY() < -0.5) {
+                Robot.lift.moveToPortal();
+            } else if (copilot.getLeftStickY() > 0.5) {
+                Robot.lift.moveToSwitch();
+            }
+        } else if (Robot.lift.atScale()) {
             if(copilot.getLeftStickY() > .5) {
                 Robot.lift.moveScaleUp();
             }
@@ -97,7 +101,6 @@ public class CoPilotAuto extends Command {
                 Robot.lift.moveScaleDown();
             }
         } else if (Robot.lift.atCollect()) {
-            Logger.info("atCollect" + copilot.getLeftStickY());
             if (copilot.getLeftStickY() < -0.5) {
                 Robot.lift.dropMode();
             } else if (Robot.lift.isDropMode() && Robot.lift.readyToDrop()){

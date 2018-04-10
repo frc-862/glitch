@@ -90,7 +90,7 @@ public class Constants extends ConstantsBase {
     public static double pathD = 0;
     public static double pathV = 2;  // Velocity is in IPS, we command IPS
     public static double pathA = 0;
-    public static double pathTurn = 8; // 1; // 2; // 1.2; // 0.862;
+    public static double pathTurn = 4; // 1; // 2; // 1.2; // 0.862;
     public static double pathFeedF = 4; // 4;
 
     // PID gains for drive velocity loop (HIGH GEAR)
@@ -228,7 +228,8 @@ public class Constants extends ConstantsBase {
     public static int FOURBAR_SCALE_POS_HIGH = 413;
     public static int FOURBAR_SCALE_POS_LOW = 300;
 
-    public static int FOURBAR_SWITCH_POS = 270;
+    public static int FOURBAR_SWITCH_POS = 260;
+    public static int FOURBAR_PORTAL_POS = 195;
     public static int FOURBAR_COLLECT_POS = 156;
     public static int FOURBAR_SAFE_TO_COLLECT_POS = 100;
     public static int FOURBAR_BOTTOM_POS = 73;
@@ -301,7 +302,6 @@ public class Constants extends ConstantsBase {
             FOURBAR_SCALE_POS_HIGH = 355;
             FOURBAR_SCALE_POS_LOW = 275;
 
-            FOURBAR_SWITCH_POS = 208;
             FOURBAR_COLLECT_POS = 114;
             FOURBAR_BOTTOM_POS = 25;
             FOURBAR_EPSILON = 5;
@@ -312,7 +312,7 @@ public class Constants extends ConstantsBase {
             ELEVATOR_SWITCH_POS = -5500;
             ELEVATOR_COLLECT_POS = -5500;
             ELEVATOR_BOTTOM_POS = 200;
-            ELEVATOR_EPSILON = 50;
+            ELEVATOR_EPSILON = 90;
         }
 
         // new Constants().readFromFile();

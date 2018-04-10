@@ -33,6 +33,7 @@ import org.usfirst.frc862.glitch.commands.Arcade;
 import org.usfirst.frc862.glitch.commands.TankDrive;
 import org.usfirst.frc862.util.DataLogger;
 import org.usfirst.frc862.util.LightningMath;
+import org.usfirst.frc862.util.Logger;
 
 
 /**
@@ -216,6 +217,7 @@ public class DriveTrain extends Subsystem {
     }
 
     public void stop() {
+        Logger.debug("Drivetrain#stop");
         left1.stopMotor();
         right1.stopMotor();
     }
@@ -303,6 +305,7 @@ public class DriveTrain extends Subsystem {
     public void setVelocity(double left, double right) {
         SmartDashboard.putNumber("slowuntil", slowUntil);
         SmartDashboard.putNumber("timer", Timer.getFPGATimestamp());
+        mode = Mode.velocity;
         if (Timer.getFPGATimestamp() < slowUntil) {
             SmartDashboard.putString("slowing", "true");
             left1.set(ControlMode.Velocity, getAverageSpeed() * Constants.slowDownRate);
@@ -362,6 +365,8 @@ public class DriveTrain extends Subsystem {
     }
 
     public void setMotionMagic(double left, double right) {
+        Logger.info("setMotionMagic " + left + "," +  right);
+
         setFollowMode(ControlMode.MotionMagic);
         configureVelocityPID();
 
