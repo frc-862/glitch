@@ -184,6 +184,8 @@ public class Robot extends TimedRobot {
         ShineBois.reset();
         DataLogger.flush();
         Logger.getWriter().flush();
+        SmartDashboard.putNumber("Auto Angle 1", 862);
+        SmartDashboard.putNumber("Auto Angle 2", 862);
     }
 
     // get rid of overload me message

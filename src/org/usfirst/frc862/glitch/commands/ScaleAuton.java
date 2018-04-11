@@ -57,17 +57,24 @@ public class ScaleAuton extends Command {
         readyToCollect.addSequential(new MoveCollectorToCollect());
         cmd.addParallel(readyToCollect);
 
+        double angle1 = SmartDashboard.getNumber("Auto Angle 1", 862);
+        double angle2 = SmartDashboard.getNumber("Auto Angle 1", 862);
+
         if (Robot.startOnLeft()) {
             if (Robot.scaleOnLeft()) {
-               cmd.addSequential(new TurnToAbsolutePosition(160));
+               cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : 160));
+                cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : 160));
             } else {
-                cmd.addSequential(new TurnToAbsolutePosition(-160));
+                cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : -150));
+                cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : -150));
             }
         } else {
             if (Robot.scaleOnLeft()) {
-                cmd.addSequential(new TurnToAbsolutePosition(-160));
+                cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : -150));
+                cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : -150));
             } else {
-                cmd.addSequential(new TurnToAbsolutePosition(160));
+                cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : 160));
+                cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : 160));
             }
         }
 
@@ -78,9 +85,11 @@ public class ScaleAuton extends Command {
             cmd.addSequential(new GentleCollectCube());
 
             if (Robot.scaleOnLeft()) {
-                cmd.addSequential(new TurnToAbsolutePosition(0));
+                cmd.addSequential(new TurnToAbsolutePosition((angle2 < 360) ? angle2 : 0));
+                cmd.addSequential(new TurnToAbsolutePosition((angle2 < 360) ? angle2: 0));
             } else {
-                cmd.addSequential(new TurnToAbsolutePosition(0));
+                cmd.addSequential(new TurnToAbsolutePosition((angle2 < 360) ? angle2: 0));
+                cmd.addSequential(new TurnToAbsolutePosition((angle2 < 360) ? angle2: 0));
             }
 
             cmd.addSequential(new MoveCollectorToScale(), 1);
