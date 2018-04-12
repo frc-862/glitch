@@ -208,7 +208,7 @@ public class Constants extends ConstantsBase {
     public static double FOURBAR_F = 2;
     public static int FOURBAR_ACC = 24 / 2;
     public static int FOURBAR_VEL = 24;
-    public static double FOURBAR_VELOCITY_P = 4.0;
+    public static double FOURBAR_VELOCITY_P = 3.5;
     public static double FOURBAR_HOLD_POWER = 0.15;
     public static double FOURBAR_VELOCITY_F = 1023 * FOURBAR_HOLD_POWER / FOURBAR_F;
 
@@ -228,12 +228,12 @@ public class Constants extends ConstantsBase {
     public static int FOURBAR_SCALE_POS_HIGH = 413;
     public static int FOURBAR_SCALE_POS_LOW = 300;
 
-    public static int FOURBAR_SWITCH_POS = 260;
-    public static int FOURBAR_PORTAL_POS = 195;
+    public static int FOURBAR_SWITCH_POS = 280;
+    public static int FOURBAR_PORTAL_POS = 242;
     public static int FOURBAR_COLLECT_POS = 156;
     public static int FOURBAR_SAFE_TO_COLLECT_POS = 100;
     public static int FOURBAR_BOTTOM_POS = 73;
-    public static int FOURBAR_EPSILON = 5;
+    public static int FOURBAR_EPSILON = 2;
 
     public static int ELEVATOR_SCALE_POS = 2100;
     public static int ELEVATOR_SCALE_POS_HIGH = 2200;

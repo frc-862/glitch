@@ -51,6 +51,7 @@ public class ScaleAuton extends Command {
         Robot.shifter.forceUpShift();
 
         CommandGroup cmd = buildScale();
+//        CommandGroup cmd = new CommandGroup();
 
         CommandGroup readyToCollect = new CommandGroup();
         readyToCollect.addSequential(new TimedCommand(0.5));

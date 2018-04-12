@@ -207,8 +207,16 @@ public class Robot extends TimedRobot {
        counter += 1;
     }
 
+    private boolean haveFMS = false;
+
     @Override
     public void disabledPeriodic() {
+        if (!haveFMS) {
+            DriverStation ds = DriverStation.getInstance();
+            if (haveFMS = ds.isFMSAttached()) {
+                resetLoggingFiles();
+            }
+        }
         Scheduler.getInstance().run();
     }
 

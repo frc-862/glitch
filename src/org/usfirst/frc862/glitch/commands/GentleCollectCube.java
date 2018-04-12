@@ -14,7 +14,7 @@ public class GentleCollectCube extends Command {
     @Override
     protected void initialize() {
         Robot.gripper.collectCube();
-        Robot.driveTrain.setVelocityIPS(4,4);
+        Robot.driveTrain.setVelocityIPS(10,10);
     }
 
 
