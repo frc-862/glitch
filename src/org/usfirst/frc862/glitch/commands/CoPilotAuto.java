@@ -10,6 +10,7 @@
 
 
 package org.usfirst.frc862.glitch.commands;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
@@ -42,7 +43,8 @@ public class CoPilotAuto extends Command {
 
     // Called just before this Command runs the first time
     @Override
-    protected void initialize() {
+    protected void initialize(){
+        Logger.info("Start copilot auto");
         copilot = Robot.oi.copilot;
     }
 
@@ -118,11 +120,13 @@ public class CoPilotAuto extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Logger.info("Stop copilot auto");
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        end();
     }
 }

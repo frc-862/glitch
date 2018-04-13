@@ -59,6 +59,8 @@ public class DynamicPathCommand extends DynamicPathCommandBase {
 
     @Override
     protected void initialize() {
+        Logger.info("Starting path " + this.getName());
+
         // move this to ensure that we get a new log for each run
         logger = new CommandLogger(this.getName());
         logger.addDataElement("projected_left_pos");

@@ -132,6 +132,11 @@ public class Gripper extends Subsystem {
         rightGripper.set(Constants.DEFAULT_HOLD_POWER);
     }
 
+    public void ejectCube(double pwr) {
+        leftGripper.set(-pwr * powerReduce);
+        rightGripper.set(-pwr * powerReduce);
+    }
+
     public void ejectCube() {
         leftGripper.set(-1 * powerReduce);
         rightGripper.set(-1 * powerReduce);

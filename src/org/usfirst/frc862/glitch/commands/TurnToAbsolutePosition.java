@@ -24,6 +24,11 @@ import org.usfirst.frc862.util.Logger;
 public class TurnToAbsolutePosition extends SmartRotate {
     private double m_position;
 
+    public TurnToAbsolutePosition(double position, boolean reverse) {
+        super(position, reverse);
+        m_position = position;
+    }
+
     public TurnToAbsolutePosition(double position) {
         super(position);
         m_position = position;
@@ -31,6 +36,8 @@ public class TurnToAbsolutePosition extends SmartRotate {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        Logger.info("TurnToAbsolute " + m_position);
+
         Logger.debug("Absolute start " + Robot.core.getGyroAngle());
         Logger.debug("Desired angle " + m_position);
         this.degrees = -LightningMath.boundThetaNeg180to180(Robot.core.getGyroAngle() + m_position);

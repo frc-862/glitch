@@ -12,6 +12,7 @@
 package org.usfirst.frc862.glitch.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Robot;
+import org.usfirst.frc862.util.Logger;
 
 /**
  *
@@ -38,6 +39,7 @@ public class MoveCollectorToScale extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Logger.info("MoveCollectorToScale");
         Robot.lift.moveToScaleHigh();
     }
 

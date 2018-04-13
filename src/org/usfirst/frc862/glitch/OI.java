@@ -104,13 +104,15 @@ public class OI {
         SmartDashboard.putData("Move to Scale", new MoveCollectorToScale());
         SmartDashboard.putData("Move to Collect", new MoveCollectorToCollect());
 
-        SmartDashboard.putData("Vision Follow", new VisionFollow());
-        SmartDashboard.putData("Vision Arcade", new VisionArcade());
-        SmartDashboard.putData("Stiction Test", new StictionTest());
-        SmartDashboard.putData("Joystick Test", new TestJoySticks());
+//        SmartDashboard.putData("Vision Follow", new VisionFollow());
+//        SmartDashboard.putData("Vision Arcade", new VisionArcade());
+//        SmartDashboard.putData("Stiction Test", new StictionTest());
+//        SmartDashboard.putData("Joystick Test", new TestJoySticks());
 
         SmartDashboard.putData("Right Scale Near", new RightScaleNear());
         SmartDashboard.putData("Right Scale Far", new RightScaleFar());
+
+        SmartDashboard.putData("Eject Cube", new EjectCube(0.25));
 
         SmartDashboard.putData("Rotator", new Rotator());
         SmartDashboard.putData("Rotate to 180", new TurnToAbsolutePosition(180));
@@ -126,7 +128,7 @@ public class OI {
         SmartDashboard.putData("Smart Left", new LeftPointsSwitch());
         SmartDashboard.putData("Smart Right", new RightPointsSwitch());
         SmartDashboard.putData("Reverse Right", new ReverseRight());
-        SmartDashboard.putData("Hold Power", new HoldCube());
+//        SmartDashboard.putData("Hold Power", new HoldCube());
         SmartDashboard.putData("Rotate Away from Scale", new RotateAwayFromScale(210));
 
         SmartDashboard.putData("SwitchAuton", new SwitchAuton());

@@ -43,7 +43,7 @@ public class Constants extends ConstantsBase {
     // NOTE we are going to want to tune for high/low gear with
     // at the very least a different feed forward...
     // in inches
-    public static double WheelCircumference = (Robot.isOBot() ? 4 : 6.2715) * Math.PI; // 6.2715 END OF GAYLORD NEW WHEELS
+    public static double WheelCircumference = (Robot.isOBot() ? 4 : 6.29) * Math.PI; // 6.2715 END OF GAYLORD NEW WHEELS
     // ~ 95ips
     public static double PHYSICAL_MAX_LOW_SPEED_TICKS = 700;
     // ~ 177ips
@@ -78,7 +78,7 @@ public class Constants extends ConstantsBase {
     public static double HIGHGEAR_DRIVE_P = 0.75;
     public static double HIGHGEAR_DRIVE_I = 0;
     public static double HIGHGEAR_DRIVE_D = 0;
-    public static double HIGHGEAR_DRIVE_F = 1023 / PHYSICAL_MAX_HIGH_SPEED_TICKS;
+    public static double HIGHGEAR_DRIVE_F = 0.75; // ~1023 / PHYSICAL_MAX_HIGH_SPEED_TICKS;
     public static final int HIGHGEAR_ALLOWED_DRIVE_ERROR = 40;
     public static double TICS_PER_ROTATION = 360 * 4;
     public static final double UPSHIFT_SLOW_TIME_SECONDS = 0.08;
@@ -262,7 +262,7 @@ public class Constants extends ConstantsBase {
     public static double DEFAULT_COLLECT_POWER = 0.862;
     public static double DEFAULT_EJECT_POWER = -0.862;
     public static final double COLLECT_TRIGGER_DEADZONE = 0;
-    public static double EJECT_MAX_FEATHER = 0.7;
+    public static double EJECT_MAX_FEATHER = 0.5;
 
 
     // PDP Slots
@@ -283,7 +283,7 @@ public class Constants extends ConstantsBase {
     public static double ELEVATOR_DOWN_POWER = -5;
     public static double FOURBAR_DOWN_POWER = -2;
 
-    public static double angleToTick = 7100 / 360.0;
+    public static double angleToTick = 7200 / 360.0;
 
     public String getFileName() {
         return "~/glitch.yaml";

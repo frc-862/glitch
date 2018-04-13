@@ -3,6 +3,7 @@ package org.usfirst.frc862.glitch.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
+import org.usfirst.frc862.util.Logger;
 
 
 public class GentleCollectCube extends Command {
@@ -13,13 +14,17 @@ public class GentleCollectCube extends Command {
 
     @Override
     protected void initialize() {
+        Logger.info("Starting GentleCollectCube");
         Robot.gripper.collectCube();
-        Robot.driveTrain.setVelocityIPS(10,10);
+        Robot.driveTrain.setVelocityIPS(14,14);
     }
 
 
     @Override
-    protected void execute() { }
+    protected void execute() {
+        Robot.driveTrain.setVelocityIPS(14,14);
+        Logger.debug("Gentle collect " + Robot.driveTrain.drivePowerMagnitude());
+    }
 
 
     @Override
@@ -30,6 +35,7 @@ public class GentleCollectCube extends Command {
 
     @Override
     protected void end() {
+        Logger.info("Ending GentleCollectCube");
         if (Robot.gripper.hasCube()) {
             Robot.gripper.holdCube();
         } else {

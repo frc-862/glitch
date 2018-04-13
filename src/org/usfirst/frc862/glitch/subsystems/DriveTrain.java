@@ -376,6 +376,15 @@ public class DriveTrain extends Subsystem {
         left1.set(ControlMode.MotionMagic, left);
         right1.set(ControlMode.MotionMagic, right);
         mode = Mode.magic;
+
+    }
+
+    public double driveErrorMagnitude() {
+        return (Math.abs(left1.getClosedLoopError(0)) + Math.abs(right1.getClosedLoopError(0))) / 2.0;
+    }
+
+    public double drivePowerMagnitude() {
+        return (Math.abs(left1.getMotorOutputPercent()) + Math.abs(right1.getMotorOutputPercent())) / 2.0;
     }
 
     private void setSlotBasedOnGear() {

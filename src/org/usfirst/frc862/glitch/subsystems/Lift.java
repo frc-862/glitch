@@ -423,6 +423,10 @@ public class Lift extends Subsystem {
         return this.elevatorPosition;
     }
 
+    public double getFourbarPhysicalPosition() {
+        return fourbar.getSelectedSensorPosition(0);
+    }
+
     public double getFourbarPosition() {
         return this.fourbarPosition;
     }
@@ -457,7 +461,7 @@ public class Lift extends Subsystem {
     }
 
     public boolean atCollect() {
-        return (fourbar.getSelectedSensorPosition(0) <= Constants.FOURBAR_COLLECT_POS + Constants.FOURBAR_EPSILON) &&
+        return (elevatorPosition <= Constants.FOURBAR_COLLECT_POS + Constants.FOURBAR_EPSILON) &&
                 (Math.abs(elevatorPosition - Constants.ELEVATOR_COLLECT_POS) <= Constants.ELEVATOR_EPSILON);
     }
 

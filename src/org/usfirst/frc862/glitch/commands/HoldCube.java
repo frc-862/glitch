@@ -2,6 +2,7 @@ package org.usfirst.frc862.glitch.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Robot;
+import org.usfirst.frc862.util.Logger;
 
 
 public class HoldCube extends Command {
@@ -17,6 +18,7 @@ public class HoldCube extends Command {
      */
     @Override
     protected void initialize() {
+        Logger.info("HoldCube");
         Robot.gripper.holdCube();
     }
 
