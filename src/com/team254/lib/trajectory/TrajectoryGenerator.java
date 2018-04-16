@@ -89,7 +89,8 @@ public class TrajectoryGenerator {
    * @return A Trajectory that satisfies the relevant constraints and end
    * conditions.
    */
-  public static Trajectory generate(
+  public static Trajectory
+  generate(
           Config config,
           Strategy strategy,
           double start_vel,

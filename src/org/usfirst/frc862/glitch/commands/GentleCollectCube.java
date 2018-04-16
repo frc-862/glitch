@@ -16,13 +16,13 @@ public class GentleCollectCube extends Command {
     protected void initialize() {
         Logger.info("Starting GentleCollectCube");
         Robot.gripper.collectCube();
-        Robot.driveTrain.setVelocityIPS(14,14);
+        Robot.driveTrain.setVelocityIPS(15,15);
     }
 
 
     @Override
     protected void execute() {
-        Robot.driveTrain.setVelocityIPS(14,14);
+        Robot.driveTrain.setVelocityIPS(15, 15);
         Logger.debug("Gentle collect " + Robot.driveTrain.drivePowerMagnitude());
     }
 

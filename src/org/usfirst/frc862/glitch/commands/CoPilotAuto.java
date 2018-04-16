@@ -10,6 +10,7 @@
 
 
 package org.usfirst.frc862.glitch.commands;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Constants;
@@ -52,7 +53,15 @@ public class CoPilotAuto extends Command {
     @Override
     protected void execute() {
         boolean cubed = Robot.gripper.hasCube();
+        Joystick dleft = Robot.oi.driverLeft;
 
+//        if (dleft.getRawButton(9)) {
+//            Robot.gripper.setPower(-0.8, -0.0);
+//        } else if (dleft.getRawButton(10)) {
+//            Robot.gripper.setPower(-0.8, -0.2);
+//        } else if (dleft.getRawButton(11)) {
+//            Robot.gripper.setPower(-0.8, -0.4);
+//        } else
         if (copilot.getRightTrigger() > Constants.COLLECT_TRIGGER_DEADZONE) {
             Robot.gripper.holdCube();
         } else if (copilot.startButton.get() || copilot.isDPadUp()) {
