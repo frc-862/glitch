@@ -2,6 +2,8 @@ package com.team254.lib.trajectory;
 
 import com.team254.lib.util.ChezyMath;
 
+import java.util.Arrays;
+
 /**
  * A WaypointSequence is a sequence of Waypoints.  #whatdidyouexpect
  *
@@ -13,21 +15,31 @@ public class WaypointSequence {
 
   public static class Waypoint {
 
-    public Waypoint(double x, double y, double theta) {
+    public Waypoint(double x, double y, double theta, Double velocity) {
       this.x = x;
       this.y = y;
       this.theta = theta;
+      this.velocity = velocity;
     }
-    
+
+    public Waypoint(double x, double y, double theta, double velocity) {
+      this.x = x;
+      this.y = y;
+      this.theta = theta;
+      this.velocity = new Double(velocity);
+    }
+
     public Waypoint(Waypoint tocopy) {
       this.x = tocopy.x;
       this.y = tocopy.y;
       this.theta = tocopy.theta;
+      this.velocity = tocopy.velocity;
     }
 
     public double x;
     public double y;
     public double theta;
+    public Double velocity;
   }
 
   Waypoint[] waypoints_;
@@ -42,6 +54,18 @@ public class WaypointSequence {
       waypoints_[num_waypoints_] = w;
       ++num_waypoints_;
     }
+  }
+
+  public WaypointSequence slice(int start, int stop) {
+    final int count = stop - start + 1;
+    WaypointSequence result = new WaypointSequence(count);
+    for (int i = 0; i < count; ++i) {
+      result.waypoints_[i] = waypoints_[i + start];
+    }
+     result.num_waypoints_ = count;
+//     result.waypoints_ = Arrays.copyOfRange(waypoints_, start, stop);
+
+     return result;
   }
 
   public int getNumWaypoints() {

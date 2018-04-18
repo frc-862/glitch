@@ -1,5 +1,243 @@
 /* Generated from Java with JSweet 2.0.0 - http://www.jsweet.org */
 /**
+ * Base class for an autonomous path.
+ *
+ * @author Jared341
+ * @param {string} name
+ * @param {Trajectory.Pair} go_left_pair
+ * @class
+ */
+var Path = (function () {
+    function Path(name, go_left_pair) {
+        var _this = this;
+        if (((typeof name === 'string') || name === null) && ((go_left_pair != null && go_left_pair instanceof Trajectory.Pair) || go_left_pair === null)) {
+            var __args = Array.prototype.slice.call(arguments);
+            this.go_left_pair_ = null;
+            this.name_ = null;
+            this.go_left_ = false;
+            this.go_left_pair_ = null;
+            this.name_ = null;
+            this.go_left_ = false;
+            (function () {
+                _this.name_ = name;
+                _this.go_left_pair_ = go_left_pair;
+                _this.go_left_ = true;
+            })();
+        }
+        else if (name === undefined && go_left_pair === undefined) {
+            var __args = Array.prototype.slice.call(arguments);
+            this.go_left_pair_ = null;
+            this.name_ = null;
+            this.go_left_ = false;
+            this.go_left_pair_ = null;
+            this.name_ = null;
+            this.go_left_ = false;
+        }
+        else
+            throw new Error('invalid overload');
+    }
+    Path.prototype.getName = function () {
+        return this.name_;
+    };
+    Path.prototype.goLeft = function () {
+        this.go_left_ = true;
+        this.go_left_pair_.left.setInvertedY(false);
+        this.go_left_pair_.right.setInvertedY(false);
+    };
+    Path.prototype.goRight = function () {
+        this.go_left_ = false;
+        this.go_left_pair_.left.setInvertedY(true);
+        this.go_left_pair_.right.setInvertedY(true);
+    };
+    Path.prototype.getLeftWheelTrajectory = function () {
+        return (this.go_left_ ? this.go_left_pair_.left : this.go_left_pair_.right);
+    };
+    Path.prototype.getRightWheelTrajectory = function () {
+        return (this.go_left_ ? this.go_left_pair_.right : this.go_left_pair_.left);
+    };
+    Path.prototype.getPair = function () {
+        return this.go_left_pair_;
+    };
+    Path.prototype.getEndHeading = function () {
+        var numSegments = this.getLeftWheelTrajectory().getNumSegments();
+        var lastSegment = this.getLeftWheelTrajectory().getSegment(numSegments - 1);
+        return lastSegment.heading;
+    };
+    Path.prototype.reverse = function () {
+        this.go_left_pair_ = this.go_left_pair_.reverse();
+    };
+    return Path;
+}());
+Path["__class"] = "Path";
+/**
+ * Generate a smooth Trajectory from a Path.
+ *
+ * @author Art Kalb
+ * @author Stephen Pinkerton
+ * @author Jared341
+ * @class
+ */
+var PathGenerator = (function () {
+    function PathGenerator() {
+    }
+    /**
+     * Generate a path for autonomous driving.
+     *
+     * @param {WaypointSequence} waypoints The waypoints to drive to (FOR THE "GO LEFT" CASE!!!!)
+     * @param {TrajectoryGenerator.Config} config Trajectory config.
+     * @param {number} wheelbase_width Wheelbase separation; units must be consistent with
+     * config and waypoints.
+     * @param {string} name The name of the new path.  THIS MUST BE A VALID JAVA CLASS NAME
+     * @return {Path} The path.
+     */
+    PathGenerator.makePath = function (waypoints, config, wheelbase_width, name) {
+        return new Path(name, PathGenerator.generateLeftAndRightFromSeq(waypoints, config, wheelbase_width));
+    };
+    PathGenerator.generateLeftAndRightFromSeq = function (path, config, wheelbase_width) {
+        return PathGenerator.makeLeftAndRightTrajectories(PathGenerator.generateFromPath$WaypointSequence$TrajectoryGenerator_Config(path, config), wheelbase_width);
+    };
+    PathGenerator.generateFromPath$WaypointSequence$TrajectoryGenerator_Config = function (path, config) {
+        var size = path.getNumWaypoints();
+        if (size < 2) {
+            return null;
+        }
+        var last = size - 1;
+        var start_vel = 0;
+        if (path.getWaypoint(0).velocity != null) {
+            start_vel = path.getWaypoint(0).velocity;
+        }
+        if (path.getWaypoint(last).velocity == null) {
+            path.getWaypoint(last).velocity = new Number(0).valueOf();
+        }
+        var result = null;
+        var start = 0;
+        var stop = 1;
+        while ((start < last)) {
+            while ((path.getWaypoint(stop).velocity == null && stop < size)) {
+                ++stop;
+            }
+            ;
+            var end_vel = path.getWaypoint(stop).velocity;
+            var seq = path.slice(start, stop);
+            var traj = PathGenerator.generateFromPath$WaypointSequence$TrajectoryGenerator_Config$double$double(seq, config, start_vel, end_vel);
+            if (result == null) {
+                result = traj;
+            }
+            else {
+                result.append(traj);
+            }
+            start = stop;
+            stop = stop + 1;
+            start_vel = traj.getSegment(traj.getNumSegments() - 1).vel;
+        }
+        ;
+        return result;
+    };
+    PathGenerator.generateFromPath$WaypointSequence$TrajectoryGenerator_Config$double$double = function (path, config, start_vel, end_vel) {
+        if (path.getNumWaypoints() < 2) {
+            return null;
+        }
+        var splines = new Array(path.getNumWaypoints() - 1);
+        var spline_lengths = (function (s) { var a = []; while (s-- > 0)
+            a.push(0); return a; })(splines.length);
+        var total_distance = 0;
+        for (var i = 0; i < splines.length; ++i) {
+            splines[i] = new Spline();
+            if (!Spline.reticulateSplines$WaypointSequence_Waypoint$WaypointSequence_Waypoint$Spline$Spline_Type(path.getWaypoint(i), path.getWaypoint(i + 1), splines[i], Spline.QuinticHermite_$LI$())) {
+                return null;
+            }
+            spline_lengths[i] = splines[i].calculateLength();
+            total_distance += spline_lengths[i];
+        }
+        ;
+        var traj = TrajectoryGenerator.generate(config, TrajectoryGenerator.AutomaticStrategy_$LI$(), start_vel, path.getWaypoint(0).theta, total_distance, end_vel, path.getWaypoint(0).theta);
+        var cur_spline = 0;
+        var cur_spline_start_pos = 0;
+        var length_of_splines_finished = 0;
+        for (var i = 0; i < traj.getNumSegments(); ++i) {
+            var cur_pos = traj.getSegment(i).pos;
+            var found_spline = false;
+            while ((!found_spline)) {
+                var cur_pos_relative = cur_pos - cur_spline_start_pos;
+                if (cur_pos_relative <= spline_lengths[cur_spline]) {
+                    var percentage = splines[cur_spline].getPercentageForDistance(cur_pos_relative);
+                    traj.getSegment(i).heading = splines[cur_spline].angleAt(percentage);
+                    var coords = splines[cur_spline].getXandY(percentage);
+                    traj.getSegment(i).x = coords[0];
+                    traj.getSegment(i).y = coords[1];
+                    found_spline = true;
+                }
+                else if (cur_spline < splines.length - 1) {
+                    length_of_splines_finished += spline_lengths[cur_spline];
+                    cur_spline_start_pos = length_of_splines_finished;
+                    ++cur_spline;
+                }
+                else {
+                    traj.getSegment(i).heading = splines[splines.length - 1].angleAt(1.0);
+                    var coords = splines[splines.length - 1].getXandY(1.0);
+                    traj.getSegment(i).x = coords[0];
+                    traj.getSegment(i).y = coords[1];
+                    found_spline = true;
+                }
+            }
+            ;
+        }
+        ;
+        return traj;
+    };
+    PathGenerator.generateFromPath = function (path, config, start_vel, end_vel) {
+        if (((path != null && path instanceof WaypointSequence) || path === null) && ((config != null && config instanceof TrajectoryGenerator.Config) || config === null) && ((typeof start_vel === 'number') || start_vel === null) && ((typeof end_vel === 'number') || end_vel === null)) {
+            return PathGenerator.generateFromPath$WaypointSequence$TrajectoryGenerator_Config$double$double(path, config, start_vel, end_vel);
+        }
+        else if (((path != null && path instanceof WaypointSequence) || path === null) && ((config != null && config instanceof TrajectoryGenerator.Config) || config === null) && start_vel === undefined && end_vel === undefined) {
+            return PathGenerator.generateFromPath$WaypointSequence$TrajectoryGenerator_Config(path, config);
+        }
+        else
+            throw new Error('invalid overload');
+    };
+    /**
+     * Generate left and right wheel trajectories from a reference.
+     *
+     * @param {Trajectory} input The reference trajectory.
+     * @param {number} wheelbase_width The center-to-center distance between the left and
+     * right sides.
+     * @return {Trajectory.Pair} [0] is left, [1] is right
+     */
+    PathGenerator.makeLeftAndRightTrajectories = function (input, wheelbase_width) {
+        var output = new Array(2);
+        output[0] = input.copy();
+        output[1] = input.copy();
+        var left = output[0];
+        var right = output[1];
+        for (var i = 0; i < input.getNumSegments(); ++i) {
+            var current = input.getSegment(i);
+            var cos_angle = Math.cos(current.heading);
+            var sin_angle = Math.sin(current.heading);
+            var s_left = left.getSegment(i);
+            s_left.x = current.x - wheelbase_width / 2 * sin_angle;
+            s_left.y = current.y + wheelbase_width / 2 * cos_angle;
+            PathGenerator.adjustSide(left, i, s_left);
+            var s_right = right.getSegment(i);
+            s_right.x = current.x + wheelbase_width / 2 * sin_angle;
+            s_right.y = current.y - wheelbase_width / 2 * cos_angle;
+            PathGenerator.adjustSide(right, i, s_right);
+        }
+        ;
+        return new Trajectory.Pair(output[0], output[1]);
+    };
+    /*private*/ PathGenerator.adjustSide = function (trajectory, index, segment) {
+        if (index > 0) {
+            var dist = Math.sqrt((segment.x - trajectory.getSegment(index - 1).x) * (segment.x - trajectory.getSegment(index - 1).x) + (segment.y - trajectory.getSegment(index - 1).y) * (segment.y - trajectory.getSegment(index - 1).y));
+            segment.pos = trajectory.getSegment(index - 1).pos + dist;
+            segment.vel = dist / segment.dt;
+            segment.acc = (segment.vel - trajectory.getSegment(index - 1).vel) / segment.dt;
+            segment.jerk = (segment.acc - trajectory.getSegment(index - 1).acc) / segment.dt;
+        }
+    };
+    return PathGenerator;
+}());
+PathGenerator["__class"] = "PathGenerator";
+/**
  * Do cubic spline interpolation between points.
  *
  * @author Art Kalb
@@ -34,7 +272,6 @@ var Spline = (function () {
         return Spline.reticulateSplines$double$double$double$double$double$double$Spline$Spline_Type(start.x, start.y, start.theta, goal.x, goal.y, goal.theta, result, type);
     };
     Spline.reticulateSplines$double$double$double$double$double$double$Spline$Spline_Type = function (x0, y0, theta0, x1, y1, theta1, result, type) {
-        console.info("Reticulating splines...");
         result.type_ = type;
         result.x_offset_ = x0;
         result.y_offset_ = y0;
@@ -187,6 +424,645 @@ Spline["__class"] = "Spline";
     Spline.Type = Type;
     Type["__class"] = "Spline.Type";
 })(Spline || (Spline = {}));
+/**
+ * Implementation of a Trajectory using arrays as the underlying storage
+ * mechanism.
+ *
+ * @author Jared341
+ * @param {number} length
+ * @class
+ */
+var Trajectory = (function () {
+    function Trajectory(segments) {
+        var _this = this;
+        this.segments_ = null;
+        this.inverted_y_ = false;
+        if (((segments != null && segments instanceof Array && (segments.length == 0 || segments[0] == null || (segments[0] != null && segments[0] instanceof Trajectory.Segment))) || segments === null)) {
+            var __args = Array.prototype.slice.call(arguments);
+            this.segments_ = null;
+            this.inverted_y_ = false;
+            (function () {
+                _this.segments_ = segments;
+            })();
+        }
+        else if (((typeof segments === 'number') || segments === null)) {
+            var __args = Array.prototype.slice.call(arguments);
+            var length_1 = __args[0];
+            this.segments_ = null;
+            this.inverted_y_ = false;
+            (function () {
+                _this.segments_ = new Array(length_1);
+                for (var i = 0; i < length_1; ++i) {
+                    _this.segments_[i] = new Trajectory.Segment();
+                }
+                ;
+            })();
+        }
+        else
+            throw new Error('invalid overload');
+    }
+    Trajectory.prototype.setInvertedY = function (inverted) {
+        this.inverted_y_ = inverted;
+    };
+    Trajectory.prototype.getNumSegments = function () {
+        return this.segments_.length;
+    };
+    Trajectory.prototype.getSegment = function (index) {
+        if (index >= this.getNumSegments())
+            index = this.getNumSegments() - 1;
+        if (index < this.getNumSegments()) {
+            if (!this.inverted_y_) {
+                return this.segments_[index];
+            }
+            else {
+                var segment = new Trajectory.Segment(this.segments_[index]);
+                segment.y *= -1.0;
+                segment.heading *= -1.0;
+                return segment;
+            }
+        }
+        else {
+            return new Trajectory.Segment();
+        }
+    };
+    Trajectory.prototype.setSegment = function (index, segment) {
+        if (index < this.getNumSegments()) {
+            this.segments_[index] = segment;
+        }
+    };
+    Trajectory.prototype.scale = function (scaling_factor) {
+        for (var i = 0; i < this.getNumSegments(); ++i) {
+            this.segments_[i].pos *= scaling_factor;
+            this.segments_[i].vel *= scaling_factor;
+            this.segments_[i].acc *= scaling_factor;
+            this.segments_[i].jerk *= scaling_factor;
+        }
+        ;
+    };
+    Trajectory.prototype.append = function (to_append) {
+        var temp = new Array(this.getNumSegments() + to_append.getNumSegments());
+        for (var i = 0; i < this.getNumSegments(); ++i) {
+            temp[i] = new Trajectory.Segment(this.segments_[i]);
+        }
+        ;
+        for (var i = 0; i < to_append.getNumSegments(); ++i) {
+            temp[i + this.getNumSegments()] = new Trajectory.Segment(to_append.getSegment(i));
+        }
+        ;
+        this.segments_ = temp;
+    };
+    Trajectory.prototype.copy = function () {
+        var cloned = new Trajectory(this.getNumSegments());
+        cloned.segments_ = this.copySegments(this.segments_);
+        return cloned;
+    };
+    Trajectory.prototype.reverse = function () {
+        var cloned = new Trajectory(1);
+        cloned.segments_ = this.reverseSegments(this.segments_);
+        return cloned;
+    };
+    Trajectory.prototype.reverseSegments = function (tocopy) {
+        var count = tocopy.length;
+        var start_pos = tocopy[count - 1].pos;
+        var copied = new Array(count);
+        for (var i = 0; i < tocopy.length; ++i) {
+            copied[i] = new Trajectory.Segment(tocopy[count - i - 1]);
+            copied[i].reverse();
+            copied[i].pos -= start_pos;
+        }
+        ;
+        return copied;
+    };
+    Trajectory.prototype.copySegments = function (tocopy) {
+        var copied = new Array(tocopy.length);
+        for (var i = 0; i < tocopy.length; ++i) {
+            copied[i] = new Trajectory.Segment(tocopy[i]);
+        }
+        ;
+        return copied;
+    };
+    Trajectory.prototype.toString = function () {
+        var str = "Segment\tPos\tVel\tAcc\tJerk\tHeading\n";
+        for (var i = 0; i < this.getNumSegments(); ++i) {
+            var segment = this.getSegment(i);
+            str += i + "\t";
+            str += segment.pos + "\t";
+            str += segment.vel + "\t";
+            str += segment.acc + "\t";
+            str += segment.jerk + "\t";
+            str += segment.heading + "\t";
+            str += "\n";
+        }
+        ;
+        return str;
+    };
+    Trajectory.prototype.toStringProfile = function () {
+        return this.toString();
+    };
+    Trajectory.prototype.toStringEuclidean = function () {
+        var str = "Segment\tx\ty\tHeading\n";
+        for (var i = 0; i < this.getNumSegments(); ++i) {
+            var segment = this.getSegment(i);
+            str += i + "\t";
+            str += segment.x + "\t";
+            str += segment.y + "\t";
+            str += segment.heading + "\t";
+            str += "\n";
+        }
+        ;
+        return str;
+    };
+    return Trajectory;
+}());
+Trajectory["__class"] = "Trajectory";
+(function (Trajectory) {
+    var Pair = (function () {
+        function Pair(left, right) {
+            this.left = null;
+            this.right = null;
+            this.left = left;
+            this.right = right;
+        }
+        Pair.prototype.reverse = function () {
+            return new Trajectory.Pair(this.left.reverse(), this.right.reverse());
+        };
+        return Pair;
+    }());
+    Trajectory.Pair = Pair;
+    Pair["__class"] = "Trajectory.Pair";
+    var Segment = (function () {
+        function Segment(pos, vel, acc, jerk, heading, dt, x, y) {
+            var _this = this;
+            if (((typeof pos === 'number') || pos === null) && ((typeof vel === 'number') || vel === null) && ((typeof acc === 'number') || acc === null) && ((typeof jerk === 'number') || jerk === null) && ((typeof heading === 'number') || heading === null) && ((typeof dt === 'number') || dt === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null)) {
+                var __args = Array.prototype.slice.call(arguments);
+                this.pos = 0;
+                this.vel = 0;
+                this.acc = 0;
+                this.jerk = 0;
+                this.heading = 0;
+                this.dt = 0;
+                this.x = 0;
+                this.y = 0;
+                this.pos = 0;
+                this.vel = 0;
+                this.acc = 0;
+                this.jerk = 0;
+                this.heading = 0;
+                this.dt = 0;
+                this.x = 0;
+                this.y = 0;
+                (function () {
+                    _this.pos = pos;
+                    _this.vel = vel;
+                    _this.acc = acc;
+                    _this.jerk = jerk;
+                    _this.heading = heading;
+                    _this.dt = dt;
+                    _this.x = x;
+                    _this.y = y;
+                })();
+            }
+            else if (((pos != null && pos instanceof Trajectory.Segment) || pos === null) && vel === undefined && acc === undefined && jerk === undefined && heading === undefined && dt === undefined && x === undefined && y === undefined) {
+                var __args = Array.prototype.slice.call(arguments);
+                var to_copy_1 = __args[0];
+                this.pos = 0;
+                this.vel = 0;
+                this.acc = 0;
+                this.jerk = 0;
+                this.heading = 0;
+                this.dt = 0;
+                this.x = 0;
+                this.y = 0;
+                this.pos = 0;
+                this.vel = 0;
+                this.acc = 0;
+                this.jerk = 0;
+                this.heading = 0;
+                this.dt = 0;
+                this.x = 0;
+                this.y = 0;
+                (function () {
+                    _this.pos = to_copy_1.pos;
+                    _this.vel = to_copy_1.vel;
+                    _this.acc = to_copy_1.acc;
+                    _this.jerk = to_copy_1.jerk;
+                    _this.heading = to_copy_1.heading;
+                    _this.dt = to_copy_1.dt;
+                    _this.x = to_copy_1.x;
+                    _this.y = to_copy_1.y;
+                })();
+            }
+            else if (pos === undefined && vel === undefined && acc === undefined && jerk === undefined && heading === undefined && dt === undefined && x === undefined && y === undefined) {
+                var __args = Array.prototype.slice.call(arguments);
+                this.pos = 0;
+                this.vel = 0;
+                this.acc = 0;
+                this.jerk = 0;
+                this.heading = 0;
+                this.dt = 0;
+                this.x = 0;
+                this.y = 0;
+                this.pos = 0;
+                this.vel = 0;
+                this.acc = 0;
+                this.jerk = 0;
+                this.heading = 0;
+                this.dt = 0;
+                this.x = 0;
+                this.y = 0;
+            }
+            else
+                throw new Error('invalid overload');
+        }
+        Segment.prototype.reverse = function () {
+            this.vel = -this.vel;
+            this.acc = -this.acc;
+            this.jerk = -this.jerk;
+        };
+        Segment.prototype.toString = function () {
+            return "pos: " + this.pos + "; vel: " + this.vel + "; acc: " + this.acc + "; jerk: " + this.jerk + "; heading: " + this.heading;
+        };
+        return Segment;
+    }());
+    Trajectory.Segment = Segment;
+    Segment["__class"] = "Trajectory.Segment";
+})(Trajectory || (Trajectory = {}));
+/**
+ * PID + Feedforward controller for following a Trajectory.
+ *
+ * @author Jared341
+ * @class
+ */
+var TrajectoryFollower = (function () {
+    function TrajectoryFollower() {
+        /*private*/ this.current_heading = 0;
+        this.kp_ = 0;
+        this.kd_ = 0;
+        this.kv_ = 0;
+        this.ka_ = 0;
+        this.last_error_ = 0;
+        this.current_segment = 0;
+        this.profile_ = null;
+    }
+    TrajectoryFollower.prototype.configure = function (kp, ki, kd, kv, ka) {
+        this.kp_ = kp;
+        this.kd_ = kd;
+        this.kv_ = kv;
+        this.ka_ = ka;
+    };
+    TrajectoryFollower.prototype.reset = function () {
+        this.last_error_ = 0.0;
+        this.current_segment = 0;
+    };
+    TrajectoryFollower.prototype.setTrajectory = function (profile) {
+        this.profile_ = profile;
+    };
+    TrajectoryFollower.prototype.getSegment = function () {
+        return this.profile_.getSegment(this.current_segment);
+    };
+    TrajectoryFollower.prototype.calculate = function (distance_so_far) {
+        if (this.current_segment < this.profile_.getNumSegments()) {
+            var segment = this.profile_.getSegment(this.current_segment++);
+            var next = this.profile_.getSegment(this.current_segment);
+            var error = segment.pos - distance_so_far;
+            var output = this.kp_ * error + this.kd_ * ((error - this.last_error_) / segment.dt - segment.vel) + (this.kv_ * next.vel + this.ka_ * next.acc);
+            this.last_error_ = error;
+            this.current_heading = segment.heading;
+            return output;
+        }
+        else {
+            return 0;
+        }
+    };
+    TrajectoryFollower.prototype.getHeading = function () {
+        return this.current_heading;
+    };
+    TrajectoryFollower.prototype.deltaHeading = function () {
+        return this.profile_.getSegment(this.current_segment).heading - this.current_heading;
+    };
+    TrajectoryFollower.prototype.isFinishedTrajectory = function () {
+        return this.current_segment >= this.profile_.getNumSegments();
+    };
+    return TrajectoryFollower;
+}());
+TrajectoryFollower["__class"] = "TrajectoryFollower";
+/**
+ * Factory class for creating Trajectories.
+ *
+ * @author Jared341
+ * @class
+ */
+var TrajectoryGenerator = (function () {
+    function TrajectoryGenerator() {
+    }
+    TrajectoryGenerator.StepStrategy_$LI$ = function () { if (TrajectoryGenerator.StepStrategy == null)
+        TrajectoryGenerator.StepStrategy = new TrajectoryGenerator.Strategy("StepStrategy"); return TrajectoryGenerator.StepStrategy; };
+    ;
+    TrajectoryGenerator.TrapezoidalStrategy_$LI$ = function () { if (TrajectoryGenerator.TrapezoidalStrategy == null)
+        TrajectoryGenerator.TrapezoidalStrategy = new TrajectoryGenerator.Strategy("TrapezoidalStrategy"); return TrajectoryGenerator.TrapezoidalStrategy; };
+    ;
+    TrajectoryGenerator.SCurvesStrategy_$LI$ = function () { if (TrajectoryGenerator.SCurvesStrategy == null)
+        TrajectoryGenerator.SCurvesStrategy = new TrajectoryGenerator.Strategy("SCurvesStrategy"); return TrajectoryGenerator.SCurvesStrategy; };
+    ;
+    TrajectoryGenerator.AutomaticStrategy_$LI$ = function () { if (TrajectoryGenerator.AutomaticStrategy == null)
+        TrajectoryGenerator.AutomaticStrategy = new TrajectoryGenerator.Strategy("AutomaticStrategy"); return TrajectoryGenerator.AutomaticStrategy; };
+    ;
+    TrajectoryGenerator.RectangularIntegration_$LI$ = function () { if (TrajectoryGenerator.RectangularIntegration == null)
+        TrajectoryGenerator.RectangularIntegration = new TrajectoryGenerator.IntegrationMethod("RectangularIntegration"); return TrajectoryGenerator.RectangularIntegration; };
+    ;
+    TrajectoryGenerator.TrapezoidalIntegration_$LI$ = function () { if (TrajectoryGenerator.TrapezoidalIntegration == null)
+        TrajectoryGenerator.TrapezoidalIntegration = new TrajectoryGenerator.IntegrationMethod("TrapezoidalIntegration"); return TrajectoryGenerator.TrapezoidalIntegration; };
+    ;
+    /**
+     * Generate a trajectory from a start state to a goal state.
+     *
+     * Read the notes on each of the Strategies defined above, as certain
+     * arguments are ignored for some strategies.
+     *
+     * @param {TrajectoryGenerator.Config} config Definition of constraints and sampling rate (WARNING: Some
+     * may be ignored)
+     * @param {TrajectoryGenerator.Strategy} strategy Which generator to use
+     * @param {number} start_vel The starting velocity (WARNING: May be ignored)
+     * @param {number} start_heading The starting heading
+     * @param {number} goal_pos The goal position
+     * @param {number} goal_vel The goal velocity (WARNING: May be ignored)
+     * @param {number} goal_heading The goal heading
+     * @return {Trajectory} A Trajectory that satisfies the relevant constraints and end
+     * conditions.
+     */
+    TrajectoryGenerator.generate = function (config, strategy, start_vel, start_heading, goal_pos, goal_vel, goal_heading) {
+        if (strategy === TrajectoryGenerator.AutomaticStrategy_$LI$()) {
+            strategy = TrajectoryGenerator.chooseStrategy(start_vel, goal_vel, config.max_vel);
+        }
+        var traj;
+        if (strategy === TrajectoryGenerator.StepStrategy_$LI$()) {
+            var impulse = (goal_pos / config.max_vel) / config.dt;
+            var time = ((Math.floor(impulse)) | 0);
+            traj = TrajectoryGenerator.secondOrderFilter(1, 1, config.dt, config.max_vel, config.max_vel, impulse, time, TrajectoryGenerator.TrapezoidalIntegration_$LI$());
+        }
+        else if (strategy === TrajectoryGenerator.TrapezoidalStrategy_$LI$()) {
+            var start_discount = 0.5 * start_vel * start_vel / config.max_acc;
+            var end_discount = 0.5 * goal_vel * goal_vel / config.max_acc;
+            var adjusted_max_vel = Math.min(config.max_vel, Math.sqrt(config.max_acc * goal_pos - start_discount - end_discount));
+            var t_rampup = (adjusted_max_vel - start_vel) / config.max_acc;
+            var x_rampup = start_vel * t_rampup + 0.5 * config.max_acc * t_rampup * t_rampup;
+            var t_rampdown = (adjusted_max_vel - goal_vel) / config.max_acc;
+            var x_rampdown = adjusted_max_vel * t_rampdown - 0.5 * config.max_acc * t_rampdown * t_rampdown;
+            var x_cruise = goal_pos - x_rampdown - x_rampup;
+            var time = (((t_rampup + t_rampdown + x_cruise / adjusted_max_vel) / config.dt + 0.5) | 0);
+            var f1_length = (Math.ceil((adjusted_max_vel / config.max_acc) / config.dt) | 0);
+            var impulse = (goal_pos / adjusted_max_vel) / config.dt - start_vel / config.max_acc / config.dt + start_discount + end_discount;
+            traj = TrajectoryGenerator.secondOrderFilter(f1_length, 1, config.dt, start_vel, adjusted_max_vel, impulse, time, TrajectoryGenerator.TrapezoidalIntegration_$LI$());
+        }
+        else if (strategy === TrajectoryGenerator.SCurvesStrategy_$LI$()) {
+            var adjusted_max_vel = Math.min(config.max_vel, ((-config.max_acc * config.max_acc + Math.sqrt(config.max_acc * config.max_acc * config.max_acc * config.max_acc + 4 * config.max_jerk * config.max_jerk * config.max_acc * goal_pos)) / (2 * config.max_jerk) + start_vel));
+            var f1_length = (Math.ceil((adjusted_max_vel / config.max_acc) / config.dt) | 0);
+            var f2_length = (Math.ceil((config.max_acc / config.max_jerk) / config.dt) | 0);
+            var impulse = (goal_pos / adjusted_max_vel) / config.dt;
+            var time = ((Math.ceil(f1_length + f2_length + impulse)) | 0);
+            traj = TrajectoryGenerator.secondOrderFilter(f1_length, f2_length, config.dt, start_vel, adjusted_max_vel, impulse, time, TrajectoryGenerator.TrapezoidalIntegration_$LI$());
+        }
+        else {
+            return null;
+        }
+        var total_heading_change = goal_heading - start_heading;
+        for (var i = 0; i < traj.getNumSegments(); ++i) {
+            traj.segments_[i].heading = start_heading + total_heading_change * (traj.segments_[i].pos) / traj.segments_[traj.getNumSegments() - 1].pos;
+        }
+        ;
+        return traj;
+    };
+    TrajectoryGenerator.secondOrderFilter = function (f1_length, f2_length, dt, start_vel, max_vel, total_impulse, length, integration) {
+        if (length <= 0) {
+            return null;
+        }
+        var traj = new Trajectory(length);
+        var last = new Trajectory.Segment();
+        last.pos = 0;
+        last.vel = start_vel;
+        last.acc = 0;
+        last.jerk = 0;
+        last.dt = dt;
+        var f1 = (function (s) { var a = []; while (s-- > 0)
+            a.push(0); return a; })(length);
+        f1[0] = (start_vel / max_vel) * f1_length;
+        var f2;
+        for (var i = 0; i < length; ++i) {
+            var input = Math.min(total_impulse, 1);
+            if (input < 1) {
+                input -= 1;
+                total_impulse = 0;
+            }
+            else {
+                total_impulse -= input;
+            }
+            var f1_last = void 0;
+            if (i > 0) {
+                f1_last = f1[i - 1];
+            }
+            else {
+                f1_last = f1[0];
+            }
+            f1[i] = Math.max(0.0, Math.min(f1_length, f1_last + input));
+            f2 = 0;
+            for (var j = 0; j < f2_length; ++j) {
+                if (i - j < 0) {
+                    break;
+                }
+                f2 += f1[i - j];
+            }
+            ;
+            f2 = f2 / f1_length;
+            traj.segments_[i].vel = f2 / f2_length * max_vel;
+            if (integration === TrajectoryGenerator.RectangularIntegration_$LI$()) {
+                traj.segments_[i].pos = traj.segments_[i].vel * dt + last.pos;
+            }
+            else if (integration === TrajectoryGenerator.TrapezoidalIntegration_$LI$()) {
+                traj.segments_[i].pos = (last.vel + traj.segments_[i].vel) / 2.0 * dt + last.pos;
+            }
+            traj.segments_[i].x = traj.segments_[i].pos;
+            traj.segments_[i].y = 0;
+            traj.segments_[i].acc = (traj.segments_[i].vel - last.vel) / dt;
+            traj.segments_[i].jerk = (traj.segments_[i].acc - last.acc) / dt;
+            traj.segments_[i].dt = dt;
+            last = traj.segments_[i];
+        }
+        ;
+        return traj;
+    };
+    TrajectoryGenerator.chooseStrategy = function (start_vel, goal_vel, max_vel) {
+        var strategy;
+        if (start_vel === goal_vel && start_vel === max_vel) {
+            strategy = TrajectoryGenerator.StepStrategy_$LI$();
+        }
+        else if (start_vel === goal_vel && start_vel === 0) {
+            strategy = TrajectoryGenerator.SCurvesStrategy_$LI$();
+        }
+        else {
+            strategy = TrajectoryGenerator.TrapezoidalStrategy_$LI$();
+        }
+        return strategy;
+    };
+    return TrajectoryGenerator;
+}());
+TrajectoryGenerator["__class"] = "TrajectoryGenerator";
+(function (TrajectoryGenerator) {
+    var Config = (function () {
+        function Config() {
+            this.dt = 0;
+            this.max_vel = 0;
+            this.max_acc = 0;
+            this.max_jerk = 0;
+        }
+        return Config;
+    }());
+    TrajectoryGenerator.Config = Config;
+    Config["__class"] = "TrajectoryGenerator.Config";
+    var Strategy = (function () {
+        function Strategy(value) {
+            this.value_ = null;
+            this.value_ = value;
+        }
+        Strategy.prototype.toString = function () {
+            return this.value_;
+        };
+        return Strategy;
+    }());
+    TrajectoryGenerator.Strategy = Strategy;
+    Strategy["__class"] = "TrajectoryGenerator.Strategy";
+    var IntegrationMethod = (function () {
+        function IntegrationMethod(value) {
+            this.value_ = null;
+            this.value_ = value;
+        }
+        IntegrationMethod.prototype.toString = function () {
+            return this.value_;
+        };
+        return IntegrationMethod;
+    }());
+    TrajectoryGenerator.IntegrationMethod = IntegrationMethod;
+    IntegrationMethod["__class"] = "TrajectoryGenerator.IntegrationMethod";
+})(TrajectoryGenerator || (TrajectoryGenerator = {}));
+/**
+ * A WaypointSequence is a sequence of Waypoints.  #whatdidyouexpect
+ *
+ * @author Art Kalb
+ * @author Stephen Pinkerton
+ * @author Jared341
+ * @param {number} max_size
+ * @class
+ */
+var WaypointSequence = (function () {
+    function WaypointSequence(max_size) {
+        this.waypoints_ = null;
+        this.num_waypoints_ = 0;
+        this.waypoints_ = new Array(max_size);
+    }
+    WaypointSequence.prototype.addWaypoint = function (w) {
+        if (this.num_waypoints_ < this.waypoints_.length) {
+            this.waypoints_[this.num_waypoints_] = w;
+            ++this.num_waypoints_;
+        }
+    };
+    WaypointSequence.prototype.slice = function (start, stop) {
+        var count = stop - start + 1;
+        var result = new WaypointSequence(count);
+        for (var i = 0; i < count; ++i) {
+            result.waypoints_[i] = this.waypoints_[i + start];
+        }
+        ;
+        result.num_waypoints_ = count;
+        return result;
+    };
+    WaypointSequence.prototype.getNumWaypoints = function () {
+        return this.num_waypoints_;
+    };
+    WaypointSequence.prototype.getWaypoint = function (index) {
+        if (index >= 0 && index < this.getNumWaypoints()) {
+            return this.waypoints_[index];
+        }
+        else {
+            return null;
+        }
+    };
+    WaypointSequence.prototype.invertY = function () {
+        var inverted = new WaypointSequence(this.waypoints_.length);
+        inverted.num_waypoints_ = this.num_waypoints_;
+        for (var i = 0; i < this.num_waypoints_; ++i) {
+            inverted.waypoints_[i] = this.waypoints_[i];
+            inverted.waypoints_[i].y *= -1;
+            inverted.waypoints_[i].theta = ChezyMath.boundAngle0to2PiRadians(2 * Math.PI - inverted.waypoints_[i].theta);
+        }
+        ;
+        return inverted;
+    };
+    return WaypointSequence;
+}());
+WaypointSequence["__class"] = "WaypointSequence";
+(function (WaypointSequence) {
+    var Waypoint = (function () {
+        function Waypoint(x, y, theta, velocity) {
+            var _this = this;
+            if (((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof theta === 'number') || theta === null) && ((typeof velocity === 'number') || velocity === null)) {
+                var __args = Array.prototype.slice.call(arguments);
+                this.x = 0;
+                this.y = 0;
+                this.theta = 0;
+                this.velocity = null;
+                this.x = 0;
+                this.y = 0;
+                this.theta = 0;
+                this.velocity = null;
+                (function () {
+                    _this.x = x;
+                    _this.y = y;
+                    _this.theta = theta;
+                    _this.velocity = velocity;
+                })();
+            }
+            else if (((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof theta === 'number') || theta === null) && ((typeof velocity === 'number') || velocity === null)) {
+                var __args = Array.prototype.slice.call(arguments);
+                this.x = 0;
+                this.y = 0;
+                this.theta = 0;
+                this.velocity = null;
+                this.x = 0;
+                this.y = 0;
+                this.theta = 0;
+                this.velocity = null;
+                (function () {
+                    _this.x = x;
+                    _this.y = y;
+                    _this.theta = theta;
+                    _this.velocity = new Number(velocity).valueOf();
+                })();
+            }
+            else if (((x != null && x instanceof WaypointSequence.Waypoint) || x === null) && y === undefined && theta === undefined && velocity === undefined) {
+                var __args = Array.prototype.slice.call(arguments);
+                var tocopy_1 = __args[0];
+                this.x = 0;
+                this.y = 0;
+                this.theta = 0;
+                this.velocity = null;
+                this.x = 0;
+                this.y = 0;
+                this.theta = 0;
+                this.velocity = null;
+                (function () {
+                    _this.x = tocopy_1.x;
+                    _this.y = tocopy_1.y;
+                    _this.theta = tocopy_1.theta;
+                    _this.velocity = tocopy_1.velocity;
+                })();
+            }
+            else
+                throw new Error('invalid overload');
+        }
+        return Waypoint;
+    }());
+    WaypointSequence.Waypoint = Waypoint;
+    Waypoint["__class"] = "WaypointSequence.Waypoint";
+})(WaypointSequence || (WaypointSequence = {}));
 /**
  * This class holds a bunch of static methods and variables needed for
  * mathematics
@@ -348,744 +1224,12 @@ ChezyMath.q1 = 2079.33497444541;
 ChezyMath.q0 = 896.7859740366387;
 ChezyMath.PIO2 = 1.5707963267948966;
 ChezyMath["__class"] = "ChezyMath";
-/**
- * Factory class for creating Trajectories.
- *
- * @author Jared341
- * @class
- */
-var TrajectoryGenerator = (function () {
-    function TrajectoryGenerator() {
-    }
-    TrajectoryGenerator.StepStrategy_$LI$ = function () { if (TrajectoryGenerator.StepStrategy == null)
-        TrajectoryGenerator.StepStrategy = new TrajectoryGenerator.Strategy("StepStrategy"); return TrajectoryGenerator.StepStrategy; };
-    ;
-    TrajectoryGenerator.TrapezoidalStrategy_$LI$ = function () { if (TrajectoryGenerator.TrapezoidalStrategy == null)
-        TrajectoryGenerator.TrapezoidalStrategy = new TrajectoryGenerator.Strategy("TrapezoidalStrategy"); return TrajectoryGenerator.TrapezoidalStrategy; };
-    ;
-    TrajectoryGenerator.SCurvesStrategy_$LI$ = function () { if (TrajectoryGenerator.SCurvesStrategy == null)
-        TrajectoryGenerator.SCurvesStrategy = new TrajectoryGenerator.Strategy("SCurvesStrategy"); return TrajectoryGenerator.SCurvesStrategy; };
-    ;
-    TrajectoryGenerator.AutomaticStrategy_$LI$ = function () { if (TrajectoryGenerator.AutomaticStrategy == null)
-        TrajectoryGenerator.AutomaticStrategy = new TrajectoryGenerator.Strategy("AutomaticStrategy"); return TrajectoryGenerator.AutomaticStrategy; };
-    ;
-    TrajectoryGenerator.RectangularIntegration_$LI$ = function () { if (TrajectoryGenerator.RectangularIntegration == null)
-        TrajectoryGenerator.RectangularIntegration = new TrajectoryGenerator.IntegrationMethod("RectangularIntegration"); return TrajectoryGenerator.RectangularIntegration; };
-    ;
-    TrajectoryGenerator.TrapezoidalIntegration_$LI$ = function () { if (TrajectoryGenerator.TrapezoidalIntegration == null)
-        TrajectoryGenerator.TrapezoidalIntegration = new TrajectoryGenerator.IntegrationMethod("TrapezoidalIntegration"); return TrajectoryGenerator.TrapezoidalIntegration; };
-    ;
-    /**
-     * Generate a trajectory from a start state to a goal state.
-     *
-     * Read the notes on each of the Strategies defined above, as certain
-     * arguments are ignored for some strategies.
-     *
-     * @param {TrajectoryGenerator.Config} config Definition of constraints and sampling rate (WARNING: Some
-     * may be ignored)
-     * @param {TrajectoryGenerator.Strategy} strategy Which generator to use
-     * @param {number} start_vel The starting velocity (WARNING: May be ignored)
-     * @param {number} start_heading The starting heading
-     * @param {number} goal_pos The goal position
-     * @param {number} goal_vel The goal velocity (WARNING: May be ignored)
-     * @param {number} goal_heading The goal heading
-     * @return {Trajectory} A Trajectory that satisfies the relevant constraints and end
-     * conditions.
-     */
-    TrajectoryGenerator.generate = function (config, strategy, start_vel, start_heading, goal_pos, goal_vel, goal_heading) {
-        if (strategy === TrajectoryGenerator.AutomaticStrategy_$LI$()) {
-            strategy = TrajectoryGenerator.chooseStrategy(start_vel, goal_vel, config.max_vel);
-        }
-        var traj;
-        if (strategy === TrajectoryGenerator.StepStrategy_$LI$()) {
-            var impulse = (goal_pos / config.max_vel) / config.dt;
-            var time = ((Math.floor(impulse)) | 0);
-            traj = TrajectoryGenerator.secondOrderFilter(1, 1, config.dt, config.max_vel, config.max_vel, impulse, time, TrajectoryGenerator.TrapezoidalIntegration_$LI$());
-        }
-        else if (strategy === TrajectoryGenerator.TrapezoidalStrategy_$LI$()) {
-            var start_discount = 0.5 * start_vel * start_vel / config.max_acc;
-            var end_discount = 0.5 * goal_vel * goal_vel / config.max_acc;
-            var adjusted_max_vel = Math.min(config.max_vel, Math.sqrt(config.max_acc * goal_pos - start_discount - end_discount));
-            var t_rampup = (adjusted_max_vel - start_vel) / config.max_acc;
-            var x_rampup = start_vel * t_rampup + 0.5 * config.max_acc * t_rampup * t_rampup;
-            var t_rampdown = (adjusted_max_vel - goal_vel) / config.max_acc;
-            var x_rampdown = adjusted_max_vel * t_rampdown - 0.5 * config.max_acc * t_rampdown * t_rampdown;
-            var x_cruise = goal_pos - x_rampdown - x_rampup;
-            var time = (((t_rampup + t_rampdown + x_cruise / adjusted_max_vel) / config.dt + 0.5) | 0);
-            var f1_length = (Math.ceil((adjusted_max_vel / config.max_acc) / config.dt) | 0);
-            var impulse = (goal_pos / adjusted_max_vel) / config.dt - start_vel / config.max_acc / config.dt + start_discount + end_discount;
-            traj = TrajectoryGenerator.secondOrderFilter(f1_length, 1, config.dt, start_vel, adjusted_max_vel, impulse, time, TrajectoryGenerator.TrapezoidalIntegration_$LI$());
-        }
-        else if (strategy === TrajectoryGenerator.SCurvesStrategy_$LI$()) {
-            var adjusted_max_vel = Math.min(config.max_vel, (-config.max_acc * config.max_acc + Math.sqrt(config.max_acc * config.max_acc * config.max_acc * config.max_acc + 4 * config.max_jerk * config.max_jerk * config.max_acc * goal_pos)) / (2 * config.max_jerk));
-            var f1_length = (Math.ceil((adjusted_max_vel / config.max_acc) / config.dt) | 0);
-            var f2_length = (Math.ceil((config.max_acc / config.max_jerk) / config.dt) | 0);
-            var impulse = (goal_pos / adjusted_max_vel) / config.dt;
-            var time = ((Math.ceil(f1_length + f2_length + impulse)) | 0);
-            traj = TrajectoryGenerator.secondOrderFilter(f1_length, f2_length, config.dt, 0, adjusted_max_vel, impulse, time, TrajectoryGenerator.TrapezoidalIntegration_$LI$());
-        }
-        else {
-            return null;
-        }
-        var total_heading_change = goal_heading - start_heading;
-        for (var i = 0; i < traj.getNumSegments(); ++i) {
-            traj.segments_[i].heading = start_heading + total_heading_change * (traj.segments_[i].pos) / traj.segments_[traj.getNumSegments() - 1].pos;
-        }
-        ;
-        return traj;
-    };
-    TrajectoryGenerator.secondOrderFilter = function (f1_length, f2_length, dt, start_vel, max_vel, total_impulse, length, integration) {
-        if (length <= 0) {
-            return null;
-        }
-        var traj = new Trajectory(length);
-        var last = new Trajectory.Segment();
-        last.pos = 0;
-        last.vel = start_vel;
-        last.acc = 0;
-        last.jerk = 0;
-        last.dt = dt;
-        var f1 = (function (s) { var a = []; while (s-- > 0)
-            a.push(0); return a; })(length);
-        f1[0] = (start_vel / max_vel) * f1_length;
-        var f2;
-        for (var i = 0; i < length; ++i) {
-            var input = Math.min(total_impulse, 1);
-            if (input < 1) {
-                input -= 1;
-                total_impulse = 0;
-            }
-            else {
-                total_impulse -= input;
-            }
-            var f1_last = void 0;
-            if (i > 0) {
-                f1_last = f1[i - 1];
-            }
-            else {
-                f1_last = f1[0];
-            }
-            f1[i] = Math.max(0.0, Math.min(f1_length, f1_last + input));
-            f2 = 0;
-            for (var j = 0; j < f2_length; ++j) {
-                if (i - j < 0) {
-                    break;
-                }
-                f2 += f1[i - j];
-            }
-            ;
-            f2 = f2 / f1_length;
-            traj.segments_[i].vel = f2 / f2_length * max_vel;
-            if (integration === TrajectoryGenerator.RectangularIntegration_$LI$()) {
-                traj.segments_[i].pos = traj.segments_[i].vel * dt + last.pos;
-            }
-            else if (integration === TrajectoryGenerator.TrapezoidalIntegration_$LI$()) {
-                traj.segments_[i].pos = (last.vel + traj.segments_[i].vel) / 2.0 * dt + last.pos;
-            }
-            traj.segments_[i].x = traj.segments_[i].pos;
-            traj.segments_[i].y = 0;
-            traj.segments_[i].acc = (traj.segments_[i].vel - last.vel) / dt;
-            traj.segments_[i].jerk = (traj.segments_[i].acc - last.acc) / dt;
-            traj.segments_[i].dt = dt;
-            last = traj.segments_[i];
-        }
-        ;
-        return traj;
-    };
-    TrajectoryGenerator.chooseStrategy = function (start_vel, goal_vel, max_vel) {
-        var strategy;
-        if (start_vel === goal_vel && start_vel === max_vel) {
-            strategy = TrajectoryGenerator.StepStrategy_$LI$();
-        }
-        else if (start_vel === goal_vel && start_vel === 0) {
-            strategy = TrajectoryGenerator.SCurvesStrategy_$LI$();
-        }
-        else {
-            strategy = TrajectoryGenerator.TrapezoidalStrategy_$LI$();
-        }
-        return strategy;
-    };
-    return TrajectoryGenerator;
-}());
-TrajectoryGenerator["__class"] = "TrajectoryGenerator";
-(function (TrajectoryGenerator) {
-    var Config = (function () {
-        function Config() {
-            this.dt = 0;
-            this.max_vel = 0;
-            this.max_acc = 0;
-            this.max_jerk = 0;
-        }
-        return Config;
-    }());
-    TrajectoryGenerator.Config = Config;
-    Config["__class"] = "TrajectoryGenerator.Config";
-    var Strategy = (function () {
-        function Strategy(value) {
-            this.value_ = null;
-            this.value_ = value;
-        }
-        Strategy.prototype.toString = function () {
-            return this.value_;
-        };
-        return Strategy;
-    }());
-    TrajectoryGenerator.Strategy = Strategy;
-    Strategy["__class"] = "TrajectoryGenerator.Strategy";
-    var IntegrationMethod = (function () {
-        function IntegrationMethod(value) {
-            this.value_ = null;
-            this.value_ = value;
-        }
-        IntegrationMethod.prototype.toString = function () {
-            return this.value_;
-        };
-        return IntegrationMethod;
-    }());
-    TrajectoryGenerator.IntegrationMethod = IntegrationMethod;
-    IntegrationMethod["__class"] = "TrajectoryGenerator.IntegrationMethod";
-})(TrajectoryGenerator || (TrajectoryGenerator = {}));
-/**
- * Implementation of a Trajectory using arrays as the underlying storage
- * mechanism.
- *
- * @author Jared341
- * @param {number} length
- * @class
- */
-var Trajectory = (function () {
-    function Trajectory(segments) {
-        var _this = this;
-        this.segments_ = null;
-        this.inverted_y_ = false;
-        if (((segments != null && segments instanceof Array && (segments.length == 0 || segments[0] == null || (segments[0] != null && segments[0] instanceof Trajectory.Segment))) || segments === null)) {
-            var __args = Array.prototype.slice.call(arguments);
-            this.segments_ = null;
-            this.inverted_y_ = false;
-            (function () {
-                _this.segments_ = segments;
-            })();
-        }
-        else if (((typeof segments === 'number') || segments === null)) {
-            var __args = Array.prototype.slice.call(arguments);
-            var length_1 = __args[0];
-            this.segments_ = null;
-            this.inverted_y_ = false;
-            (function () {
-                _this.segments_ = new Array(length_1);
-                for (var i = 0; i < length_1; ++i) {
-                    _this.segments_[i] = new Trajectory.Segment();
-                }
-                ;
-            })();
-        }
-        else
-            throw new Error('invalid overload');
-    }
-    Trajectory.prototype.setInvertedY = function (inverted) {
-        this.inverted_y_ = inverted;
-    };
-    Trajectory.prototype.getNumSegments = function () {
-        return this.segments_.length;
-    };
-    Trajectory.prototype.getSegment = function (index) {
-        if (index < this.getNumSegments()) {
-            if (!this.inverted_y_) {
-                return this.segments_[index];
-            }
-            else {
-                var segment = new Trajectory.Segment(this.segments_[index]);
-                segment.y *= -1.0;
-                segment.heading *= -1.0;
-                return segment;
-            }
-        }
-        else {
-            return new Trajectory.Segment();
-        }
-    };
-    Trajectory.prototype.setSegment = function (index, segment) {
-        if (index < this.getNumSegments()) {
-            this.segments_[index] = segment;
-        }
-    };
-    Trajectory.prototype.scale = function (scaling_factor) {
-        for (var i = 0; i < this.getNumSegments(); ++i) {
-            this.segments_[i].pos *= scaling_factor;
-            this.segments_[i].vel *= scaling_factor;
-            this.segments_[i].acc *= scaling_factor;
-            this.segments_[i].jerk *= scaling_factor;
-        }
-        ;
-    };
-    Trajectory.prototype.append = function (to_append) {
-        var temp = new Array(this.getNumSegments() + to_append.getNumSegments());
-        for (var i = 0; i < this.getNumSegments(); ++i) {
-            temp[i] = new Trajectory.Segment(this.segments_[i]);
-        }
-        ;
-        for (var i = 0; i < to_append.getNumSegments(); ++i) {
-            temp[i + this.getNumSegments()] = new Trajectory.Segment(to_append.getSegment(i));
-        }
-        ;
-        this.segments_ = temp;
-    };
-    Trajectory.prototype.copy = function () {
-        var cloned = new Trajectory(this.getNumSegments());
-        cloned.segments_ = this.copySegments(this.segments_);
-        return cloned;
-    };
-    Trajectory.prototype.reverse = function () {
-        var cloned = new Trajectory(1);
-        cloned.segments_ = this.reverseSegments(this.segments_);
-        return cloned;
-    };
-    Trajectory.prototype.reverseSegments = function (tocopy) {
-        var count = tocopy.length;
-        var start_pos = tocopy[count - 1].pos;
-        var copied = new Array(count);
-        for (var i = 0; i < tocopy.length; ++i) {
-            copied[i] = new Trajectory.Segment(tocopy[count - i - 1]);
-            copied[i].reverse();
-            copied[i].pos -= start_pos;
-        }
-        ;
-        return copied;
-    };
-    Trajectory.prototype.copySegments = function (tocopy) {
-        var copied = new Array(tocopy.length);
-        for (var i = 0; i < tocopy.length; ++i) {
-            copied[i] = new Trajectory.Segment(tocopy[i]);
-        }
-        ;
-        return copied;
-    };
-    Trajectory.prototype.toString = function () {
-        var str = "Segment\tPos\tVel\tAcc\tJerk\tHeading\n";
-        for (var i = 0; i < this.getNumSegments(); ++i) {
-            var segment = this.getSegment(i);
-            str += i + "\t";
-            str += segment.pos + "\t";
-            str += segment.vel + "\t";
-            str += segment.acc + "\t";
-            str += segment.jerk + "\t";
-            str += segment.heading + "\t";
-            str += "\n";
-        }
-        ;
-        return str;
-    };
-    Trajectory.prototype.toStringProfile = function () {
-        return this.toString();
-    };
-    Trajectory.prototype.toStringEuclidean = function () {
-        var str = "Segment\tx\ty\tHeading\n";
-        for (var i = 0; i < this.getNumSegments(); ++i) {
-            var segment = this.getSegment(i);
-            str += i + "\t";
-            str += segment.x + "\t";
-            str += segment.y + "\t";
-            str += segment.heading + "\t";
-            str += "\n";
-        }
-        ;
-        return str;
-    };
-    return Trajectory;
-}());
-Trajectory["__class"] = "Trajectory";
-(function (Trajectory) {
-    var Pair = (function () {
-        function Pair(left, right) {
-            this.left = null;
-            this.right = null;
-            this.left = left;
-            this.right = right;
-        }
-        Pair.prototype.reverse = function () {
-            var result = new Trajectory.Pair(this.left.reverse(), this.right.reverse());
-            return result;
-        };
-        return Pair;
-    }());
-    Trajectory.Pair = Pair;
-    Pair["__class"] = "Trajectory.Pair";
-    var Segment = (function () {
-        function Segment(pos, vel, acc, jerk, heading, dt, x, y) {
-            var _this = this;
-            if (((typeof pos === 'number') || pos === null) && ((typeof vel === 'number') || vel === null) && ((typeof acc === 'number') || acc === null) && ((typeof jerk === 'number') || jerk === null) && ((typeof heading === 'number') || heading === null) && ((typeof dt === 'number') || dt === null) && ((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null)) {
-                var __args = Array.prototype.slice.call(arguments);
-                this.pos = 0;
-                this.vel = 0;
-                this.acc = 0;
-                this.jerk = 0;
-                this.heading = 0;
-                this.dt = 0;
-                this.x = 0;
-                this.y = 0;
-                this.pos = 0;
-                this.vel = 0;
-                this.acc = 0;
-                this.jerk = 0;
-                this.heading = 0;
-                this.dt = 0;
-                this.x = 0;
-                this.y = 0;
-                (function () {
-                    _this.pos = pos;
-                    _this.vel = vel;
-                    _this.acc = acc;
-                    _this.jerk = jerk;
-                    _this.heading = heading;
-                    _this.dt = dt;
-                    _this.x = x;
-                    _this.y = y;
-                })();
-            }
-            else if (((pos != null && pos instanceof Trajectory.Segment) || pos === null) && vel === undefined && acc === undefined && jerk === undefined && heading === undefined && dt === undefined && x === undefined && y === undefined) {
-                var __args = Array.prototype.slice.call(arguments);
-                var to_copy_1 = __args[0];
-                this.pos = 0;
-                this.vel = 0;
-                this.acc = 0;
-                this.jerk = 0;
-                this.heading = 0;
-                this.dt = 0;
-                this.x = 0;
-                this.y = 0;
-                this.pos = 0;
-                this.vel = 0;
-                this.acc = 0;
-                this.jerk = 0;
-                this.heading = 0;
-                this.dt = 0;
-                this.x = 0;
-                this.y = 0;
-                (function () {
-                    _this.pos = to_copy_1.pos;
-                    _this.vel = to_copy_1.vel;
-                    _this.acc = to_copy_1.acc;
-                    _this.jerk = to_copy_1.jerk;
-                    _this.heading = to_copy_1.heading;
-                    _this.dt = to_copy_1.dt;
-                    _this.x = to_copy_1.x;
-                    _this.y = to_copy_1.y;
-                })();
-            }
-            else if (pos === undefined && vel === undefined && acc === undefined && jerk === undefined && heading === undefined && dt === undefined && x === undefined && y === undefined) {
-                var __args = Array.prototype.slice.call(arguments);
-                this.pos = 0;
-                this.vel = 0;
-                this.acc = 0;
-                this.jerk = 0;
-                this.heading = 0;
-                this.dt = 0;
-                this.x = 0;
-                this.y = 0;
-                this.pos = 0;
-                this.vel = 0;
-                this.acc = 0;
-                this.jerk = 0;
-                this.heading = 0;
-                this.dt = 0;
-                this.x = 0;
-                this.y = 0;
-            }
-            else
-                throw new Error('invalid overload');
-        }
-        Segment.prototype.reverse = function () {
-            this.vel = -this.vel;
-            this.acc = -this.acc;
-            this.jerk = -this.jerk;
-        };
-        Segment.prototype.toString = function () {
-            return "pos: " + this.pos + "; vel: " + this.vel + "; acc: " + this.acc + "; jerk: " + this.jerk + "; heading: " + this.heading;
-        };
-        return Segment;
-    }());
-    Trajectory.Segment = Segment;
-    Segment["__class"] = "Trajectory.Segment";
-})(Trajectory || (Trajectory = {}));
-/**
- * Base class for an autonomous path.
- *
- * @author Jared341
- * @param {string} name
- * @param {Trajectory.Pair} go_left_pair
- * @class
- */
-var Path = (function () {
-    function Path(name, go_left_pair) {
-        var _this = this;
-        if (((typeof name === 'string') || name === null) && ((go_left_pair != null && go_left_pair instanceof Trajectory.Pair) || go_left_pair === null)) {
-            var __args = Array.prototype.slice.call(arguments);
-            this.go_left_pair_ = null;
-            this.name_ = null;
-            this.go_left_ = false;
-            this.go_left_pair_ = null;
-            this.name_ = null;
-            this.go_left_ = false;
-            (function () {
-                _this.name_ = name;
-                _this.go_left_pair_ = go_left_pair;
-                _this.go_left_ = true;
-            })();
-        }
-        else if (name === undefined && go_left_pair === undefined) {
-            var __args = Array.prototype.slice.call(arguments);
-            this.go_left_pair_ = null;
-            this.name_ = null;
-            this.go_left_ = false;
-            this.go_left_pair_ = null;
-            this.name_ = null;
-            this.go_left_ = false;
-        }
-        else
-            throw new Error('invalid overload');
-    }
-    Path.prototype.getName = function () {
-        return this.name_;
-    };
-    Path.prototype.goLeft = function () {
-        this.go_left_ = true;
-        this.go_left_pair_.left.setInvertedY(false);
-        this.go_left_pair_.right.setInvertedY(false);
-    };
-    Path.prototype.goRight = function () {
-        this.go_left_ = false;
-        this.go_left_pair_.left.setInvertedY(true);
-        this.go_left_pair_.right.setInvertedY(true);
-    };
-    Path.prototype.getLeftWheelTrajectory = function () {
-        return (this.go_left_ ? this.go_left_pair_.left : this.go_left_pair_.right);
-    };
-    Path.prototype.getRightWheelTrajectory = function () {
-        return (this.go_left_ ? this.go_left_pair_.right : this.go_left_pair_.left);
-    };
-    Path.prototype.getPair = function () {
-        return this.go_left_pair_;
-    };
-    Path.prototype.getEndHeading = function () {
-        var numSegments = this.getLeftWheelTrajectory().getNumSegments();
-        var lastSegment = this.getLeftWheelTrajectory().getSegment(numSegments - 1);
-        return lastSegment.heading;
-    };
-    Path.prototype.reverse = function () {
-        this.go_left_pair_ = this.go_left_pair_.reverse();
-    };
-    return Path;
-}());
-Path["__class"] = "Path";
-/**
- * A WaypointSequence is a sequence of Waypoints.  #whatdidyouexpect
- *
- * @author Art Kalb
- * @author Stephen Pinkerton
- * @author Jared341
- * @param {number} max_size
- * @class
- */
-var WaypointSequence = (function () {
-    function WaypointSequence(max_size) {
-        this.waypoints_ = null;
-        this.num_waypoints_ = 0;
-        this.waypoints_ = new Array(max_size);
-    }
-    WaypointSequence.prototype.addWaypoint = function (w) {
-        if (this.num_waypoints_ < this.waypoints_.length) {
-            this.waypoints_[this.num_waypoints_] = w;
-            ++this.num_waypoints_;
-        }
-    };
-    WaypointSequence.prototype.getNumWaypoints = function () {
-        return this.num_waypoints_;
-    };
-    WaypointSequence.prototype.getWaypoint = function (index) {
-        if (index >= 0 && index < this.getNumWaypoints()) {
-            return this.waypoints_[index];
-        }
-        else {
-            return null;
-        }
-    };
-    WaypointSequence.prototype.invertY = function () {
-        var inverted = new WaypointSequence(this.waypoints_.length);
-        inverted.num_waypoints_ = this.num_waypoints_;
-        for (var i = 0; i < this.num_waypoints_; ++i) {
-            inverted.waypoints_[i] = this.waypoints_[i];
-            inverted.waypoints_[i].y *= -1;
-            inverted.waypoints_[i].theta = ChezyMath.boundAngle0to2PiRadians(2 * Math.PI - inverted.waypoints_[i].theta);
-        }
-        ;
-        return inverted;
-    };
-    return WaypointSequence;
-}());
-WaypointSequence["__class"] = "WaypointSequence";
-(function (WaypointSequence) {
-    var Waypoint = (function () {
-        function Waypoint(x, y, theta) {
-            var _this = this;
-            if (((typeof x === 'number') || x === null) && ((typeof y === 'number') || y === null) && ((typeof theta === 'number') || theta === null)) {
-                var __args = Array.prototype.slice.call(arguments);
-                this.x = 0;
-                this.y = 0;
-                this.theta = 0;
-                this.x = 0;
-                this.y = 0;
-                this.theta = 0;
-                (function () {
-                    _this.x = x;
-                    _this.y = y;
-                    _this.theta = theta;
-                })();
-            }
-            else if (((x != null && x instanceof WaypointSequence.Waypoint) || x === null) && y === undefined && theta === undefined) {
-                var __args = Array.prototype.slice.call(arguments);
-                var tocopy_1 = __args[0];
-                this.x = 0;
-                this.y = 0;
-                this.theta = 0;
-                this.x = 0;
-                this.y = 0;
-                this.theta = 0;
-                (function () {
-                    _this.x = tocopy_1.x;
-                    _this.y = tocopy_1.y;
-                    _this.theta = tocopy_1.theta;
-                })();
-            }
-            else
-                throw new Error('invalid overload');
-        }
-        return Waypoint;
-    }());
-    WaypointSequence.Waypoint = Waypoint;
-    Waypoint["__class"] = "WaypointSequence.Waypoint";
-})(WaypointSequence || (WaypointSequence = {}));
-var PathGenerator = (function () {
-    function PathGenerator() {
-    }
-    /**
-     * Generate a path for autonomous driving.
-     *
-     * @param {WaypointSequence} waypoints The waypoints to drive to (FOR THE "GO LEFT" CASE!!!!)
-     * @param {TrajectoryGenerator.Config} config Trajectory config.
-     * @param {number} wheelbase_width Wheelbase separation; units must be consistent with
-     * config and waypoints.
-     * @param {string} name The name of the new path.  THIS MUST BE A VALID JAVA CLASS NAME
-     * @return {Path} The path.
-     */
-    PathGenerator.makePath = function (waypoints, config, wheelbase_width, name) {
-        return new Path(name, PathGenerator.generateLeftAndRightFromSeq(waypoints, config, wheelbase_width));
-    };
-    PathGenerator.generateLeftAndRightFromSeq = function (path, config, wheelbase_width) {
-        return PathGenerator.makeLeftAndRightTrajectories(PathGenerator.generateFromPath(path, config), wheelbase_width);
-    };
-    PathGenerator.generateFromPath = function (path, config) {
-        if (path.getNumWaypoints() < 2) {
-            return null;
-        }
-        var splines = new Array(path.getNumWaypoints() - 1);
-        var spline_lengths = (function (s) { var a = []; while (s-- > 0)
-            a.push(0); return a; })(splines.length);
-        var total_distance = 0;
-        for (var i = 0; i < splines.length; ++i) {
-            splines[i] = new Spline();
-            if (!Spline.reticulateSplines$WaypointSequence_Waypoint$WaypointSequence_Waypoint$Spline$Spline_Type(path.getWaypoint(i), path.getWaypoint(i + 1), splines[i], Spline.QuinticHermite_$LI$())) {
-                return null;
-            }
-            spline_lengths[i] = splines[i].calculateLength();
-            total_distance += spline_lengths[i];
-        }
-        ;
-        var traj = TrajectoryGenerator.generate(config, TrajectoryGenerator.SCurvesStrategy_$LI$(), 0.0, path.getWaypoint(0).theta, total_distance, 0.0, path.getWaypoint(0).theta);
-        var cur_spline = 0;
-        var cur_spline_start_pos = 0;
-        var length_of_splines_finished = 0;
-        for (var i = 0; i < traj.getNumSegments(); ++i) {
-            var cur_pos = traj.getSegment(i).pos;
-            var found_spline = false;
-            while ((!found_spline)) {
-                var cur_pos_relative = cur_pos - cur_spline_start_pos;
-                if (cur_pos_relative <= spline_lengths[cur_spline]) {
-                    var percentage = splines[cur_spline].getPercentageForDistance(cur_pos_relative);
-                    traj.getSegment(i).heading = splines[cur_spline].angleAt(percentage);
-                    var coords = splines[cur_spline].getXandY(percentage);
-                    traj.getSegment(i).x = coords[0];
-                    traj.getSegment(i).y = coords[1];
-                    found_spline = true;
-                }
-                else if (cur_spline < splines.length - 1) {
-                    length_of_splines_finished += spline_lengths[cur_spline];
-                    cur_spline_start_pos = length_of_splines_finished;
-                    ++cur_spline;
-                }
-                else {
-                    traj.getSegment(i).heading = splines[splines.length - 1].angleAt(1.0);
-                    var coords = splines[splines.length - 1].getXandY(1.0);
-                    traj.getSegment(i).x = coords[0];
-                    traj.getSegment(i).y = coords[1];
-                    found_spline = true;
-                }
-            }
-            ;
-        }
-        ;
-        return traj;
-    };
-    /**
-     * Generate left and right wheel trajectories from a reference.
-     *
-     * @param {Trajectory} input The reference trajectory.
-     * @param {number} wheelbase_width The center-to-center distance between the left and
-     * right sides.
-     * @return {Trajectory.Pair} [0] is left, [1] is right
-     */
-    PathGenerator.makeLeftAndRightTrajectories = function (input, wheelbase_width) {
-        var output = new Array(2);
-        output[0] = input.copy();
-        output[1] = input.copy();
-        var left = output[0];
-        var right = output[1];
-        for (var i = 0; i < input.getNumSegments(); ++i) {
-            var current = input.getSegment(i);
-            var cos_angle = Math.cos(current.heading);
-            var sin_angle = Math.sin(current.heading);
-            var s_left = left.getSegment(i);
-            s_left.x = current.x - wheelbase_width / 2 * sin_angle;
-            s_left.y = current.y + wheelbase_width / 2 * cos_angle;
-            if (i > 0) {
-                var dist = Math.sqrt((s_left.x - left.getSegment(i - 1).x) * (s_left.x - left.getSegment(i - 1).x) + (s_left.y - left.getSegment(i - 1).y) * (s_left.y - left.getSegment(i - 1).y));
-                s_left.pos = left.getSegment(i - 1).pos + dist;
-                s_left.vel = dist / s_left.dt;
-                s_left.acc = (s_left.vel - left.getSegment(i - 1).vel) / s_left.dt;
-                s_left.jerk = (s_left.acc - left.getSegment(i - 1).acc) / s_left.dt;
-            }
-            var s_right = right.getSegment(i);
-            s_right.x = current.x + wheelbase_width / 2 * sin_angle;
-            s_right.y = current.y - wheelbase_width / 2 * cos_angle;
-            if (i > 0) {
-                var dist = Math.sqrt((s_right.x - right.getSegment(i - 1).x) * (s_right.x - right.getSegment(i - 1).x) + (s_right.y - right.getSegment(i - 1).y) * (s_right.y - right.getSegment(i - 1).y));
-                s_right.pos = right.getSegment(i - 1).pos + dist;
-                s_right.vel = dist / s_right.dt;
-                s_right.acc = (s_right.vel - right.getSegment(i - 1).vel) / s_right.dt;
-                s_right.jerk = (s_right.acc - right.getSegment(i - 1).acc) / s_right.dt;
-            }
-        }
-        ;
-        return new Trajectory.Pair(output[0], output[1]);
-    };
-    return PathGenerator;
-}());
-PathGenerator["__class"] = "PathGenerator";
+ChezyMath.nan_$LI$();
 TrajectoryGenerator.TrapezoidalIntegration_$LI$();
 TrajectoryGenerator.RectangularIntegration_$LI$();
 TrajectoryGenerator.AutomaticStrategy_$LI$();
 TrajectoryGenerator.SCurvesStrategy_$LI$();
 TrajectoryGenerator.TrapezoidalStrategy_$LI$();
 TrajectoryGenerator.StepStrategy_$LI$();
-ChezyMath.nan_$LI$();
 Spline.QuinticHermite_$LI$();
 Spline.CubicHermite_$LI$();

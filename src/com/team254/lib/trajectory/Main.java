@@ -63,8 +63,8 @@ public class Main {
       // Description of this auto mode path.
       // Remember that this is for the GO LEFT CASE!
       WaypointSequence p = new WaypointSequence(10);
-      p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-      p.addWaypoint(new WaypointSequence.Waypoint(10.0, 0, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(10.0, 0, 0, 0));
       //p.addWaypoint(new WaypointSequence.Waypoint(14.0, 1.0, Math.PI / 12.0));
 
       Path path = PathGenerator.makePath(p, config,
@@ -94,9 +94,9 @@ public class Main {
       // Description of this auto mode path.
       // Remember that this is for the GO LEFT CASE!
       WaypointSequence p = new WaypointSequence(10);
-      p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-      p.addWaypoint(new WaypointSequence.Waypoint(7.0, 0, 0));
-      p.addWaypoint(new WaypointSequence.Waypoint(14.0, 1.0, Math.PI / 12.0));
+      p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(7.0, 0, 0, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(14.0, 1.0, Math.PI / 12.0, 0));
 
       Path path = PathGenerator.makePath(p, config,
           kWheelbaseWidth, path_name);
@@ -125,9 +125,9 @@ public class Main {
       // Description of this auto mode path.
       // Remember that this is for the GO LEFT CASE!
       WaypointSequence p = new WaypointSequence(10);
-      p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-      p.addWaypoint(new WaypointSequence.Waypoint(7.0, 0, 0));
-      p.addWaypoint(new WaypointSequence.Waypoint(14.0, 5.0, Math.PI / 12.0));
+      p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(7.0, 0, 0, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(14.0, 5.0, Math.PI / 12.0, 0));
 
       Path path = PathGenerator.makePath(p, config,
           kWheelbaseWidth, path_name);
@@ -157,9 +157,9 @@ public class Main {
       // Description of this auto mode path.
       // Remember that this is for the GO LEFT CASE!
       WaypointSequence p = new WaypointSequence(10);
-      p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-      p.addWaypoint(new WaypointSequence.Waypoint(7.0, 0, 0));
-      p.addWaypoint(new WaypointSequence.Waypoint(15.0, 3, Math.PI / 12.0));
+      p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(7.0, 0, 0, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(15.0, 3, Math.PI / 12.0, 0));
 
       Path path = PathGenerator.makePath(p, config,
           kWheelbaseWidth, path_name);
@@ -188,8 +188,8 @@ public class Main {
       // Description of this auto mode path.
       // Remember that this is for the GO LEFT CASE!
       WaypointSequence p = new WaypointSequence(10);
-      p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-      p.addWaypoint(new WaypointSequence.Waypoint(14, 0, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(14, 0, 0, 0));
 
       Path path = PathGenerator.makePath(p, config,
           kWheelbaseWidth, path_name);
@@ -218,10 +218,10 @@ public class Main {
       // Description of this auto mode path.
       // Remember that this is for the GO LEFT CASE!
       WaypointSequence p = new WaypointSequence(10);
-      p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-      p.addWaypoint(new WaypointSequence.Waypoint(2.5, 0, 0));
-      p.addWaypoint(new WaypointSequence.Waypoint(10.5, 8, Math.PI/12.0));
-      p.addWaypoint(new WaypointSequence.Waypoint(13.75, 9.5, 0.0/* * Math.PI/18.0*/));
+      p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(2.5, 0, 0, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(10.5, 8, Math.PI/12.0, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(13.75, 9.5, 0.0/* * Math.PI/18.0*/, 0));
       
 
       Path path = PathGenerator.makePath(p, config,

@@ -94,10 +94,11 @@ class Translation2d {
 }
 
 class Waypoint {
-	constructor(position, theta, comment) {
+	constructor(position, theta, velocity, comment) {
 		this.position = position;
 		this.theta = theta;
 		this.comment = comment;
+    this.velocity = (velocity == undefined) ? null : velocity;
 	}
 
 	draw() {
@@ -106,7 +107,7 @@ class Waypoint {
 
 	toString() {
 		var comment = (this.comment.length > 0) ? " //" + this.comment : "";
-		return "sWaypoints.add(new WaypointSequence.Waypoint("+this.position.x+","+this.position.y+",Math.toRadians("+this.theta+")));" + comment;
+		return "sWaypoints.add(new WaypointSequence.Waypoint("+this.position.x+","+this.position.y+",Math.toRadians("+this.theta+","+this.velocity+")));" + comment;
 	}
 }
 
@@ -189,8 +190,6 @@ class Arc {
 	draw() {
 		var sTrans = Translation2d.diff(this.center, this.lineA.end);
 		var eTrans = Translation2d.diff(this.center, this.lineB.start);
-		console.log(sTrans);
-		console.log(eTrans);
 		var sAngle, eAngle;
 		if(Translation2d.cross(sTrans, eTrans) > 0) {
 			eAngle = -Math.atan2(sTrans.y, sTrans.x);
@@ -246,7 +245,6 @@ function init() {
     imageFlipped = new Image();
     imageFlipped.src = 'fieldflipped.png';
     $('input').bind("change paste keyup", function() {
-		console.log("change");
 		clearTimeout(wto);
 			wto = setTimeout(function() {
 			update();
@@ -267,7 +265,7 @@ function init() {
 
     var changeWaypoint = false;
     // is this inside a previous waypoint?
-    eachPoint(function(rx,ry, theta, comment, idx) {
+    eachPoint(function(rx,ry, theta, velocity, comment, idx) {
         //var robotWidth = 28; //inches
         //var robotHeight = 33; //inches
         if ((Math.abs(rx - x) < (robotWidth / 2)) && (Math.abs(ry - y) < (robotHeight / 2))) {
@@ -317,13 +315,13 @@ function addPoint() {
 		+"<td><input value='"+(prev.x+40)+"'></td>"
 		+"<td><input value='"+(prev.y+40)+"'></td>"
 		+"<td><input value='0'></td>"
+		+"<td><input value=''></td>"
 		+"<td class='comments'><input placeholder='Comments'></td>"
 		+"<td><button onclick='$(this).parent().parent().remove();update()'>Delete</button></td></tr>"
 	);
 	update();
 	$('input').unbind("change paste keyup");
 	$('input').bind("change paste keyup", function() {
-		console.log("change");
 		clearTimeout(wto);
 			wto = setTimeout(function() {
 			update();
@@ -340,16 +338,16 @@ function update() {
 	waypoints = [];
   var color = "#000";
   points = new WaypointSequence($("tbody#points tr").length);
-  eachPoint(function(x,y,theta,comment, i) {
+  eachPoint(function(x,y,theta,velocity,comment, i) {
     var pos = new Translation2d(x,y);
-    waypoints.push(new Waypoint(pos, theta, comment));
+    waypoints.push(new Waypoint(pos, theta, velocity, comment));
     if (activeWaypoint == i) {
       color = getColorForSpeed(10);
     } else {
       color = "#000";
     }
 		drawRotatedRect(pos, robotHeight, robotWidth, -theta, color);
-    points.addWaypoint(new WaypointSequence.Waypoint(x, y, theta));
+    points.addWaypoint(new WaypointSequence.Waypoint(x, y, theta, velocity));
   });
   config = new TrajectoryGenerator.Config();
   config.dt = parseFloat($("td.dt input").val());
@@ -416,12 +414,18 @@ function eachPoint(func) {
       y = 0;
     }
     var theta = parseFloat( $($($(this).children()).children()[2]).val() );
+    var velocity = $($($(this).children()).children()[3]).val();
+    if (velocity == null || velocity.length == 0) {
+      velocity = null; 
+    } else {
+      velocity = parseFloat(velocity);
+    }
     if(isNaN(theta)) {
       theta = 0.0;
     }
     theta = degrees2radians(theta);
-    var comment = ( $($($(this).children()).children()[3]).val() )
-    func(x,y,theta,comment, idx++);
+    var comment = ( $($($(this).children()).children()[4]).val() )
+    func(x,y,theta,velocity,comment, idx++);
   });
 }
 
@@ -536,17 +540,21 @@ function importData() {
       $("td.package input").val(package);
       $("td.parent input").val(parent);
 			let jde = re.exec(c)[1];
+      //console.log(jde);
 			let jd = JSON.parse(jde);
-			// console.log(jd);
+      //console.log(jd);
 			waypoints = []
 			$("tbody#points").empty();
 			jd.forEach((wpd) => {
-				let wp = new Waypoint(new Translation2d(wpd.position.x, wpd.position.y), wpd.theta, wpd.comment);
-				// console.log(wp);
+        //console.log(wpd);
+				let wp = new Waypoint(new Translation2d(wpd.position.x, wpd.position.y), wpd.theta, wpd.velocity, wpd.comment);
+        //console.log(wp);
 				$("tbody#points").append("<tr>"
 					+"<td><input value='" + wp.position.x + "'></td>"
 					+"<td><input value='" + wp.position.y + "'></td>"
 					+"<td><input value='" + Math.round(wp.theta * (180 / Math.PI)) + "'></td>"
+					+"<td><input value='" + ((wp.velocity == undefined || wp.velocity == null) ? "" : wp.velocity) 
+          + "'></td>"
 					+"<td class='comments'><input placeholder='Comments' value='" + wp.comment + "'></td>"
 					+"<td><button onclick='$(this).parent().parent().remove();''>Delete</button></td></tr>"
 				);
@@ -554,7 +562,6 @@ function importData() {
 			update();
 			$('input').unbind("change paste keyup");
 			$('input').bind("change paste keyup", function() {
-				console.log("change");
 				clearTimeout(wto);
 					wto = setTimeout(function() {
 					update();
@@ -568,6 +575,7 @@ function importData() {
 function getDataString() {
 	var title = ($("#title").val().length > 0) ? $("#title").val() : "UntitledPath";
 	var startPoint = "new Translation2d(" + waypoints[0].position.x + ", " + waypoints[0].position.y + ")";
+  //console.log(waypoints);
 	var importStr = "WAYPOINT_DATA: " + JSON.stringify(waypoints);
 	var isReversed = $("#isReversed").is(':checked');
   var dt = parseFloat($("td.dt input").val());

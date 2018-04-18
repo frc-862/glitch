@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cat src/com/team254/lib/trajectory/Path.java src/com/team254/lib/trajectory/PathGenerator.java src/com/team254/lib/trajectory/Spline.java src/com/team254/lib/trajectory/Trajectory.java src/com/team254/lib/trajectory/TrajectoryFollower.java src/com/team254/lib/trajectory/TrajectoryGenerator.java src/com/team254/lib/trajectory/WaypointSequence.java src/com/team254/lib/util/ChezyMath.java| grep -v import | grep -v package
+
+

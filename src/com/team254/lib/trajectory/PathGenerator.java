@@ -31,8 +31,55 @@ public class PathGenerator {
             wheelbase_width);
   }
 
+  public static Trajectory generateFromPath(WaypointSequence path,
+                                            TrajectoryGenerator.Config config) {
+    final int size = path.getNumWaypoints();
+    if (size < 2) {
+      return null;
+    }
+
+    final int last = size - 1;
+    double start_vel = 0;
+
+    if (path.getWaypoint(0).velocity != null) {
+      start_vel = path.getWaypoint(0).velocity.doubleValue();
+    }
+
+    if (path.getWaypoint(last).velocity == null) {
+      path.getWaypoint(last).velocity = new Double(0);
+    }
+
+
+    Trajectory result = null;
+    int start = 0;
+    int stop = 1;
+
+    while (start < last) {
+      // find next waypoint with a non-null end velocity
+      while (path.getWaypoint(stop).velocity == null && stop < size) {
+        ++stop;
+      }
+
+      double end_vel = path.getWaypoint(stop).velocity.doubleValue();
+      WaypointSequence seq = path.slice(start, stop);
+      Trajectory traj = generateFromPath(seq, config, start_vel, end_vel);
+
+      if (result == null) {
+        result = traj;
+      } else {
+        result.append(traj);
+      }
+
+      start = stop;
+      stop = stop + 1;
+      start_vel = traj.getSegment(traj.getNumSegments() - 1).vel;
+    }
+
+    return result;
+  }
+
    public static Trajectory generateFromPath(WaypointSequence path,
-          TrajectoryGenerator.Config config) {
+          TrajectoryGenerator.Config config, double start_vel, double end_vel) {
     if (path.getNumWaypoints() < 2) {
       return null;
     }
@@ -54,8 +101,8 @@ public class PathGenerator {
 
     // Generate a smooth trajectory over the total distance.
     Trajectory traj = TrajectoryGenerator.generate(config,
-            TrajectoryGenerator.SCurvesStrategy, 0.0, path.getWaypoint(0).theta,
-            total_distance, 0.0, path.getWaypoint(0).theta);
+            TrajectoryGenerator.AutomaticStrategy, start_vel, path.getWaypoint(0).theta,
+            total_distance, end_vel, path.getWaypoint(0).theta);
 
     // Assign headings based on the splines.
     int cur_spline = 0;

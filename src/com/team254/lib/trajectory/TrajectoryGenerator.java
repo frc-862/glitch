@@ -146,10 +146,10 @@ public class TrajectoryGenerator {
     } else if (strategy == SCurvesStrategy) {
       // How fast can we go given maximum acceleration and deceleration?
       double adjusted_max_vel = Math.min(config.max_vel,
-              (-config.max_acc * config.max_acc + Math.sqrt(config.max_acc
+              ((-config.max_acc * config.max_acc + Math.sqrt(config.max_acc
                       * config.max_acc * config.max_acc * config.max_acc
                       + 4 * config.max_jerk * config.max_jerk * config.max_acc
-                      * goal_pos)) / (2 * config.max_jerk));
+                      * goal_pos)) / (2 * config.max_jerk) + start_vel));
 
       // Compute the length of the linear filters and impulse.
       int f1_length = (int) Math.ceil((adjusted_max_vel
@@ -158,7 +158,7 @@ public class TrajectoryGenerator {
               / config.max_jerk) / config.dt);
       double impulse = (goal_pos / adjusted_max_vel) / config.dt;
       int time = (int) (Math.ceil(f1_length + f2_length + impulse));
-      traj = secondOrderFilter(f1_length, f2_length, config.dt, 0,
+      traj = secondOrderFilter(f1_length, f2_length, config.dt, start_vel,
               adjusted_max_vel, impulse, time, TrapezoidalIntegration);
 
     } else {
