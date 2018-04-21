@@ -97,7 +97,7 @@ public class TrajectoryGenerator {
           double start_heading,
           double goal_pos,
           double goal_vel,
-          double goal_heading) {
+          double goal_heading, double start_pos) {
     // Choose an automatic strategy.
     if (strategy == AutomaticStrategy) {
       strategy = chooseStrategy(start_vel, goal_vel, config.max_vel);
@@ -112,7 +112,7 @@ public class TrajectoryGenerator {
       // velocity.
       int time = (int) (Math.floor(impulse));
       traj = secondOrderFilter(1, 1, config.dt, config.max_vel,
-              config.max_vel, impulse, time, TrapezoidalIntegration);
+              config.max_vel, impulse, time, TrapezoidalIntegration, start_pos);
 
     } else if (strategy == TrapezoidalStrategy) {
       // How fast can we go given maximum acceleration and deceleration?
@@ -141,7 +141,7 @@ public class TrajectoryGenerator {
               - start_vel / config.max_acc / config.dt
               + start_discount + end_discount;
       traj = secondOrderFilter(f1_length, 1, config.dt, start_vel,
-              adjusted_max_vel, impulse, time, TrapezoidalIntegration);
+              adjusted_max_vel, impulse, time, TrapezoidalIntegration, start_pos);
 
     } else if (strategy == SCurvesStrategy) {
       // How fast can we go given maximum acceleration and deceleration?
@@ -159,7 +159,7 @@ public class TrajectoryGenerator {
       double impulse = (goal_pos / adjusted_max_vel) / config.dt;
       int time = (int) (Math.ceil(f1_length + f2_length + impulse));
       traj = secondOrderFilter(f1_length, f2_length, config.dt, start_vel,
-              adjusted_max_vel, impulse, time, TrapezoidalIntegration);
+              adjusted_max_vel, impulse, time, TrapezoidalIntegration, start_pos);
 
     } else {
       return null;
@@ -185,7 +185,7 @@ public class TrajectoryGenerator {
           double max_vel,
           double total_impulse,
           int length,
-          IntegrationMethod integration) {
+          IntegrationMethod integration, double start_pos) {
     if (length <= 0) {
       return null;
     }
@@ -193,7 +193,7 @@ public class TrajectoryGenerator {
 
     Trajectory.Segment last = new Trajectory.Segment();
     // First segment is easy
-    last.pos = 0;
+    last.pos = start_pos;
     last.vel = start_vel;
     last.acc = 0;
     last.jerk = 0;

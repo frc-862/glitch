@@ -1,6 +1,7 @@
-package org.usfirst.frc862.glitch.subsystems;
+package org.usfirst.frc862.glitch.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.util.LightningMath;
@@ -12,6 +13,7 @@ public class SmartRotate extends Command {
     private double startAngle;
     private boolean done = false;
     private boolean reverseRotate = false;
+    private boolean is_magic = true;
 
     public SmartRotate(double degrees) {
         this.degrees = LightningMath.boundThetaNeg180to180(degrees);
@@ -55,6 +57,7 @@ public class SmartRotate extends Command {
     protected void initialize() {
         // Important to set this for getRelativeHeading and therefore getError to work correctly
         startAngle = Robot.core.getGyroAngle();
+        is_magic = Math.abs(getError()) > 15;
 
         double estimatedWheelDistance = getGoal() * Constants.angleToTick;
         if (reverseRotate) {
@@ -65,6 +68,7 @@ public class SmartRotate extends Command {
                 estimatedWheelDistance = estimatedWheelDistance - (360 * Constants.angleToTick);
             }
         }
+        Logger.debug("SR init: " + estimatedWheelDistance);
         Robot.driveTrain.setMotionMagic(estimatedWheelDistance, -estimatedWheelDistance);
 
         Logger.debug("SmartRotate to " + getGoal());
@@ -80,19 +84,40 @@ public class SmartRotate extends Command {
     @Override
     protected void execute() {
         final double error = getError();
-//        final double estimatedWheelDistance = error * Constants.angleToTick;
+        final double estimatedWheelDistance = error * Constants.angleToTick;
+        Logger.debug("SR  new: " + estimatedWheelDistance);
+//        Logger.debug("SR old: " + Robot.driveTrain.getError());
+        Logger.debug("SR lold: " + Robot.driveTrain.getLeftError());
+        Logger.debug("SR rold: " + Robot.driveTrain.getRightError());
+
 //        Robot.driveTrain.updateMotionMagic(estimatedWheelDistance, -estimatedWheelDistance);
 
+        SmartDashboard.putNumber("Rotate Error ", error);
+        SmartDashboard.putString("Rotate Mode ", is_magic ? "magic" : "not magic");
+        SmartDashboard.putNumber("Rotate Power ", Robot.driveTrain.drivePowerMagnitude());
+
+        if (!is_magic) {
+            double pwr = 20;
+            if (Math.abs(error) < 5) pwr = 15;
+            if (error < 0) pwr = -pwr;
+            if (reverseRotate) pwr = -pwr;
+            Robot.driveTrain.setVelocityIPS(pwr, -pwr);
+        }
         // TODO done should probably also verify that velocity is below some threshold too...
         Logger.debug("SmartRotate Error " + getError() + " driveMode " + Robot.driveTrain.getMode() + " error " + Robot.driveTrain.driveErrorMagnitude() + " power " + Robot.driveTrain.drivePowerMagnitude());
 
-        if (!startedMoving && Robot.driveTrain.drivePowerMagnitude() > 0.07) {
+        if (!startedMoving && Robot.driveTrain.drivePowerMagnitude() > 0.2) {
             startedMoving = true;
         }
 
-        if (startedMoving && Robot.driveTrain.drivePowerMagnitude() < 0.05) {
-            done = true;
+        if (startedMoving && Robot.driveTrain.drivePowerMagnitude() < 0.15) {
+            Logger.debug("Done rotating");
+            Robot.driveTrain.setVelocityMode();
+            is_magic = false;
+        } else if (Math.abs(error) < 15) {
+            is_magic = false;
         } else if (Math.abs(error) < Constants.ANGLE_TOLERANCE_DEGREES) {
+            Logger.debug("Done rotating");
             done = true;
         }
     }

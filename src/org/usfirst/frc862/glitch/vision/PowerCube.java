@@ -1,5 +1,6 @@
 package org.usfirst.frc862.glitch.vision;
 
+import edu.wpi.first.wpilibj.Timer;
 import org.usfirst.frc862.glitch.Constants;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.RobotMap;
@@ -14,6 +15,8 @@ import org.usfirst.frc862.glitch.RobotMap;
 public class PowerCube {
 	private int x, y, id, height, width, index = -1;
 	private double angle, area, lateral, longitudal, confidence;
+	private double timestamp;
+
 	/**
 	 * 
 	 * @param x - pixels from left edge (pass directly from camera)
@@ -34,6 +37,7 @@ public class PowerCube {
 		lateral = this.longitudal * Math.sin(absAngle) / Math.sin(Math.PI / 2 - absAngle);
 		this.area = width * height;
 		this.confidence = 0.5;
+		this.timestamp = Timer.getFPGATimestamp();
 		
 	}
 	
@@ -42,6 +46,7 @@ public class PowerCube {
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.timestamp = Timer.getFPGATimestamp();
 		this.area = width * height;
 		this.angle = 0.2 * (x - Constants.CAMERA_CENTER_X) * Constants.DEGREES_PER_PIXEL + 0.8 * angle;
 		longitudal = 0.2 * (5.0 * 72.0 / height) + 0.8 * longitudal;
@@ -52,7 +57,9 @@ public class PowerCube {
 		if(confidence > 1) confidence = 1;
 		
 	}
-	
+
+	public double getTimestamp() { return timestamp; }
+
 	public void predict(double deltaAngle, double deltaDistance) {
 		lateral += Math.sin(Math.toRadians(deltaAngle)) * deltaDistance;
 		longitudal += Math.cos(Math.toRadians(deltaAngle)) * deltaDistance;

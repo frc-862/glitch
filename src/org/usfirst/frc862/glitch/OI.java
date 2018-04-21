@@ -14,12 +14,10 @@ package org.usfirst.frc862.glitch;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.buttons.Trigger;
 import org.usfirst.frc862.glitch.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.paths.*;
-import org.usfirst.frc862.glitch.subsystems.SmartRotate;
-import org.usfirst.frc862.util.TwoButtonTrigger;
+import org.usfirst.frc862.glitch.commands.SmartRotate;
 import org.usfirst.frc862.util.XBoxController;
 
 import static org.usfirst.frc862.glitch.JoystickConstants.JOYSTICK_LEFT_Y_AXIS;
@@ -111,6 +109,8 @@ public class OI {
 
         SmartDashboard.putData("Right Scale Near", new RightScaleNear());
         SmartDashboard.putData("Right Scale Far", new RightScaleFar());
+
+        SmartDashboard.putData("Vision Rotate", new VisionRotate());
 
         SmartDashboard.putData("Eject Cube", new EjectCube(0.25));
 

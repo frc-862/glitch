@@ -21,14 +21,15 @@ public class PathGenerator {
   public static Path makePath(WaypointSequence waypoints, 
           TrajectoryGenerator.Config config, double wheelbase_width, 
           String name) {
-    return new Path(name, 
-            generateLeftAndRightFromSeq(waypoints, config, wheelbase_width));
+    Trajectory base = generateFromPath(waypoints, config);
+    return new Path(name,
+            generateLeftAndRightFromSeq(waypoints, config, wheelbase_width), base);
   }
 
   static Trajectory.Pair generateLeftAndRightFromSeq(WaypointSequence path,
           TrajectoryGenerator.Config config, double wheelbase_width) {
-    return makeLeftAndRightTrajectories(generateFromPath(path, config),
-            wheelbase_width);
+      Trajectory base = generateFromPath(path, config);
+    return makeLeftAndRightTrajectories(base, wheelbase_width);
   }
 
   public static Trajectory generateFromPath(WaypointSequence path,
@@ -52,6 +53,7 @@ public class PathGenerator {
 
     Trajectory result = null;
     int start = 0;
+    double start_pos = 0;
     int stop = 1;
 
     while (start < last) {
@@ -62,24 +64,37 @@ public class PathGenerator {
 
       double end_vel = path.getWaypoint(stop).velocity.doubleValue();
       WaypointSequence seq = path.slice(start, stop);
-      Trajectory traj = generateFromPath(seq, config, start_vel, end_vel);
+      if (result != null) {
+        seq.getWaypoint(0).theta = result.getSegment(result.getNumSegments() - 1).heading;
+        seq.getWaypoint(0).x = result.getSegment(result.getNumSegments() - 1).x;
+        seq.getWaypoint(0).y = result.getSegment(result.getNumSegments() - 1).y;
+      }
+      Trajectory traj = generateFromPath(seq, config, start_vel, end_vel, start_pos);
 
       if (result == null) {
         result = traj;
       } else {
+        // update the position
+        double offset = result.getSegment(result.getNumSegments() - 2).pos;
+        for (int i = 0; i < traj.getNumSegments(); ++i) {
+          traj.getSegment(i).pos += offset;
+        }
+
         result.append(traj);
       }
 
       start = stop;
+      Trajectory.Segment seg = traj.getSegment(traj.getNumSegments() - 1);
+      start_pos = 0; // seg.pos; // + (0.02 * seg.vel);
       stop = stop + 1;
-      start_vel = traj.getSegment(traj.getNumSegments() - 1).vel;
+      start_vel = seg.vel;
     }
 
     return result;
   }
 
    public static Trajectory generateFromPath(WaypointSequence path,
-          TrajectoryGenerator.Config config, double start_vel, double end_vel) {
+          TrajectoryGenerator.Config config, double start_vel, double end_vel, double start_pos) {
     if (path.getNumWaypoints() < 2) {
       return null;
     }
@@ -102,7 +117,7 @@ public class PathGenerator {
     // Generate a smooth trajectory over the total distance.
     Trajectory traj = TrajectoryGenerator.generate(config,
             TrajectoryGenerator.AutomaticStrategy, start_vel, path.getWaypoint(0).theta,
-            total_distance, end_vel, path.getWaypoint(0).theta);
+            total_distance, end_vel, path.getWaypoint(path.getNumWaypoints() - 1).theta, start_pos);
 
     // Assign headings based on the splines.
     int cur_spline = 0;
@@ -127,11 +142,16 @@ public class PathGenerator {
           cur_spline_start_pos = length_of_splines_finished;
           ++cur_spline;
         } else {
+          // new option, trim traj and return from here
+
           traj.getSegment(i).heading = splines[splines.length - 1].angleAt(1.0);
           double[] coords = splines[splines.length - 1].getXandY(1.0);
           traj.getSegment(i).x = coords[0];
           traj.getSegment(i).y = coords[1];
           found_spline = true;
+          
+          traj.truncateTo(i+1);
+          return traj;
         }
       }
     }

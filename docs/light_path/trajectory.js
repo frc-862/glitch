@@ -5,17 +5,37 @@
  * @author Jared341
  * @param {string} name
  * @param {Trajectory.Pair} go_left_pair
+ * @param {Trajectory} orig
  * @class
  */
 var Path = (function () {
-    function Path(name, go_left_pair) {
+    function Path(name, go_left_pair, orig) {
         var _this = this;
-        if (((typeof name === 'string') || name === null) && ((go_left_pair != null && go_left_pair instanceof Trajectory.Pair) || go_left_pair === null)) {
+        if (((typeof name === 'string') || name === null) && ((go_left_pair != null && go_left_pair instanceof Trajectory.Pair) || go_left_pair === null) && ((orig != null && orig instanceof Trajectory) || orig === null)) {
             var __args = Array.prototype.slice.call(arguments);
             this.go_left_pair_ = null;
+            this.original = null;
             this.name_ = null;
             this.go_left_ = false;
             this.go_left_pair_ = null;
+            this.original = null;
+            this.name_ = null;
+            this.go_left_ = false;
+            (function () {
+                _this.name_ = name;
+                _this.go_left_pair_ = go_left_pair;
+                _this.go_left_ = true;
+                _this.original = orig;
+            })();
+        }
+        else if (((typeof name === 'string') || name === null) && ((go_left_pair != null && go_left_pair instanceof Trajectory.Pair) || go_left_pair === null) && orig === undefined) {
+            var __args = Array.prototype.slice.call(arguments);
+            this.go_left_pair_ = null;
+            this.original = null;
+            this.name_ = null;
+            this.go_left_ = false;
+            this.go_left_pair_ = null;
+            this.original = null;
             this.name_ = null;
             this.go_left_ = false;
             (function () {
@@ -24,18 +44,23 @@ var Path = (function () {
                 _this.go_left_ = true;
             })();
         }
-        else if (name === undefined && go_left_pair === undefined) {
+        else if (name === undefined && go_left_pair === undefined && orig === undefined) {
             var __args = Array.prototype.slice.call(arguments);
             this.go_left_pair_ = null;
+            this.original = null;
             this.name_ = null;
             this.go_left_ = false;
             this.go_left_pair_ = null;
+            this.original = null;
             this.name_ = null;
             this.go_left_ = false;
         }
         else
             throw new Error('invalid overload');
     }
+    Path.prototype.getOriginal = function () {
+        return this.original;
+    };
     Path.prototype.getName = function () {
         return this.name_;
     };
@@ -91,10 +116,12 @@ var PathGenerator = (function () {
      * @return {Path} The path.
      */
     PathGenerator.makePath = function (waypoints, config, wheelbase_width, name) {
-        return new Path(name, PathGenerator.generateLeftAndRightFromSeq(waypoints, config, wheelbase_width));
+        var base = PathGenerator.generateFromPath$WaypointSequence$TrajectoryGenerator_Config(waypoints, config);
+        return new Path(name, PathGenerator.generateLeftAndRightFromSeq(waypoints, config, wheelbase_width), base);
     };
     PathGenerator.generateLeftAndRightFromSeq = function (path, config, wheelbase_width) {
-        return PathGenerator.makeLeftAndRightTrajectories(PathGenerator.generateFromPath$WaypointSequence$TrajectoryGenerator_Config(path, config), wheelbase_width);
+        var base = PathGenerator.generateFromPath$WaypointSequence$TrajectoryGenerator_Config(path, config);
+        return PathGenerator.makeLeftAndRightTrajectories(base, wheelbase_width);
     };
     PathGenerator.generateFromPath$WaypointSequence$TrajectoryGenerator_Config = function (path, config) {
         var size = path.getNumWaypoints();
@@ -111,6 +138,7 @@ var PathGenerator = (function () {
         }
         var result = null;
         var start = 0;
+        var start_pos = 0;
         var stop = 1;
         while ((start < last)) {
             while ((path.getWaypoint(stop).velocity == null && stop < size)) {
@@ -119,21 +147,33 @@ var PathGenerator = (function () {
             ;
             var end_vel = path.getWaypoint(stop).velocity;
             var seq = path.slice(start, stop);
-            var traj = PathGenerator.generateFromPath$WaypointSequence$TrajectoryGenerator_Config$double$double(seq, config, start_vel, end_vel);
+            if (result != null) {
+                seq.getWaypoint(0).theta = result.getSegment(result.getNumSegments() - 1).heading;
+                seq.getWaypoint(0).x = result.getSegment(result.getNumSegments() - 1).x;
+                seq.getWaypoint(0).y = result.getSegment(result.getNumSegments() - 1).y;
+            }
+            var traj = PathGenerator.generateFromPath$WaypointSequence$TrajectoryGenerator_Config$double$double$double(seq, config, start_vel, end_vel, start_pos);
             if (result == null) {
                 result = traj;
             }
             else {
+                var offset = result.getSegment(result.getNumSegments() - 2).pos;
+                for (var i = 0; i < traj.getNumSegments(); ++i) {
+                    traj.getSegment(i).pos += offset;
+                }
+                ;
                 result.append(traj);
             }
             start = stop;
+            var seg = traj.getSegment(traj.getNumSegments() - 1);
+            start_pos = 0;
             stop = stop + 1;
-            start_vel = traj.getSegment(traj.getNumSegments() - 1).vel;
+            start_vel = seg.vel;
         }
         ;
         return result;
     };
-    PathGenerator.generateFromPath$WaypointSequence$TrajectoryGenerator_Config$double$double = function (path, config, start_vel, end_vel) {
+    PathGenerator.generateFromPath$WaypointSequence$TrajectoryGenerator_Config$double$double$double = function (path, config, start_vel, end_vel, start_pos) {
         if (path.getNumWaypoints() < 2) {
             return null;
         }
@@ -150,7 +190,7 @@ var PathGenerator = (function () {
             total_distance += spline_lengths[i];
         }
         ;
-        var traj = TrajectoryGenerator.generate(config, TrajectoryGenerator.AutomaticStrategy_$LI$(), start_vel, path.getWaypoint(0).theta, total_distance, end_vel, path.getWaypoint(0).theta);
+        var traj = TrajectoryGenerator.generate(config, TrajectoryGenerator.AutomaticStrategy_$LI$(), start_vel, path.getWaypoint(0).theta, total_distance, end_vel, path.getWaypoint(path.getNumWaypoints() - 1).theta, start_pos);
         var cur_spline = 0;
         var cur_spline_start_pos = 0;
         var length_of_splines_finished = 0;
@@ -178,6 +218,8 @@ var PathGenerator = (function () {
                     traj.getSegment(i).x = coords[0];
                     traj.getSegment(i).y = coords[1];
                     found_spline = true;
+                    traj.truncateTo(i + 1);
+                    return traj;
                 }
             }
             ;
@@ -185,11 +227,11 @@ var PathGenerator = (function () {
         ;
         return traj;
     };
-    PathGenerator.generateFromPath = function (path, config, start_vel, end_vel) {
-        if (((path != null && path instanceof WaypointSequence) || path === null) && ((config != null && config instanceof TrajectoryGenerator.Config) || config === null) && ((typeof start_vel === 'number') || start_vel === null) && ((typeof end_vel === 'number') || end_vel === null)) {
-            return PathGenerator.generateFromPath$WaypointSequence$TrajectoryGenerator_Config$double$double(path, config, start_vel, end_vel);
+    PathGenerator.generateFromPath = function (path, config, start_vel, end_vel, start_pos) {
+        if (((path != null && path instanceof WaypointSequence) || path === null) && ((config != null && config instanceof TrajectoryGenerator.Config) || config === null) && ((typeof start_vel === 'number') || start_vel === null) && ((typeof end_vel === 'number') || end_vel === null) && ((typeof start_pos === 'number') || start_pos === null)) {
+            return PathGenerator.generateFromPath$WaypointSequence$TrajectoryGenerator_Config$double$double$double(path, config, start_vel, end_vel, start_pos);
         }
-        else if (((path != null && path instanceof WaypointSequence) || path === null) && ((config != null && config instanceof TrajectoryGenerator.Config) || config === null) && start_vel === undefined && end_vel === undefined) {
+        else if (((path != null && path instanceof WaypointSequence) || path === null) && ((config != null && config instanceof TrajectoryGenerator.Config) || config === null) && start_vel === undefined && end_vel === undefined && start_pos === undefined) {
             return PathGenerator.generateFromPath$WaypointSequence$TrajectoryGenerator_Config(path, config);
         }
         else
@@ -500,13 +542,21 @@ var Trajectory = (function () {
         ;
     };
     Trajectory.prototype.append = function (to_append) {
-        var temp = new Array(this.getNumSegments() + to_append.getNumSegments());
+        var temp = new Array(this.getNumSegments() + to_append.getNumSegments() - 1);
         for (var i = 0; i < this.getNumSegments(); ++i) {
             temp[i] = new Trajectory.Segment(this.segments_[i]);
         }
         ;
         for (var i = 0; i < to_append.getNumSegments(); ++i) {
-            temp[i + this.getNumSegments()] = new Trajectory.Segment(to_append.getSegment(i));
+            temp[i + this.getNumSegments() - 1] = new Trajectory.Segment(to_append.getSegment(i));
+        }
+        ;
+        this.segments_ = temp;
+    };
+    Trajectory.prototype.truncateTo = function (size) {
+        var temp = new Array(size);
+        for (var i = 0; i < size; ++i) {
+            temp[i] = this.segments_[i];
         }
         ;
         this.segments_ = temp;
@@ -789,8 +839,9 @@ var TrajectoryGenerator = (function () {
      * @param {number} goal_heading The goal heading
      * @return {Trajectory} A Trajectory that satisfies the relevant constraints and end
      * conditions.
+     * @param {number} start_pos
      */
-    TrajectoryGenerator.generate = function (config, strategy, start_vel, start_heading, goal_pos, goal_vel, goal_heading) {
+    TrajectoryGenerator.generate = function (config, strategy, start_vel, start_heading, goal_pos, goal_vel, goal_heading, start_pos) {
         if (strategy === TrajectoryGenerator.AutomaticStrategy_$LI$()) {
             strategy = TrajectoryGenerator.chooseStrategy(start_vel, goal_vel, config.max_vel);
         }
@@ -798,7 +849,7 @@ var TrajectoryGenerator = (function () {
         if (strategy === TrajectoryGenerator.StepStrategy_$LI$()) {
             var impulse = (goal_pos / config.max_vel) / config.dt;
             var time = ((Math.floor(impulse)) | 0);
-            traj = TrajectoryGenerator.secondOrderFilter(1, 1, config.dt, config.max_vel, config.max_vel, impulse, time, TrajectoryGenerator.TrapezoidalIntegration_$LI$());
+            traj = TrajectoryGenerator.secondOrderFilter(1, 1, config.dt, config.max_vel, config.max_vel, impulse, time, TrajectoryGenerator.TrapezoidalIntegration_$LI$(), start_pos);
         }
         else if (strategy === TrajectoryGenerator.TrapezoidalStrategy_$LI$()) {
             var start_discount = 0.5 * start_vel * start_vel / config.max_acc;
@@ -812,7 +863,7 @@ var TrajectoryGenerator = (function () {
             var time = (((t_rampup + t_rampdown + x_cruise / adjusted_max_vel) / config.dt + 0.5) | 0);
             var f1_length = (Math.ceil((adjusted_max_vel / config.max_acc) / config.dt) | 0);
             var impulse = (goal_pos / adjusted_max_vel) / config.dt - start_vel / config.max_acc / config.dt + start_discount + end_discount;
-            traj = TrajectoryGenerator.secondOrderFilter(f1_length, 1, config.dt, start_vel, adjusted_max_vel, impulse, time, TrajectoryGenerator.TrapezoidalIntegration_$LI$());
+            traj = TrajectoryGenerator.secondOrderFilter(f1_length, 1, config.dt, start_vel, adjusted_max_vel, impulse, time, TrajectoryGenerator.TrapezoidalIntegration_$LI$(), start_pos);
         }
         else if (strategy === TrajectoryGenerator.SCurvesStrategy_$LI$()) {
             var adjusted_max_vel = Math.min(config.max_vel, ((-config.max_acc * config.max_acc + Math.sqrt(config.max_acc * config.max_acc * config.max_acc * config.max_acc + 4 * config.max_jerk * config.max_jerk * config.max_acc * goal_pos)) / (2 * config.max_jerk) + start_vel));
@@ -820,7 +871,7 @@ var TrajectoryGenerator = (function () {
             var f2_length = (Math.ceil((config.max_acc / config.max_jerk) / config.dt) | 0);
             var impulse = (goal_pos / adjusted_max_vel) / config.dt;
             var time = ((Math.ceil(f1_length + f2_length + impulse)) | 0);
-            traj = TrajectoryGenerator.secondOrderFilter(f1_length, f2_length, config.dt, start_vel, adjusted_max_vel, impulse, time, TrajectoryGenerator.TrapezoidalIntegration_$LI$());
+            traj = TrajectoryGenerator.secondOrderFilter(f1_length, f2_length, config.dt, start_vel, adjusted_max_vel, impulse, time, TrajectoryGenerator.TrapezoidalIntegration_$LI$(), start_pos);
         }
         else {
             return null;
@@ -832,13 +883,13 @@ var TrajectoryGenerator = (function () {
         ;
         return traj;
     };
-    TrajectoryGenerator.secondOrderFilter = function (f1_length, f2_length, dt, start_vel, max_vel, total_impulse, length, integration) {
+    TrajectoryGenerator.secondOrderFilter = function (f1_length, f2_length, dt, start_vel, max_vel, total_impulse, length, integration, start_pos) {
         if (length <= 0) {
             return null;
         }
         var traj = new Trajectory(length);
         var last = new Trajectory.Segment();
-        last.pos = 0;
+        last.pos = start_pos;
         last.vel = start_vel;
         last.acc = 0;
         last.jerk = 0;

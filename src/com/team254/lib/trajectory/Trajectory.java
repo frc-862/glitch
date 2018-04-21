@@ -7,7 +7,7 @@ package com.team254.lib.trajectory;
  * @author Jared341
  */
 public class Trajectory {
-  
+
   public static class Pair {
     public Pair(Trajectory left, Trajectory right) {
       this.left = left;
@@ -121,17 +121,24 @@ public class Trajectory {
   }
 
   public void append(Trajectory to_append) {
-    Segment[] temp = new Segment[getNumSegments()
-            + to_append.getNumSegments()];
+    Segment[] temp = new Segment[getNumSegments() + to_append.getNumSegments() - 1];
 
     for (int i = 0; i < getNumSegments(); ++i) {
       temp[i] = new Segment(segments_[i]);
     }
     for (int i = 0; i < to_append.getNumSegments(); ++i) {
-      temp[i + getNumSegments()] = new Segment(to_append.getSegment(i));
+      temp[i + getNumSegments() - 1] = new Segment(to_append.getSegment(i));
     }
 
     this.segments_ = temp;
+  }
+
+  public void truncateTo(int size) {
+      Segment[] temp = new Segment[size];
+      for (int i = 0; i < size; ++i) {
+        temp[i] = segments_[i];
+      }
+      this.segments_ = temp;
   }
 
   public Trajectory copy() {

@@ -60,7 +60,7 @@ public class Constants extends ConstantsBase {
     public static int TALON_TIMEOUT = 10; //ms
 
     //turnToDegrees
-    public static final double ANGLE_TOLERANCE_DEGREES = 3;
+    public static final double ANGLE_TOLERANCE_DEGREES = 1;
 
     // not currently functional
     public static final int LOWGEAR_IDX = 0;
@@ -313,6 +313,8 @@ public class Constants extends ConstantsBase {
             ELEVATOR_COLLECT_POS = -5500;
             ELEVATOR_BOTTOM_POS = 200;
             ELEVATOR_EPSILON = 90;
+
+            WheelCircumference = 6.11 * Math.PI; // 6.2715 END OF GAYLORD NEW WHEELS
         }
 
         // new Constants().readFromFile();

@@ -7,15 +7,25 @@ package com.team254.lib.trajectory;
  */
 public class Path {
   protected Trajectory.Pair go_left_pair_;
+  protected Trajectory original;
   protected String name_;
   protected boolean go_left_;
-  
+
   public Path(String name, Trajectory.Pair go_left_pair) {
     name_ = name;
     go_left_pair_ = go_left_pair;
     go_left_ = true;
   }
-  
+
+  public Path(String name, Trajectory.Pair go_left_pair, Trajectory orig) {
+    name_ = name;
+    go_left_pair_ = go_left_pair;
+    go_left_ = true;
+    original = orig;
+  }
+
+  public Trajectory getOriginal() { return original; }
+
   public Path() {
     
   }

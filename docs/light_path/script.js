@@ -393,12 +393,19 @@ function drawPath() {
 
 function eachTimeSlice(func) {
   var pair = path.getPair();
+  var base = path.getOriginal().segments_;
   var lpoints = pair.left.segments_;
   var rpoints = pair.right.segments_;
   var count = lpoints.length;
 
-  for (var i = 0; i < count; ++i) {
-    func(lpoints[i], rpoints[i], i);
+  if (base != null) {
+    for (var i = 0; i < count; ++i) {
+      func(lpoints[i], rpoints[i], i, base[i]);
+    }
+  } else {
+    for (var i = 0; i < count; ++i) {
+      func(lpoints[i], rpoints[i], i);
+    }
   }
 }
 
@@ -590,11 +597,12 @@ function getDataString() {
   var num_elements = path.getLeftWheelTrajectory().getNumSegments();
   var set_segments = [];
   
-  eachTimeSlice(function(left, right, i) {
+  eachTimeSlice(function(left, right, i, base) {
     if ((i % 500) == 0) {
       set_segments.push("");
     }
     var segment = `
+        // base ${base.pos}, ${base.vel}, ${base.acc}, ${base.jerk}, ${base.heading}, ${base.dt}, ${base.x}, ${base.y} 
         left.setSegment(${i}, new Trajectory.Segment(${left.pos}, ${left.vel}, 
                ${left.acc}, ${left.jerk}, ${left.heading}, ${left.dt}, ${left.x}, ${left.y}));
         right.setSegment(${i}, new Trajectory.Segment(${right.pos}, ${right.vel}, 
