@@ -7,6 +7,7 @@ import org.usfirst.frc862.util.Logger;
 
 
 public class GentleCollectCube extends Command {
+    final double speed = 20;
     public GentleCollectCube() {
         // eg. requires(chassis);
     }
@@ -16,13 +17,13 @@ public class GentleCollectCube extends Command {
     protected void initialize() {
         Logger.info("Starting GentleCollectCube");
         Robot.gripper.collectCube();
-        Robot.driveTrain.setVelocityIPS(15,15);
+        Robot.driveTrain.setVelocityIPS(speed,speed);
     }
 
 
     @Override
     protected void execute() {
-        Robot.driveTrain.setVelocityIPS(15, 15);
+        Robot.driveTrain.setVelocityIPS(speed, speed);
         Logger.debug("Gentle collect " + Robot.driveTrain.drivePowerMagnitude());
     }
 

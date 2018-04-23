@@ -149,7 +149,7 @@ public class PathGenerator {
           traj.getSegment(i).x = coords[0];
           traj.getSegment(i).y = coords[1];
           found_spline = true;
-          
+
           traj.truncateTo(i+1);
           return traj;
         }

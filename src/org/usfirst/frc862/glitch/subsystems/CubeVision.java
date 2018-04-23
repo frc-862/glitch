@@ -311,34 +311,88 @@ public class CubeVision extends Subsystem {
     	SmartDashboard.putNumber("cubes.size()", cubes.size());
 
     }
-    
-    /**
+
+	/**
+	 *
+	 * @return PowerCube object with index in cubes list defined ()
+	 * @throws CubeNotFoundException throws if no cubes have been seen for a number of frames
+	 */
+	public PowerCube getBestCube() throws CubeNotFoundException {
+		//if(!visionInit) return null;
+		if(cubes.size() == 0) throw new CubeNotFoundException();
+
+		double smallestAngle = 999;
+		int bestCubeIndex = -1;
+		for(int i = 0; i < cubes.size(); i++) {
+			if(Math.abs(cubes.get(i).getAngle()) < smallestAngle) {
+				bestCubeIndex = i;
+				smallestAngle = cubes.get(i).getAngle();
+			}
+		}
+
+		if(bestCubeIndex == -1) throw new CubeNotFoundException();
+
+		SmartDashboard.putNumber("best cube angle", cubes.get(bestCubeIndex).getAngle());
+		//Index will only be stable if tracking is enabled, so leave it as -1 if tracking is off.
+		if(enableTracking) return cubes.get(bestCubeIndex).returnCube(bestCubeIndex);
+		return cubes.get(bestCubeIndex);
+
+	}
+
+	/**
      * 
      * @return PowerCube object with index in cubes list defined ()
      * @throws CubeNotFoundException throws if no cubes have been seen for a number of frames
      */
-    public PowerCube getBestCube() throws CubeNotFoundException {
+    public PowerCube getLeftCube() throws CubeNotFoundException {
     	//if(!visionInit) return null;
     	if(cubes.size() == 0) throw new CubeNotFoundException();
     	
-    	double smallestAngle = 999;
-    	int bestCubeIndex = -1;
+    	double leftestAngle = 999;
+    	int leftCubeIndex = -1;
     	for(int i = 0; i < cubes.size(); i++) {
-    		if(Math.abs(cubes.get(i).getAngle()) < smallestAngle) {
-    			bestCubeIndex = i;
-    			smallestAngle = Math.abs(cubes.get(i).getAngle());
+    		if(cubes.get(i).getAngle() < leftestAngle) {
+    			leftCubeIndex = i;
+    			leftestAngle = cubes.get(i).getAngle();
     		}
     	}
     	
-    	if(bestCubeIndex == -1) throw new CubeNotFoundException();
+    	if(leftCubeIndex == -1) throw new CubeNotFoundException();
 
-    	SmartDashboard.putNumber("best cube angle", cubes.get(bestCubeIndex).getAngle());
+    	SmartDashboard.putNumber("left cube angle", cubes.get(leftCubeIndex).getAngle());
     	//Index will only be stable if tracking is enabled, so leave it as -1 if tracking is off.
-    	if(enableTracking) return cubes.get(bestCubeIndex).returnCube(bestCubeIndex);
-    	return cubes.get(bestCubeIndex);
+    	if(enableTracking) return cubes.get(leftCubeIndex).returnCube(leftCubeIndex);
+    	return cubes.get(leftCubeIndex);
     	
     }
-    
+
+	/**
+	 *
+	 * @return PowerCube object with index in cubes list defined ()
+	 * @throws CubeNotFoundException throws if no cubes have been seen for a number of frames
+	 */
+	public PowerCube getRightCube() throws CubeNotFoundException {
+		//if(!visionInit) return null;
+		if(cubes.size() == 0) throw new CubeNotFoundException();
+
+		double rightestAngle = -999;
+		int rightCubeIndex = -1;
+		for(int i = 0; i < cubes.size(); i++) {
+			if(cubes.get(i).getAngle() > rightestAngle) {
+				rightCubeIndex = i;
+				rightestAngle = cubes.get(i).getAngle();
+			}
+		}
+
+		if(rightCubeIndex == -1) throw new CubeNotFoundException();
+
+		SmartDashboard.putNumber("right cube angle", cubes.get(rightCubeIndex).getAngle());
+		//Index will only be stable if tracking is enabled, so leave it as -1 if tracking is off.
+		if(enableTracking) return cubes.get(rightCubeIndex).returnCube(rightCubeIndex);
+		return cubes.get(rightCubeIndex);
+
+	}
+
     public int getCubeListSize() {
     	return cubes.size();
     }

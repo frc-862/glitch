@@ -9,11 +9,12 @@ import org.usfirst.frc862.util.Logger;
 
 
 public class SmartRotate extends Command {
+    enum State { initialize, motionMagicRampUp, motionMagicWait, finish };
+    State state;
+
     protected double degrees;
     private double startAngle;
-    private boolean done = false;
-    private boolean reverseRotate = false;
-    private boolean is_magic = true;
+    private boolean reverseRotate;
 
     public SmartRotate(double degrees) {
         this.degrees = LightningMath.boundThetaNeg180to180(degrees);
@@ -47,7 +48,6 @@ public class SmartRotate extends Command {
     protected double getGoal() {
         return degrees;
     }
-    private boolean startedMoving = false;
 
     /**
      * The initialize method is called just before the first time
@@ -57,23 +57,9 @@ public class SmartRotate extends Command {
     protected void initialize() {
         // Important to set this for getRelativeHeading and therefore getError to work correctly
         startAngle = Robot.core.getGyroAngle();
-        is_magic = Math.abs(getError()) > 15;
-
-        double estimatedWheelDistance = getGoal() * Constants.angleToTick;
-        if (reverseRotate) {
-            Logger.info("Reversing SmartRotate angle");
-            if (estimatedWheelDistance < 0) {
-                estimatedWheelDistance = estimatedWheelDistance + (360 * Constants.angleToTick);
-            } else {
-                estimatedWheelDistance = estimatedWheelDistance - (360 * Constants.angleToTick);
-            }
-        }
-        Logger.debug("SR init: " + estimatedWheelDistance);
-        Robot.driveTrain.setMotionMagic(estimatedWheelDistance, -estimatedWheelDistance);
+        state = State.initialize;
 
         Logger.debug("SmartRotate to " + getGoal());
-        startedMoving = false;
-        done = false;
     }
 
 
@@ -82,43 +68,54 @@ public class SmartRotate extends Command {
      * scheduled to run until this Command either finishes or is canceled.
      */
     @Override
-    protected void execute() {
+    public void execute() {
+        final double minMoveIPS = 25;
+        final double minMovePowerPercent = 0.2;
         final double error = getError();
-        final double estimatedWheelDistance = error * Constants.angleToTick;
-        Logger.debug("SR  new: " + estimatedWheelDistance);
-//        Logger.debug("SR old: " + Robot.driveTrain.getError());
-        Logger.debug("SR lold: " + Robot.driveTrain.getLeftError());
-        Logger.debug("SR rold: " + Robot.driveTrain.getRightError());
+        final double magnitude = Robot.driveTrain.drivePowerMagnitude();
 
-//        Robot.driveTrain.updateMotionMagic(estimatedWheelDistance, -estimatedWheelDistance);
+        Logger.debug("SR info: " + error + ", " + magnitude + ", " + state);
 
-        SmartDashboard.putNumber("Rotate Error ", error);
-        SmartDashboard.putString("Rotate Mode ", is_magic ? "magic" : "not magic");
-        SmartDashboard.putNumber("Rotate Power ", Robot.driveTrain.drivePowerMagnitude());
+        switch (state) {
+            case initialize:
+                Logger.debug("SR init goal: " + getGoal());
+                double estimatedWheelDistance = getGoal() * Constants.angleToTick;
+                if (reverseRotate) {
+                    Logger.info("Reversing SmartRotate angle");
+                    if (estimatedWheelDistance < 0) {
+                        estimatedWheelDistance = estimatedWheelDistance + (360 * Constants.angleToTick);
+                    } else {
+                        estimatedWheelDistance = estimatedWheelDistance - (360 * Constants.angleToTick);
+                    }
+                }
+                Logger.debug("SR init: " + estimatedWheelDistance);
+                if (Math.abs(getGoal()) > 20) {
+                    Robot.driveTrain.setMotionMagic(estimatedWheelDistance, -estimatedWheelDistance);
+                    state = State.motionMagicRampUp;
+                } else {
+                    state = State.finish;
+                }
+                break;
 
-        if (!is_magic) {
-            double pwr = 20;
-            if (Math.abs(error) < 5) pwr = 15;
-            if (error < 0) pwr = -pwr;
-            if (reverseRotate) pwr = -pwr;
-            Robot.driveTrain.setVelocityIPS(pwr, -pwr);
-        }
-        // TODO done should probably also verify that velocity is below some threshold too...
-        Logger.debug("SmartRotate Error " + getError() + " driveMode " + Robot.driveTrain.getMode() + " error " + Robot.driveTrain.driveErrorMagnitude() + " power " + Robot.driveTrain.drivePowerMagnitude());
+            case motionMagicRampUp:
+                if (Robot.driveTrain.drivePowerMagnitude() > minMovePowerPercent) {
+                    state = State.motionMagicWait;
+                }
+                break;
 
-        if (!startedMoving && Robot.driveTrain.drivePowerMagnitude() > 0.2) {
-            startedMoving = true;
-        }
+            case motionMagicWait:
+                if (Robot.driveTrain.drivePowerMagnitude() < minMovePowerPercent) {
+                    state = State.finish;
+                    Robot.driveTrain.setVelocityMode();
+                }
+                break;
 
-        if (startedMoving && Robot.driveTrain.drivePowerMagnitude() < 0.15) {
-            Logger.debug("Done rotating");
-            Robot.driveTrain.setVelocityMode();
-            is_magic = false;
-        } else if (Math.abs(error) < 15) {
-            is_magic = false;
-        } else if (Math.abs(error) < Constants.ANGLE_TOLERANCE_DEGREES) {
-            Logger.debug("Done rotating");
-            done = true;
+            case finish:
+                double speed = Math.min(100, Math.abs(error) * 0.6);
+                speed = Math.max(speed, minMoveIPS);
+                if (error < 0) speed = -speed;
+                Robot.driveTrain.setVelocityIPS(-speed, speed);
+                break;
         }
     }
 
@@ -141,8 +138,8 @@ public class SmartRotate extends Command {
      * @see Command#isTimedOut() isTimedOut()
      */
     @Override
-    protected boolean isFinished() {
-        return done;
+    public boolean isFinished() {
+        return Math.abs(getError()) < Constants.ANGLE_TOLERANCE_DEGREES;
     }
 
 
@@ -153,7 +150,7 @@ public class SmartRotate extends Command {
      * command.
      */
     @Override
-    protected void end() {
+    public void end() {
         Robot.driveTrain.setVelocityMode();
         Robot.driveTrain.stop();
     }

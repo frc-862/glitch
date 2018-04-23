@@ -134,6 +134,7 @@ public class OI {
         SmartDashboard.putData("SwitchAuton", new SwitchAuton());
         SmartDashboard.putData("TestStatefulAuton", new TestStatefulAuton());
         SmartDashboard.putData("TestSmartRotate", new SmartRotate(180));
+        SmartDashboard.putData("Right Scale Outside", new RightScaleSingle());
 
         if (driverControlsAvailable()) {
             JoystickButton trigger1 = new JoystickButton(driverLeft, 1);

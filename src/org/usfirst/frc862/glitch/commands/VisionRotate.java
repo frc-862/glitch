@@ -8,12 +8,22 @@ import org.usfirst.frc862.glitch.vision.PowerCube;
 
 
 public class VisionRotate extends Command {
+    private int side = 0;
+
+    enum State { initialize, execute };
+    State state;
     private double start;
     private boolean done;
+    private SmartRotate rotate;
+
+    public VisionRotate(int side) {
+        this.side = side;
+    }
 
     public VisionRotate() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+        this.side = 0;
     }
 
 
@@ -25,6 +35,8 @@ public class VisionRotate extends Command {
     protected void initialize() {
         start = Timer.getFPGATimestamp();
         done = false;
+        state = State.initialize;
+        rotate = null;
     }
 
 
@@ -34,37 +46,34 @@ public class VisionRotate extends Command {
      */
     @Override
     protected void execute() {
-        try {
-            PowerCube cube = Robot.cubeVision.getBestCube();
-            if (cube.getTimestamp() > start) {
-                new SmartRotate(cube.getAngle()).start();
-                done = true;
-            }
-        } catch (CubeNotFoundException e) { }
+        switch (state) {
+            case initialize:
+                try {
+                    PowerCube cube;
+                    if (side < 0) {
+                        cube = Robot.cubeVision.getLeftCube();
+                    } else if (side > 0) {
+                        cube = Robot.cubeVision.getRightCube();
+                    } else {
+                        cube = Robot.cubeVision.getBestCube();
+                    }
+                    if (cube.getTimestamp() > start) {
+                        rotate = new SmartRotate(cube.getAngle());
+                        rotate.initialize();
+                        state = State.execute;
+                    }
+                } catch (CubeNotFoundException e) { }
+                break;
+
+            case execute:
+                rotate.execute();
+                break;
+        }
     }
 
-
-    /**
-     * <p>
-     * Returns whether this command is finished. If it is, then the command will be removed and
-     * {@link #end()} will be called.
-     * </p><p>
-     * It may be useful for a team to reference the {@link #isTimedOut()}
-     * method for time-sensitive commands.
-     * </p><p>
-     * Returning false will result in the command never ending automatically. It may still be
-     * cancelled manually or interrupted by another command. Returning true will result in the
-     * command executing once and finishing immediately. It is recommended to use
-     * {@link edu.wpi.first.wpilibj.command.InstantCommand} (added in 2017) for this.
-     * </p>
-     *
-     * @return whether this command is finished.
-     * @see Command#isTimedOut() isTimedOut()
-     */
     @Override
     protected boolean isFinished() {
-        // TODO: Make this return true when this Command no longer needs to run execute()
-        return done;
+        return rotate != null && rotate.isFinished();
     }
 
 
@@ -76,26 +85,8 @@ public class VisionRotate extends Command {
      */
     @Override
     protected void end() {
-
-    }
-
-
-    /**
-     * <p>
-     * Called when the command ends because somebody called {@link #cancel()} or
-     * another command shared the same requirements as this one, and booted it out. For example,
-     * it is called when another command which requires one or more of the same
-     * subsystems is scheduled to run.
-     * </p><p>
-     * This is where you may want to wrap up loose ends, like shutting off a motor that was being
-     * used in the command.
-     * </p><p>
-     * Generally, it is useful to simply call the {@link #end()} method within this
-     * method, as done here.
-     * </p>
-     */
-    @Override
-    protected void interrupted() {
-        super.interrupted();
+        if (rotate != null) {
+            rotate.end();
+        }
     }
 }

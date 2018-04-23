@@ -70,34 +70,41 @@ public class ScaleAuton extends Command {
         if (Robot.attemptMultiCubeAuton()) {
             if (Robot.startOnLeft()) {
                 if (Robot.scaleOnLeft()) {
-                    cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : -160), 2.5);
+                    cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : -170), 2.5);
                 } else {
+                    // far side
+                    cmd.addSequential(new TimedCommand(.5));
                     cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : 160), 2.5);
                 }
             } else {
                 if (Robot.scaleOnLeft()) {
+                    // far side
+                    cmd.addSequential(new TimedCommand(.5));
                     cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : -160, true), 2.5);
                 } else {
-                    cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : 160), 2.5);
+                    cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : 170), 2.5);
                 }
             }
+            // todo reduce timeout
+            cmd.addSequential(new VisionRotate(Robot.scaleOnLeft() ? -1 : 1), 2);
 
             cmd.addSequential(new MoveCollectorToCollect(), 1);
             cmd.addParallel(new HoldCube());
             cmd.addSequential(new DriveForwardToCube());
-            cmd.addSequential(new GentleCollectCube());
+            // todo remove timeout
+            cmd.addSequential(new GentleCollectCube(), 5);
 
             cmd.addParallel(new HoldCube());
-            if (Robot.scaleOnLeft() == Robot.startOnLeft()) {
-                cmd.addSequential(new TurnToAbsolutePosition((angle2 < 360) ? angle2 : -3));
+            if (Robot.scaleOnLeft()) {
+                cmd.addSequential(new TurnToAbsolutePosition((angle2 < 360) ? angle2 : -10));
             } else {
-                cmd.addSequential(new TurnToAbsolutePosition((angle2 < 360) ? angle2: 3));
+                cmd.addSequential(new TurnToAbsolutePosition((angle2 < 360) ? angle2: 5));
             }
 
             cmd.addSequential(new MoveCollectorToScale(), 1);
             cmd.addSequential(new DriveForwardToScale());
 
-            cmd.addSequential(new EjectCube(0.5), 0.5);
+            cmd.addSequential(new EjectCube(0.6), 0.5);
             cmd.addSequential(new TurnToAbsolutePosition(180));
             cmd.addSequential(new MoveCollectorToCollect());
         } else {
@@ -125,7 +132,11 @@ public class ScaleAuton extends Command {
         } else if (!leftScale) {
             Logger.info("Using Right Scale Near");
             // If we made it this far, we have to be on the right side
-            path = new RightScaleNear();
+            if (Robot.attemptMultiCubeAuton()) {
+                path = new RightScaleNear();
+            } else {
+                path = new RightScaleSingle();
+            }
         } else {
             // Must be right far
             Logger.info("Using Right Scale Far");
@@ -142,7 +153,7 @@ public class ScaleAuton extends Command {
         cmd.addSequential(path);
 
 //        cmd.addSequential(new EjectCube(is_far ? 0.25 : 0.75), 0.5);
-        cmd.addSequential(new EjectCube(0.3), 0.5);
+        cmd.addSequential(new EjectCube(0.6), 0.5);
 
         return cmd;
     }
