@@ -59,6 +59,9 @@ public class SwitchAuton extends Command {
 
         CommandGroup cmd = new LightningGroup("Dynamically Built Switch Auton");
         // snug/safe
+
+        cmd.addSequential(new Delay());
+
         cmd.addSequential(new MoveCollectorToGround(), 0.5);
 
         cmd.addParallel(new HoldCube());

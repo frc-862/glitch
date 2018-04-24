@@ -67,7 +67,12 @@ public class ScaleAuton extends Command {
         double angle1 = SmartDashboard.getNumber("Auto Angle 1", 862);
         double angle2 = SmartDashboard.getNumber("Auto Angle 1", 862);
 
-        if (Robot.attemptMultiCubeAuton()) {
+        boolean overriddenMulti = Robot.getOverrideValue().equals("n2c") && (Robot.scaleOnLeft() && Robot.startOnLeft() ||
+                Robot.scaleOnRight() && Robot.startOnRight()); //overridden to do two cubes near
+        boolean overriddenOne = Robot.getOverrideValue().equals("f1c") && (Robot.scaleOnLeft() && Robot.startOnRight() ||
+                Robot.scaleOnRight() && Robot.startOnLeft()); //overridden to do one cube far
+
+        if (Robot.attemptMultiCubeAuton() && !overriddenOne || overriddenMulti) {
             if (Robot.startOnLeft()) {
                 if (Robot.scaleOnLeft()) {
                     cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : -170), 2.5);
@@ -118,6 +123,8 @@ public class ScaleAuton extends Command {
         boolean leftScale = Robot.scaleOnLeft();
 
         CommandGroup cmd = new CommandGroup();
+
+        cmd.addSequential(new Delay());
 
         cmd.addParallel(new HoldCube());
 

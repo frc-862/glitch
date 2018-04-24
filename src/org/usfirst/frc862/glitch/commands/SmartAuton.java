@@ -51,6 +51,7 @@ public class SmartAuton extends Command {
 
         CommandGroup cmd = new CommandGroup();
   //      cmd.addSequential(new DownShift());
+        cmd.addSequential(new Delay());
         cmd.addSequential(new MoveCollectorToGround(), 1);
 
         cmd.addParallel(new HoldCube());
@@ -61,7 +62,6 @@ public class SmartAuton extends Command {
                 cmd.addSequential(new LeftPointsSwitch());
             } else if (Robot.scaleOnLeft()) {
                 DynamicPathCommandBase path = new LeftScaleNearLG();
-
                 CommandGroup riseUp = new CommandGroup();
                 riseUp.addSequential(new TimedCommand(path.duration() - 3));
                 riseUp.addSequential(new MoveCollectorToScale());
@@ -104,6 +104,11 @@ public class SmartAuton extends Command {
 
         cmd.addSequential(new EjectCube(), 0.5);
 
+        boolean overriddenMulti = Robot.getOverrideValue().equals("n2c") && (Robot.scaleOnLeft() && Robot.startOnLeft() ||
+                Robot.scaleOnRight() && Robot.startOnRight()); //overridden to do two cubes near
+        boolean overriddenOne = Robot.getOverrideValue().equals("f1c") && (Robot.scaleOnLeft() && Robot.startOnRight() ||
+                Robot.scaleOnRight() && Robot.startOnLeft()); //overridden to do one cube far
+
         if (scale_auton) {
             CommandGroup readyToCollect = new CommandGroup();
             readyToCollect.addSequential(new TimedCommand(0.5));
@@ -131,7 +136,7 @@ public class SmartAuton extends Command {
                 }
             }
 
-            if (Robot.attemptMultiCubeAuton()) {
+            if (Robot.attemptMultiCubeAuton() && !overriddenOne || overriddenMulti) {
                 cmd.addSequential(new MoveCollectorToCollect(), 1);
                 cmd.addParallel(new HoldCube());
                 cmd.addSequential(new DriveForwardToCube());
@@ -139,10 +144,10 @@ public class SmartAuton extends Command {
 
                 if (Robot.scaleOnLeft()) {
                     cmd.addSequential(new TurnToAbsolutePosition((angle2 < 360) ? angle2 : 0));
-                    cmd.addSequential(new TurnToAbsolutePosition((angle2 < 360) ? angle2: 0));
+                    cmd.addSequential(new TurnToAbsolutePosition((angle2 < 360) ? angle2 : 0));
                 } else {
-                    cmd.addSequential(new TurnToAbsolutePosition((angle2 < 360) ? angle2: 0));
-                    cmd.addSequential(new TurnToAbsolutePosition((angle2 < 360) ? angle2: 0));
+                    cmd.addSequential(new TurnToAbsolutePosition((angle2 < 360) ? angle2 : 0));
+                    cmd.addSequential(new TurnToAbsolutePosition((angle2 < 360) ? angle2 : 0));
                 }
 
                 cmd.addSequential(new MoveCollectorToScale(), 1);
