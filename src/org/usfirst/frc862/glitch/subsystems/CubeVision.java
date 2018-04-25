@@ -85,6 +85,10 @@ public class CubeVision extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
+    public void sendCommand(String cmd) {
+		this.serialIn.writeString(cmd);
+	}
+
     @Override
     public void periodic() {
         // Put code here to be run every loop
@@ -104,17 +108,16 @@ public class CubeVision extends Subsystem {
 			} catch (Exception err) {
 				Logger.error("Vision loop error: " + err);
 			}
-			Logger.info("\n\nGetting best cube from list . . .\n");
 			try {
 				PowerCube bestCube = getBestCube();
-				Logger.info("Cube list contains " + getCubeListSize() + "items.\n");
-				Logger.info("Best cube: " + bestCube.getId() + "\n" + 
-					"\tAngle:      " + bestCube.getAngle() + " degrees\n" + 
-					"\tArea:       " + bestCube.getArea() + "px^2\n" +
-					"\tWidth:      " + bestCube.getWidth() + "px\n" +
-					"\tHeight:     " + bestCube.getHeight() + "px\n" +
-					"\tLateral:    " + bestCube.getLateral() + "ft\n" +
-					"\tLongitudal: " + bestCube.getLongitudal() + "ft");
+				Logger.info("Cube list contains " + getCubeListSize() + " items: " + getLeftCube().getAngle() + ", " + getBestCube().getAngle() + ", " + getRightCube().getAngle());
+//				Logger.info("Best cube: " + bestCube.getId() + "\n" +
+//					"\tAngle:      " + bestCube.getAngle() + " degrees\n" +
+//					"\tArea:       " + bestCube.getArea() + "px^2\n" +
+//					"\tWidth:      " + bestCube.getWidth() + "px\n" +
+//					"\tHeight:     " + bestCube.getHeight() + "px\n" +
+//					"\tLateral:    " + bestCube.getLateral() + "ft\n" +
+//					"\tLongitudal: " + bestCube.getLongitudal() + "ft");
 			} catch(CubeNotFoundException e) {
 				Logger.info("Cube list is empty.");
 			}
@@ -128,7 +131,7 @@ public class CubeVision extends Subsystem {
 		SmartDashboard.putString("dataIn", inData);
     	if(inData.indexOf("=") != -1) {
     		long currentTime = System.currentTimeMillis();
-    		Logger.info("------------------------------\nCamera update time: " + (currentTime - lastUpdate) + "ms\n------------------------------");
+//    		Logger.info("------------------------------\nCamera update time: " + (currentTime - lastUpdate) + "ms\n------------------------------");
     		lastUpdate = currentTime;
 	    	SmartDashboard.putString("step", "dataIn");
 	    	String lastFrame = inData.substring(inData.lastIndexOf("Frame"));

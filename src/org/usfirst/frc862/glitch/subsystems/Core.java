@@ -59,7 +59,7 @@ public class Core extends Subsystem {
     public Core() {
         super();
         exitTestMode();
-        DataLogger.addDataElement("heading", () -> navx.getFusedHeading());
+        DataLogger.addDataElement("heading", () -> getGyroAngle());
         //DataLogger.addDataElement("current", () -> powerDistributionPanel.getTotalCurrent());
 //        DataLogger.addDataElement("voltage", () -> powerDistributionPanel.getVoltage());
         DataLogger.addDataElement("pressure", () -> getPressure());

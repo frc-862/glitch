@@ -70,23 +70,23 @@ public class ScaleAuton extends Command {
         if (Robot.attemptMultiCubeAuton()) {
             if (Robot.startOnLeft()) {
                 if (Robot.scaleOnLeft()) {
-                    cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : -170), 2.5);
+                    cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : 165), 2.5);
                 } else {
                     // far side
                     cmd.addSequential(new TimedCommand(.5));
-                    cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : 160), 2.5);
+                    cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : -160), 2.5);
                 }
             } else {
                 if (Robot.scaleOnLeft()) {
                     // far side
                     cmd.addSequential(new TimedCommand(.5));
-                    cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : -160, true), 2.5);
+                    cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : 160, true), 2.5);
                 } else {
-                    cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : 170), 2.5);
+                    cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : -165), 2.5);
                 }
             }
             // todo reduce timeout
-            cmd.addSequential(new VisionRotate(Robot.scaleOnLeft() ? -1 : 1), 2);
+            cmd.addSequential(new VisionRotate(Robot.scaleOnLeft() ? 1 : -1), 2);
 
             cmd.addSequential(new MoveCollectorToCollect(), 1);
             cmd.addParallel(new HoldCube());

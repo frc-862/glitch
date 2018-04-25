@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.vision.CubeNotFoundException;
 import org.usfirst.frc862.glitch.vision.PowerCube;
+import org.usfirst.frc862.util.Logger;
 
 
 public class VisionRotate extends Command {
@@ -33,10 +34,11 @@ public class VisionRotate extends Command {
      */
     @Override
     protected void initialize() {
-        start = Timer.getFPGATimestamp();
+        start = Timer.getFPGATimestamp() + 0.15;
         done = false;
         state = State.initialize;
         rotate = null;
+        Logger.info("Start vision rotate");
     }
 
 
@@ -49,6 +51,7 @@ public class VisionRotate extends Command {
         switch (state) {
             case initialize:
                 try {
+                    Logger.debug("Looking for cube");
                     PowerCube cube;
                     if (side < 0) {
                         cube = Robot.cubeVision.getLeftCube();
@@ -59,6 +62,7 @@ public class VisionRotate extends Command {
                     }
                     if (cube.getTimestamp() > start) {
                         rotate = new SmartRotate(cube.getAngle());
+                        Logger.info("Vision rotate found cube at " + cube.getAngle());
                         rotate.initialize();
                         state = State.execute;
                     }

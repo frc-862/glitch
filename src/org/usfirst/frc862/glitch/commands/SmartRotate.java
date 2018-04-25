@@ -38,7 +38,7 @@ public class SmartRotate extends Command {
     }
 
     protected double getError() {
-        return LightningMath.boundThetaNeg180to180(getRelativeHeading() - getGoal());
+        return LightningMath.boundThetaNeg180to180(getGoal() - getRelativeHeading());
     }
 
     protected void setGoal(double goal) {
@@ -74,7 +74,7 @@ public class SmartRotate extends Command {
         final double error = getError();
         final double magnitude = Robot.driveTrain.drivePowerMagnitude();
 
-        Logger.debug("SR info: " + error + ", " + magnitude + ", " + state);
+        Logger.debug("SR info: " + error + ", " + magnitude + ", " + state + ", " + Robot.core.getGyroAngle());
 
         switch (state) {
             case initialize:
@@ -114,7 +114,7 @@ public class SmartRotate extends Command {
                 double speed = Math.min(100, Math.abs(error) * 0.6);
                 speed = Math.max(speed, minMoveIPS);
                 if (error < 0) speed = -speed;
-                Robot.driveTrain.setVelocityIPS(-speed, speed);
+                Robot.driveTrain.setVelocityIPS(speed, -speed);
                 break;
         }
     }

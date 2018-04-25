@@ -33,10 +33,8 @@ public class TurnToAbsolutePosition extends SmartRotate {
     // Called just before this Command runs the first time
     protected void initialize() {
         Logger.info("TurnToAbsolute " + m_position);
-
         Logger.debug("Absolute start " + Robot.core.getGyroAngle());
-        Logger.debug("Desired angle " + m_position);
-        this.degrees = -LightningMath.boundThetaNeg180to180(Robot.core.getGyroAngle() + m_position);
+        this.degrees = LightningMath.boundThetaNeg180to180(m_position - Robot.core.getGyroAngle());
         Logger.debug("degree rotate " + degrees);
         super.initialize();
     }
