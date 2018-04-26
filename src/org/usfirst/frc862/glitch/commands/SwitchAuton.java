@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc862.glitch.Robot;
 import org.usfirst.frc862.glitch.paths.Backup;
@@ -58,8 +59,13 @@ public class SwitchAuton extends Command {
         Logger.info("Left Switch: " + Robot.switchOnLeft());
 
         CommandGroup cmd = new LightningGroup("Dynamically Built Switch Auton");
+
         // snug/safe
         cmd.addSequential(new MoveCollectorToGround(), 0.5);
+
+        if (Robot.getAutonDelay() > 0) {
+            cmd.addSequential(new TimedCommand(Robot.getAutonDelay()));
+        }
 
         cmd.addParallel(new HoldCube());
         cmd.addParallel(new MoveCollectorToSwitch());

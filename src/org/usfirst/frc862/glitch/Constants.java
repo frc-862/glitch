@@ -233,11 +233,11 @@ public class Constants extends ConstantsBase {
     public static int FOURBAR_COLLECT_POS = 156;
     public static int FOURBAR_SAFE_TO_COLLECT_POS = 100;
     public static int FOURBAR_BOTTOM_POS = 73;
-    public static int FOURBAR_EPSILON = 2;
+    public static int FOURBAR_EPSILON = 3;
 
     public static int ELEVATOR_SCALE_POS = 2100;
-    public static int ELEVATOR_SCALE_POS_HIGH = 2200;
-    public static int ELEVATOR_SCALE_POS_LOW = 1900;
+    public static int ELEVATOR_SCALE_POS_HIGH = 2300;
+    public static int ELEVATOR_SCALE_POS_LOW = 2000;
     public static int ELEVATOR_SWITCH_POS = -5800;
     public static int ELEVATOR_COLLECT_POS = -5500;
     public static int ELEVATOR_CAN_DROP_COLLECT_POS = ELEVATOR_COLLECT_POS + 200;

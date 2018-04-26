@@ -51,7 +51,12 @@ public class SmartAuton extends Command {
 
         CommandGroup cmd = new CommandGroup();
   //      cmd.addSequential(new DownShift());
+
         cmd.addSequential(new MoveCollectorToGround(), 1);
+
+        if (Robot.getAutonDelay() > 0) {
+            cmd.addSequential(new TimedCommand(Robot.getAutonDelay()));
+        }
 
         cmd.addParallel(new HoldCube());
 
