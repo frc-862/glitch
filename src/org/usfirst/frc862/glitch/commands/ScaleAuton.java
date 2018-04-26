@@ -68,7 +68,12 @@ public class ScaleAuton extends Command {
         }
 //        CommandGroup cmd = new CommandGroup();
 
-        is_near = Robot.scaleOnLeft() != Robot.startOnLeft();
+        // SL   RL  Near
+        // T    T   T
+        // T    F   F
+        // F    T   F
+        // F    F   T
+        is_near = Robot.scaleOnLeft() == Robot.startOnLeft();
         is_far = !is_near;
 
         CommandGroup readyToCollect = new CommandGroup();
@@ -175,8 +180,8 @@ public class ScaleAuton extends Command {
 
         cmd.addSequential(path);
 
-//        cmd.addSequential(new EjectCube(is_far ? 0.25 : 0.75), 0.5);
-        cmd.addSequential(new EjectCube(0.6), 0.5);
+        cmd.addSequential(new EjectCube(is_far ? 0.3 : 0.6), 0.5);
+//        cmd.addSequential(new EjectCube(0.6), 0.5);
 
         return cmd;
     }
@@ -188,6 +193,7 @@ public class ScaleAuton extends Command {
 
         CommandGroup cmd = new CommandGroup();
 
+        cmd.addParallel(new HoldCube());
         if (Robot.switchOnLeft() && Robot.startOnLeft()) {
             cmd.addParallel(new MoveCollectorToSwitch());
             cmd.addSequential(new LeftPointsSwitch());
@@ -196,8 +202,12 @@ public class ScaleAuton extends Command {
             cmd.addParallel(new MoveCollectorToSwitch());
             cmd.addSequential(new RightPointsSwitch());
             cmd.addSequential(new EjectCube(0.6), 0.5);
+        } else if (Robot.startOnRight()) {
+            cmd.addSequential(new TimedCommand(5));
+            cmd.addSequential(new RightScaleFarStopEarly());
         } else {
-            cmd.addParallel(new DriveForwardToScale());
+            cmd.addSequential(new TimedCommand(5));
+            cmd.addSequential(new LeftScaleFarStopEarly());
         }
 
         return cmd;
