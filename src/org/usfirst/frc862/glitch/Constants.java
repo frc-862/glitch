@@ -88,8 +88,8 @@ public class Constants extends ConstantsBase {
     public static double pathP = 7.5;
     public static double pathI = 0;
     public static double pathD = 0;
-    public static double pathV = 2;  // Velocity is in IPS, we command IPS
-    public static double pathA = 0;
+    public static double pathV = 1;  // Velocity is in IPS, we command IPS
+    public static double pathA = 0.1;
     public static double pathTurn = 4; // 1; // 2; // 1.2; // 0.862;
     public static double pathFeedF = 4; // 4;
 

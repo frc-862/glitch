@@ -1,5 +1,7 @@
 package com.team254.lib.trajectory;
 
+import org.usfirst.frc862.util.LightningMath;
+
 /**
  * PID + Feedforward controller for following a Trajectory.
  *
@@ -66,7 +68,7 @@ public class TrajectoryFollower {
   }
 
   public double deltaHeading() {
-    return profile_.getSegment(current_segment).heading - current_heading;
+    return LightningMath.boundThetaNegPiToPi(profile_.getSegment(current_segment).heading - current_heading);
   }
 
   public boolean isFinishedTrajectory() {

@@ -15,14 +15,11 @@ import edu.wpi.cscore.AxisCamera;
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.CameraServer;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc862.glitch.commands.*;
@@ -295,6 +292,11 @@ public class Robot extends TimedRobot {
         if (oi.copilotControlsAvailable()) {
             lift.setDefaultCommand(new CoPilotAuto());
         }
+
+        SmartDashboard.putData("Scheduler", Scheduler.getInstance());
+        SmartDashboard.getKeys().forEach((name) -> {
+           Logger.debug("SmartDashboard keys: " +  name);
+        });
     }
 
     @Override

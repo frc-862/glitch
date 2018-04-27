@@ -77,7 +77,7 @@ public class ScaleAuton extends Command {
         is_far = !is_near;
 
         CommandGroup readyToCollect = new CommandGroup();
-        readyToCollect.addSequential(new TimedCommand(0.5));
+        readyToCollect.addSequential(new Stop(), 0.3);
         readyToCollect.addSequential(new MoveCollectorToCollect());
         cmd.addParallel(readyToCollect);
 
@@ -86,7 +86,9 @@ public class ScaleAuton extends Command {
 
         if (no_cross && Robot.attemptMultiCubeAuton() && !Robot.nearSide()) {
             // do nothing
+            Logger.info("No cross, staying put");
         } else if (Robot.attemptMultiCubeAuton()) {
+            Logger.info("Multi Cube");
             if (Robot.startOnLeft()) {
                 if (Robot.scaleOnLeft()) {
                     cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : 165), 2.5);
@@ -173,10 +175,10 @@ public class ScaleAuton extends Command {
         riseUp.addSequential(new MoveCollectorToScale());
         cmd.addParallel(riseUp);
 
-        CommandGroup earlyEject = new CommandGroup();
-        earlyEject.addSequential(new TimedCommand(path.duration() - 0.3));
-        earlyEject.addSequential(new EjectCube(0.6), 0.5);
-        cmd.addParallel(earlyEject);
+//        CommandGroup earlyEject = new CommandGroup();
+//        earlyEject.addSequential(new TimedCommand(path.duration() - 0.3));
+//        earlyEject.addSequential(new EjectCube(0.6), 0.5);
+//        cmd.addParallel(earlyEject);
 
         cmd.addSequential(path);
 
