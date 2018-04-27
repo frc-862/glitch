@@ -229,7 +229,7 @@ public class Robot extends TimedRobot {
                 resetLoggingFiles();
             } else {
                 if ((Timer.getFPGATimestamp() - lastFMSCheck) > 1.0) {
-                    Logger.debug("Waiting for FMS");
+//                    Logger.debug("Waiting for FMS");
                     lastFMSCheck = Timer.getFPGATimestamp();
                 }
             }
@@ -292,11 +292,7 @@ public class Robot extends TimedRobot {
         if (oi.copilotControlsAvailable()) {
             lift.setDefaultCommand(new CoPilotAuto());
         }
-
-        SmartDashboard.putData("Scheduler", Scheduler.getInstance());
-        SmartDashboard.getKeys().forEach((name) -> {
-           Logger.debug("SmartDashboard keys: " +  name);
-        });
+        driveTrain.setDefaultCommand(new TankDrive());
     }
 
     @Override
@@ -313,7 +309,7 @@ public class Robot extends TimedRobot {
             }
         } else {
                 if ((Timer.getFPGATimestamp() - lastFMSCheck) > 1.0) {
-                    Logger.debug("Waiting for FMS");
+//                    Logger.debug("Waiting for FMS");
                     lastFMSCheck = Timer.getFPGATimestamp();
                 }
             }

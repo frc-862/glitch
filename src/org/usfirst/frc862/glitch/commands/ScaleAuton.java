@@ -77,7 +77,8 @@ public class ScaleAuton extends Command {
         is_far = !is_near;
 
         CommandGroup readyToCollect = new CommandGroup();
-        readyToCollect.addSequential(new Stop(), 0.3);
+//        readyToCollect.addSequential(new Stop(), 0.3);
+        readyToCollect.addSequential(new TimedCommand(0.5));
         readyToCollect.addSequential(new MoveCollectorToCollect());
         cmd.addParallel(readyToCollect);
 
@@ -94,13 +95,13 @@ public class ScaleAuton extends Command {
                     cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : 165), 2.5);
                 } else {
                     // far side
-                    cmd.addSequential(new TimedCommand(.5));
+                    cmd.addSequential(new Stop(), 0.5);
                     cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : -160), 2.5);
                 }
             } else {
                 if (Robot.scaleOnLeft()) {
                     // far side
-                    cmd.addSequential(new TimedCommand(.5));
+                    cmd.addSequential(new Stop(), 0.5);
                     cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : 160, true), 2.5);
                 } else {
                     cmd.addSequential(new TurnToAbsolutePosition((angle1 < 360) ? angle1 : -165), 2.5);
@@ -170,7 +171,7 @@ public class ScaleAuton extends Command {
 
         CommandGroup riseUp = new CommandGroup();
         if (path.duration() > 4) {
-            riseUp.addSequential(new TimedCommand(path.duration() - 4));
+            riseUp.addSequential(new TimedCommand(path.duration() - 3.5));
         }
         riseUp.addSequential(new MoveCollectorToScale());
         cmd.addParallel(riseUp);

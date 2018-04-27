@@ -119,7 +119,7 @@ public class CubeVision extends Subsystem {
 //					"\tLateral:    " + bestCube.getLateral() + "ft\n" +
 //					"\tLongitudal: " + bestCube.getLongitudal() + "ft");
 			} catch(CubeNotFoundException e) {
-				Logger.info("Cube list is empty.");
+//				Logger.info("Cube list is empty.");
 			}
 		}
     }
