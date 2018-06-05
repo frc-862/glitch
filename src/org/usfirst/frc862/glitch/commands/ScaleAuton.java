@@ -63,6 +63,11 @@ public class ScaleAuton extends Command {
 
         if (no_cross) {
             cmd = buildNoCross();
+            Logger.debug("No cross built: " + cmd);
+//            cmd = new CommandGroup();
+//            cmd.addSequential(new StraightSwitch());
+//            cmd.addSequential(new StraightSwitch());
+//            return;
         } else {
             cmd = buildScale();
         }
@@ -108,7 +113,10 @@ public class ScaleAuton extends Command {
                 }
             }
             // todo reduce timeout
-            cmd.addSequential(new VisionRotate(Robot.scaleOnLeft() ? 1 : -1), 2);
+
+            if (is_near) {
+                cmd.addSequential(new VisionRotate(Robot.scaleOnLeft() ? 1 : -1), 2);
+            }
 
             cmd.addSequential(new MoveCollectorToCollect(), 1);
             cmd.addParallel(new HoldCube());
@@ -132,6 +140,7 @@ public class ScaleAuton extends Command {
         } else {
             cmd.addSequential(new BackupSlow());
         }
+        Logger.debug("Start Scale auton");
         cmd.start();
     }
 
@@ -191,6 +200,7 @@ public class ScaleAuton extends Command {
 
     CommandGroup buildNoCross() {
         if (Robot.nearSide()) {
+            Logger.info("No cross going for scale");
            return buildScale();
         }
 
@@ -198,21 +208,26 @@ public class ScaleAuton extends Command {
 
         cmd.addParallel(new HoldCube());
         if (Robot.switchOnLeft() && Robot.startOnLeft()) {
+            Logger.info("No cross Left Switch");
             cmd.addParallel(new MoveCollectorToSwitch());
             cmd.addSequential(new LeftPointsSwitch());
             cmd.addSequential(new EjectCube(0.6), 0.5);
         } else if (!Robot.switchOnLeft() && Robot.startOnRight()) {
+            Logger.info("No cross right switch");
             cmd.addParallel(new MoveCollectorToSwitch());
             cmd.addSequential(new RightPointsSwitch());
             cmd.addSequential(new EjectCube(0.6), 0.5);
         } else if (Robot.startOnRight()) {
-            cmd.addSequential(new TimedCommand(5));
-            cmd.addSequential(new RightScaleFarStopEarly());
+            Logger.info("No cross drive straight (could go a little left)");
+//            cmd.addSequential(new TimedCommand(5));
+            cmd.addSequential(new StraightSwitch());
         } else {
-            cmd.addSequential(new TimedCommand(5));
-            cmd.addSequential(new LeftScaleFarStopEarly());
+            Logger.info("No cross drive straight (could go a little right)");
+//            cmd.addSequential(new TimedCommand(5));
+            cmd.addSequential(new StraightSwitch());
         }
 
+        cmd.addSequential(new StraightSwitch());
         return cmd;
     }
 

@@ -234,6 +234,8 @@ public class Robot extends TimedRobot {
                 }
             }
         }
+
+        SmartDashboard.getString("Vision Command", "");
         Scheduler.getInstance().run();
     }
 
@@ -243,6 +245,8 @@ public class Robot extends TimedRobot {
         autonStartOnLeft = sideChooser.getSelected().equals("left");
         multiCubeAuton = cubeChooser.getSelected();
         autonDelay = SmartDashboard.getNumber("Auton Delay", 0);
+
+        cubeVision.startVisionRecord();
 
         String msg = DriverStation.getInstance().getGameSpecificMessage();
         while (msg == null || msg.length() < 2) {
@@ -277,6 +281,9 @@ public class Robot extends TimedRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+
+
+        cubeVision.stopVisionRecord();
 
         // setup our default commands (which seemed to be causing
         // trouble with our dynamic autons?

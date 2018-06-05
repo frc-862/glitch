@@ -86,7 +86,13 @@ public class CubeVision extends Subsystem {
     }
 
     public void sendCommand(String cmd) {
-		this.serialIn.writeString(cmd);
+		if (serialIn != null) {
+			try {
+				this.serialIn.writeString(cmd);
+			} catch (RuntimeException e) {
+				Logger.error("Unexpected vision error: " + e);
+			}
+		}
 	}
 
     @Override
@@ -418,6 +424,14 @@ public class CubeVision extends Subsystem {
 
 	public double getLastVisionRead() {
     	return lastVisionRead;
+	}
+
+	public void stopVisionRecord() {
+		sendCommand("stop\nstreamoff\nusbsd\njevois-daemon --cameradev=myvideo.avi --videomapping=num\n");
+	}
+
+	public void startVisionRecord() {
+		sendCommand("setmapping2 YUYV 640 480 30.0 Jevois SaveVideo\nstreamon\nstart\n");
 	}
 }
 

@@ -137,6 +137,10 @@ public class OI {
         SmartDashboard.putData("Right Scale Outside", new RightScaleSingle());
         SmartDashboard.putData("Send Camera Command", new SendVisionCommand());
 
+        SmartDashboard.putData("Start Vision Record", new StartVisionRecord());
+        SmartDashboard.putData("Stop Vision Record", new StopVisionRecord());
+
+        SmartDashboard.putString("Vision Command", "cmd");
         SmartDashboard.getString("Vision Command", "");
 
         if (driverControlsAvailable()) {
