@@ -49,4 +49,6 @@ output.json
 # Eclipse
 bin
 
+#Echo LEDs Library
+!LEDsForEcho/Adafruit_NeoPixel-master.zip
 
